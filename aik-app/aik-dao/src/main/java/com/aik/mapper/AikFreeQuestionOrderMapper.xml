@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikFreeQuestionOrderMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikFreeQuestionOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderId" jdbcType="INTEGER" property="orderId" />
+    <result column="freeEndTime" jdbcType="TIMESTAMP" property="freeEndTime" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderId, freeEndTime, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_freeQuestionOrder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_freeQuestionOrder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikFreeQuestionOrder">
+    insert into aik_freeQuestionOrder (id, orderId, freeEndTime, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{freeEndTime,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikFreeQuestionOrder">
+    insert into aik_freeQuestionOrder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="freeEndTime != null">
+        freeEndTime,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="freeEndTime != null">
+        #{freeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikFreeQuestionOrder">
+    update aik_freeQuestionOrder
+    <set>
+      <if test="orderId != null">
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="freeEndTime != null">
+        freeEndTime = #{freeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikFreeQuestionOrder">
+    update aik_freeQuestionOrder
+    set orderId = #{orderId,jdbcType=INTEGER},
+      freeEndTime = #{freeEndTime,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectOrdersByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select da.id as doctorId, da.headImg as doctorHeadImg, ua.nickName as sickName,fq.id as freeOrderId,
+      qo.description as questionDescription, qo.amount as questionAmount
+    from aik_freeQuestionOrder fq
+    inner join aik_questionOrder qo on fq.orderId = qo.id
+    inner join acc_doctorAccount da on qo.doctorId = da.id
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where fq.freeEndTime &gt; NOW()
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

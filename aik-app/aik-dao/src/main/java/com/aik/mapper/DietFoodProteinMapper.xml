@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietFoodProteinMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietFoodProtein">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="aminoAcid1" jdbcType="DECIMAL" property="aminoAcid1" />
+    <result column="aminoAcid2" jdbcType="DECIMAL" property="aminoAcid2" />
+    <result column="aminoAcid3" jdbcType="DECIMAL" property="aminoAcid3" />
+    <result column="createDate" jdbcType="DATE" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, foodId, aminoAcid1, aminoAcid2, aminoAcid3, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_foodProtein
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_foodProtein
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietFoodProtein">
+    insert into diet_foodProtein (id, foodId, aminoAcid1, 
+      aminoAcid2, aminoAcid3, createDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{foodId,jdbcType=INTEGER}, #{aminoAcid1,jdbcType=DECIMAL}, 
+      #{aminoAcid2,jdbcType=DECIMAL}, #{aminoAcid3,jdbcType=DECIMAL}, #{createDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietFoodProtein">
+    insert into diet_foodProtein
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="foodId != null">
+        foodId,
+      </if>
+      <if test="aminoAcid1 != null">
+        aminoAcid1,
+      </if>
+      <if test="aminoAcid2 != null">
+        aminoAcid2,
+      </if>
+      <if test="aminoAcid3 != null">
+        aminoAcid3,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="aminoAcid1 != null">
+        #{aminoAcid1,jdbcType=DECIMAL},
+      </if>
+      <if test="aminoAcid2 != null">
+        #{aminoAcid2,jdbcType=DECIMAL},
+      </if>
+      <if test="aminoAcid3 != null">
+        #{aminoAcid3,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietFoodProtein">
+    update diet_foodProtein
+    <set>
+      <if test="foodId != null">
+        foodId = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="aminoAcid1 != null">
+        aminoAcid1 = #{aminoAcid1,jdbcType=DECIMAL},
+      </if>
+      <if test="aminoAcid2 != null">
+        aminoAcid2 = #{aminoAcid2,jdbcType=DECIMAL},
+      </if>
+      <if test="aminoAcid3 != null">
+        aminoAcid3 = #{aminoAcid3,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietFoodProtein">
+    update diet_foodProtein
+    set foodId = #{foodId,jdbcType=INTEGER},
+      aminoAcid1 = #{aminoAcid1,jdbcType=DECIMAL},
+      aminoAcid2 = #{aminoAcid2,jdbcType=DECIMAL},
+      aminoAcid3 = #{aminoAcid3,jdbcType=DECIMAL},
+      createDate = #{createDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByFoodId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from diet_foodProtein
+    where foodId = #{foodId} limit 1
+  </select>
+</mapper>

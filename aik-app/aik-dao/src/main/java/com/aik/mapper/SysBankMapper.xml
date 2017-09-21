@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.SysBankMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.SysBank">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bankName" jdbcType="VARCHAR" property="bankName" />
+    <result column="bankIcon" jdbcType="VARCHAR" property="bankIcon" />
+    <result column="bankColor" jdbcType="VARCHAR" property="bankColor" />
+    <result column="bankType" jdbcType="VARCHAR" property="bankType" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bankName, bankIcon, bankColor, bankType, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_bank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.SysBank">
+    insert into sys_bank (id, bankName, bankIcon, 
+      bankColor, bankType, createDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankIcon,jdbcType=VARCHAR}, 
+      #{bankColor,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.SysBank">
+    insert into sys_bank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankName != null">
+        bankName,
+      </if>
+      <if test="bankIcon != null">
+        bankIcon,
+      </if>
+      <if test="bankColor != null">
+        bankColor,
+      </if>
+      <if test="bankType != null">
+        bankType,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIcon != null">
+        #{bankIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bankColor != null">
+        #{bankColor,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null">
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.SysBank">
+    update sys_bank
+    <set>
+      <if test="bankName != null">
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIcon != null">
+        bankIcon = #{bankIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bankColor != null">
+        bankColor = #{bankColor,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null">
+        bankType = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.SysBank">
+    update sys_bank
+    set bankName = #{bankName,jdbcType=VARCHAR},
+      bankIcon = #{bankIcon,jdbcType=VARCHAR},
+      bankColor = #{bankColor,jdbcType=VARCHAR},
+      bankType = #{bankType,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllBank" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_bank
+  </select>
+</mapper>

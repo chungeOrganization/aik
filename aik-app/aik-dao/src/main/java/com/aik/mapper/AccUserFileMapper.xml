@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccUserFileMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccUserFile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="fileUrl" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="relationId" jdbcType="INTEGER" property="relationId" />
+    <result column="delflag" jdbcType="TINYINT" property="delflag" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, fileUrl, type, relationId, delflag, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_userFile
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_userFile
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccUserFile">
+    insert into acc_userFile (id, userId, fileUrl, 
+      type, relationId, delflag, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{relationId,jdbcType=INTEGER}, #{delflag,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserFile">
+    insert into acc_userFile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="fileUrl != null">
+        fileUrl,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="relationId != null">
+        relationId,
+      </if>
+      <if test="delflag != null">
+        delflag,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null">
+        #{delflag,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccUserFile">
+    update acc_userFile
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="relationId != null">
+        relationId = #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null">
+        delflag = #{delflag,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccUserFile">
+    update acc_userFile
+    set userId = #{userId,jdbcType=INTEGER},
+      fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      relationId = #{relationId,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectFilesBySelective" parameterType="com.aik.model.AccUserFile" resultType="java.lang.String">
+    select fileUrl
+    from acc_userFile
+    where 1=1 and delflag = 0
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="relationId != null">
+      and relationId = #{relationId,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,59 @@
+package com.aik.service.diet;
+
+import com.aik.exception.ApiServiceException;
+import com.aik.model.DietDailyDietRecord;
+import sun.java2d.pipe.AAShapePipe;
+
+import java.util.Date;
+import java.util.Map;
+
+/**
+ * Description:
+ * Created by as on 2017/9/9.
+ */
+public interface DietRecordService {
+
+    /**
+     * 获取用户饮食记录
+     *
+     * @param userId     用户id
+     * @param recordDate 记录日期
+     * @return 用户饮食记录
+     * @throws ApiServiceException Api服务异常
+     */
+    Map<String, Object> getUserDietRecord(Integer userId, Date recordDate) throws ApiServiceException;
+
+    /**
+     * 修改用户饮食记录
+     *
+     * @param dailyDietRecord 饮食记录
+     * @throws ApiServiceException Api服务异常
+     */
+    void updateUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException;
+
+    /**
+     * 删除用户饮食记录
+     *
+     * @param dietRecordId 饮食记录id
+     * @throws ApiServiceException Api服务异常
+     */
+    void delUserDietRecord(Integer dietRecordId) throws ApiServiceException;
+
+    /**
+     * 添加用户饮食记录
+     *
+     * @param dailyDietRecord 饮食记录
+     * @throws ApiServiceException Api服务异常
+     */
+    void addUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException;
+
+    /**
+     * 获取用户饮食记录分析
+     *
+     * @param userId     用户id
+     * @param recordDate 记录日期
+     * @return 用户今日饮食计划分析
+     * @throws ApiServiceException Api服务异常
+     */
+    Map<String, Object> getDietRecordAnalyze(Integer userId, Date recordDate) throws ApiServiceException;
+}

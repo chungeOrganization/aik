@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.StoUserOrderMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.StoUserOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderNum" jdbcType="VARCHAR" property="orderNum" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="acceptAddressId" jdbcType="INTEGER" property="acceptAddressId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="realAmount" jdbcType="DECIMAL" property="realAmount" />
+    <result column="freightAmount" jdbcType="DECIMAL" property="freightAmount" />
+    <result column="leaveMsg" jdbcType="VARCHAR" property="leaveMsg" />
+    <result column="payTime" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="deliveryTime" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderNum, userId, acceptAddressId, status, amount, realAmount, freightAmount, 
+    leaveMsg, payTime, deliveryTime, endTime, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sto_userOrder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sto_userOrder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.StoUserOrder">
+    insert into sto_userOrder (id, orderNum, userId, 
+      acceptAddressId, status, amount, 
+      realAmount, freightAmount, leaveMsg, 
+      payTime, deliveryTime, endTime, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{acceptAddressId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{amount,jdbcType=DECIMAL}, 
+      #{realAmount,jdbcType=DECIMAL}, #{freightAmount,jdbcType=DECIMAL}, #{leaveMsg,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.StoUserOrder">
+    insert into sto_userOrder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderNum != null">
+        orderNum,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="acceptAddressId != null">
+        acceptAddressId,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="realAmount != null">
+        realAmount,
+      </if>
+      <if test="freightAmount != null">
+        freightAmount,
+      </if>
+      <if test="leaveMsg != null">
+        leaveMsg,
+      </if>
+      <if test="payTime != null">
+        payTime,
+      </if>
+      <if test="deliveryTime != null">
+        deliveryTime,
+      </if>
+      <if test="endTime != null">
+        endTime,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="acceptAddressId != null">
+        #{acceptAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="realAmount != null">
+        #{realAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="freightAmount != null">
+        #{freightAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="leaveMsg != null">
+        #{leaveMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null">
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.StoUserOrder">
+    update sto_userOrder
+    <set>
+      <if test="orderNum != null">
+        orderNum = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="acceptAddressId != null">
+        acceptAddressId = #{acceptAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="realAmount != null">
+        realAmount = #{realAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="freightAmount != null">
+        freightAmount = #{freightAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="leaveMsg != null">
+        leaveMsg = #{leaveMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null">
+        deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.StoUserOrder">
+    update sto_userOrder
+    set orderNum = #{orderNum,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=INTEGER},
+      acceptAddressId = #{acceptAddressId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      realAmount = #{realAmount,jdbcType=DECIMAL},
+      freightAmount = #{freightAmount,jdbcType=DECIMAL},
+      leaveMsg = #{leaveMsg,jdbcType=VARCHAR},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sto_userOrder uo
+    where 1=1
+    <if test="userId != null">
+      and uo.userId = #{userId}
+    </if>
+    <if test="status != null">
+      and uo.status = #{status}
+    </if>
+    order by uo.createDate
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

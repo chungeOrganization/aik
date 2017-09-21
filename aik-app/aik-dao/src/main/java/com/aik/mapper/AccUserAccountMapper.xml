@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccUserAccountMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccUserAccount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mobileNo" jdbcType="VARCHAR" property="mobileNo" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="userType" jdbcType="TINYINT" property="userType" />
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="areaProvince" jdbcType="VARCHAR" property="areaProvince" />
+    <result column="areaCity" jdbcType="VARCHAR" property="areaCity" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="isElseIllness" jdbcType="TINYINT" property="isElseIllness" />
+    <result column="devType" jdbcType="VARCHAR" property="devType" />
+    <result column="headImg" jdbcType="VARCHAR" property="headImg" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mobileNo, userName, password, userType, realName, nickName, sex, areaProvince, 
+    areaCity, birthday, isElseIllness, devType, headImg, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_userAccount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccUserAccount">
+    insert into acc_userAccount (id, mobileNo, userName, 
+      password, userType, realName, 
+      nickName, sex, areaProvince, 
+      areaCity, birthday, isElseIllness, 
+      devType, headImg, createDate, 
+      updateDate)
+    values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{userType,jdbcType=TINYINT}, #{realName,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{areaProvince,jdbcType=VARCHAR}, 
+      #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{isElseIllness,jdbcType=TINYINT}, 
+      #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount" useGeneratedKeys="true" keyProperty="id">
+    insert into acc_userAccount
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mobileNo != null">
+        mobileNo,
+      </if>
+      <if test="userName != null">
+        userName,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="userType != null">
+        userType,
+      </if>
+      <if test="realName != null">
+        realName,
+      </if>
+      <if test="nickName != null">
+        nickName,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="areaProvince != null">
+        areaProvince,
+      </if>
+      <if test="areaCity != null">
+        areaCity,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="isElseIllness != null">
+        isElseIllness,
+      </if>
+      <if test="devType != null">
+        devType,
+      </if>
+      <if test="headImg != null">
+        headImg,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mobileNo != null">
+        #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="areaProvince != null">
+        #{areaProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCity != null">
+        #{areaCity,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="isElseIllness != null">
+        #{isElseIllness,jdbcType=TINYINT},
+      </if>
+      <if test="devType != null">
+        #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccUserAccount">
+    update acc_userAccount
+    <set>
+      <if test="mobileNo != null">
+        mobileNo = #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        userType = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="realName != null">
+        realName = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="areaProvince != null">
+        areaProvince = #{areaProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCity != null">
+        areaCity = #{areaCity,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="isElseIllness != null">
+        isElseIllness = #{isElseIllness,jdbcType=TINYINT},
+      </if>
+      <if test="devType != null">
+        devType = #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        headImg = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccUserAccount">
+    update acc_userAccount
+    set mobileNo = #{mobileNo,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      userType = #{userType,jdbcType=TINYINT},
+      realName = #{realName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      areaProvince = #{areaProvince,jdbcType=VARCHAR},
+      areaCity = #{areaCity,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      isElseIllness = #{isElseIllness,jdbcType=TINYINT},
+      devType = #{devType,jdbcType=VARCHAR},
+      headImg = #{headImg,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySelective" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="mobileNo != null">
+      and mobileNo = #{mobileNo,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userType != null">
+      and userType = #{userType,jdbcType=TINYINT}
+    </if>
+    <if test="realName != null">
+      and realName = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex,jdbcType=TINYINT}
+    </if>
+    <if test="areaProvince != null">
+      and areaProvince = #{areaProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="areaCity != null">
+      and areaCity = #{areaCity,jdbcType=VARCHAR}
+    </if>
+    <if test="birthday != null">
+      and birthday = #{birthday,jdbcType=DATE}
+    </if>
+    <if test="isElseIllness != null">
+      and isElseIllness = #{isElseIllness,jdbcType=TINYINT}
+    </if>
+    <if test="devType != null">
+      and devType = #{devType,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByUserName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where userName = #{userName}
+  </select>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccCircleLikeMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccCircleLike">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="circleId" jdbcType="INTEGER" property="circleId" />
+    <result column="likerId" jdbcType="INTEGER" property="likerId" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, circleId, likerId, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_circleLike
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_circleLike
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccCircleLike">
+    insert into acc_circleLike (id, circleId, likerId, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{circleId,jdbcType=INTEGER}, #{likerId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccCircleLike">
+    insert into acc_circleLike
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="circleId != null">
+        circleId,
+      </if>
+      <if test="likerId != null">
+        likerId,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="circleId != null">
+        #{circleId,jdbcType=INTEGER},
+      </if>
+      <if test="likerId != null">
+        #{likerId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccCircleLike">
+    update acc_circleLike
+    <set>
+      <if test="circleId != null">
+        circleId = #{circleId,jdbcType=INTEGER},
+      </if>
+      <if test="likerId != null">
+        likerId = #{likerId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccCircleLike">
+    update acc_circleLike
+    set circleId = #{circleId,jdbcType=INTEGER},
+      likerId = #{likerId,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AccCircleLike" resultType="int">
+    select count(*)
+    from acc_circleLike
+    where 1=1
+    <if test="circleId != null">
+      and circleId = #{circleId,jdbcType=INTEGER}
+    </if>
+    <if test="likerId != null">
+      and likerId = #{likerId,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectBySelective" parameterType="com.aik.model.AccCircleLike" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_circleLike
+    where 1=1
+    <if test="circleId != null">
+      and circleId = #{circleId,jdbcType=INTEGER}
+    </if>
+    <if test="likerId != null">
+      and likerId = #{likerId,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccSecurityCodeMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccSecurityCode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="securityCode" jdbcType="VARCHAR" property="securityCode" />
+    <result column="mobileNo" jdbcType="VARCHAR" property="mobileNo" />
+    <result column="isValid" jdbcType="TINYINT" property="isValid" />
+    <result column="codeType" jdbcType="TINYINT" property="codeType" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, securityCode, mobileNo, isValid, codeType, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_securityCode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_securityCode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccSecurityCode">
+    insert into acc_securityCode (id, securityCode, mobileNo, 
+      isValid, codeType, createDate, 
+      updateDate)
+    values (#{id,jdbcType=INTEGER}, #{securityCode,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=TINYINT}, #{codeType,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccSecurityCode">
+    insert into acc_securityCode
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="securityCode != null">
+        securityCode,
+      </if>
+      <if test="mobileNo != null">
+        mobileNo,
+      </if>
+      <if test="isValid != null">
+        isValid,
+      </if>
+      <if test="codeType != null">
+        codeType,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="securityCode != null">
+        #{securityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null">
+        #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="codeType != null">
+        #{codeType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccSecurityCode">
+    update acc_securityCode
+    <set>
+      <if test="securityCode != null">
+        securityCode = #{securityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null">
+        mobileNo = #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        isValid = #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="codeType != null">
+        codeType = #{codeType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccSecurityCode">
+    update acc_securityCode
+    set securityCode = #{securityCode,jdbcType=VARCHAR},
+      mobileNo = #{mobileNo,jdbcType=VARCHAR},
+      isValid = #{isValid,jdbcType=TINYINT},
+      codeType = #{codeType,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectValidSecurityCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_securityCode
+    where mobileNo = #{mobileNo} and codeType = #{codeType} and isValid = 1 order by id desc limit 1
+  </select>
+</mapper>

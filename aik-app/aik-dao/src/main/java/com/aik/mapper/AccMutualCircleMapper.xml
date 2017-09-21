@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccMutualCircleMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccMutualCircle">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="isChoiceness" jdbcType="TINYINT" property="isChoiceness" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, content, isChoiceness, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_mutualCircle
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_mutualCircle
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccMutualCircle">
+    insert into acc_mutualCircle (id, userId, content, 
+      isChoiceness, createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{isChoiceness,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccMutualCircle" useGeneratedKeys="true" keyProperty="id">
+    insert into acc_mutualCircle
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="isChoiceness != null">
+        isChoiceness,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isChoiceness != null">
+        #{isChoiceness,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccMutualCircle">
+    update acc_mutualCircle
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isChoiceness != null">
+        isChoiceness = #{isChoiceness,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccMutualCircle">
+    update acc_mutualCircle
+    set userId = #{userId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      isChoiceness = #{isChoiceness,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select mc.id, mc.userId, ua.headImg, ua.nickName, mc.content, mc.createDate
+    from acc_mutualCircle mc
+    inner join acc_userAccount ua on mc.userId = ua.id
+    where 1=1
+    <if test="isChoiceness != null">
+      and mc.isChoiceness =  #{isChoiceness}
+    </if>
+    <if test="userId != null">
+      and mc.userId = #{userId}
+    </if>
+    <if test="userIdList != null">
+      and mc.userId in
+      <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+        #{userId}
+      </foreach>
+    </if>
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

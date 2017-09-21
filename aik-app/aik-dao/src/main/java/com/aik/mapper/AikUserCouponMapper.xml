@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikUserCouponMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikUserCoupon">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="couponId" jdbcType="INTEGER" property="couponId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="serviceTime" jdbcType="TIMESTAMP" property="serviceTime" />
+    <result column="serviceType" jdbcType="TINYINT" property="serviceType" />
+    <result column="serviceId" jdbcType="INTEGER" property="serviceId" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, couponId, status, serviceTime, serviceType, serviceId, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_userCoupon
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_userCoupon
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikUserCoupon">
+    insert into aik_userCoupon (id, userId, couponId, 
+      status, serviceTime, serviceType, 
+      serviceId, createDate, updateDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{couponId,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{serviceTime,jdbcType=TIMESTAMP}, #{serviceType,jdbcType=TINYINT}, 
+      #{serviceId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikUserCoupon">
+    insert into aik_userCoupon
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="couponId != null">
+        couponId,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="serviceTime != null">
+        serviceTime,
+      </if>
+      <if test="serviceType != null">
+        serviceType,
+      </if>
+      <if test="serviceId != null">
+        serviceId,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null">
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="serviceTime != null">
+        #{serviceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=TINYINT},
+      </if>
+      <if test="serviceId != null">
+        #{serviceId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikUserCoupon">
+    update aik_userCoupon
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null">
+        couponId = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="serviceTime != null">
+        serviceTime = #{serviceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceType != null">
+        serviceType = #{serviceType,jdbcType=TINYINT},
+      </if>
+      <if test="serviceId != null">
+        serviceId = #{serviceId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikUserCoupon">
+    update aik_userCoupon
+    set userId = #{userId,jdbcType=INTEGER},
+      couponId = #{couponId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      serviceTime = #{serviceTime,jdbcType=TIMESTAMP},
+      serviceType = #{serviceType,jdbcType=TINYINT},
+      serviceId = #{serviceId,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select ac.discountAmount, ac.minMonetary, ac.startDate, ac.endDate, uc.status
+    from aik_userCoupon uc
+    inner join aik_coupon ac on uc.couponId = ac.id
+    where 1=1
+    <if test="userId != null">
+      and uc.userId = #{userId}
+    </if>
+    <if test="status != null">
+      and uc.status = #{status}
+    </if>
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

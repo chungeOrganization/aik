@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikQuestionViewHisMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikQuestionViewHis">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="orderId" jdbcType="INTEGER" property="orderId" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, orderId, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_questionViewHis
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_questionViewHis
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikQuestionViewHis">
+    insert into aik_questionViewHis (id, userId, orderId, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikQuestionViewHis">
+    insert into aik_questionViewHis
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikQuestionViewHis">
+    update aik_questionViewHis
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikQuestionViewHis">
+    update aik_questionViewHis
+    set userId = #{userId,jdbcType=INTEGER},
+      orderId = #{orderId,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AikQuestionViewHis" resultType="int">
+    select count(*)
+    from aik_questionViewHis
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="orderId != null">
+      and orderId = #{orderId}
+    </if>
+  </select>
+  <select id="selectViewHisByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select qo.id as orderId, qo.description
+    from aik_questionViewHis aq
+    inner join aik_questionOrder  qo on aq.orderId = qo.id
+    where 1=1
+    <if test="userId != null">
+      and aq.userId = #{userId}
+    </if>
+    order by aq.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

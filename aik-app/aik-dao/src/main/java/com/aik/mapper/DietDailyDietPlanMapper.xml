@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietDailyDietPlanMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietDailyDietPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="dietType" jdbcType="TINYINT" property="dietType" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, recordDate, foodId, weight, dietType, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_dailyDietPlan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_dailyDietPlan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietDailyDietPlan">
+    insert into diet_dailyDietPlan (id, userId, recordDate, 
+      foodId, weight, dietType, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{recordDate,jdbcType=DATE}, 
+      #{foodId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{dietType,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietDailyDietPlan">
+    insert into diet_dailyDietPlan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="recordDate != null">
+        recordDate,
+      </if>
+      <if test="foodId != null">
+        foodId,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="dietType != null">
+        dietType,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=DATE},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="dietType != null">
+        #{dietType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietDailyDietPlan">
+    update diet_dailyDietPlan
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null">
+        recordDate = #{recordDate,jdbcType=DATE},
+      </if>
+      <if test="foodId != null">
+        foodId = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="dietType != null">
+        dietType = #{dietType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietDailyDietPlan">
+    update diet_dailyDietPlan
+    set userId = #{userId,jdbcType=INTEGER},
+      recordDate = #{recordDate,jdbcType=DATE},
+      foodId = #{foodId,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      dietType = #{dietType,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySelective" parameterType="com.aik.model.DietDailyDietPlan" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_dailyDietPlan
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="recordDate != null">
+      and recordDate = DATE(#{recordDate})
+    </if>
+    <if test="dietType != null">
+      and dietType = #{dietType}
+    </if>
+  </select>
+  <select id="selectUserDietPlan" parameterType="java.util.Map" resultType="java.util.Map">
+    select dp.id, df.image, df.name, dp.weight/df.weight as number, df.weightUnit, dp.weight
+    from diet_dailyDietPlan dp
+    inner join diet_food df on dp.foodId = df.id
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="recordDate != null">
+      and recordDate = DATE(#{recordDate})
+    </if>
+    <if test="dietType != null">
+      and dietType = #{dietType}
+    </if>
+  </select>
+</mapper>

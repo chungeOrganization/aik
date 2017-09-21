@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietFoodMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietFood">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="recommend" jdbcType="VARCHAR" property="recommend" />
+    <result column="brightSpot" jdbcType="TINYINT" property="brightSpot" />
+    <result column="spotRank" jdbcType="INTEGER" property="spotRank" />
+    <result column="proteinRadio" jdbcType="DECIMAL" property="proteinRadio" />
+    <result column="fatRadio" jdbcType="DECIMAL" property="fatRadio" />
+    <result column="carbsRadio" jdbcType="DECIMAL" property="carbsRadio" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, category, image, recommend, brightSpot, spotRank, proteinRadio, fatRadio, 
+    carbsRadio, type, weightUnit, weight, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_food
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_food
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietFood">
+    insert into diet_food (id, name, category, 
+      image, recommend, brightSpot, 
+      spotRank, proteinRadio, fatRadio, 
+      carbsRadio, type, weightUnit, 
+      weight, createDate, updateDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{image,jdbcType=VARCHAR}, #{recommend,jdbcType=VARCHAR}, #{brightSpot,jdbcType=TINYINT}, 
+      #{spotRank,jdbcType=INTEGER}, #{proteinRadio,jdbcType=DECIMAL}, #{fatRadio,jdbcType=DECIMAL}, 
+      #{carbsRadio,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{weightUnit,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietFood">
+    insert into diet_food
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+      <if test="brightSpot != null">
+        brightSpot,
+      </if>
+      <if test="spotRank != null">
+        spotRank,
+      </if>
+      <if test="proteinRadio != null">
+        proteinRadio,
+      </if>
+      <if test="fatRadio != null">
+        fatRadio,
+      </if>
+      <if test="carbsRadio != null">
+        carbsRadio,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="weightUnit != null">
+        weightUnit,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=VARCHAR},
+      </if>
+      <if test="brightSpot != null">
+        #{brightSpot,jdbcType=TINYINT},
+      </if>
+      <if test="spotRank != null">
+        #{spotRank,jdbcType=INTEGER},
+      </if>
+      <if test="proteinRadio != null">
+        #{proteinRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="fatRadio != null">
+        #{fatRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="carbsRadio != null">
+        #{carbsRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="weightUnit != null">
+        #{weightUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietFood">
+    update diet_food
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=VARCHAR},
+      </if>
+      <if test="brightSpot != null">
+        brightSpot = #{brightSpot,jdbcType=TINYINT},
+      </if>
+      <if test="spotRank != null">
+        spotRank = #{spotRank,jdbcType=INTEGER},
+      </if>
+      <if test="proteinRadio != null">
+        proteinRadio = #{proteinRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="fatRadio != null">
+        fatRadio = #{fatRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="carbsRadio != null">
+        carbsRadio = #{carbsRadio,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="weightUnit != null">
+        weightUnit = #{weightUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietFood">
+    update diet_food
+    set name = #{name,jdbcType=VARCHAR},
+      category = #{category,jdbcType=INTEGER},
+      image = #{image,jdbcType=VARCHAR},
+      recommend = #{recommend,jdbcType=VARCHAR},
+      brightSpot = #{brightSpot,jdbcType=TINYINT},
+      spotRank = #{spotRank,jdbcType=INTEGER},
+      proteinRadio = #{proteinRadio,jdbcType=DECIMAL},
+      fatRadio = #{fatRadio,jdbcType=DECIMAL},
+      carbsRadio = #{carbsRadio,jdbcType=DECIMAL},
+      type = #{type,jdbcType=TINYINT},
+      weightUnit = #{weightUnit,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select id, image, name
+    from diet_food
+    where 1=1
+    <if test="name != null">
+      and name = #{name}
+    </if>
+    <if test="category != null">
+      and category = #{category}
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

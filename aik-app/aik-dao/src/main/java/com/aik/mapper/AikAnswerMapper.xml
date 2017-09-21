@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikAnswerMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikAnswer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderId" jdbcType="INTEGER" property="orderId" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="fromQuestionId" jdbcType="INTEGER" property="fromQuestionId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderId, doctorId, answer, fromQuestionId, type, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_answer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_answer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikAnswer">
+    insert into aik_answer (id, orderId, doctorId, 
+      answer, fromQuestionId, type, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, 
+      #{answer,jdbcType=VARCHAR}, #{fromQuestionId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikAnswer">
+    insert into aik_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="answer != null">
+        answer,
+      </if>
+      <if test="fromQuestionId != null">
+        fromQuestionId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="fromQuestionId != null">
+        #{fromQuestionId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikAnswer">
+    update aik_answer
+    <set>
+      <if test="orderId != null">
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="fromQuestionId != null">
+        fromQuestionId = #{fromQuestionId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikAnswer">
+    update aik_answer
+    set orderId = #{orderId,jdbcType=INTEGER},
+      doctorId = #{doctorId,jdbcType=INTEGER},
+      answer = #{answer,jdbcType=VARCHAR},
+      fromQuestionId = #{fromQuestionId,jdbcType=INTEGER},
+      type = #{type,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AikAnswer" resultType="int">
+    select count(*)
+    from aik_answer
+    where 1=1
+    <if test="orderId != null">
+      and orderId = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="fromQuestionId != null">
+      and fromQuestionId = #{fromQuestionId,jdbcType=INTEGER}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+  </select>
+  <select id="selectByDoctorId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_answer
+    where doctorId = #{doctorId}
+  </select>
+  <select id="selectMyAnswerPage" parameterType="java.util.Map" resultType="java.util.Map">
+    select aw.id as answerId, aw.createDate as answerDate, ua.realName as sickRealName, ua.sex as sickSex, ua.birthday as sickBirthday,
+    qo.illName as illName, qo.description as sickDetail, aw.answer as answerDetail, qo.amount as answerAmount
+    from aik_answer aw
+    inner join aik_questionOrder qo on aw.orderId = qo.id
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where 1=1
+    <if test="doctorId != null">
+      and aw.doctorId = #{doctorId}
+    </if>
+    <if test="type != null">
+      and aw.type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="searchDesc != null and searchDesc != ''">
+      and (locate(#{searchDesc}, aw.answer) &gt; 0 or locate(#{searchDesc}, qo.description) &gt; 0)
+    </if>
+    order by aw.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectByQuestionId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_answer
+    where fromQuestionId = #{questionId} limit 1
+  </select>
+  <select id="selectBySelective" parameterType="com.aik.model.AikAnswer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_answer
+    where 1=1
+    <if test="orderId != null">
+      and orderId = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="fromQuestionId != null">
+      and fromQuestionId = #{fromQuestionId,jdbcType=INTEGER}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+  </select>
+</mapper>

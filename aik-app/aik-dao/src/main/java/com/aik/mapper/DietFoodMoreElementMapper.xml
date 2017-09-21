@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietFoodMoreElementMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietFoodMoreElement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="nutrientElem" jdbcType="VARCHAR" property="nutrientElem" />
+    <result column="content" jdbcType="DECIMAL" property="content" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, foodId, nutrientElem, content, unit, remark, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_foodMoreElement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_foodMoreElement
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietFoodMoreElement">
+    insert into diet_foodMoreElement (id, foodId, nutrientElem, 
+      content, unit, remark, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{foodId,jdbcType=INTEGER}, #{nutrientElem,jdbcType=VARCHAR}, 
+      #{content,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietFoodMoreElement">
+    insert into diet_foodMoreElement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="foodId != null">
+        foodId,
+      </if>
+      <if test="nutrientElem != null">
+        nutrientElem,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="nutrientElem != null">
+        #{nutrientElem,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietFoodMoreElement">
+    update diet_foodMoreElement
+    <set>
+      <if test="foodId != null">
+        foodId = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="nutrientElem != null">
+        nutrientElem = #{nutrientElem,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietFoodMoreElement">
+    update diet_foodMoreElement
+    set foodId = #{foodId,jdbcType=INTEGER},
+      nutrientElem = #{nutrientElem,jdbcType=VARCHAR},
+      content = #{content,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectFoodMoreElements" parameterType="int" resultType="java.util.Map">
+    select nutrientElem, content, unit, remark
+    from diet_foodMoreElement
+    where foodId = #{foodId}
+  </select>
+</mapper>

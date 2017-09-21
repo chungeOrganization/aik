@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietFoodFatMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietFoodFat">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="saturatedFattyAcid" jdbcType="DECIMAL" property="saturatedFattyAcid" />
+    <result column="unsaturatedFattyAcid" jdbcType="DECIMAL" property="unsaturatedFattyAcid" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, foodId, saturatedFattyAcid, unsaturatedFattyAcid, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_foodFat
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_foodFat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietFoodFat">
+    insert into diet_foodFat (id, foodId, saturatedFattyAcid, 
+      unsaturatedFattyAcid, createDate)
+    values (#{id,jdbcType=INTEGER}, #{foodId,jdbcType=INTEGER}, #{saturatedFattyAcid,jdbcType=DECIMAL}, 
+      #{unsaturatedFattyAcid,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietFoodFat">
+    insert into diet_foodFat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="foodId != null">
+        foodId,
+      </if>
+      <if test="saturatedFattyAcid != null">
+        saturatedFattyAcid,
+      </if>
+      <if test="unsaturatedFattyAcid != null">
+        unsaturatedFattyAcid,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="saturatedFattyAcid != null">
+        #{saturatedFattyAcid,jdbcType=DECIMAL},
+      </if>
+      <if test="unsaturatedFattyAcid != null">
+        #{unsaturatedFattyAcid,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietFoodFat">
+    update diet_foodFat
+    <set>
+      <if test="foodId != null">
+        foodId = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="saturatedFattyAcid != null">
+        saturatedFattyAcid = #{saturatedFattyAcid,jdbcType=DECIMAL},
+      </if>
+      <if test="unsaturatedFattyAcid != null">
+        unsaturatedFattyAcid = #{unsaturatedFattyAcid,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietFoodFat">
+    update diet_foodFat
+    set foodId = #{foodId,jdbcType=INTEGER},
+      saturatedFattyAcid = #{saturatedFattyAcid,jdbcType=DECIMAL},
+      unsaturatedFattyAcid = #{unsaturatedFattyAcid,jdbcType=DECIMAL},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByFoodId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from diet_foodFat
+    where foodId = #{foodId} limit 1
+  </select>
+</mapper>

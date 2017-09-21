@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikDoctorSickGroupMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikDoctorSickGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="groupName" jdbcType="VARCHAR" property="groupName" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctorId, groupName, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_doctorSickGroup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_doctorSickGroup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikDoctorSickGroup">
+    insert into aik_doctorSickGroup (id, doctorId, groupName, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikDoctorSickGroup">
+    insert into aik_doctorSickGroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="groupName != null">
+        groupName,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikDoctorSickGroup">
+    update aik_doctorSickGroup
+    <set>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null">
+        groupName = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikDoctorSickGroup">
+    update aik_doctorSickGroup
+    set doctorId = #{doctorId,jdbcType=INTEGER},
+      groupName = #{groupName,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByDoctorId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_doctorSickGroup
+    where doctorId = #{doctorId}
+  </select>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AikDoctorSickGroup" resultType="int">
+    select count(*)
+    from aik_doctorSickGroup
+    where 1=1
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="groupName != null">
+      and groupName = #{groupName,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

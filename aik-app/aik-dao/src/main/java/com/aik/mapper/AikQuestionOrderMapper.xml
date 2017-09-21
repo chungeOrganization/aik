@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikQuestionOrderMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikQuestionOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="illType" jdbcType="TINYINT" property="illType" />
+    <result column="illName" jdbcType="VARCHAR" property="illName" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="failType" jdbcType="TINYINT" property="failType" />
+    <result column="refuseReason" jdbcType="VARCHAR" property="refuseReason" />
+    <result column="isPayDoctor" jdbcType="TINYINT" property="isPayDoctor" />
+    <result column="auditStatus" jdbcType="TINYINT" property="auditStatus" />
+    <result column="auditorId" jdbcType="INTEGER" property="auditorId" />
+    <result column="auditReason" jdbcType="VARCHAR" property="auditReason" />
+    <result column="auditDate" jdbcType="TIMESTAMP" property="auditDate" />
+    <result column="payDate" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="refundStatus" jdbcType="TINYINT" property="refundStatus" />
+    <result column="refundDate" jdbcType="TIMESTAMP" property="refundDate" />
+    <result column="refundAuditorId" jdbcType="INTEGER" property="refundAuditorId" />
+    <result column="refundAuditDate" jdbcType="TIMESTAMP" property="refundAuditDate" />
+    <result column="evaluation" jdbcType="VARCHAR" property="evaluation" />
+    <result column="serviceAttitude" jdbcType="TINYINT" property="serviceAttitude" />
+    <result column="answerQuality" jdbcType="TINYINT" property="answerQuality" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, description, illType, illName, type, doctorId, amount, status, failType, 
+    refuseReason, isPayDoctor, auditStatus, auditorId, auditReason, auditDate, payDate, 
+    refundStatus, refundDate, refundAuditorId, refundAuditDate, evaluation, serviceAttitude, 
+    answerQuality, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_questionOrder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_questionOrder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikQuestionOrder">
+    insert into aik_questionOrder (id, userId, description, 
+      illType, illName, type, 
+      doctorId, amount, status, 
+      failType, refuseReason, isPayDoctor, 
+      auditStatus, auditorId, auditReason, 
+      auditDate, payDate, refundStatus, 
+      refundDate, refundAuditorId, refundAuditDate, 
+      evaluation, serviceAttitude, answerQuality, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{illType,jdbcType=TINYINT}, #{illName,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{doctorId,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, 
+      #{failType,jdbcType=TINYINT}, #{refuseReason,jdbcType=VARCHAR}, #{isPayDoctor,jdbcType=TINYINT}, 
+      #{auditStatus,jdbcType=TINYINT}, #{auditorId,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}, 
+      #{auditDate,jdbcType=TIMESTAMP}, #{payDate,jdbcType=TIMESTAMP}, #{refundStatus,jdbcType=TINYINT}, 
+      #{refundDate,jdbcType=TIMESTAMP}, #{refundAuditorId,jdbcType=INTEGER}, #{refundAuditDate,jdbcType=TIMESTAMP}, 
+      #{evaluation,jdbcType=VARCHAR}, #{serviceAttitude,jdbcType=TINYINT}, #{answerQuality,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikQuestionOrder">
+    insert into aik_questionOrder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="illType != null">
+        illType,
+      </if>
+      <if test="illName != null">
+        illName,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="failType != null">
+        failType,
+      </if>
+      <if test="refuseReason != null">
+        refuseReason,
+      </if>
+      <if test="isPayDoctor != null">
+        isPayDoctor,
+      </if>
+      <if test="auditStatus != null">
+        auditStatus,
+      </if>
+      <if test="auditorId != null">
+        auditorId,
+      </if>
+      <if test="auditReason != null">
+        auditReason,
+      </if>
+      <if test="auditDate != null">
+        auditDate,
+      </if>
+      <if test="payDate != null">
+        payDate,
+      </if>
+      <if test="refundStatus != null">
+        refundStatus,
+      </if>
+      <if test="refundDate != null">
+        refundDate,
+      </if>
+      <if test="refundAuditorId != null">
+        refundAuditorId,
+      </if>
+      <if test="refundAuditDate != null">
+        refundAuditDate,
+      </if>
+      <if test="evaluation != null">
+        evaluation,
+      </if>
+      <if test="serviceAttitude != null">
+        serviceAttitude,
+      </if>
+      <if test="answerQuality != null">
+        answerQuality,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="illType != null">
+        #{illType,jdbcType=TINYINT},
+      </if>
+      <if test="illName != null">
+        #{illName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="failType != null">
+        #{failType,jdbcType=TINYINT},
+      </if>
+      <if test="refuseReason != null">
+        #{refuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isPayDoctor != null">
+        #{isPayDoctor,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditorId != null">
+        #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDate != null">
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundStatus != null">
+        #{refundStatus,jdbcType=TINYINT},
+      </if>
+      <if test="refundDate != null">
+        #{refundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundAuditorId != null">
+        #{refundAuditorId,jdbcType=INTEGER},
+      </if>
+      <if test="refundAuditDate != null">
+        #{refundAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluation != null">
+        #{evaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceAttitude != null">
+        #{serviceAttitude,jdbcType=TINYINT},
+      </if>
+      <if test="answerQuality != null">
+        #{answerQuality,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikQuestionOrder">
+    update aik_questionOrder
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="illType != null">
+        illType = #{illType,jdbcType=TINYINT},
+      </if>
+      <if test="illName != null">
+        illName = #{illName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="failType != null">
+        failType = #{failType,jdbcType=TINYINT},
+      </if>
+      <if test="refuseReason != null">
+        refuseReason = #{refuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isPayDoctor != null">
+        isPayDoctor = #{isPayDoctor,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null">
+        auditStatus = #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditorId != null">
+        auditorId = #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="auditReason != null">
+        auditReason = #{auditReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null">
+        auditDate = #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDate != null">
+        payDate = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundStatus != null">
+        refundStatus = #{refundStatus,jdbcType=TINYINT},
+      </if>
+      <if test="refundDate != null">
+        refundDate = #{refundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundAuditorId != null">
+        refundAuditorId = #{refundAuditorId,jdbcType=INTEGER},
+      </if>
+      <if test="refundAuditDate != null">
+        refundAuditDate = #{refundAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluation != null">
+        evaluation = #{evaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceAttitude != null">
+        serviceAttitude = #{serviceAttitude,jdbcType=TINYINT},
+      </if>
+      <if test="answerQuality != null">
+        answerQuality = #{answerQuality,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikQuestionOrder">
+    update aik_questionOrder
+    set userId = #{userId,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      illType = #{illType,jdbcType=TINYINT},
+      illName = #{illName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      doctorId = #{doctorId,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      failType = #{failType,jdbcType=TINYINT},
+      refuseReason = #{refuseReason,jdbcType=VARCHAR},
+      isPayDoctor = #{isPayDoctor,jdbcType=TINYINT},
+      auditStatus = #{auditStatus,jdbcType=TINYINT},
+      auditorId = #{auditorId,jdbcType=INTEGER},
+      auditReason = #{auditReason,jdbcType=VARCHAR},
+      auditDate = #{auditDate,jdbcType=TIMESTAMP},
+      payDate = #{payDate,jdbcType=TIMESTAMP},
+      refundStatus = #{refundStatus,jdbcType=TINYINT},
+      refundDate = #{refundDate,jdbcType=TIMESTAMP},
+      refundAuditorId = #{refundAuditorId,jdbcType=INTEGER},
+      refundAuditDate = #{refundAuditDate,jdbcType=TIMESTAMP},
+      evaluation = #{evaluation,jdbcType=VARCHAR},
+      serviceAttitude = #{serviceAttitude,jdbcType=TINYINT},
+      answerQuality = #{answerQuality,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKeyForUpdate" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_questionOrder
+    where id = #{id,jdbcType=INTEGER} for update
+  </select>
+  <select id="selectProcessingDetailById" parameterType="int" resultType="java.util.Map">
+    select qo.id, qo.userId, ua.headImg as sickHeadImg, da.headImg as doctorHeadImg, qo.description, qo.createDate
+    from aik_questionOrder qo
+    inner join acc_userAccount ua on qo.userId = ua.id
+    inner join acc_doctorAccount da on qo.doctorId = da.id
+    where qo.id = #{id} and qo.status = 2
+  </select>
+  <select id="selectCountByParams" parameterType="java.util.Map" resultType="int">
+    select count(*)
+    from aik_questionOrder
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="illType != null">
+      and illType = #{illType,jdbcType=TINYINT}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+    <if test="statusArray != null">
+      and status in
+      <foreach close=")" collection="statusArray" index="index" item="stu" open="(" separator=",">
+        #{stu}
+      </foreach>
+    </if>
+    <if test="failType != null">
+      and failType = #{failType,jdbcType=TINYINT}
+    </if>
+    <if test="failTypeArray != null">
+      and failType in
+      <foreach close=")" collection="failTypeArray" item="tp" open="(" separator=",">
+        #{tp}
+      </foreach>
+    </if>
+  </select>
+  <select id="selectHomeOpenQuestion" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_questionOrder
+    where type = 1 and status = 2 order by id desc limit 1
+  </select>
+  <select id="selectDoctorDiagnosedOrders" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
+    aa.answer, aa.createDate, qo.id as orderId
+    from aik_questionOrder qo
+    inner join aik_answer aa on qo.id = aa.orderId
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where 1=1 and qo.type = 0
+    <if test="doctorId != null">
+      and qo.doctorId = #{doctorId}
+    </if>
+    <if test="statusArray != null">
+      and qo.status in
+      <foreach close=")" collection="statusArray" item="stu" open="(" separator=",">
+        #{stu}
+      </foreach>
+    </if>
+    <if test="typesArray != null">
+      and aa.type in
+      <foreach close=")" collection="typesArray" item="tp" open="(" separator=",">
+        #{tp}
+      </foreach>
+    </if>
+    order by aa.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectDoctorInHandleOrders" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
+    aq.description, aq.createDate, qo.id as orderId
+    from aik_questionOrder qo
+    inner join aik_question aq on qo.id = aq.orderId
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where 1=1 and qo.type = 0
+    <if test="doctorId != null">
+      and qo.doctorId = #{doctorId}
+    </if>
+    <if test="statusArray != null">
+      and qo.status in
+      <foreach close=")" collection="statusArray" item="stu" open="(" separator=",">
+        #{stu}
+      </foreach>
+    </if>
+    <if test="typesArray != null">
+      and aq.type in
+      <foreach close=")" collection="typesArray" item="tp" open="(" separator=",">
+        #{tp}
+      </foreach>
+    </if>
+    order by aq.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectDoctorMyOrders" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.realName as sickRealName, ua.sex as sickSex, ua.birthday as sickBirthday, qo.id as orderId,
+    qo.illName as illName, qo.description as sickDetail, qo.amount as answerAmount, qo.createDate, qo.status
+    from aik_questionOrder qo
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where 1=1 and qo.type = 0
+    <if test="doctorId != null">
+      and qo.doctorId = #{doctorId}
+    </if>
+    <if test="statusArray != null">
+      and qo.status in
+      <foreach close=")" collection="statusArray" item="stu" open="(" separator=",">
+        #{stu}
+      </foreach>
+    </if>
+    <if test="searchDesc != null and searchDesc != ''">
+      and (locate(#{searchDesc}, qo.description) &gt; 0)
+    </if>
+    order by qo.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectOpenQuestionOrders" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.realName as sickRealName, ua.sex as sickSex, ua.birthday as sickBirthday, qo.id as orderId,
+    qo.illName as illName, qo.description as sickDetail, qo.amount as answerAmount, qo.createDate, qo.status
+    from aik_questionOrder qo
+    inner join acc_userAccount ua on qo.userId = ua.id
+    where 1=1 and qo.type = 0 and qo.status = 2
+    <if test="illName != null">
+      and qo.illName = #{illName}
+    </if>
+    order by qo.createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectUserOrders" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_questionOrder
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+    order by createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

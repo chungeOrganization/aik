@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccUserAttentionMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccUserAttention">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="attentionId" jdbcType="INTEGER" property="attentionId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, attentionId, type, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_userAttention
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_userAttention
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccUserAttention">
+    insert into acc_userAttention (id, userId, attentionId, 
+      type, createTime)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{attentionId,jdbcType=INTEGER}, 
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserAttention">
+    insert into acc_userAttention
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="attentionId != null">
+        attentionId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="attentionId != null">
+        #{attentionId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccUserAttention">
+    update acc_userAttention
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="attentionId != null">
+        attentionId = #{attentionId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccUserAttention">
+    update acc_userAttention
+    set userId = #{userId,jdbcType=INTEGER},
+      attentionId = #{attentionId,jdbcType=INTEGER},
+      type = #{type,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySelective" resultMap="BaseResultMap" parameterType="com.aik.model.AccUserAttention">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_userAttention
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="attentionId != null">
+      and attentionId = #{attentionId,jdbcType=INTEGER}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+  </select>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AccUserAttention" resultType="int">
+    select count(*)
+    from acc_userAttention
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="attentionId != null">
+      and attentionId = #{attentionId,jdbcType=INTEGER}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+  </select>
+  <select id="selectDoctorFansPage" parameterType="java.util.Map" resultType="java.util.Map">
+    select uat.id as fansId, uat.realName as fansRealName, uat.sex as fansSex, uat.userType as fansUserType,
+    uat.headImg as fansHeadImg, if(da.id is null, 0, 1) relationType
+    from acc_userAttention ua
+    left join acc_doctorAttention da on ua.userId = da.userId and ua.attentionId = da.doctorId
+    inner join acc_userAccount uat on ua.userId = uat.id
+    where ua.type = 0 and ua.attentionId = #{attentionId}
+    order by ua.createTime desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectAttentionsPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_userAttention
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="type">
+      and type = #{type}
+    </if>
+    order by createTime desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

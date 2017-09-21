@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikDoctorSickMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikDoctorSick">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="questionOrderId" jdbcType="INTEGER" property="questionOrderId" />
+    <result column="groupId" jdbcType="INTEGER" property="groupId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctorId, userId, questionOrderId, groupId, remark, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_doctorSick
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_doctorSick
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikDoctorSick">
+    insert into aik_doctorSick (id, doctorId, userId, 
+      questionOrderId, groupId, remark, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{questionOrderId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikDoctorSick">
+    insert into aik_doctorSick
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="questionOrderId != null">
+        questionOrderId,
+      </if>
+      <if test="groupId != null">
+        groupId,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="questionOrderId != null">
+        #{questionOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikDoctorSick">
+    update aik_doctorSick
+    <set>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="questionOrderId != null">
+        questionOrderId = #{questionOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        groupId = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikDoctorSick">
+    update aik_doctorSick
+    set doctorId = #{doctorId,jdbcType=INTEGER},
+      userId = #{userId,jdbcType=INTEGER},
+      questionOrderId = #{questionOrderId,jdbcType=INTEGER},
+      groupId = #{groupId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex,
+    ad.id as sickId, qo.id as questionOrderId
+    from aik_doctorSick ad
+    inner join acc_userAccount ua on ad.userId = ua.id
+    inner join aik_questionOrder qo on ad.doctorId = qo.doctorId
+    and ad.userId = qo.userId and qo.type = 0 and qo.status in(2, 3, 4, 5)
+    where 1=1
+    <if test="doctorId != null">
+      and ad.doctorId = #{doctorId}
+    </if>
+    <if test="groupId != null and groupId != -1">
+      and ad.groupId = #{groupId}
+    </if>
+    <if test="remark != null and remark != ''">
+      and ad.remark = #{remark}
+    </if>
+    order by qo.id desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectSickDetailBySickId" parameterType="int" resultType="java.util.Map">
+    select ds.userId, ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex,
+    ua.userType as sickUserType, ds.remark
+    from aik_doctorSick ds
+    inner join acc_userAccount ua on ds.userId = ua.id
+    where 1=1 and ds.id = #{sickId}
+  </select>
+</mapper>

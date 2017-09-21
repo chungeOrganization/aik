@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccDoctorDealDetailMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccDoctorDealDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="inAmount" jdbcType="DECIMAL" property="inAmount" />
+    <result column="payAmount" jdbcType="DECIMAL" property="payAmount" />
+    <result column="dealType" jdbcType="TINYINT" property="dealType" />
+    <result column="decription" jdbcType="VARCHAR" property="decription" />
+    <result column="relationId" jdbcType="INTEGER" property="relationId" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctorId, userId, inAmount, payAmount, dealType, decription, relationId, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_doctorDealDetail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_doctorDealDetail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccDoctorDealDetail">
+    insert into acc_doctorDealDetail (id, doctorId, userId, 
+      inAmount, payAmount, dealType, 
+      decription, relationId, createTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{inAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{dealType,jdbcType=TINYINT}, 
+      #{decription,jdbcType=VARCHAR}, #{relationId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorDealDetail">
+    insert into acc_doctorDealDetail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="inAmount != null">
+        inAmount,
+      </if>
+      <if test="payAmount != null">
+        payAmount,
+      </if>
+      <if test="dealType != null">
+        dealType,
+      </if>
+      <if test="decription != null">
+        decription,
+      </if>
+      <if test="relationId != null">
+        relationId,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="inAmount != null">
+        #{inAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null">
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dealType != null">
+        #{dealType,jdbcType=TINYINT},
+      </if>
+      <if test="decription != null">
+        #{decription,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccDoctorDealDetail">
+    update acc_doctorDealDetail
+    <set>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="inAmount != null">
+        inAmount = #{inAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null">
+        payAmount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dealType != null">
+        dealType = #{dealType,jdbcType=TINYINT},
+      </if>
+      <if test="decription != null">
+        decription = #{decription,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null">
+        relationId = #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccDoctorDealDetail">
+    update acc_doctorDealDetail
+    set doctorId = #{doctorId,jdbcType=INTEGER},
+      userId = #{userId,jdbcType=INTEGER},
+      inAmount = #{inAmount,jdbcType=DECIMAL},
+      payAmount = #{payAmount,jdbcType=DECIMAL},
+      dealType = #{dealType,jdbcType=TINYINT},
+      decription = #{decription,jdbcType=VARCHAR},
+      relationId = #{relationId,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByDoctorId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_doctorDealDetail
+    where doctorId = #{doctorId}
+  </select>
+  <select id="selectCountBySelective" parameterType="com.aik.model.AccDoctorDealDetail" resultType="int">
+    select count(*)
+    from acc_doctorDealDetail
+    where 1=1
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="dealType != null">
+      and dealType = #{dealType,jdbcType=TINYINT}
+    </if>
+    <if test="relationId != null">
+      and relationId = #{relationId,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectSumAmountByParams" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+    select ifnull(sum(inAmount - payAmount), 0)
+    from acc_doctorDealDetail
+    where 1=1
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="dealType != null">
+      and dealType = #{dealType,jdbcType=TINYINT}
+    </if>
+    <if test="yearMonth != null and yearMonth != ''">
+      and locate(#{yearMonth}, createTime) > 0
+    </if>
+  </select>
+  <select id="selectDetailsByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.headImg as userHeadImg, dd.decription, dd.createTime, (inAmount - payAmount) as amount
+    from acc_doctorDealDetail dd
+    inner join acc_userAccount ua
+    where 1=1
+    <if test="doctorId != null">
+      and dd.doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="dealType != null">
+      and dd.dealType = #{dealType,jdbcType=TINYINT}
+    </if>
+    <if test="yearMonth != null and yearMonth != ''">
+      and locate(#{yearMonth}, dd.createTime) > 0
+    </if>
+    order by dd.createTime desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

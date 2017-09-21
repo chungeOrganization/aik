@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikHrRoutineBloodMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikHrRoutineBlood">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="hrId" jdbcType="INTEGER" property="hrId" />
+    <result column="hb" jdbcType="DECIMAL" property="hb" />
+    <result column="rbc" jdbcType="DECIMAL" property="rbc" />
+    <result column="wbc" jdbcType="DECIMAL" property="wbc" />
+    <result column="plt" jdbcType="DECIMAL" property="plt" />
+    <result column="ret" jdbcType="DECIMAL" property="ret" />
+    <result column="bn" jdbcType="DECIMAL" property="bn" />
+    <result column="sn" jdbcType="DECIMAL" property="sn" />
+    <result column="eos" jdbcType="DECIMAL" property="eos" />
+    <result column="baso" jdbcType="DECIMAL" property="baso" />
+    <result column="lym" jdbcType="DECIMAL" property="lym" />
+    <result column="mnc" jdbcType="DECIMAL" property="mnc" />
+    <result column="recordDate" jdbcType="TIMESTAMP" property="recordDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, hrId, hb, rbc, wbc, plt, ret, bn, sn, eos, baso, lym, mnc, recordDate, 
+    createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_hrRoutineBlood
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_hrRoutineBlood
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikHrRoutineBlood">
+    insert into aik_hrRoutineBlood (id, userId, hrId, 
+      hb, rbc, wbc, plt, 
+      ret, bn, sn, eos, 
+      baso, lym, mnc, recordDate, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{hrId,jdbcType=INTEGER}, 
+      #{hb,jdbcType=DECIMAL}, #{rbc,jdbcType=DECIMAL}, #{wbc,jdbcType=DECIMAL}, #{plt,jdbcType=DECIMAL}, 
+      #{ret,jdbcType=DECIMAL}, #{bn,jdbcType=DECIMAL}, #{sn,jdbcType=DECIMAL}, #{eos,jdbcType=DECIMAL}, 
+      #{baso,jdbcType=DECIMAL}, #{lym,jdbcType=DECIMAL}, #{mnc,jdbcType=DECIMAL}, #{recordDate,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikHrRoutineBlood">
+    insert into aik_hrRoutineBlood
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="hrId != null">
+        hrId,
+      </if>
+      <if test="hb != null">
+        hb,
+      </if>
+      <if test="rbc != null">
+        rbc,
+      </if>
+      <if test="wbc != null">
+        wbc,
+      </if>
+      <if test="plt != null">
+        plt,
+      </if>
+      <if test="ret != null">
+        ret,
+      </if>
+      <if test="bn != null">
+        bn,
+      </if>
+      <if test="sn != null">
+        sn,
+      </if>
+      <if test="eos != null">
+        eos,
+      </if>
+      <if test="baso != null">
+        baso,
+      </if>
+      <if test="lym != null">
+        lym,
+      </if>
+      <if test="mnc != null">
+        mnc,
+      </if>
+      <if test="recordDate != null">
+        recordDate,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hrId != null">
+        #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="hb != null">
+        #{hb,jdbcType=DECIMAL},
+      </if>
+      <if test="rbc != null">
+        #{rbc,jdbcType=DECIMAL},
+      </if>
+      <if test="wbc != null">
+        #{wbc,jdbcType=DECIMAL},
+      </if>
+      <if test="plt != null">
+        #{plt,jdbcType=DECIMAL},
+      </if>
+      <if test="ret != null">
+        #{ret,jdbcType=DECIMAL},
+      </if>
+      <if test="bn != null">
+        #{bn,jdbcType=DECIMAL},
+      </if>
+      <if test="sn != null">
+        #{sn,jdbcType=DECIMAL},
+      </if>
+      <if test="eos != null">
+        #{eos,jdbcType=DECIMAL},
+      </if>
+      <if test="baso != null">
+        #{baso,jdbcType=DECIMAL},
+      </if>
+      <if test="lym != null">
+        #{lym,jdbcType=DECIMAL},
+      </if>
+      <if test="mnc != null">
+        #{mnc,jdbcType=DECIMAL},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikHrRoutineBlood">
+    update aik_hrRoutineBlood
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hrId != null">
+        hrId = #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="hb != null">
+        hb = #{hb,jdbcType=DECIMAL},
+      </if>
+      <if test="rbc != null">
+        rbc = #{rbc,jdbcType=DECIMAL},
+      </if>
+      <if test="wbc != null">
+        wbc = #{wbc,jdbcType=DECIMAL},
+      </if>
+      <if test="plt != null">
+        plt = #{plt,jdbcType=DECIMAL},
+      </if>
+      <if test="ret != null">
+        ret = #{ret,jdbcType=DECIMAL},
+      </if>
+      <if test="bn != null">
+        bn = #{bn,jdbcType=DECIMAL},
+      </if>
+      <if test="sn != null">
+        sn = #{sn,jdbcType=DECIMAL},
+      </if>
+      <if test="eos != null">
+        eos = #{eos,jdbcType=DECIMAL},
+      </if>
+      <if test="baso != null">
+        baso = #{baso,jdbcType=DECIMAL},
+      </if>
+      <if test="lym != null">
+        lym = #{lym,jdbcType=DECIMAL},
+      </if>
+      <if test="mnc != null">
+        mnc = #{mnc,jdbcType=DECIMAL},
+      </if>
+      <if test="recordDate != null">
+        recordDate = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikHrRoutineBlood">
+    update aik_hrRoutineBlood
+    set userId = #{userId,jdbcType=INTEGER},
+      hrId = #{hrId,jdbcType=INTEGER},
+      hb = #{hb,jdbcType=DECIMAL},
+      rbc = #{rbc,jdbcType=DECIMAL},
+      wbc = #{wbc,jdbcType=DECIMAL},
+      plt = #{plt,jdbcType=DECIMAL},
+      ret = #{ret,jdbcType=DECIMAL},
+      bn = #{bn,jdbcType=DECIMAL},
+      sn = #{sn,jdbcType=DECIMAL},
+      eos = #{eos,jdbcType=DECIMAL},
+      baso = #{baso,jdbcType=DECIMAL},
+      lym = #{lym,jdbcType=DECIMAL},
+      mnc = #{mnc,jdbcType=DECIMAL},
+      recordDate = #{recordDate,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByHRid" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_hrRoutineBlood
+    where hrId = #{hrId}
+  </select>
+</mapper>

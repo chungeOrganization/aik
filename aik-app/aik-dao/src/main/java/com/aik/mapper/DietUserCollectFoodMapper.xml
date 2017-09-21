@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietUserCollectFoodMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietUserCollectFood">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, foodId, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_userCollectFood
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_userCollectFood
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietUserCollectFood">
+    insert into diet_userCollectFood (id, userId, foodId, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{foodId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietUserCollectFood">
+    insert into diet_userCollectFood
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="foodId != null">
+        foodId,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietUserCollectFood">
+    update diet_userCollectFood
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        foodId = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietUserCollectFood">
+    update diet_userCollectFood
+    set userId = #{userId,jdbcType=INTEGER},
+      foodId = #{foodId,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectUserCollectFoods" parameterType="int" resultType="java.util.Map">
+    select uc.id, uc.foodId, df.image, df.name
+    from diet_userCollectFood uc
+    inner join diet_food df on uc.foodId = df.id
+    where uc.userId = #{userId}
+  </select>
+  <select id="selectCountBySelective" parameterType="com.aik.model.DietUserCollectFood" resultType="int">
+    select count(*)
+    from diet_userCollectFood
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="foodId != null">
+      and foodId = #{foodId,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectBySelective" parameterType="com.aik.model.DietUserCollectFood" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from diet_userCollectFood
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="foodId != null">
+      and foodId = #{foodId,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

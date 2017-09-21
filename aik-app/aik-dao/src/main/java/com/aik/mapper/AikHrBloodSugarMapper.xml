@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikHrBloodSugarMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikHrBloodSugar">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="hrId" jdbcType="INTEGER" property="hrId" />
+    <result column="bloodSugar" jdbcType="DECIMAL" property="bloodSugar" />
+    <result column="tch" jdbcType="DECIMAL" property="tch" />
+    <result column="tg" jdbcType="DECIMAL" property="tg" />
+    <result column="hdlC" jdbcType="DECIMAL" property="hdlC" />
+    <result column="ldlC" jdbcType="DECIMAL" property="ldlC" />
+    <result column="cr" jdbcType="DECIMAL" property="cr" />
+    <result column="bun" jdbcType="DECIMAL" property="bun" />
+    <result column="recordDate" jdbcType="TIMESTAMP" property="recordDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, hrId, bloodSugar, tch, tg, hdlC, ldlC, cr, bun, recordDate, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_hrBloodSugar
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_hrBloodSugar
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikHrBloodSugar">
+    insert into aik_hrBloodSugar (id, userId, hrId, 
+      bloodSugar, tch, tg, 
+      hdlC, ldlC, cr, bun, 
+      recordDate, createDate)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{hrId,jdbcType=INTEGER}, 
+      #{bloodSugar,jdbcType=DECIMAL}, #{tch,jdbcType=DECIMAL}, #{tg,jdbcType=DECIMAL}, 
+      #{hdlC,jdbcType=DECIMAL}, #{ldlC,jdbcType=DECIMAL}, #{cr,jdbcType=DECIMAL}, #{bun,jdbcType=DECIMAL}, 
+      #{recordDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikHrBloodSugar">
+    insert into aik_hrBloodSugar
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="hrId != null">
+        hrId,
+      </if>
+      <if test="bloodSugar != null">
+        bloodSugar,
+      </if>
+      <if test="tch != null">
+        tch,
+      </if>
+      <if test="tg != null">
+        tg,
+      </if>
+      <if test="hdlC != null">
+        hdlC,
+      </if>
+      <if test="ldlC != null">
+        ldlC,
+      </if>
+      <if test="cr != null">
+        cr,
+      </if>
+      <if test="bun != null">
+        bun,
+      </if>
+      <if test="recordDate != null">
+        recordDate,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hrId != null">
+        #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="bloodSugar != null">
+        #{bloodSugar,jdbcType=DECIMAL},
+      </if>
+      <if test="tch != null">
+        #{tch,jdbcType=DECIMAL},
+      </if>
+      <if test="tg != null">
+        #{tg,jdbcType=DECIMAL},
+      </if>
+      <if test="hdlC != null">
+        #{hdlC,jdbcType=DECIMAL},
+      </if>
+      <if test="ldlC != null">
+        #{ldlC,jdbcType=DECIMAL},
+      </if>
+      <if test="cr != null">
+        #{cr,jdbcType=DECIMAL},
+      </if>
+      <if test="bun != null">
+        #{bun,jdbcType=DECIMAL},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikHrBloodSugar">
+    update aik_hrBloodSugar
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hrId != null">
+        hrId = #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="bloodSugar != null">
+        bloodSugar = #{bloodSugar,jdbcType=DECIMAL},
+      </if>
+      <if test="tch != null">
+        tch = #{tch,jdbcType=DECIMAL},
+      </if>
+      <if test="tg != null">
+        tg = #{tg,jdbcType=DECIMAL},
+      </if>
+      <if test="hdlC != null">
+        hdlC = #{hdlC,jdbcType=DECIMAL},
+      </if>
+      <if test="ldlC != null">
+        ldlC = #{ldlC,jdbcType=DECIMAL},
+      </if>
+      <if test="cr != null">
+        cr = #{cr,jdbcType=DECIMAL},
+      </if>
+      <if test="bun != null">
+        bun = #{bun,jdbcType=DECIMAL},
+      </if>
+      <if test="recordDate != null">
+        recordDate = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikHrBloodSugar">
+    update aik_hrBloodSugar
+    set userId = #{userId,jdbcType=INTEGER},
+      hrId = #{hrId,jdbcType=INTEGER},
+      bloodSugar = #{bloodSugar,jdbcType=DECIMAL},
+      tch = #{tch,jdbcType=DECIMAL},
+      tg = #{tg,jdbcType=DECIMAL},
+      hdlC = #{hdlC,jdbcType=DECIMAL},
+      ldlC = #{ldlC,jdbcType=DECIMAL},
+      cr = #{cr,jdbcType=DECIMAL},
+      bun = #{bun,jdbcType=DECIMAL},
+      recordDate = #{recordDate,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByHRid" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_hrBloodSugar
+    where hrId = #{hrId}
+  </select>
+</mapper>

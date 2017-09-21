@@ -1,0 +1,3 @@
+API使用RESTfull风格框架Jersey
+Jersey github url: https://github.com/jersey/jersey
+Jersey gitbook 中文文档 url: https://www.gitbook.com/book/waylau/jersey-2-user-guide/details

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikDoctorTipsMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikDoctorTips">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="tipsType" jdbcType="TINYINT" property="tipsType" />
+    <result column="relationId" jdbcType="INTEGER" property="relationId" />
+    <result column="tipsMessage" jdbcType="VARCHAR" property="tipsMessage" />
+    <result column="isCheck" jdbcType="TINYINT" property="isCheck" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctorId, tipsType, relationId, tipsMessage, isCheck, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_doctorTips
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_doctorTips
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikDoctorTips">
+    insert into aik_doctorTips (id, doctorId, tipsType, 
+      relationId, tipsMessage, isCheck, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{tipsType,jdbcType=TINYINT}, 
+      #{relationId,jdbcType=INTEGER}, #{tipsMessage,jdbcType=VARCHAR}, #{isCheck,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikDoctorTips">
+    insert into aik_doctorTips
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="tipsType != null">
+        tipsType,
+      </if>
+      <if test="relationId != null">
+        relationId,
+      </if>
+      <if test="tipsMessage != null">
+        tipsMessage,
+      </if>
+      <if test="isCheck != null">
+        isCheck,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="tipsType != null">
+        #{tipsType,jdbcType=TINYINT},
+      </if>
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="tipsMessage != null">
+        #{tipsMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheck != null">
+        #{isCheck,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikDoctorTips">
+    update aik_doctorTips
+    <set>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="tipsType != null">
+        tipsType = #{tipsType,jdbcType=TINYINT},
+      </if>
+      <if test="relationId != null">
+        relationId = #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="tipsMessage != null">
+        tipsMessage = #{tipsMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheck != null">
+        isCheck = #{isCheck,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikDoctorTips">
+    update aik_doctorTips
+    set doctorId = #{doctorId,jdbcType=INTEGER},
+      tipsType = #{tipsType,jdbcType=TINYINT},
+      relationId = #{relationId,jdbcType=INTEGER},
+      tipsMessage = #{tipsMessage,jdbcType=VARCHAR},
+      isCheck = #{isCheck,jdbcType=TINYINT},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySelective" parameterType="com.aik.model.AikDoctorTips" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_doctorTips
+    where 1=1
+    <if test="doctorId != null">
+      and doctorId = #{doctorId,jdbcType=INTEGER}
+    </if>
+    <if test="tipsType != null">
+      and tipsType = #{tipsType,jdbcType=TINYINT}
+    </if>
+    <if test="relationId != null">
+      and relationId = #{relationId,jdbcType=INTEGER}
+    </if>
+    <if test="isCheck != null">
+      and isCheck = #{isCheck,jdbcType=TINYINT}
+    </if>
+    order by createDate desc
+  </select>
+  <select id="selectQuestionTipsByDoctorId" parameterType="int" resultType="java.util.Map">
+    select ua.headImg, ua.realName as name, if(ua.sex = 0, '男', '女') as sex, qo.description as message, dt.createDate,
+    1 as redNum, ds.id as sickId, qo.id as orderId, dt.id as tipsId
+    from aik_doctorTips dt
+    inner join aik_questionOrder qo on dt.relationId = qo.id and dt.doctorId = qo.doctorId
+    inner join acc_userAccount ua on qo.userId = ua.id
+    inner join aik_doctorSick ds on qo.userId = ds.userId and qo.doctorId = ds.doctorId
+    where dt.doctorId = #{doctorId} and dt.tipsType = 1 and dt.isCheck = 0 order by dt.createDate desc
+  </select>
+  <select id="selectHomeDoctorTips" parameterType="int" resultType="java.util.Map">
+    select id, tipsType, tipsMessage, createDate
+    from aik_doctorTips
+    where doctorId = #{doctorId} and isCheck = 0 order by id desc limit 4
+  </select>
+  <select id="selectCountByParams" parameterType="java.util.Map" resultType="int">
+    select count(*)
+    from aik_doctorTips
+    where 1=1
+    <if test="doctorId != null">
+      and doctorId = #{doctorId}
+    </if>
+    <if test="isCheck != null">
+      and isCheck = #{isCheck}
+    </if>
+  </select>
+</mapper>

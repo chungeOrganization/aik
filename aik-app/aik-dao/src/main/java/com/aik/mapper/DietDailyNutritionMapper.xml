@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietDailyNutritionMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietDailyNutrition">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="protein" jdbcType="DECIMAL" property="protein" />
+    <result column="lipid" jdbcType="DECIMAL" property="lipid" />
+    <result column="carbs" jdbcType="DECIMAL" property="carbs" />
+    <result column="vitamin" jdbcType="DECIMAL" property="vitamin" />
+    <result column="minerals" jdbcType="DECIMAL" property="minerals" />
+    <result column="water" jdbcType="DECIMAL" property="water" />
+    <result column="dietaryFiber" jdbcType="DECIMAL" property="dietaryFiber" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, recordDate, protein, lipid, carbs, vitamin, minerals, water, dietaryFiber, 
+    createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_dailyNutrition
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_dailyNutrition
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietDailyNutrition">
+    insert into diet_dailyNutrition (id, userId, recordDate, 
+      protein, lipid, carbs, 
+      vitamin, minerals, water, 
+      dietaryFiber, createDate, updateDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{recordDate,jdbcType=DATE}, 
+      #{protein,jdbcType=DECIMAL}, #{lipid,jdbcType=DECIMAL}, #{carbs,jdbcType=DECIMAL}, 
+      #{vitamin,jdbcType=DECIMAL}, #{minerals,jdbcType=DECIMAL}, #{water,jdbcType=DECIMAL}, 
+      #{dietaryFiber,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietDailyNutrition">
+    insert into diet_dailyNutrition
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="recordDate != null">
+        recordDate,
+      </if>
+      <if test="protein != null">
+        protein,
+      </if>
+      <if test="lipid != null">
+        lipid,
+      </if>
+      <if test="carbs != null">
+        carbs,
+      </if>
+      <if test="vitamin != null">
+        vitamin,
+      </if>
+      <if test="minerals != null">
+        minerals,
+      </if>
+      <if test="water != null">
+        water,
+      </if>
+      <if test="dietaryFiber != null">
+        dietaryFiber,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=DATE},
+      </if>
+      <if test="protein != null">
+        #{protein,jdbcType=DECIMAL},
+      </if>
+      <if test="lipid != null">
+        #{lipid,jdbcType=DECIMAL},
+      </if>
+      <if test="carbs != null">
+        #{carbs,jdbcType=DECIMAL},
+      </if>
+      <if test="vitamin != null">
+        #{vitamin,jdbcType=DECIMAL},
+      </if>
+      <if test="minerals != null">
+        #{minerals,jdbcType=DECIMAL},
+      </if>
+      <if test="water != null">
+        #{water,jdbcType=DECIMAL},
+      </if>
+      <if test="dietaryFiber != null">
+        #{dietaryFiber,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietDailyNutrition">
+    update diet_dailyNutrition
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null">
+        recordDate = #{recordDate,jdbcType=DATE},
+      </if>
+      <if test="protein != null">
+        protein = #{protein,jdbcType=DECIMAL},
+      </if>
+      <if test="lipid != null">
+        lipid = #{lipid,jdbcType=DECIMAL},
+      </if>
+      <if test="carbs != null">
+        carbs = #{carbs,jdbcType=DECIMAL},
+      </if>
+      <if test="vitamin != null">
+        vitamin = #{vitamin,jdbcType=DECIMAL},
+      </if>
+      <if test="minerals != null">
+        minerals = #{minerals,jdbcType=DECIMAL},
+      </if>
+      <if test="water != null">
+        water = #{water,jdbcType=DECIMAL},
+      </if>
+      <if test="dietaryFiber != null">
+        dietaryFiber = #{dietaryFiber,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietDailyNutrition">
+    update diet_dailyNutrition
+    set userId = #{userId,jdbcType=INTEGER},
+      recordDate = #{recordDate,jdbcType=DATE},
+      protein = #{protein,jdbcType=DECIMAL},
+      lipid = #{lipid,jdbcType=DECIMAL},
+      carbs = #{carbs,jdbcType=DECIMAL},
+      vitamin = #{vitamin,jdbcType=DECIMAL},
+      minerals = #{minerals,jdbcType=DECIMAL},
+      water = #{water,jdbcType=DECIMAL},
+      dietaryFiber = #{dietaryFiber,jdbcType=DECIMAL},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectUserNutrition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from diet_dailyNutrition
+    where userId = #{userId} and DATE(recordDate) = DATE(#{recordDate})
+  </select>
+</mapper>

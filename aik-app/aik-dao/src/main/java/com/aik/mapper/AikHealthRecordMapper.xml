@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikHealthRecordMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikHealthRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="height" jdbcType="DECIMAL" property="height" />
+    <result column="weight" jdbcType="DECIMAL" property="weight" />
+    <result column="medicalRecord" jdbcType="VARCHAR" property="medicalRecord" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="hwRecordDate" jdbcType="TIMESTAMP" property="hwRecordDate" />
+    <result column="mrRecordDate" jdbcType="TIMESTAMP" property="mrRecordDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, height, weight, medicalRecord, remark, hwRecordDate, mrRecordDate, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_healthRecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_healthRecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikHealthRecord">
+    insert into aik_healthRecord (id, userId, height, 
+      weight, medicalRecord, remark, 
+      hwRecordDate, mrRecordDate, createDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{height,jdbcType=DECIMAL}, 
+      #{weight,jdbcType=DECIMAL}, #{medicalRecord,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{hwRecordDate,jdbcType=TIMESTAMP}, #{mrRecordDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikHealthRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into aik_healthRecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="medicalRecord != null">
+        medicalRecord,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="hwRecordDate != null">
+        hwRecordDate,
+      </if>
+      <if test="mrRecordDate != null">
+        mrRecordDate,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="medicalRecord != null">
+        #{medicalRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hwRecordDate != null">
+        #{hwRecordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mrRecordDate != null">
+        #{mrRecordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikHealthRecord">
+    update aik_healthRecord
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="height != null">
+        height = #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="medicalRecord != null">
+        medicalRecord = #{medicalRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hwRecordDate != null">
+        hwRecordDate = #{hwRecordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mrRecordDate != null">
+        mrRecordDate = #{mrRecordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikHealthRecord">
+    update aik_healthRecord
+    set userId = #{userId,jdbcType=INTEGER},
+      height = #{height,jdbcType=DECIMAL},
+      weight = #{weight,jdbcType=DECIMAL},
+      medicalRecord = #{medicalRecord,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      hwRecordDate = #{hwRecordDate,jdbcType=TIMESTAMP},
+      mrRecordDate = #{mrRecordDate,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectLastRecordByUserId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_healthRecord
+    where userId = #{userId}
+    order by id desc limit 1
+  </select>
+  <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+    select id, remark, createDate
+    from aik_healthRecord
+    where 1=1
+    <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    order by createDate desc
+    limit ${(page-1)*size}, #{size}
+  </select>
+</mapper>

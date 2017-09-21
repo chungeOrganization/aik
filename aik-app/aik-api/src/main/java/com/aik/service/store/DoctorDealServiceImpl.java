@@ -1,0 +1,65 @@
+package com.aik.service.store;
+
+import com.aik.dao.AccDoctorDealDetailMapper;
+import com.aik.enums.DoctorDealTypeEnum;
+import com.aik.exception.ApiServiceException;
+import com.aik.model.AccDoctorDealDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Description:
+ * Created by as on 2017/8/12.
+ */
+@Service
+public class DoctorDealServiceImpl implements DoctorDealService{
+
+    private static final Logger logger = LoggerFactory.getLogger(DoctorDealServiceImpl.class);
+
+    private AccDoctorDealDetailMapper accDoctorDealDetailMapper;
+
+    @Autowired
+    public void setAccDoctorDealDetailMapper(AccDoctorDealDetailMapper accDoctorDealDetailMapper) {
+        this.accDoctorDealDetailMapper = accDoctorDealDetailMapper;
+    }
+
+    @Override
+    public Integer getSellDealCount(Integer doctorId) throws ApiServiceException {
+        byte dealType = DoctorDealTypeEnum.SELL_COMMISION.getCode();
+        AccDoctorDealDetail searchAD = new AccDoctorDealDetail();
+        searchAD.setDoctorId(doctorId);
+        searchAD.setDealType(dealType);
+
+        return accDoctorDealDetailMapper.selectCountBySelective(searchAD);
+    }
+
+    @Override
+    public Map<String, Object> getSellDealDetails(Map<String, Object> params) throws ApiServiceException {
+        Map<String, Object> rsData = new HashMap<>();
+        byte dealType = DoctorDealTypeEnum.SELL_COMMISION.getCode();
+        params.put("dealType", dealType);
+        BigDecimal sumAmount = accDoctorDealDetailMapper.selectSumAmountByParams(params);
+        rsData.put("sumIncome", sumAmount);
+        rsData.put("orderList", accDoctorDealDetailMapper.selectDetailsByParams(params));
+        return rsData;
+    }
+
+    @Override
+    public Map<String, Object> getDealDetails(Map<String, Object> params) throws ApiServiceException {
+        if (null != params.get("dealType") && "-1".equals(params.get("dealType").toString())) {
+            params.remove("dealType");
+        }
+
+        Map<String, Object> rsData = new HashMap<>();
+        BigDecimal sumAmount = accDoctorDealDetailMapper.selectSumAmountByParams(params);
+        rsData.put("sumIncome", sumAmount);
+        rsData.put("orderList", accDoctorDealDetailMapper.selectDetailsByParams(params));
+        return rsData;
+    }
+}

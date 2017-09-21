@@ -1,0 +1,38 @@
+package com.aik.dao;
+
+import com.aik.model.AikQuestionOrder;
+
+import java.util.List;
+import java.util.Map;
+
+public interface AikQuestionOrderMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(AikQuestionOrder record);
+
+    int insertSelective(AikQuestionOrder record);
+
+    AikQuestionOrder selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(AikQuestionOrder record);
+
+    int updateByPrimaryKey(AikQuestionOrder record);
+
+    AikQuestionOrder selectByPrimaryKeyForUpdate(Integer id);
+
+    Map<String, Object> selectProcessingDetailById(Integer id);
+
+    int selectCountByParams(Map<String, Object> params);
+
+    AikQuestionOrder selectHomeOpenQuestion(Integer doctorId);
+
+    List<Map<String, Object>> selectDoctorDiagnosedOrders(Map<String, Object> params);
+
+    List<Map<String, Object>> selectDoctorInHandleOrders(Map<String, Object> params);
+
+    List<Map<String, Object>> selectDoctorMyOrders(Map<String, Object> params);
+
+    List<Map<String, Object>> selectOpenQuestionOrders(Map<String, Object> params);
+
+    List<AikQuestionOrder> selectUserOrders(Map<String, Object> params);
+}
