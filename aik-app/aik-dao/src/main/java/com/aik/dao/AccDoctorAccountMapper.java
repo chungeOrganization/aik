@@ -28,4 +28,5 @@ public interface AccDoctorAccountMapper {
     AccDoctorAccount selectByUserName(@Param("userName") String userName);
 
     List<AccDoctorAccount> selectByParams(Map<String, Object> params);
+    
 }
