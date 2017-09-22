@@ -1,5 +1,6 @@
 package com.aik.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,14 +9,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.*;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -44,6 +49,41 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeader);
+
+        // 打印header
+        String contentType = "";
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while(headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            logger.debug("request header: " + name + "[" + request.getHeader(name) + "]" );
+            if (name.equals("content-type")) {
+                contentType = request.getHeader(name);
+            }
+        }
+
+        // 获取multipart/form-data 请求正文
+//        if (contentType.contains("multipart/form-data")) {
+//            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+//            MultipartHttpServletRequest multiRequest = multipartResolver.resolveMultipart(request);
+//            multipartResolver.cleanupMultipart(multiRequest);
+//            Enumeration<String> paramNames = multiRequest.getParameterNames();
+//            while (paramNames.hasMoreElements()) {
+//                String name = paramNames.nextElement();
+//                logger.debug("request param: " + name + "[" + multiRequest.getParameter(name) + "]" );
+//            }
+//
+//            MultiValueMap<String, MultipartFile> fileMap = multiRequest.getMultiFileMap();
+//            Set<String> set = fileMap.keySet();
+//            Iterator<String> it = set.iterator();
+//            while(it.hasNext()) {
+//                String name = it.next();
+//                List<MultipartFile> files = fileMap.get(name);
+//                logger.debug("request file name: " + name);
+//                for (MultipartFile multipartFile : files) {
+//                    logger.debug("request file: size[" + multipartFile.getSize() + "] name[" + multipartFile.getName() + "]");
+//                }
+//            }
+//        }
 
         logger.debug("checking authentication authHeader: " + authHeader);
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
