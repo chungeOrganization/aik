@@ -265,4 +265,84 @@
     from acc_userAccount
     where userName = #{userName}
   </select>
+  
+  <select id="findAll"  parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="mobileNo != null">
+      and mobileNo = #{mobileNo,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userType != null">
+      and userType = #{userType,jdbcType=TINYINT}
+    </if>
+    <if test="realName != null">
+      and realName = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex,jdbcType=TINYINT}
+    </if>
+    <if test="areaProvince != null">
+      and areaProvince = #{areaProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="areaCity != null">
+      and areaCity = #{areaCity,jdbcType=VARCHAR}
+    </if>
+    <if test="birthday != null">
+      and birthday = #{birthday,jdbcType=DATE}
+    </if>
+    <if test="isElseIllness != null">
+      and isElseIllness = #{isElseIllness,jdbcType=TINYINT}
+    </if>
+    <if test="devType != null">
+      and devType = #{devType,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="findByPage" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+     where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="mobileNo != null">
+      and mobileNo = #{mobileNo,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userType != null">
+      and userType = #{userType,jdbcType=TINYINT}
+    </if>
+    <if test="realName != null">
+      and realName = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex,jdbcType=TINYINT}
+    </if>
+    <if test="areaProvince != null">
+      and areaProvince = #{areaProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="areaCity != null">
+      and areaCity = #{areaCity,jdbcType=VARCHAR}
+    </if>
+    <if test="birthday != null">
+      and birthday = #{birthday,jdbcType=DATE}
+    </if>
+    <if test="isElseIllness != null">
+      and isElseIllness = #{isElseIllness,jdbcType=TINYINT}
+    </if>
+    <if test="devType != null">
+      and devType = #{devType,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

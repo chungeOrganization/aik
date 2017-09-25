@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!--> <html lang="zh-cn" class="no-js"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+	<meta charset="utf-8" />
+	<title>癌康之家后台</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="" name="description"/>
+<meta content="" name="author"/>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<!-- <link rel="shortcut icon" th:href="@{/static/stw/images/favicon.png}"/> -->
+<link th:href="@{/static/assets/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/plugins/uniform/css/uniform.default.css}" rel="stylesheet" type="text/css"/>
+
+<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/static/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css}"/>
+<!-- <link rel="stylesheet" type="text/css" href="@{/static/assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.css"/> -->
+<link rel="stylesheet" type="text/css" th:href="@{/static/assets/plugins/bootstrap-datepicker/css/datepicker.css}"/>
+<!-- END PAGE LEVEL PLUGIN STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link th:href="@{/static/assets/css/style-metronic.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/css/style.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/css/style-responsive.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/css/plugins.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/css/pages/tasks.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/static/assets/css/themes/default.css}" rel="stylesheet" type="text/css" id="style_color"/>
+<link th:href="@{/static/assets/css/print.css}" rel="stylesheet" type="text/css" media="print"/>
+<link th:href="@{/static/assets/css/custom.css}" rel="stylesheet" type="text/css"/>
+
+
+<!-- END THEME STYLES -->
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed page-footer-fixed">
+	<!-- BEGIN HEADER -->   
+	<input type="text" id="basePath" name="basePath" value="http://localhost/aik-manager" th:value="${basePath}" />
+	<div class="header navbar navbar-inverse navbar-fixed-top">
+		<!-- BEGIN TOP NAVIGATION BAR -->
+		<div class="header-inner">
+			<!-- BEGIN LOGO -->  
+			<a class="navbar-brand" th:href="@{/index}">
+				<!-- <img src="@{/static/assets/img/logo.png" alt="logo" class="img-responsive" /> -->
+				癌康之家后台
+			</a>
+			<!-- END LOGO -->
+			<!-- BEGIN RESPONSIVE MENU TOGGLER --> 
+			<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<img th:src="@{/static/assets/img/menu-toggler.png}" alt="" />
+			</a> 
+			<!-- END RESPONSIVE MENU TOGGLER -->
+			<!-- BEGIN TOP NAVIGATION MENU -->
+			<ul class="nav navbar-nav pull-right">
+				<!-- BEGIN USER LOGIN DROPDOWN -->
+				<li class="dropdown user">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<!-- #set($jpgurl=$!user.photoId.name+'.jpg') -->
+					<img alt="" style="height: 29px;width: 29px;" th:src="@{/static/assets/img/userPhoto_default.jpg}"/>
+					<span class="username"><!-- $!user.userName --></span>
+					<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="dropdown-menu">
+						<!-- <li><a href="extra_profile.html"><i class="fa fa-user"></i> 个人设置</a></li>
+						<li><a href="page_calendar.html"><i class="fa fa-calendar"></i> 日程管理</a></li>
+						<li><a href="inbox.html"><i class="fa fa-envelope"></i> 邮件接收 <span class="badge badge-danger">3</span></a></li>
+						<li><a href="#"><i class="fa fa-tasks"></i> 我的任务 <span class="badge badge-success">7</span></a></li>
+						<li class="divider"></li> -->
+						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> 全屏</a></li>
+						<li><a th:href="@{/extra_lock}"><i class="fa fa-lock"></i> 锁屏</a></li>
+						<li><a th:href="@{/logout}"><i class="fa fa-key"></i> 退出登录</a></li>
+					</ul>
+				</li>
+				<!-- END USER LOGIN DROPDOWN -->
+			</ul>
+			<!-- END TOP NAVIGATION MENU -->
+		</div>
+		<!-- END TOP NAVIGATION BAR -->
+	</div>
+	<!-- END HEADER -->
+	<div class="clearfix"></div>
+	<!-- BEGIN CONTAINER -->
+	<div class="page-container">
+		<!-- BEGIN SIDEBAR -->
+		<div class="page-sidebar navbar-collapse collapse">
+			<!-- 菜单 -->        
+			<!-- #include file =  menu.html  -->
+			<ul class="page-sidebar-menu" id="admin-menu">
+			<li>
+				<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+				<div class="sidebar-toggler hidden-phone"></div>
+				<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+			</li>
+			<li>
+				<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+				<!-- <form class="sidebar-search" action="extra_search.html" method="POST">
+					<div class="form-container">
+						<div class="input-box">
+							<a href="javascript:;" class="remove"></a>
+							<input type="text" placeholder="Search..."/>
+							<input type="button" class="submit" value=" "/>
+						</div>
+					</div>
+				</form> -->
+				<!-- END RESPONSIVE QUICK SEARCH FORM -->
+			</li>	 
+			<li class="start active user-menu">
+				<a href="javascript:;" class="startHref">
+				<i class="fa fa-home"></i> 
+				<span class="title">常用操作</span>
+				</a>
+				<ul class="sub-menu">
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preUserManage.htm">
+						数据统计管理</a>
+					</li>
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/users/index">
+						用户管理</a>
+					</li>
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/campingBookMg.htm">
+						医生管理</a>
+					</li>
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/ticketManage.htm">
+						模块管理</a>
+					</li>
+				</ul>
+			</li>
+			<li class="user-menu">
+				<a href="javascript:;">
+				<i class="fa fa-cogs"></i> 
+				<span class="title">系统管理</span>
+				<span class="arrow "></span>
+				</a>
+				<ul class="sub-menu">
+					<li >
+						<a href="javascript:;" data-pre="a-menu" id="SiteSet" data-url="/users/index">用户管理</a>
+					</li>
+					<!-- <li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preImgUploadSet.htm">上传设置</a>
+					</li> -->
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preSeoSet.htm" >医生管理</a>
+					</li>
+				</ul>
+			</li>
+			<li class="user-menu">
+				<a href="javascript:;">
+					<i class="fa fa-gift"></i>
+					<span class="title">
+						饮食管理
+					</span>
+					<span class="arrow">
+					</span>
+				</a>
+				<ul class="sub-menu">
+					<li class="tooltips" data-container="body" data-placement="right" data-html="true"  >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/campingAreaSet/preCampingSet.htm">
+							食物库管理
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-pre="a-menu" data-url="camping/campingProductManage.htm">
+							饮食规范管理
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-pre="a-menu" data-url="camping/campingTypeManage.htm">
+							营养指标管理
+						</a>
+					</li>
+					<li class="tooltips" data-container="body" data-placement="right" data-html="true"  >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/campingAreaSet/preAreaSet.htm">
+							饮食计划管理
+						</a>
+					</li>
+					<li class="tooltips" data-container="body" data-placement="right" data-html="true"  >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/campingAreaSet/preAreaSet.htm">
+							体重管理
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="user-menu">
+				<a href="javascript:;">
+				<i class="fa fa-bookmark-o"></i> 
+				<span class="title">商城管理</span>
+				<span class="arrow "></span>
+				</a>
+				<ul class="sub-menu">
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/payment/prePaymentSet.htm">
+							商城管理
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="user-menu">
+				<a href="javascript:;">
+				<i class="fa fa-sitemap"></i> 
+					<span class="title">
+						订单管理
+					</span>
+					<!-- <span class="badge badge-roundless badge-success">
+						new
+					</span> -->
+					<span class="arrow ">
+					</span>
+				</a>
+				<ul class="sub-menu">
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/preReturnMoney.htm">
+						<i class="fa fa-briefcase"></i>
+						退款管理</a>
+					</li>
+					<li>
+						<a href="javascript:;" id="orderMg" data-pre="a-menu" data-url="/admin/order/preOrderSet.htm">
+						<i class="fa fa-briefcase"></i>
+						订单管理</a>
+					</li>
+					<li >
+						<a href="javascript:;" id="bookMg" data-pre="a-menu" data-url="/admin/order/campingBookMg.htm">
+						<i class="fa fa-briefcase"></i>
+						预定管理</a>
+					</li>
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/homeMg.htm">
+						<i class="fa fa-briefcase"></i>
+						房间管理</a>
+					</li>
+				</ul>
+			</li>
+			<li class="user-menu">
+				<a href="javascript:;">
+				<i class="fa fa-table"></i> 
+				<span class="title">平台管理</span>
+				<span class="arrow "></span>
+				</a>
+				<ul class="sub-menu">
+					<li >
+						<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preAdminManage.htm" >基础数据管理</a>
+					</li>
+				</ul>
+			</li>
+			
+		</ul>
+			
+		</div>
+		<!-- END SIDEBAR -->
+		<!-- BEGIN PAGE -->
+		<div class="page-content">
+			<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->               
+			<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							Widget settings form goes here
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn blue">Save changes</button>
+							<button type="button" class="btn default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+			<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+			<!-- BEGIN STYLE CUSTOMIZER -->
+			<div class="theme-panel hidden-xs hidden-sm">
+				<div class="toggler"></div>
+				<div class="toggler-close"></div>
+				<div class="theme-options">
+					<div class="theme-option theme-colors clearfix">
+						<span>界面主题</span>
+						<ul>
+							<li class="color-black current color-default" data-style="default"></li>
+							<li class="color-blue" data-style="blue"></li>
+							<li class="color-brown" data-style="brown"></li>
+							<li class="color-purple" data-style="purple"></li>
+							<li class="color-grey" data-style="grey"></li>
+							<li class="color-white color-light" data-style="light"></li>
+						</ul>
+					</div>
+					<div class="theme-option">
+						<span>Layout</span>
+						<select class="layout-option form-control input-small">
+							<option value="fluid" selected="selected">Fluid</option>
+							<option value="boxed">Boxed</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>Header</span>
+						<select class="header-option form-control input-small">
+							<option value="fixed" selected="selected">Fixed</option>
+							<option value="default">Default</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>Sidebar</span>
+						<select class="sidebar-option form-control input-small">
+							<option value="fixed" selected="selected">Fixed</option>
+							<option value="default">Default</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>Footer</span>
+						<select class="footer-option form-control input-small">
+							<option value="fixed" selected="selected">Fixed</option>
+							<option value="default">Default</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- END BEGIN STYLE CUSTOMIZER -->  
+			<!-- BEGIN PAGE HEADER-->
+			<div class="row">
+				<div class="col-md-12">
+					<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+					<h3 class="page-title">
+						欢迎使用癌康之家后台
+					</h3>
+					<ul class="page-breadcrumb breadcrumb" id="page-breadcrumb">
+						<li>
+							<i class="fa fa-home"></i>
+							<a th:href="@{/index}">主页</a> 
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li><a href="#" class="sub-menu-href">主页</a></li>
+					</ul>
+					<!-- END PAGE TITLE & BREADCRUMB-->
+				</div>
+			</div>
+			<!-- END PAGE HEADER-->
+			<!-- BEGIN DASHBOARD STATS -->
+			<div class="row">
+			
+			<!-- <div class="loadingex" id="loadex" style="display:none"></div> -->
+				<div class="col-md-12 inbox-content" id="inbox-content">
+				
+				</div>
+			</div>
+		</div>
+		<!-- END PAGE -->
+	</div>
+	<!-- END CONTAINER -->
+	<!-- BEGIN FOOTER -->
+	<div class="footer">
+		<div class="footer-inner">
+			2014 &copy; www.aik.com.
+		</div>
+		<div class="footer-tools">
+			<span class="go-top">
+			<i class="fa fa-angle-up"></i>
+			</span>
+		</div>
+	</div>
+	<!-- END FOOTER -->
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<!-- BEGIN CORE PLUGINS -->   
+	<!--[if lt IE 9]>
+	<script th:src="@{/static/assets/plugins/respond.min.js"></script>
+	<script th:src="@{/static/assets/plugins/excanvas.min.js"></script> 
+	<![endif]-->   
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<script th:src="@{/static/assets/plugins/jquery-1.10.2.min.js}" type="text/javascript"></script>
+ 	<script type="text/javascript" th:src="@{/static/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+	<!-- <script type="text/javascript" src="@{/static/assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js"></script> -->
+	<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+	<script th:src="@{/static/assets/plugins/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{/static/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js}" type="text/javascript"></script>
+	<script th:src="@{/static/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js}" type="text/javascript"></script>
+	
+	<script th:src="@{/static/assets/plugins/uniform/jquery.uniform.min.js}" type="text/javascript"></script>
+	<script type="text/javascript" th:src="@{/static/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js}"></script>
+	<!-- END CORE PLUGINS -->
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
+	<script th:src="@{/static/assets/scripts/core/jquery.form.js}" type="text/javascript"></script>
+	<script th:src="@{/static/assets/scripts/core/jquery-validate.min.js}"></script>
+	<script th:src="@{/static/assets/scripts/core/util.js}"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script th:src="@{/static/assets/scripts/core/app.js}" type="text/javascript"></script>
+	<script th:src="@{/static/assets/scripts/custom/index.js}" type="text/javascript"></script>
+	<!-- <script th:src="@{/static/assets/scripts/custom/tasks.js}" type="text/javascript"></script> -->
+	<script th:src="@{/static/assets/scripts/custom/table-managed.js}" type="text/javascript"></script>
+	<script th:src="@{/static/assets/scripts/core/ajax.js}" type="text/javascript"></script>
+	<script charset="utf-8" th:src="@{/static/assets/plugins/edit/kindeditor-min.js}"></script>
+	<script charset="utf-8" th:src="@{/static/assets/plugins/edit/zh_CN.js}"></script>
+	
+		<script>
+			var editor;
+			KindEditor.ready(function(K) {
+				editor = K.create('textarea[name="content"]', {
+					allowFileManager : true
+				});
+			});
+		</script>
+	<script>
+	jQuery(document).ready(function(){   
+		   App.init(); 
+		   Index.init();
+		   jQuery("#admin-menu").delegate("a[data-pre=a-menu]", "click", function(){
+			   var _this = $(this),
+				   _li = _this.closest('.user-menu'),
+				   text1 = _this.text(),
+				   span = _li.children("span"),
+				   tes3 = jQuery.trim(span.text()),
+				   test2 = '',
+				   _page = $("#admin-menu");
+			   _page.find(".active").each(function(){
+				   jQuery(this).removeClass("active").find(".selected").remove();
+			   });
+			   _this.closest('li').addClass("active");
+			   _li.addClass("active");
+			   if(text1.indexOf(tes3) > 0){
+					text2 = jQuery.trim(text1).substr(tes3.length);
+					jQuery(".sub-menu-href").text(text2);
+				}else {
+					jQuery(".sub-menu-href").text(text1);
+				}
+			   var basePath = jQuery("#basePath").val();
+               Ajax.load({url:basePath + _this.attr("data-url")});
+              // Ajax.load({url: "http://localhost/aik-manager/users/index"});
+		   });
+		});
+	</script>
+</body>
+</html>

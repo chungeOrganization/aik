@@ -224,4 +224,43 @@
     </if>
     limit ${(page-1)*size}, #{size}
   </select>
+  
+  <select id="findAll" parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_food
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="name != null">
+      and name = #{name}
+    </if>
+    <if test="category != null">
+      and category = #{category}
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_food
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="name != null">
+      and name = #{name}
+    </if>
+    <if test="category != null">
+      and category = #{category}
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+  	</select>
+  
 </mapper>

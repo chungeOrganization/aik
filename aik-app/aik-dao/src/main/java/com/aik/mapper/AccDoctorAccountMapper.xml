@@ -376,4 +376,116 @@
     </if>
     limit ${(page-1)*size}, #{size}
   </select>
+  
+  <select id="findAll" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_doctorAccount
+     where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="mobileNo != null">
+      and mobileNo = #{mobileNo,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="realName != null">
+      and realName = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex,jdbcType=TINYINT}
+    </if>
+    <if test="areaProvince != null">
+      and areaProvince = #{areaProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="areaCity != null">
+      and areaCity = #{areaCity,jdbcType=VARCHAR}
+    </if>
+    <if test="birthday != null">
+      and birthday = #{birthday,jdbcType=DATE}
+    </if>
+    <if test="identityCard != null">
+      and identityCard = #{identityCard,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="hosName != null">
+      and hosName = #{hosName,jdbcType=VARCHAR}
+    </if>
+    <if test="hosDepartment != null">
+      and hosDepartment = #{hosDepartment,jdbcType=VARCHAR}
+    </if>
+    <if test="skill != null">
+      and skill = #{skill,jdbcType=VARCHAR}
+    </if>
+    <if test="departmentPhone != null">
+      and departmentPhone = #{departmentPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="devType != null">
+      and devType = #{devType,jdbcType=VARCHAR}
+    </if>
+    <if test="position != null">
+      and position = #{position,jdbcType=TINYINT}
+    </if>
+  </select>
+  
+  <select id="findByPage" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_doctorAccount
+     where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="mobileNo != null">
+      and mobileNo = #{mobileNo,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="realName != null">
+      and realName = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex,jdbcType=TINYINT}
+    </if>
+    <if test="areaProvince != null">
+      and areaProvince = #{areaProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="areaCity != null">
+      and areaCity = #{areaCity,jdbcType=VARCHAR}
+    </if>
+    <if test="birthday != null">
+      and birthday = #{birthday,jdbcType=DATE}
+    </if>
+    <if test="identityCard != null">
+      and identityCard = #{identityCard,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="hosName != null">
+      and hosName = #{hosName,jdbcType=VARCHAR}
+    </if>
+    <if test="hosDepartment != null">
+      and hosDepartment = #{hosDepartment,jdbcType=VARCHAR}
+    </if>
+    <if test="skill != null">
+      and skill = #{skill,jdbcType=VARCHAR}
+    </if>
+    <if test="departmentPhone != null">
+      and departmentPhone = #{departmentPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="devType != null">
+      and devType = #{devType,jdbcType=VARCHAR}
+    </if>
+    <if test="position != null">
+      and position = #{position,jdbcType=TINYINT}
+    </if>
+  </select>
+  
+  
 </mapper>
