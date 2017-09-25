@@ -1,10 +1,9 @@
 package com.aik.resource;
 
-import com.aik.model.SysIllTypeTree;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
+import java.io.File;
 
 
 /**
@@ -21,6 +20,6 @@ public class SystemResource {
     private String apiUri;
 
     public String getApiFileUri() {
-        return apiUri + fileRootUri;
+        return apiUri + fileRootUri + File.separator;
     }
 }

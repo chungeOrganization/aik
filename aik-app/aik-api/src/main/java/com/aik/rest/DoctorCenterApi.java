@@ -356,7 +356,7 @@ public class DoctorCenterApi {
                     + disposition.getFileName();
 
             String fileUri = "doctor" + File.separator + imageName;
-            String fileUrl = systemResource.getApiFileUri() + File.separator + fileUri;
+            String fileUrl = systemResource.getApiFileUri() + fileUri;
             String uploadUrl = uploadRootUri + fileUri;
 
             AikFileUtils.uploadImg(fileInputStream, uploadUrl);
