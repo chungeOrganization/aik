@@ -121,11 +121,31 @@ public class DoctorCenterApi {
     }
 
     @POST
+    @Path("getDoctorInfo")
+    public ApiResult getDoctorInfo() {
+        ApiResult result = new ApiResult();
+
+        try {
+            DoctorInfoDTO doctorInfoDTO = doctorAccountService.getDoctorInfo(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("doctorInfo", doctorInfoDTO);
+        } catch (ApiServiceException e) {
+            logger.error("get doctor info error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get doctor info error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
     @Path("/editDoctorInfo")
     public ApiResult editDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
         ApiResult result = new ApiResult();
 
         try {
+            doctorInfoDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
             doctorAccountService.editDoctorInfo(doctorInfoDTO);
         } catch (ApiServiceException e) {
             logger.error("get doctor center page info error: ", e);

@@ -1,4 +1,4 @@
-package com.aik.service.ExpertsAnswer;
+package com.aik.service.expertsAnswer;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AikExpertsAnswerMapper;

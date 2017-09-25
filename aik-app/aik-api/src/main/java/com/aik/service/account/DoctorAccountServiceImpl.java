@@ -5,6 +5,7 @@ import com.aik.dao.*;
 import com.aik.dto.DoctorInfoDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
+import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -32,6 +34,9 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     private AccDoctorWalletMapper accDoctorWalletMapper;
 
     private AccDoctorBankCardMapper accDoctorBankCardMapper;
+
+    @Resource
+    private SystemResource systemResource;
 
     @Autowired
     public void setAccDoctorAccountMapper(AccDoctorAccountMapper accDoctorAccountMapper) {
@@ -110,6 +115,38 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         doctorAccount.setUpdateDate(new Date());
 
         accDoctorAccountMapper.updateByPrimaryKeySelective(doctorAccount);
+    }
+
+    @Override
+    public DoctorInfoDTO getDoctorInfo(Integer accountId) throws ApiServiceException {
+        if (null == accountId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAccount accDoctorAccount = accDoctorAccountMapper.selectByPrimaryKey(accountId);
+        if (null == accDoctorAccount) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003008);
+        }
+
+        DoctorInfoDTO doctorInfoDTO = new DoctorInfoDTO();
+        doctorInfoDTO.setAccountId(accDoctorAccount.getId());
+        if (StringUtils.isNotBlank(accDoctorAccount.getHeadImg())) {
+            doctorInfoDTO.setHeadImg(systemResource.getApiFileUri() + accDoctorAccount.getHeadImg());
+        }
+        doctorInfoDTO.setRealName(accDoctorAccount.getRealName());
+        doctorInfoDTO.setSex(accDoctorAccount.getSex());
+        doctorInfoDTO.setAreaProvince(accDoctorAccount.getAreaProvince());
+        doctorInfoDTO.setAreaCity(accDoctorAccount.getAreaCity());
+        doctorInfoDTO.setBirthday(accDoctorAccount.getBirthday());
+        doctorInfoDTO.setIdentityCard(accDoctorAccount.getIdentityCard());
+        doctorInfoDTO.setEmail(accDoctorAccount.getEmail());
+        doctorInfoDTO.setHosName(accDoctorAccount.getHosName());
+        doctorInfoDTO.setHosDepartment(accDoctorAccount.getHosDepartment());
+        doctorInfoDTO.setSkill(accDoctorAccount.getSkill());
+        doctorInfoDTO.setDepartmentPhone(accDoctorAccount.getDepartmentPhone());
+        doctorInfoDTO.setDevType(accDoctorAccount.getDevType());
+
+        return doctorInfoDTO;
     }
 
     @Override

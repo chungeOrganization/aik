@@ -12,6 +12,8 @@ public class DoctorInfoDTO {
 
     private Integer accountId;
 
+    private String headImg;
+
     private String realName;
 
     private Byte sex;
@@ -43,6 +45,14 @@ public class DoctorInfoDTO {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 
     public String getRealName() {
@@ -144,7 +154,8 @@ public class DoctorInfoDTO {
     @Override
     public String toString() {
         return "DoctorInfoDTO{" +
-                "accountId='" + accountId + '\'' +
+                "accountId=" + accountId +
+                ", headImg='" + headImg + '\'' +
                 ", realName='" + realName + '\'' +
                 ", sex=" + sex +
                 ", areaProvince='" + areaProvince + '\'' +

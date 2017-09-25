@@ -80,7 +80,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 //                List<MultipartFile> files = fileMap.get(name);
 //                logger.debug("request file name: " + name);
 //                for (MultipartFile multipartFile : files) {
-//                    logger.debug("request file: size[" + multipartFile.getSize() + "] name[" + multipartFile.getName() + "]");
+//                    logger.debug("request file: size[" + multipartFile.getSize() + "] name[" + multipartFile.getName() +
+//                            multipartFile.getOriginalFilename() + "]");
 //                }
 //            }
 //        }

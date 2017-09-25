@@ -10,6 +10,7 @@ import com.aik.model.AikUserFeedback;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
+import com.aik.service.account.SmartDeviceService;
 import com.aik.service.account.UserAccountService;
 import com.aik.service.question.QuestionService;
 import com.aik.service.question.QuestionViewService;
@@ -17,7 +18,6 @@ import com.aik.service.question.UserQuestionOrderService;
 import com.aik.service.relation.UserAttentionService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.util.AikFileUtils;
-import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -70,6 +69,8 @@ public class UserApi {
 
     private SystemResource systemResource;
 
+    private SmartDeviceService smartDeviceService;
+
     @Inject
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
@@ -108,6 +109,11 @@ public class UserApi {
     @Inject
     public void setSystemResource(SystemResource systemResource) {
         this.systemResource = systemResource;
+    }
+
+    @Inject
+    public void setSmartDeviceService(SmartDeviceService smartDeviceService) {
+        this.smartDeviceService = smartDeviceService;
     }
 
     @POST
@@ -630,6 +636,22 @@ public class UserApi {
         try {
             List<Map<String, Object>> commonProblems = commonProblemService.getCommonProblems(params);
             result.withDataKV("commonProblemList", commonProblems);
+        } catch (Exception e) {
+            logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("getUserSmartDevice")
+    public ApiResult getUserSmartDevice(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            UserSmartDeviceDTO userSmartDeviceDTO = smartDeviceService.getUserSmartDevice(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("userSmartDevice", userSmartDeviceDTO);
         } catch (Exception e) {
             logger.error("get common problems error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);

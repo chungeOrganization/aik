@@ -1,4 +1,4 @@
-package com.aik.service.ExpertsAnswer;
+package com.aik.service.expertsAnswer;
 
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikExpertsAnswer;
