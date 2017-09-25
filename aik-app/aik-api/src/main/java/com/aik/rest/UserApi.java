@@ -192,9 +192,10 @@ public class UserApi {
                     + disposition.getFileName();
 
             String fileUri = "user" + File.separator + imageName;
-            String fileUrl = uploadRootUri + fileUri;
+            String fileUrl = systemResource.getApiFileUri() + File.separator + fileUri;
+            String uploadUrl = uploadRootUri + fileUri;
 
-            AikFileUtils.uploadImg(fileInputStream, fileUrl);
+            AikFileUtils.uploadImg(fileInputStream, uploadUrl);
 
             result.withDataKV("fileUri", fileUri);
             result.withDataKV("fileUrl", fileUrl);

@@ -252,9 +252,9 @@ public class PublicApi {
                     + disposition.getFileName();
 
             String fileUri = "doctor" + File.separator + imageName;
-            String fileUrl = uploadRootUri + fileUri;
+            String uploadUrl = uploadRootUri + fileUri;
 
-            AikFileUtils.uploadImg(fileInputStream, fileUrl);
+            AikFileUtils.uploadImg(fileInputStream, uploadUrl);
 
             doctorAccountService.uploadDoctorFile(accountId, fileUri);
         } catch (IOException e) {
