@@ -14,8 +14,8 @@ import com.aik.response.FreeQODetailResponse;
 import com.aik.response.FreeQOListDetailResponse;
 import com.aik.response.MatchDoctorsResponse;
 import com.aik.security.AuthUserDetailsThreadLocal;
-import com.aik.service.ExpertsAnswer.ExpertsAnswerService;
-import com.aik.service.NutritionLesson.NutritionLessonService;
+import com.aik.service.expertsAnswer.ExpertsAnswerService;
+import com.aik.service.nutritionLesson.NutritionLessonService;
 import com.aik.service.account.NutritionalIndexService;
 import com.aik.service.diet.DietPlanService;
 import com.aik.service.question.FreeQuestionOrderService;
@@ -24,7 +24,6 @@ import com.aik.service.question.UserQuestionOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

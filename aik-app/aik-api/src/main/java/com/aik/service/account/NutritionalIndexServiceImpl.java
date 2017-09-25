@@ -4,7 +4,7 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AikNutritionalIndexMapper;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikNutritionalIndex;
-import com.aik.service.NutritionLesson.NutritionLessonServiceImpl;
+import com.aik.service.nutritionLesson.NutritionLessonServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

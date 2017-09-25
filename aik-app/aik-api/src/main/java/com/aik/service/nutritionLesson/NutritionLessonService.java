@@ -1,4 +1,4 @@
-package com.aik.service.NutritionLesson;
+package com.aik.service.nutritionLesson;
 
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikNutritionLesson;

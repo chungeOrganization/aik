@@ -41,6 +41,15 @@ public interface DoctorAccountService {
     void fillDoctorInfo(DoctorInfoDTO doctorInfoDTO) throws ApiServiceException;
 
     /**
+     * 获取医生账户信息
+     *
+     * @param accountId 账户id
+     * @return 医生账户信息
+     * @throws ApiServiceException Api服务异常
+     */
+    DoctorInfoDTO getDoctorInfo(Integer accountId) throws ApiServiceException;
+
+    /**
      * 编辑医生信息
      *
      * @param doctorInfoDTO 医生信息DTO

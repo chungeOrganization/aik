@@ -15,15 +15,25 @@ import com.aik.service.question.AnswerService;
 import com.aik.service.relation.DoctorRelationService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.service.store.DoctorDealService;
+import com.aik.util.AikFileUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +44,13 @@ import java.util.Map;
  */
 @Path("/doctorCenter")
 @Produces(MediaType.APPLICATION_JSON)
+@Configuration
 public class DoctorCenterApi {
 
     private static final Logger logger = LoggerFactory.getLogger(DoctorCenterApi.class);
+
+    @Value("${file.upload-root-uri}")
+    private String uploadRootUri;
 
     private DoctorAccountService doctorAccountService;
 
@@ -121,11 +135,31 @@ public class DoctorCenterApi {
     }
 
     @POST
+    @Path("getDoctorInfo")
+    public ApiResult getDoctorInfo() {
+        ApiResult result = new ApiResult();
+
+        try {
+            DoctorInfoDTO doctorInfoDTO = doctorAccountService.getDoctorInfo(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("doctorInfo", doctorInfoDTO);
+        } catch (ApiServiceException e) {
+            logger.error("get doctor info error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get doctor info error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
     @Path("/editDoctorInfo")
     public ApiResult editDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
         ApiResult result = new ApiResult();
 
         try {
+            doctorInfoDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
             doctorAccountService.editDoctorInfo(doctorInfoDTO);
         } catch (ApiServiceException e) {
             logger.error("get doctor center page info error: ", e);
@@ -304,6 +338,36 @@ public class DoctorCenterApi {
             result.withDataKV("commonProblemList", commonProblems);
         } catch (Exception e) {
             logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/uploadDoctorFile")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public ApiResult uploadDoctorFile(@FormDataParam("accountId") Integer accountId, @FormDataParam("file") InputStream fileInputStream,
+                                      @FormDataParam("file") FormDataContentDisposition disposition) {
+        ApiResult result = new ApiResult();
+
+        try {
+            String imageName = Calendar.getInstance().getTimeInMillis()
+                    + disposition.getFileName();
+
+            String fileUri = "doctor" + File.separator + imageName;
+            String fileUrl = systemResource.getApiFileUri() + fileUri;
+            String uploadUrl = uploadRootUri + fileUri;
+
+            AikFileUtils.uploadImg(fileInputStream, uploadUrl);
+
+            result.withDataKV("fileUri", fileUri);
+            result.withDataKV("fileUrl", fileUrl);
+        } catch (IOException e) {
+            logger.error("upload doctor file error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
+        } catch (Exception e) {
+            logger.error("upload doctor file error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
