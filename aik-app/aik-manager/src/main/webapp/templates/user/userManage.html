@@ -237,7 +237,7 @@
 					});
 					return false;
 				}).delegate("li[data-pre=gar]", "click", function(){//绑定页码单击事件
-					var num = jQuery(this).find('a').attr("data-pre");
+					var num = jQuery(this).find('a').attr("id");
 					_this.load(num);
 					return false;
 				});
@@ -262,7 +262,7 @@
     		load: function(num){
     			var _this = this;
     			Ajax.load({
-    				url: _this.basePath + "/users",
+    				url: _this.basePath + "/users/goto/"+num,
     				data: _this.fm.serializeArray(), 
     				target:"#list-content"
     			});
