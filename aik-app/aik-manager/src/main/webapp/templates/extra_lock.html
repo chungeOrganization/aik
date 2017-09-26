@@ -38,7 +38,7 @@
 			</a>
 		</div>
 		<div class="page-body">
-			<img class="page-lock-img" src="@{/static/assets/img/no_image.gif}" alt="" />
+			<img class="page-lock-img" th:src="@{/static/assets/img/no_image.gif}" alt="" />
 			<div class="page-lock-info">
 				<h1>管理员</h1>
 				<span class="email" th:text="${session.user.userName}"></span>
