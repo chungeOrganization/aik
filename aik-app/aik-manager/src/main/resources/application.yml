@@ -36,15 +36,13 @@ spring:
       charset: UTF-8
       enabled: true
   #mvn
-  spring:
-    thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
-      mode: LEGACYHTML5
-      encoding: UTF-8
-      content-type: text/html
-      cache: false
-      cacheable: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
 
 # mybatis
 mybatis:
