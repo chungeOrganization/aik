@@ -2,6 +2,7 @@ package com.aik.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccUserAccount;
 import com.aik.service.UserManageService;
+import com.aik.util.MD5Utils;
 
 
 
@@ -56,10 +58,27 @@ public class IndexController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public ModelAndView login() {
-    	 ModelAndView result = new ModelAndView("index");
- 		 logger.info("登陆癌康之家后台");
-         return result;
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount) {
+    	 ModelAndView result = new ModelAndView();
+    	 
+    	 String userName = accUserAccount.getUserName();
+    	 String passWord = accUserAccount.getPassword();
+    	//登陆成功跳转到主页   否则 返回登陆界面
+    	 try {
+			AccUserAccount user = userManageService.selectByUserName(userName);
+			if(user != null && user.getPassword().equalsIgnoreCase(MD5Utils.md5(passWord))){
+				 request.getSession().setAttribute("user", user);
+				 result = new ModelAndView("redirect:/index");
+	    		 logger.info("登陆癌康之家成功-->后台");
+			}else{
+				result = new ModelAndView("login_error");
+	   		 	logger.info("登陆癌康之家失败-->后台");
+			}
+		} catch (Exception e) {
+			result = new ModelAndView("redirect:/");
+   		 	logger.info("登陆癌康之家失败-->后台");
+		}
+        return result;
     }
     
     
@@ -68,8 +87,15 @@ public class IndexController {
      * @return
      */
     @RequestMapping("logout")
-    public ModelAndView logout() {
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
     	 ModelAndView result = new ModelAndView("login");
+    	 
+    	 HttpSession session=request.getSession(false);  
+         if(session==null){  
+        	 
+         }else{
+        	 session.removeAttribute("user");  
+         }
  		 logger.info("癌康之家后台退出成功");
          return result;
     }

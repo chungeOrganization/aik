@@ -63,7 +63,7 @@ public class UserController {
 	    	Integer size = Integer.parseInt(request.getParameter("rowsPerPage") == null ? "10" : request.getParameter("rowsPerPage"));
 	    	PageUtils pageRequest = new PageUtils(page, size);
 			//TODO
-	    	accUserAccount = new AccUserAccount();
+	    	//accUserAccount = new AccUserAccount();
 			accUserAccounts = userManageService.findPage(accUserAccount, pageRequest);
 			logger.info("用户信息列表获取成功");
 		} catch (Exception e) {

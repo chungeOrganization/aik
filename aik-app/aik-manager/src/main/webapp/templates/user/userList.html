@@ -4,12 +4,12 @@
 <tr>
 	<th>编号</th>
 	<th>用户名</th>
-	<th>昵称</th>
+	<th>手机号</th>
 	<th>用户类型</th>
-	<th>所属基地</th>
-	<th>证件号码</th>
-	<th>手机号码</th>
-	<th>个人积分</th>
+	<th>真实姓名</th>
+	<th>昵称</th>
+	<th>性别</th>
+	<th>出生日期</th>
 	<th>录入时间</th>
 	<!-- <th>修改时间</th> -->
 	<th>有效性</th>
@@ -24,16 +24,15 @@
 <tr class="odd gradeX"  th:each="user,iterStat : ${result}"  >
 	<td th:id="${user.id}" th:text="${user.id}"></td>
 	<td th:text="${user.userName}"></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td class="center">
+	<td th:text="${user.mobileNo}"></td>
+	<td th:text="${user.userType}"></td>
+	<td th:text="${user.realName}"></td>
+	<td th:text="${user.nickName}"></td>
+	<td th:text="${user.sex}"></td>
+	<td th:text="${user.birthday}"></td>
+	<td class="center" th:text="${user.createDate}">
 	
 	</td>
-	
 	<td></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">

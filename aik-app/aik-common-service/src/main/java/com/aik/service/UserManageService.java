@@ -60,4 +60,13 @@ public interface UserManageService {
     * @throws Exception
     */
     Page<AccUserAccount> findPage(AccUserAccount accUserAccount, PageUtils pageParam) throws  Exception;
+    
+    /**
+     * 根据用户名查找用户
+     * @param userName
+     * @return
+     * @throws Exception
+     */
+    AccUserAccount selectByUserName(String userName)throws  Exception;
+    
 }

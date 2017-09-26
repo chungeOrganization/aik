@@ -317,13 +317,13 @@
     <if test="mobileNo != null">
       and mobileNo = #{mobileNo,jdbcType=VARCHAR}
     </if>
-    <if test="userName != null">
+    <if test="userName != null and userName != ''">
       and userName = #{userName,jdbcType=VARCHAR}
     </if>
     <if test="userType != null">
       and userType = #{userType,jdbcType=TINYINT}
     </if>
-    <if test="realName != null">
+    <if test="realName != null and realName != ''">
       and realName = #{realName,jdbcType=VARCHAR}
     </if>
     <if test="sex != null">

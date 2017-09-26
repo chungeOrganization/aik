@@ -38,14 +38,15 @@
 			</a>
 		</div>
 		<div class="page-body">
-			<img class="page-lock-img" src="@{/static/fileupload/userPhoto}" alt="" />
+			<img class="page-lock-img" src="@{/static/assets/img/no_image.gif}" alt="" />
 			<div class="page-lock-info">
 				<h1>管理员</h1>
-				<span class="email">111@qq.com</span>
+				<span class="email" th:text="${session.user.userName}"></span>
 				<span class="locked">已锁定</span>
-				<form class="form-inline" action="index.htm">
+				<form class="form-inline" th:action="@{/login}">
 					<div class="input-group input-medium">
-						<input type="text" class="form-control" placeholder="密码" />
+						<input type="hidden" name="userName" class="form-control" placeholder="用户名" th:value="${session.user.userName}"/>
+						<input type="text" name="password" class="form-control" placeholder="密码" />
 						<span class="input-group-btn">        
 						<button type="submit" class="btn blue icn-only"><i class="m-icon-swapright m-icon-white"></i></button>
 						</span>
