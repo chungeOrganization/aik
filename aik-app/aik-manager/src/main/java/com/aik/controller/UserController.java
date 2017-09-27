@@ -54,16 +54,16 @@ public class UserController {
      * @param accUserAccount
      * @return
      */
-    @RequestMapping
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount) {
+    @RequestMapping(value = "/goto/{num}")
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount,@PathVariable Integer num) {
     	ModelAndView mv = new ModelAndView("user/userList");
     	Page<AccUserAccount> accUserAccounts = new Page<AccUserAccount>();
 		try {
-			Integer page = Integer.parseInt(request.getParameter("pageNo") == null ? "0" : request.getParameter("pageNo"));
-	    	Integer size = Integer.parseInt(request.getParameter("rowsPerPage") == null ? "10" : request.getParameter("rowsPerPage"));
+			Integer size = 3;
+			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 			//TODO
-	    	accUserAccount = new AccUserAccount();
+	    	//accUserAccount = new AccUserAccount();
 			accUserAccounts = userManageService.findPage(accUserAccount, pageRequest);
 			logger.info("用户信息列表获取成功");
 		} catch (Exception e) {
@@ -71,10 +71,10 @@ public class UserController {
 		}
     	PageInfo<AccUserAccount> pageInfo = new PageInfo<AccUserAccount>(accUserAccounts);
     	mv.addObject("result",pageInfo.getList());
-		mv.addObject("pageNo", pageInfo.getPageNum());
+		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());
 		mv.addObject("total", pageInfo.getTotal());
-
+		mv.addObject("pageInfo", pageInfo);
 		return mv;
     }
 

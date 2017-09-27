@@ -97,6 +97,16 @@ public class UserManageServiceImpl implements UserManageService {
 		return accUserAccountMapper.findAll(accUserAccount);
 	}
 
+	@Override
+	public AccUserAccount selectByUserName(String userName) throws Exception {
+		if (null == userName || "".equals(userName)) {
+        	logger.error("用户查询,根据用户名,用户名为空");
+            throw new Exception("用户查询,根据用户名,用户为空");
+        }
+		AccUserAccount accUserAccount = accUserAccountMapper.selectByUserName(userName);
+		return accUserAccount;
+	}
+
 
 
 	

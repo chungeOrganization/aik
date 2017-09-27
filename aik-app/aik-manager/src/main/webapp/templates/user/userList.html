@@ -4,12 +4,12 @@
 <tr>
 	<th>编号</th>
 	<th>用户名</th>
-	<th>昵称</th>
+	<th>手机号</th>
 	<th>用户类型</th>
-	<th>所属基地</th>
-	<th>证件号码</th>
-	<th>手机号码</th>
-	<th>个人积分</th>
+	<th>真实姓名</th>
+	<th>昵称</th>
+	<th>性别</th>
+	<th>出生日期</th>
 	<th>录入时间</th>
 	<!-- <th>修改时间</th> -->
 	<th>有效性</th>
@@ -24,16 +24,15 @@
 <tr class="odd gradeX"  th:each="user,iterStat : ${result}"  >
 	<td th:id="${user.id}" th:text="${user.id}"></td>
 	<td th:text="${user.userName}"></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td class="center">
+	<td th:text="${user.mobileNo}"></td>
+	<td th:text="${user.userType}"></td>
+	<td th:text="${user.realName}"></td>
+	<td th:text="${user.nickName}"></td>
+	<td th:text="${user.sex}"></td>
+	<td th:text="${user.birthday}"></td>
+	<td class="center" th:text="${user.createDate}">
 	
 	</td>
-	
 	<td></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">
@@ -54,16 +53,16 @@
 
 <div class="row">
 	<div class="col-md-5 col-sm-12">
-		<div class="dataTables_info" id="sample_1_info">总数<span th:text="${total}"></span>条</div>
+		<div class="dataTables_info" id="sample_1_info">总数<span th:text="${total}"></span>条,每页显示<span th:text="${pageSize}"></span>条</div>
 	</div>
 	<div class="col-md-7 col-sm-12">
 	
 		<div class="dataTables_paginate paging_bootstrap">
 			<ul id="page_id" class="pagination" style="visibility: visible;">
-					<li class="prev  disabled"><a title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
-					<li data-pre="gar" class="active"><a href="javascript:;" data-pre="2">2</a></li>
-					<li data-pre="gar"><a href="javascript:;" data-pre="3">3</a></li>
-					<li data-pre="gar" class="next"><a data-pre="3" title="下一页" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+					<li data-pre="gar" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' "><a th:id="${pageInfo.prePage}" title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+					<li  class="active"><a href="javascript:;" th:id="${pageNo}"><span th:text="${pageInfo.prePage}"></span></a></li>
+					<li  class="active"><a href="javascript:;" th:id="${pageNo}"><span th:text="${pageInfo.nextPage}"></span></a></li>
+					<li data-pre="gar" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'"><a th:id="${pageInfo.nextPage}" title="下一页" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
 			</ul>
 		</div>
 	</div>
