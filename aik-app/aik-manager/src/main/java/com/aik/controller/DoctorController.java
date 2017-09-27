@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccDoctorAccount;
+import com.aik.model.AccUserAccount;
 import com.aik.service.DoctorManageService;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
@@ -34,6 +35,18 @@ public class DoctorController {
 
     @Autowired
     private DoctorManageService doctorManageService;
+    
+    
+    /**
+     * 医生信息管理
+     * @return
+     */
+    @RequestMapping(value = "/index")
+    public ModelAndView index() {
+    	 ModelAndView result = new ModelAndView("doctor/doctorManage");
+         
+         return result;
+    }
 
     
     /**
@@ -41,24 +54,27 @@ public class DoctorController {
      * @param accUserAccount
      * @return
      */
-    @RequestMapping
-    public PageInfo<AccDoctorAccount> queryPage(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/goto/{num}")
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccDoctorAccount accDoctorAccount,@PathVariable Integer num) {
        
-    	
+    	ModelAndView mv = new ModelAndView("doctor/doctorList");
     	Page<AccDoctorAccount> accDoctorAccounts = new Page<AccDoctorAccount>();
 		try {
-			Integer page = Integer.parseInt(request.getParameter("pageNo"));
-	    	Integer size = Integer.parseInt(request.getParameter("rowsPerPage"));
+			Integer size = 3;
+			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	AccDoctorAccount accDoctorAccount = new AccDoctorAccount();
-	    	//TODO
-			accDoctorAccounts = doctorManageService.findPage(accDoctorAccount, pageRequest);
+	    	accDoctorAccounts = doctorManageService.findPage(accDoctorAccount, pageRequest);
 			logger.info("医生信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("医生信息列表获取失败", e);
 		}
-    	PageInfo<AccDoctorAccount> pageInfo = new PageInfo<>(accDoctorAccounts);
-        return pageInfo;
+    	PageInfo<AccDoctorAccount> pageInfo = new PageInfo<AccDoctorAccount>(accDoctorAccounts);
+    	mv.addObject("result",pageInfo.getList());
+		mv.addObject("pageNo", pageInfo.getNextPage());
+		mv.addObject("pageSize", pageInfo.getPageSize());
+		mv.addObject("total", pageInfo.getTotal());
+		mv.addObject("pageInfo", pageInfo);
+		return mv;
     }
 
     /**
@@ -67,10 +83,10 @@ public class DoctorController {
      */
     @RequestMapping(value = "/add")
     public ModelAndView add() {
-    	 ModelAndView result = new ModelAndView();
+    	 ModelAndView result = new ModelAndView("doctor/doctorAdd");
     	 AccDoctorAccount accDoctorAccount = new AccDoctorAccount();
  		 result.addObject("accDoctorAccount", accDoctorAccount);
- 		logger.info("医生信息新增查询成功");
+ 		 logger.info("医生信息新增查询成功");
          return result;
     }
     
@@ -82,7 +98,7 @@ public class DoctorController {
      */
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
-    	ModelAndView result = new ModelAndView();
+    	ModelAndView result = new ModelAndView("doctor/doctorView");
     	AccDoctorAccount accDoctorAccount = new AccDoctorAccount();
  		try {
  			accDoctorAccount = doctorManageService.findByPrimaryKey(id);
@@ -104,7 +120,7 @@ public class DoctorController {
      */
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
-        ModelAndView result = new ModelAndView();
+        ModelAndView result = new ModelAndView("doctor/doctorView");
         AccDoctorAccount accDoctorAccount = new AccDoctorAccount();
 		try {
 			accDoctorAccount = doctorManageService.findByPrimaryKey(id);

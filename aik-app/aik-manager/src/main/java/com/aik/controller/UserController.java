@@ -37,7 +37,7 @@ public class UserController {
     
     
     /**
-     * 用户信息新增
+     * 用户信息管理
      * @return
      */
     @RequestMapping(value = "/index")

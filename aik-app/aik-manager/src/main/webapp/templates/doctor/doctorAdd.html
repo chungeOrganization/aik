@@ -2,7 +2,7 @@
 <div class="portlet box blue">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-reorder"></i>用户添加
+			<i class="fa fa-reorder"></i>医生添加
 		</div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse">
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form class="form-inline"  method ="post" action="" id="userAdd" enctype="multipart/form-data">
+		<form class="form-inline"  method ="post" action="" id="doctorAdd" enctype="multipart/form-data">
 			<input type="hidden" class="form-control" name="userRole" value="USER" />
 			<table class="table  table-bordered ">
 				<tr>
@@ -38,37 +38,23 @@
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="trueNamespan" style="color: #000000"></span>
 					</td>
-					<td>昵称</td>
-					<td><input type="text" class="form-control" name="nice" value="" /></td>
+					<td> 职位</td>
+					<td><input type="text" class="form-control" name="position" value="" /></td>
 				</tr>
 				
 				
 				
-				<tr>
-					<td>用户类型用户类型</td>
-					<td>
-						<select class="form-control" name="userType">
-							<option value="0" selected="selected">健康的咨询者</option>
-							<option value="1">家属</option>
-							<option value="2">患者</option>
-						</select>
-					</td>
-					<td>QQ</td>
-					<td>
-						<input type="text" class="form-control" data-pattern="[0-9]{5,13}" data-description="qq" data-describedby="qqspan" id="qq"  name="qq" placeholder="QQ" />
-						<span class="help-inline prompt" id="qqspan" style="color: #000000" ></span>
-					</td>
-					
-				</tr>
+				<td>执行医院</td>
+					<td><input type="text" class="form-control"  id="hosName"  name="hosName" value="" /></td>
+					<td>科室</td>
+					<td><input type="text" class="form-control" name="hosDepartment" value="" /></td>
 				
 				<tr>
-					<td>通信地址</td>
-					<td><input type="text" class="form-control" name="address" /></td>
-					<td> 邮箱</td>
+					<td>科室电话</td>
+					<td><input type="text"  class="form-control" name="departmentPhone" value="" /></td>
+					<td> 擅长病症</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" data-description="email" data-describedby="emailspan"  name="email" id="email" placeholder="Email" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="emailspan" style="color: #000000"></span>
+						<input type="text" class="form-control"  name="skill" id="skill"  value="" />
 					</td>
 				</tr>
 				
@@ -163,9 +149,9 @@
 </div>
 
 <script>
-	window.userAdd = null;
-    var userAdd = {
-    		fm : jQuery("#userAdd"),
+	window.doctorAdd = null;
+    var doctorAdd = {
+    		fm : jQuery("#doctorAdd"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -197,7 +183,7 @@
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				userPage.load(1);
+				doctorPage.load(1);
     		},
     		//提交数据
     		onSubmit: function(){
@@ -226,7 +212,7 @@
     			var _this = this;
     			Ajax.requestSubmit({
     				fm: _this.fm,
-    				url: _this.basePath + '/users/save',
+    				url: _this.basePath + '/doctors/save',
     				type: "post",
     				success: function(data){
     					if(!data) return;
@@ -305,6 +291,6 @@
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	userAdd.init();
+	doctorAdd.init();
 });
 </script>

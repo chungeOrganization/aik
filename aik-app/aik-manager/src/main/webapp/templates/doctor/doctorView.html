@@ -11,8 +11,8 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="" method="post" class="form-inline" id="user_vfm" enctype="multipart/form-data">
-			<input type ="hidden" id="id" name="id" value="" th:value="${accUserAccount.id}" />
+		<form action="" method="post" class="form-inline" id="doctor_vfm" enctype="multipart/form-data">
+			<input type ="hidden" id="id" name="id" value="" th:value="${accDoctorAccount.id}" />
 			<input type ="hidden" id="opt" name="opt" value="" th:value="${opt}" />
 			
 			<table class="table  table-bordered ">
@@ -20,7 +20,7 @@
 					
 					<td>用户名</td>
 					<td>
-						<input type="text" class="form-control r" readOnly="true" data-required="true" data-pattern="[a-zA-Z0-9]{5,16}" data-description="userName" data-describedby="userNamespan"  id="userName" placeholder="登录帐号"  name="userName" value="" th:value="${accUserAccount.userName}"/>
+						<input type="text" class="form-control r" readOnly="true" data-required="true" data-pattern="[a-zA-Z0-9]{5,16}" data-description="userName" data-describedby="userNamespan"  id="userName" placeholder="登录帐号"  name="userName" value="" th:value="${accDoctorAccount.userName}"/>
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
 					</td>
@@ -35,37 +35,33 @@
 				<tr>
 					<td>真实姓名</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="trueName"  data-describedby="trueNamespan" id="trueName" name="trueName" placeholder="真实姓名" value="" th:value="${accUserAccount.realName}"/>
+						<input type="text" class="form-control r" data-required="true"  data-description="trueName"  data-describedby="trueNamespan" id="trueName" name="trueName" placeholder="真实姓名" value="" th:value="${accDoctorAccount.realName}"/>
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="trueNamespan" style="color: #000000"></span>
 					</td>
-					<td> 昵称</td>
-					<td><input type="text" class="form-control" name="nice" value="" th:value="${accUserAccount.nickName}"/></td>
+					<td> 职位</td>
+					<td><input type="text" class="form-control" name="position" value="" th:value="${accDoctorAccount.position}"/></td>
 				</tr>
 				<tr>
-					<td>QQ</td>
-					<td><input type="text" class="form-control" data-pattern="[0-9]{5,13}" data-description="qq" data-describedby="qqspan" id="qq"  name="qq" placeholder="QQ" value=""/>
-						<span class="help-inline prompt" id="qqspan" style="color: #000000" ></span>
-					</td>
-					<td>MSN</td>
-					<td><input type="text" class="form-control" name="msn" value=""/></td>
+					<td>执行医院</td>
+					<td><input type="text" class="form-control"  id="hosName"  name="hosName" value="" th:value="${accDoctorAccount.hosName}"/></td>
+					<td>科室</td>
+					<td><input type="text" class="form-control" name="hosDepartment" value="" th:value="${accDoctorAccount.hosDepartment}"/></td>
 				</tr>
 				
 				<tr>
-					<td>通信地址</td>
-					<td><input type="text"  class="form-control" name="address" value="" /></td>
-					<td> 邮箱</td>
+					<td>科室电话</td>
+					<td><input type="text"  class="form-control" name="departmentPhone" value="" th:value="${accDoctorAccount.departmentPhone}"/></td>
+					<td> 擅长病症</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" data-description="email" data-describedby="emailspan"  name="email" id="email" placeholder="Email" value="" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="emailspan" style="color: #000000"></span>
+						<input type="text" class="form-control"  name="skill" id="skill"  th:value="${accDoctorAccount.skill}" />
 					</td>
 				</tr>
 				
 				<tr>
 					<td>手机号码</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-pattern="^0?1(3|5|8|7)\d{9}$" data-description="mobile" data-describedby="mobilespan" id="mobileNo" name="mobileNo" placeholder="手机号码" value="" th:value="${accUserAccount.mobileNo}"/>
+						<input type="text" class="form-control r" data-required="true"  data-pattern="^0?1(3|5|8|7)\d{9}$" data-description="mobile" data-describedby="mobilespan" id="mobileNo" name="mobileNo" placeholder="手机号码" value="" th:value="${accDoctorAccount.mobileNo}"/>
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="mobilespan" style="color: #000000"></span>
 					</td>
@@ -80,16 +76,6 @@
 				</tr>
 				
 				<tr>
-					<td>证件类型</td>
-					<td>
-						<select class="form-control" name="identityType">
-						</select>
-					</td>
-					<td> 证件号码</td>
-					<td><input type="text" class="form-control" name="identityCard" value="" />
-					</td>
-				</tr>
-					<tr>
 					<td> 个人图片 <input type="hidden" name="imgNo" value="1" /></td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
@@ -136,14 +122,14 @@
 </div>
 
 <script>
-window.userView = null;
-var userView  = {
-		fm : jQuery("#user_vfm"),
+window.doctorView = null;
+var doctorView  = {
+		fm : jQuery("#doctor_vfm"),
 		basePath : jQuery("#basePath").val(),
 		//初始化
 		init : function(){
 			if(jQuery("#opt").val() == "view"){
-				userView.readOnlyPallet();
+				doctorView.readOnlyPallet();
 			}
 			this.bindEvent();
 			this.initValidate();
@@ -160,7 +146,7 @@ var userView  = {
 					onSubmitted:function(){
    						if(UiUtils.check("user_vfm")){
    							//updateAdmin();
-   							var url = _this.basePath + "/users/update";
+   							var url = _this.basePath + "/doctors/update";
 							_this.ajaxSubmit(url);
    						}
    					}
@@ -177,7 +163,7 @@ var userView  = {
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				userPage.load(1);
+				doctorPage.load(1);
     	},
 		//禁止输入
    		readOnlyPallet: function(){
@@ -290,6 +276,6 @@ var userView  = {
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	userView.init();
+	doctorView.init();
 });
 </script>
