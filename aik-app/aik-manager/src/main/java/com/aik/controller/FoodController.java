@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aik.model.AccDoctorAccount;
 import com.aik.model.DietFood;
 import com.aik.service.FoodManageService;
 import com.aik.util.PageUtils;
@@ -37,27 +38,43 @@ public class FoodController {
 
     
     /**
+     * 食物管理
+     * @return
+     */
+    @RequestMapping(value = "/index")
+    public ModelAndView index() {
+    	 ModelAndView result = new ModelAndView("food/foodManage");
+         
+         return result;
+    }
+    
+    /**
      * 食物信息列表
      * @param accUserAccount
      * @return
      */
-    @RequestMapping
-    public PageInfo<DietFood> queryPage(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/goto/{num}")
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietFood dietFood,@PathVariable Integer num) {
        
     	
+    	ModelAndView mv = new ModelAndView("food/foodList");
     	Page<DietFood> dietFoods = new Page<DietFood>();
 		try {
-			Integer page = Integer.parseInt(request.getParameter("pageNo"));
-	    	Integer size = Integer.parseInt(request.getParameter("rowsPerPage"));
+			Integer size = 3;
+			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	DietFood dietFood = new DietFood();
-			dietFoods = foodManageService.findPage(dietFood, pageRequest);
+	    	dietFoods = foodManageService.findPage(dietFood, pageRequest);
 			logger.info("食物信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("食物信息列表获取失败", e);
 		}
-    	PageInfo<DietFood> pageInfo = new PageInfo<>(dietFoods);
-        return pageInfo;
+    	PageInfo<DietFood> pageInfo = new PageInfo<DietFood>(dietFoods);
+    	mv.addObject("result",pageInfo.getList());
+		mv.addObject("pageNo", pageInfo.getNextPage());
+		mv.addObject("pageSize", pageInfo.getPageSize());
+		mv.addObject("total", pageInfo.getTotal());
+		mv.addObject("pageInfo", pageInfo);
+		return mv;
     }
 
     /**
@@ -66,10 +83,10 @@ public class FoodController {
      */
     @RequestMapping(value = "/add")
     public ModelAndView add() {
-    	 ModelAndView result = new ModelAndView();
+    	 ModelAndView result = new ModelAndView("food/foodAdd");
     	 DietFood dietFood = new DietFood();
  		 result.addObject("dietFood", dietFood);
- 		logger.info("食物信息新增成功");
+ 		 logger.info("食物信息新增查询成功");
          return result;
     }
     
@@ -81,7 +98,7 @@ public class FoodController {
      */
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
-    	ModelAndView result = new ModelAndView();
+    	ModelAndView result = new ModelAndView("food/foodView");
     	DietFood dietFood = new DietFood();
  		try {
  			dietFood = foodManageService.findById(id);
@@ -103,7 +120,7 @@ public class FoodController {
      */
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
-        ModelAndView result = new ModelAndView();
+        ModelAndView result = new ModelAndView("food/foodView");
         DietFood dietFood = new DietFood();
 		try {
 			dietFood = foodManageService.findById(id);

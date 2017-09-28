@@ -219,14 +219,10 @@ var userView  = {
 					Dialog.notice({
 						content: data.info,
 						onSubmitted: function(){
-							if("用户名已经注册，请重新输入" != data.info){
-								_this.closedTab();
-							}
+							_this.closedTab();
 						},
 						onClosed: function(){
-							if("用户名已经注册，请重新输入" != data.info){
-								_this.closedTab();
-							}
+							_this.closedTab();
 						}
 					});
 				}
