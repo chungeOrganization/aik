@@ -1,6 +1,8 @@
 package com.aik.dao;
 
+import com.aik.model.DietFood;
 import com.aik.model.DietFoodCategory;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -17,5 +19,17 @@ public interface DietFoodCategoryMapper {
 
     int updateByPrimaryKey(DietFoodCategory record);
 
-    List<DietFoodCategory> selectAllFoodCategory();
+    List<DietFoodCategory> selectAllFoodCategory();/**
+     * 获取所有数据
+     * @return
+     */
+    List<DietFoodCategory> findAll(DietFoodCategory record);
+
+    /**
+     * 分页查询数据
+     * @return
+     */
+    Page<DietFoodCategory> findByPage(DietFoodCategory record);
+    
+    
 }

@@ -225,7 +225,7 @@
     limit ${(page-1)*size}, #{size}
   </select>
   
-  <select id="findAll" parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+  <select id="findAll" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from diet_food
@@ -244,7 +244,7 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from diet_food

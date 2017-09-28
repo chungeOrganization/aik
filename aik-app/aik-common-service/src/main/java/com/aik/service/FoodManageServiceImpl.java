@@ -64,6 +64,15 @@ public class FoodManageServiceImpl implements FoodManageService {
 		DietFood dietFoodOld = new DietFood();
 		dietFoodOld = dietFoodMapper.selectByPrimaryKey(dietFood.getId());
 		dietFoodOld.setName(dietFood.getName());
+		dietFoodOld.setCategory(dietFood.getCategory());
+		dietFoodOld.setFatRadio(dietFood.getFatRadio());
+		dietFoodOld.setProteinRadio(dietFood.getProteinRadio());
+		dietFoodOld.setRecommend(dietFood.getRecommend());
+		dietFoodOld.setSpotRank(dietFood.getSpotRank());
+		dietFoodOld.setWeight(dietFood.getWeight());
+		dietFoodOld.setWeightUnit(dietFood.getWeightUnit());
+		dietFoodOld.setType(dietFood.getType());
+		dietFoodOld.setImage(dietFood.getImage());
 		//TODO
 		dietFoodOld.setUpdateDate(new Date());
 		dietFoodMapper.updateByPrimaryKeySelective(dietFoodOld);
