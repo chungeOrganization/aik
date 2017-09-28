@@ -57,8 +57,8 @@ public class FoodManageServiceImpl implements FoodManageService {
 	@Override
 	public void update(DietFood dietFood) throws Exception {
 		if (null == dietFood || null == dietFood.getId()) {
-			logger.error("医生保存,根据对象保存,对象为空");
-            throw new Exception("医生保存,根据对象保存,对象为空");
+			logger.error("食物修改,根据对象保存,对象为空");
+            throw new Exception("食物修改,根据对象保存,对象为空");
         }
 
 		DietFood dietFoodOld = new DietFood();
@@ -89,8 +89,8 @@ public class FoodManageServiceImpl implements FoodManageService {
 	@Override
 	public DietFood findById(Integer id) throws Exception {
 		if (null == id) {
-    		logger.error("医生查询,根据主键查询,主键为空");
-            throw new Exception("医生查询,根据主键查询,主键为空");
+    		logger.error("食物查询,根据主键查询,主键为空");
+            throw new Exception("食物查询,根据主键查询,主键为空");
         }
 		return dietFoodMapper.selectByPrimaryKey(id);
 	}

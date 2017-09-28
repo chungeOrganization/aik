@@ -108,4 +108,37 @@
       and foodId = #{foodId,jdbcType=INTEGER}
     </if>
   </select>
+  <select id="findAll" parameterType="com.aik.model.DietUserCollectFood"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_userCollectFood
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="category != null">
+      and foodId = #{foodId}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.model.DietUserCollectFood"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_userCollectFood
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="foodId != null">
+      and foodId = #{foodId}
+    </if>
+  	</select>
+  
+  
 </mapper>

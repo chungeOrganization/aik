@@ -1,0 +1,48 @@
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+<thead>
+<tr>
+	<th>编号</th>
+	<th>用户名称</th>
+	<th>食物名称</th>
+	<th>操作</th>
+</tr>
+</thead>
+<tbody>
+
+
+
+
+<tr class="odd gradeX"  th:each="foodCollect,iterStat : ${result}"  >
+	<td th:id="${foodCollect.id}" th:text="${foodCollect.id}"></td>
+	<td th:text="${foodCollect.userId}"></td>
+	<td class="center" th:text="${foodCollect.foodId}"></td>
+	<td>
+	</td>
+</tr>			
+
+</tbody>
+</table>
+
+
+<div class="row">
+	<div class="col-md-5 col-sm-12">
+		<div class="dataTables_info" id="sample_1_info">总数<span th:text="${total}"></span>条,每页显示<span th:text="${pageSize}"></span>条</div>
+	</div>
+	<div class="col-md-7 col-sm-12">
+	
+		<div class="dataTables_paginate paging_bootstrap">
+			<ul id="page_id" class="pagination" style="visibility: visible;">
+					<li data-pre="gar" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' "><a th:id="${pageInfo.prePage}" title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+					<li  class="active"><a href="javascript:;" th:id="${pageNo}"><span th:text="${pageInfo.prePage}"></span></a></li>
+					<li  class="active"><a href="javascript:;" th:id="${pageNo}"><span th:text="${pageInfo.nextPage}"></span></a></li>
+					<li data-pre="gar" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'"><a th:id="${pageInfo.nextPage}" title="下一页" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+
+</div>
