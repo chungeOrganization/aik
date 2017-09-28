@@ -314,7 +314,7 @@
     <if test="id != null">
       and id = #{id}
     </if>
-    <if test="mobileNo != null">
+    <if test="mobileNo != null and mobileNo != '' ">
       and mobileNo = #{mobileNo,jdbcType=VARCHAR}
     </if>
     <if test="userName != null and userName != ''">

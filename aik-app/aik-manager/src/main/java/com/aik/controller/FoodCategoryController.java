@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.aik.model.AccDoctorAccount;
-import com.aik.model.DietFood;
-import com.aik.service.FoodManageService;
+import com.aik.model.DietFoodCategory;
+import com.aik.service.FoodCategoryManageService;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -25,50 +24,50 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author daixiangning
- * @message 食物库管理
+ * @message 食物分类管理
  */
 @RestController
-@RequestMapping("/foods")
-public class FoodController {
+@RequestMapping("/foodCategorys")
+public class FoodCategoryController {
 	
-	private Logger logger = LoggerFactory.getLogger(FoodController.class);
+	private Logger logger = LoggerFactory.getLogger(FoodCategoryController.class);
 
     @Autowired
-    private FoodManageService foodManageService;
+    private FoodCategoryManageService foodCategoryManageService;
 
     
     /**
-     * 食物管理
+     * 食物分类管理
      * @return
      */
     @RequestMapping(value = "/index")
     public ModelAndView index() {
-    	 ModelAndView result = new ModelAndView("food/foodManage");
+    	 ModelAndView result = new ModelAndView("foodCategory/foodCategoryManage");
          
          return result;
     }
     
     /**
-     * 食物信息列表
+     * 食物分类信息列表
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/goto/{num}")
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietFood dietFood,@PathVariable Integer num) {
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietFoodCategory dietFoodCategory,@PathVariable Integer num) {
        
     	
-    	ModelAndView mv = new ModelAndView("food/foodList");
-    	Page<DietFood> dietFoods = new Page<DietFood>();
+    	ModelAndView mv = new ModelAndView("foodCategory/foodCategoryList");
+    	Page<DietFoodCategory> dietFoodCategorys = new Page<DietFoodCategory>();
 		try {
 			Integer size = 3;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	dietFoods = foodManageService.findPage(dietFood, pageRequest);
+	    	dietFoodCategorys = foodCategoryManageService.findPage(dietFoodCategory, pageRequest);
 			logger.info("食物信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("食物信息列表获取失败", e);
 		}
-    	PageInfo<DietFood> pageInfo = new PageInfo<DietFood>(dietFoods);
+    	PageInfo<DietFoodCategory> pageInfo = new PageInfo<DietFoodCategory>(dietFoodCategorys);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());
@@ -78,63 +77,63 @@ public class FoodController {
     }
 
     /**
-     * 食物信息新增
+     * 食物分类信息新增
      * @return
      */
     @RequestMapping(value = "/add")
     public ModelAndView add() {
-    	 ModelAndView result = new ModelAndView("food/foodAdd");
-    	 DietFood dietFood = new DietFood();
- 		 result.addObject("dietFood", dietFood);
- 		 logger.info("食物信息新增查询成功");
+    	 ModelAndView result = new ModelAndView("foodCategory/foodCategoryAdd");
+    	 DietFoodCategory dietFoodCategory = new DietFoodCategory();
+ 		 result.addObject("dietFoodCategory", dietFoodCategory);
+ 		 logger.info("食物分类信息新增查询成功");
          return result;
     }
     
     
     
     /**
-     * 食物信息编辑
+     * 食物分类信息编辑
      * @return
      */
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
-    	ModelAndView result = new ModelAndView("food/foodView");
-    	DietFood dietFood = new DietFood();
+    	ModelAndView result = new ModelAndView("foodCategory/foodCategoryView");
+    	DietFoodCategory dietFoodCategory = new DietFoodCategory();
  		try {
- 			dietFood = foodManageService.findById(id);
- 			logger.info("食物信息编辑查询成功");
+ 			dietFoodCategory = foodCategoryManageService.findById(id);
+ 			logger.info("食物分类信息编辑查询成功");
  		} catch (Exception e) {
- 			logger.error("食物信息编辑查询", e.getMessage());
+ 			logger.error("食物分类信息编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
- 		result.addObject("dietFood", dietFood);
+ 		result.addObject("dietFoodCategory", dietFoodCategory);
         return result;
     }
     
     
 
     /**
-     * 食物信息明细
+     * 食物分类信息明细
      * @param id
      * @return
      */
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
-        ModelAndView result = new ModelAndView("food/foodView");
-        DietFood dietFood = new DietFood();
+        ModelAndView result = new ModelAndView("foodCategory/foodCategoryView");
+        DietFoodCategory dietFoodCategory = new DietFoodCategory();
 		try {
-			dietFood = foodManageService.findById(id);
-			logger.info("食物信息明细查询成功");
+			dietFoodCategory = foodCategoryManageService.findById(id);
+			logger.info("食物分类信息明细查询成功");
 		}catch (Exception e) {
- 			logger.error("食物信息明细查询", e);
+ 			logger.error("食物分类信息明细查询", e);
 		}
 		result.addObject("opt", "view");
-		result.addObject("dietFood", dietFood);
+		result.addObject("dietFoodCategory", dietFoodCategory);
         return result;
     }
 
     /**
-     * 食物删除
+     * 食物分类删除
      * @param id
      * @return
      */
@@ -143,64 +142,64 @@ public class FoodController {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
-        	foodManageService.deleteByPrimaryKey(id);
+        	foodCategoryManageService.deleteByPrimaryKey(id);
         	data.put("code", "1");
-        	data.put("info", "食物删除成功!");
-			logger.info("食物删除成功!");
+        	data.put("info", "食物分类删除成功!");
+			logger.info("食物分类删除成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物删除失败!原因未知异常");
-			logger.error("食物删除失败!原因未知异常", e);
+			data.put("info", "食物分类删除失败!原因未知异常");
+			logger.error("食物分类删除失败!原因未知异常", e);
 		}
         result.put("data", data);
         return result;
     }
 
     /**
-     * 食物新增
+     * 食物分类新增
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(DietFood dietFood) {
+    public ModelMap save(DietFoodCategory dietFoodCategory) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
-        	foodManageService.save(dietFood);
+        	foodCategoryManageService.save(dietFoodCategory);
         	data.put("code", "1");
-        	data.put("info", "食物新增成功!");
-			logger.info("食物新增成功!");
+        	data.put("info", "食物分类新增成功!");
+			logger.info("食物分类新增成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物新增失败!原因未知异常");
-			logger.error("食物新增失败!原因未知异常", e);
+			data.put("info", "食物分类新增失败!原因未知异常");
+			logger.error("食物分类新增失败!原因未知异常", e);
 		}
         result.put("data", data);
-        result.put("dietFood", dietFood);
+        result.put("dietFood", dietFoodCategory);
         return result;
     }
     
     /**
-     * 食物修改
+     * 食物分类修改
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(DietFood dietFood) {
+    public ModelMap update(DietFoodCategory dietFoodCategory) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
-        	foodManageService.update(dietFood);
+        	foodCategoryManageService.update(dietFoodCategory);
         	data.put("code", "1");
-        	data.put("info", "食物修改成功!");
-			logger.info("食物修改成功!");
+        	data.put("info", "食物分类修改成功!");
+			logger.info("食物分类修改成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物修改失败!原因未知异常");
-			logger.error("食物修改失败!原因未知异常", e);
+			data.put("info", "食物分类修改失败!原因未知异常");
+			logger.error("食物分类修改失败!原因未知异常", e);
 		}
         result.put("data", data);
-        result.put("dietFood", dietFood);
+        result.put("dietFoodCategory", dietFoodCategory);
         return result;
     }
     

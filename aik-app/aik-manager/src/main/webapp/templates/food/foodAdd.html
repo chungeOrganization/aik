@@ -2,7 +2,7 @@
 <div class="portlet box blue">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-reorder"></i>用户添加
+			<i class="fa fa-reorder"></i>食物添加
 		</div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse">
@@ -12,108 +12,76 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form class="form-inline"  method ="post" action="" id="userAdd" enctype="multipart/form-data">
-			<input type="hidden" class="form-control" name="userRole" value="USER" />
+		<form class="form-inline"  method ="post" action="" id="foodAdd" enctype="multipart/form-data">
 			<table class="table  table-bordered ">
 				<tr>
-					
-					<td> 用户名</td>
+					<td>食物名称</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="[a-zA-Z0-9]{6,16}" data-description="userName" data-describedby="userNamespan"  id="userName" placeholder="登录帐号"  name="userName" />
+						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name"  />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
 					</td>
-					<td>密码</td>
+					<td>食物类别</td>
 					<td>
-						<input type="password" class="form-control r" data-required="true" data-pattern="[a-zA-Z0-9]{6,16}" data-description="password" data-describedby="passwordspan"  name="password" id="password" placeholder="密码" />
-						 <span class="required">*</span>
-						 <span class="help-inline prompt" id="passwordspan" style="color: #000000">6-16位字母，数字</span>
+						<input type="text" class="form-control r" data-required="true"  data-description="category"  data-describedby="categoryspan" id="category" name="category"  />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="categoryspan" style="color: #000000"></span>
 					</td>
 				</tr>
 				
 				<tr>
-					<td>真实姓名</td>
+					<td>食物亮点</td>
 					<td>
-						<input type="text" class="form-control r"  data-required="true"  data-description="trueName"  data-describedby="trueNamespan" id="trueName" name="trueName" placeholder="真实姓名" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="trueNamespan" style="color: #000000"></span>
-					</td>
-					<td>昵称</td>
-					<td><input type="text" class="form-control" name="nice" value="" /></td>
-				</tr>
-				
-				
-				
-				<tr>
-					<td>用户类型用户类型</td>
-					<td>
-						<select class="form-control" name="userType">
-							<option value="0" selected="selected">健康的咨询者</option>
-							<option value="1">家属</option>
-							<option value="2">患者</option>
+						<select class="form-control" name="brightSpot">
+							<option value="-1" selected="selected">无</option>
+							<option value="1">GI最低</option>
 						</select>
 					</td>
-					<td>QQ</td>
-					<td>
-						<input type="text" class="form-control" data-pattern="[0-9]{5,13}" data-description="qq" data-describedby="qqspan" id="qq"  name="qq" placeholder="QQ" />
-						<span class="help-inline prompt" id="qqspan" style="color: #000000" ></span>
-					</td>
-					
+					<td>食物亮点排名</td>
+					<td><input type="text" class="form-control" name="spotRank" value="" /></td>
 				</tr>
+					<td>蛋白质比例</td>
+					<td><input type="text" class="form-control"  id="proteinRadio"  name="proteinRadio" value="" /></td>
+					<td>脂肪比例</td>
+					<td><input type="text" class="form-control" name="fatRadio" value="" /></td>
 				
 				<tr>
-					<td>通信地址</td>
-					<td><input type="text" class="form-control" name="address" /></td>
-					<td> 邮箱</td>
+					<td>碳水化合物比例</td>
+					<td><input type="text"  class="form-control" name="carbsRadio" value="" /></td>
+					<td>营养膳食</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" data-description="email" data-describedby="emailspan"  name="email" id="email" placeholder="Email" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="emailspan" style="color: #000000"></span>
-					</td>
-				</tr>
-				
-				<tr>
-					<td> 手机号码</td>
-					<td>
-						<input type="text" class="form-control r" data-required="true"  data-pattern="^0?1(3|5|8|7)\d{9}$" data-description="mobile" data-describedby="mobilespan"  id="mobileNo" name="mobileNo" placeholder="手机号码" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="mobilespan" style="color: #000000"></span>
-					</td>
-					<td> 性别</td>
-					<td>
-						<select class="form-control" name="sex">
-							<option value="0" selected="selected">男</option>
-							<option value="1">女</option>
+						<select class="form-control" name="type">
+							<option value="0" selected="selected">膳食</option>
+							<option value="1">营养</option>
 						</select>
 					</td>
 				</tr>
 				
 				<tr>
-					<td> 固定电话</td>
+					<td>食物份量单位</td>
 					<td>
-						<input type="text" class="form-control"  id="telephone" name="telephone" placeholder="固定电话" />
+						<input type="text" class="form-control "  name="weightUnit" value="" />
 					</td>
-					<td> 有效性</td>
+					<td> 每份重量</td>
+					<td>
+						<input type="text" class="form-control "  name="weight" value="" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td> 推荐|禁食</td>
+					<td>
+						<select class="form-control" name="recommend">
+							<option value="false" selected="selected">推荐</option>
+							<option value="true">禁食</option>
+						</select>
+					</td>
+					<td>有效性</td>
 					<td>
 						<select class="form-control" name="deleteStatus">
 							<option value="false" selected="selected">有效</option>
 							<option value="true">无效</option>
 						</select>
-					</td>
-				</tr>
-				
-				<tr>
-					<td> 证件类型</td>
-					<td>
-						<!-- <select class="form-control" name="identityType">
-							#foreach ($codecode in $codeList)
-							<option value="$codecode.id" 
-								>$codecode.codeCName</option>
-							#end
-						</select> -->
-					</td>
-					<td> 证件号码</td>
-					<td><input type="text" class="form-control" name="identityCard" />
 					</td>
 				</tr>
 				<tr>
@@ -163,9 +131,9 @@
 </div>
 
 <script>
-	window.userAdd = null;
-    var userAdd = {
-    		fm : jQuery("#userAdd"),
+	window.foodAdd = null;
+    var foodAdd = {
+    		fm : jQuery("#foodAdd"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -197,7 +165,7 @@
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				userPage.load(1);
+				foodPage.load(1);
     		},
     		//提交数据
     		onSubmit: function(){
@@ -226,21 +194,17 @@
     			var _this = this;
     			Ajax.requestSubmit({
     				fm: _this.fm,
-    				url: _this.basePath + '/users/save',
+    				url: _this.basePath + '/foods/save',
     				type: "post",
     				success: function(data){
     					if(!data) return;
     					Dialog.notice({
     						content: data.info,
     						onSubmitted: function(){
-    							if("用户名已经注册，请重新输入" != data.info){
-    								_this.closedTab();
-    							}
+    							_this.closedTab();
     						},
     						onClosed: function(){
-    							if("用户名已经注册，请重新输入" != data.info){
-    								_this.closedTab();
-    							}
+    							_this.closedTab();
     						}
     					});
     				}
@@ -261,7 +225,7 @@
 				return data;
     		},    		
 			initValidate : function(){
-				jQuery("#userAdd").validate({
+				jQuery("#foodAdd").validate({
 					onKeyup : true,
 					sendForm : false,
 					eachValidField : function() {
@@ -305,6 +269,6 @@
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	userAdd.init();
+	foodAdd.init();
 });
 </script>

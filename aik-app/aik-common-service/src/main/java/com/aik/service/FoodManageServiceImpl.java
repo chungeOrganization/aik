@@ -1,11 +1,7 @@
 package com.aik.service;
 
 import com.aik.dao.*;
-import com.aik.enums.ExcursionEnum;
-import com.aik.enums.FoodBrightSpotEnum;
 import com.aik.model.*;
-import com.aik.resource.SystemResource;
-import com.aik.util.MD5Utils;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -15,13 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description: 食物
@@ -65,13 +57,22 @@ public class FoodManageServiceImpl implements FoodManageService {
 	@Override
 	public void update(DietFood dietFood) throws Exception {
 		if (null == dietFood || null == dietFood.getId()) {
-			logger.error("医生保存,根据对象保存,对象为空");
-            throw new Exception("医生保存,根据对象保存,对象为空");
+			logger.error("食物修改,根据对象保存,对象为空");
+            throw new Exception("食物修改,根据对象保存,对象为空");
         }
 
 		DietFood dietFoodOld = new DietFood();
 		dietFoodOld = dietFoodMapper.selectByPrimaryKey(dietFood.getId());
 		dietFoodOld.setName(dietFood.getName());
+		dietFoodOld.setCategory(dietFood.getCategory());
+		dietFoodOld.setFatRadio(dietFood.getFatRadio());
+		dietFoodOld.setProteinRadio(dietFood.getProteinRadio());
+		dietFoodOld.setRecommend(dietFood.getRecommend());
+		dietFoodOld.setSpotRank(dietFood.getSpotRank());
+		dietFoodOld.setWeight(dietFood.getWeight());
+		dietFoodOld.setWeightUnit(dietFood.getWeightUnit());
+		dietFoodOld.setType(dietFood.getType());
+		dietFoodOld.setImage(dietFood.getImage());
 		//TODO
 		dietFoodOld.setUpdateDate(new Date());
 		dietFoodMapper.updateByPrimaryKeySelective(dietFoodOld);
@@ -88,8 +89,8 @@ public class FoodManageServiceImpl implements FoodManageService {
 	@Override
 	public DietFood findById(Integer id) throws Exception {
 		if (null == id) {
-    		logger.error("医生查询,根据主键查询,主键为空");
-            throw new Exception("医生查询,根据主键查询,主键为空");
+    		logger.error("食物查询,根据主键查询,主键为空");
+            throw new Exception("食物查询,根据主键查询,主键为空");
         }
 		return dietFoodMapper.selectByPrimaryKey(id);
 	}

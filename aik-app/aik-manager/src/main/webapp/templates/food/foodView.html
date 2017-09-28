@@ -11,92 +11,89 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="" method="post" class="form-inline" id="user_vfm" enctype="multipart/form-data">
-			<input type ="hidden" id="id" name="id" value="" th:value="${accUserAccount.id}" />
+		<form action="" method="post" class="form-inline" id="food_vfm" enctype="multipart/form-data">
+			<input type ="hidden" id="id" name="id" value="" th:value="${dietFood.id}" />
 			<input type ="hidden" id="opt" name="opt" value="" th:value="${opt}" />
 			
 			<table class="table  table-bordered ">
 				<tr>
-					
-					<td>用户名</td>
+					<td>食物名称</td>
 					<td>
-						<input type="text" class="form-control r" readOnly="true" data-required="true" data-pattern="[a-zA-Z0-9]{5,16}" data-description="userName" data-describedby="userNamespan"  id="userName" placeholder="登录帐号"  name="userName" value="" th:value="${accUserAccount.userName}"/>
+						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name" th:value="${dietFood.name}" />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
+					</td>
+					<td>食物类别</td>
+					<td>
+						<input type="text" class="form-control r" data-required="true"  data-description="category"  data-describedby="categoryspan" id="category" name="category" th:value="${dietFood.category}" />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="categoryspan" style="color: #000000"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>食物亮点</td>
+					<td>
+						<select class="form-control" name="brightSpot">
+							<option value="-1" selected="selected">无</option>
+							<option value="1">GI最低</option>
+						</select>
+					</td>
+					<td>食物亮点排名</td>
+					<td><input type="text" class="form-control" name="spotRank" value="" th:value="${dietFood.spotRank}"/></td>
+				</tr>
+					<td>蛋白质比例</td>
+					<td><input type="text" class="form-control"  id="proteinRadio"  name="proteinRadio" value="" th:value="${dietFood.proteinRadio}" /></td>
+					<td>脂肪比例</td>
+					<td><input type="text" class="form-control" name="fatRadio" value="" th:value="${dietFood.fatRadio}"/></td>
+				
+				<tr>
+					<td>碳水化合物比例</td>
+					<td><input type="text"  class="form-control" name="carbsRadio" value="" th:value="${dietFood.carbsRadio}"/></td>
+					<td>营养膳食</td>
+					<td>
+						<select class="form-control" name="type">
+							<option value="0" selected="selected">膳食</option>
+							<option value="1">营养</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>食物份量单位</td>
+					<td>
+						<input type="text" class="form-control "  name="weightUnit" value="" th:value="${dietFood.weightUnit}"/>
+					</td>
+					<td> 每份重量</td>
+					<td>
+						<input type="text" class="form-control "  name="weight" value="" th:value="${dietFood.weight}"/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td> 推荐|禁食</td>
+					<td>
+						<select class="form-control" name="recommend">
+							<option value="false" selected="selected">推荐</option>
+							<option value="true">禁食</option>
+						</select>
 					</td>
 					<td>有效性</td>
 					<td>
 						<select class="form-control" name="deleteStatus">
-							<option selected="selected" value="false">有效</option>
-							<option selected="selected" value="true">无效</option>
+							<option value="false" selected="selected">有效</option>
+							<option value="true">无效</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<td>真实姓名</td>
-					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="trueName"  data-describedby="trueNamespan" id="trueName" name="trueName" placeholder="真实姓名" value="" th:value="${accUserAccount.realName}"/>
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="trueNamespan" style="color: #000000"></span>
-					</td>
-					<td> 昵称</td>
-					<td><input type="text" class="form-control" name="nice" value="" th:value="${accUserAccount.nickName}"/></td>
-				</tr>
-				<tr>
-					<td>QQ</td>
-					<td><input type="text" class="form-control" data-pattern="[0-9]{5,13}" data-description="qq" data-describedby="qqspan" id="qq"  name="qq" placeholder="QQ" value=""/>
-						<span class="help-inline prompt" id="qqspan" style="color: #000000" ></span>
-					</td>
-					<td>MSN</td>
-					<td><input type="text" class="form-control" name="msn" value=""/></td>
-				</tr>
-				
-				<tr>
-					<td>通信地址</td>
-					<td><input type="text"  class="form-control" name="address" value="" /></td>
-					<td> 邮箱</td>
-					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" data-description="email" data-describedby="emailspan"  name="email" id="email" placeholder="Email" value="" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="emailspan" style="color: #000000"></span>
-					</td>
-				</tr>
-				
-				<tr>
-					<td>手机号码</td>
-					<td>
-						<input type="text" class="form-control r" data-required="true"  data-pattern="^0?1(3|5|8|7)\d{9}$" data-description="mobile" data-describedby="mobilespan" id="mobileNo" name="mobileNo" placeholder="手机号码" value="" th:value="${accUserAccount.mobileNo}"/>
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="mobilespan" style="color: #000000"></span>
-					</td>
-					<td> 性别</td>
-					<td>
-						<select class="form-control" name="sex">
-							<option value="0" >男</option>
-							<option value="1" >女</option>
-						</select>
-						<span class="help-inline prompt" id="sexspan" style="color: #000000"></span>
-					</td>
-				</tr>
-				
-				<tr>
-					<td>证件类型</td>
-					<td>
-						<select class="form-control" name="identityType">
-						</select>
-					</td>
-					<td> 证件号码</td>
-					<td><input type="text" class="form-control" name="identityCard" value="" />
-					</td>
-				</tr>
-					<tr>
-					<td> 个人图片 <input type="hidden" name="imgNo" value="1" /></td>
+					<td> 食物图片</td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail"
 								style="width: 150px; height: 150px;">
-								<img src=""  name="photo" alt="" />
+								<img th:src="@{/static/assets/img/no_image.gif}"  name="userPhoto" alt="" />
 								
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail"
@@ -104,20 +101,19 @@
 							</div>
 							<div>
 								<span class="default btn-file"> <span
-									class="fileinput-new">选择照片</span> <span
-									class="fileinput-exists">更换照片</span> 
+									class="fileinput-new"> Select image </span> <span
+									class="fileinput-exists"> Change </span> 
 									<input type="file" name="file" /> </span>
 								<a href="components_form_tools.html#"
 									class="btn default fileinput-exists"
-									data-dismiss="fileinput">删除照片</a>
+									data-dismiss="fileinput"> Remove </a>
 							</div>
 						</div>
 						<div class="clearfix margin-top-10">
-							<span class="label label-danger">提示!</span>最佳尺寸:150px * 150px
+							<span class="label label-danger"> NOTE! </span> 最佳尺寸:150px * 150px
 						</div>
 					</td>
 				</tr>
-				
 				
 			</table>
 			
@@ -136,14 +132,15 @@
 </div>
 
 <script>
-window.userView = null;
-var userView  = {
-		fm : jQuery("#user_vfm"),
+window.foodView = null;
+var foodView  = {
+		fm : jQuery("#food_vfm"),
+		
 		basePath : jQuery("#basePath").val(),
 		//初始化
 		init : function(){
 			if(jQuery("#opt").val() == "view"){
-				userView.readOnlyPallet();
+				foodView.readOnlyPallet();
 			}
 			this.bindEvent();
 			this.initValidate();
@@ -158,9 +155,9 @@ var userView  = {
 				Dialog.confirm({
 					content:'确定保存?',
 					onSubmitted:function(){
-   						if(UiUtils.check("user_vfm")){
+   						if(UiUtils.check("food_vfm")){
    							//updateAdmin();
-   							var url = _this.basePath + "/users/update";
+   							var url = _this.basePath + "/foods/update";
 							_this.ajaxSubmit(url);
    						}
    					}
@@ -177,7 +174,7 @@ var userView  = {
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				userPage.load(1);
+				foodPage.load(1);
     	},
 		//禁止输入
    		readOnlyPallet: function(){
@@ -245,7 +242,7 @@ var userView  = {
    		
    		initValidate : function(){
    		
-    		jQuery('#user_vfm').validate({
+    		jQuery('#food_vfm').validate({
 				onKeyup : true,
 				sendForm : false,
 				eachValidField : function() {
@@ -256,25 +253,9 @@ var userView  = {
 				},
 				
 				description : {
-					
-					mobile : {
-						required : '请输入手机号码',
-						pattern : '手机号码格式不正确'
-					},
-					
-					email : {
-						required : '请输入邮箱地址',
-						pattern : '邮箱地址格式不正确'
-					},
-					userName : {
-						required : '请输入登录名',
-						pattern : '长度必须5-16位字符'
-					},
-					trueName : {
+				
+					name : {
 						required : '请输入真实姓名'
-					},
-					qq :{
-						pattern : '长度为5以上的'
 					}
 				}
 				
@@ -286,6 +267,6 @@ var userView  = {
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	userView.init();
+	foodView.init();
 });
 </script>

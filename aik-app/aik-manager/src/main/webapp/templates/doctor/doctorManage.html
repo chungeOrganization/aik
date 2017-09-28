@@ -1,0 +1,276 @@
+<div class="tabbable tabbable-custom boxless">
+	<ul class="nav nav-tabs" id="nav-tabs">
+		<li id="tabli_1" class="active"><a id="tabli_11" href="#tab_1" data-toggle="tab">查询信息</a></li>
+	</ul>
+	<div class="tab-content" id="tab-content">
+		<div class="tab-pane active" id="tab_1">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="fa fa-reorder"></i>条件
+					</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse">
+						</a>
+						<a href="javascript:;" class="reload">
+						</a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<!-- BEGIN FORM-->
+					<form action="" id="doctor_mg" class="form-horizontal">
+						<div class="form-body">
+							<!--/row-->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">用户名</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="userName" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">真实姓名</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="realName" />
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!--/row-->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">性别</label>
+										<div class="col-md-9">
+											<select class="form-control" name="sex">
+												<option value="" selected ="selected">无限制</option>
+												<option value="0">男</option>
+												<option value="1">女</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!--/span-->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">手机号码</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="mobile"/>
+										</div>
+									</div>
+								</div>
+								<!--/span-->
+							</div>
+							
+							<!--/row-->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">是否有效</label>
+										<div class="col-md-9">
+											<select class="form-control" name="deleteStatus">
+												<option value="false" selected ="selected">有效</option>
+												<option value="true">无效</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!--/span-->
+							</div>
+							
+						</div>
+						<div class="form-actions fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-offset-5 col-md-1">
+										<button type="button" id="query_ar" class="btn blue">查 询</button>
+										
+									</div>
+									<div class="col-md-1">
+									<button type="reset"  class="btn default">重 置</button>
+									</div>
+								</div>
+								<div class="col-md-6">
+								</div>
+							</div>
+						</div>
+					</form>
+					<!-- END FORM-->
+				</div>
+			</div>
+			<!-- 列表-->
+			<div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-globe"></i>内容
+							</div>
+							<div class="tools">
+								<a href="javascript:;" class="collapse">
+								</a>
+								<a href="javascript:;" class="reload">
+								</a>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="table-toolbar">
+								<div class="btn-group">
+									<button id="add_ar" class="btn green">
+									添加 <i class="fa fa-plus"></i>
+									</button>
+								</div>
+								<!-- <div class="btn-group pull-right">
+									<button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i class="fa fa-angle-down"></i>
+									</button>
+									<ul class="dropdown-menu pull-right">
+										<li>
+											<a href="table_managed.html#">
+												 打印
+											</a>
+										</li>
+										<li>
+											<a href="table_managed.html#">
+												 保存为PDF
+											</a>
+										</li>
+										<li>
+											<a href="table_managed.html#">
+												 导出Excel
+											</a>
+										</li>
+									</ul>
+								</div> -->
+							</div>
+							<div id="list-content"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	window.doctorPage = null;
+    var doctorPage = {
+    		fm : jQuery("#doctor_mg"),
+    		
+    		basePath : jQuery("#basePath").val(),
+    		//初始化
+    		init : function(){
+    			this.bindEvent();
+    		},
+    		
+    		//事件绑定
+    		bindEvent : function(){
+    			var _this = this;
+    			//绑定添加单击事件
+    			jQuery("#add_ar").bind("click", function(){
+					Ajax.load({
+	    				url: _this.basePath + "/doctors/add",
+	    				tab: "2",
+	    				data:{},
+	    				iTab: true,
+	    				tabTitle: "添加医生"
+	    			});
+					return false;
+    			});
+    			//绑定查询单击事件
+    			jQuery("#query_ar").bind("click", function(){
+    				_this.load(1);
+    				return false;
+    			});
+    			//绑定查看单击事件
+    			jQuery("#list-content").delegate(".view", "click", function(){
+    				var _tr = jQuery(this).closest("tr"),
+    					userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
+    				Ajax.load({
+        				url: _this.basePath +"/doctors/view/"+userId,
+        				tab: "2",
+        				data:{},
+        				iTab: true,
+        				tabTitle: "查看医生"
+        			});
+    				return false;
+    			}).delegate(".edit", "click", function(){//绑定编辑单击事件
+    				var _tr = jQuery(this).closest("tr"),
+						userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
+					Ajax.load({
+	    				url: _this.basePath +"/doctors/edit/"+userId,
+	    				tab: "2",
+	    				data:{},
+	    				iTab: true,
+	    				tabTitle: "编辑医生"
+	    			});
+					return false;
+				}).delegate(".delect", "click", function(){//绑定删除单击事件
+					var _tr = jQuery(this).closest("tr"),
+						userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
+					Dialog.confirm({
+						content:'确定要删除?',
+						onSubmitted:function(){
+						
+						Ajax.request({
+		    				url: _this.basePath +"/doctors/delete/"+userId,
+		    				type:"get",
+		    				data:{},
+		    				success: function(data){
+		    					if(!data) return;
+		    					Dialog.notice({
+		    						content: data.info,
+		    						onSubmitted: function(){
+		    							_this.load(1);
+		    						},
+		    						onClosed: function(){
+		    							_this.load(1);
+		    						}
+		    					});
+		    				}
+		    			});
+						}
+					});
+					return false;
+				}).delegate("li[data-pre=gar]", "click", function(){//绑定页码单击事件
+					var num = jQuery(this).find('a').attr("id");
+					_this.load(num);
+					return false;
+				});
+    		},
+    		
+    		//基本信息表单域取值
+    		getFormData: function(){
+    			var data = {},
+					_field,
+					_fieldName;
+				this.fm.find("input, select").each(function(i, n){
+					_field = jQuery(n), 
+					_fieldName = _field.attr("name");
+					if(_fieldName){
+						data[_fieldName] = _field.val();
+					}
+				});
+				return data;
+    		},    		
+    		
+    		//加载分页
+    		load: function(num){
+    			var _this = this;
+    			Ajax.load({
+    				url: _this.basePath + "/doctors/goto/"+num,
+    				data: _this.fm.serializeArray(), 
+    				target:"#list-content"
+    			});
+    		}
+    }
+  </script>
+<script>
+jQuery(document).ready(function() {    
+	doctorPage.init();
+});
+</script>

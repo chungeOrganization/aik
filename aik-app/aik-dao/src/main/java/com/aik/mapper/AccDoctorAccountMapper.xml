@@ -440,13 +440,13 @@
     <if test="id != null">
       and id = #{id}
     </if>
-    <if test="mobileNo != null">
+    <if test="mobileNo != null  and mobileNo != '' ">
       and mobileNo = #{mobileNo,jdbcType=VARCHAR}
     </if>
-    <if test="userName != null">
+    <if test="userName != null and userName != '' ">
       and userName = #{userName,jdbcType=VARCHAR}
     </if>
-    <if test="realName != null">
+    <if test="realName != null and realName != '' ">
       and realName = #{realName,jdbcType=VARCHAR}
     </if>
     <if test="sex != null">
@@ -461,7 +461,7 @@
     <if test="birthday != null">
       and birthday = #{birthday,jdbcType=DATE}
     </if>
-    <if test="identityCard != null">
+    <if test="identityCard != null and identityCard != '' ">
       and identityCard = #{identityCard,jdbcType=VARCHAR}
     </if>
     <if test="email != null">
