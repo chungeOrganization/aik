@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikFeedbackFileMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikFeedbackFile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="feedbackId" jdbcType="INTEGER" property="feedbackId" />
+    <result column="fileUrl" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, feedbackId, fileUrl, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_feedbackFile
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_feedbackFile
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikFeedbackFile">
+    insert into aik_feedbackFile (id, feedbackId, fileUrl, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{feedbackId,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikFeedbackFile">
+    insert into aik_feedbackFile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="feedbackId != null">
+        feedbackId,
+      </if>
+      <if test="fileUrl != null">
+        fileUrl,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackId != null">
+        #{feedbackId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikFeedbackFile">
+    update aik_feedbackFile
+    <set>
+      <if test="feedbackId != null">
+        feedbackId = #{feedbackId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikFeedbackFile">
+    update aik_feedbackFile
+    set feedbackId = #{feedbackId,jdbcType=INTEGER},
+      fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikFeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikFeedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userType" jdbcType="TINYINT" property="userType" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userType, userId, type, description, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikFeedback">
+    insert into aik_feedback (id, userType, userId, 
+      type, description, createDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{userType,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER}, 
+      #{type,jdbcType=TINYINT}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikFeedback">
+    insert into aik_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userType != null">
+        userType,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikFeedback">
+    update aik_feedback
+    <set>
+      <if test="userType != null">
+        userType = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikFeedback">
+    update aik_feedback
+    set userType = #{userType,jdbcType=TINYINT},
+      userId = #{userId,jdbcType=INTEGER},
+      type = #{type,jdbcType=TINYINT},
+      description = #{description,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
