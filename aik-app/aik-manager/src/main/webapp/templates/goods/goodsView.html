@@ -11,83 +11,58 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="" method="post" class="form-inline" id="food_vfm" enctype="multipart/form-data">
-			<input type ="hidden" id="id" name="id" value="" th:value="${dietFood.id}" />
+		<form action="" method="post" class="form-inline" id="goods_vfm" enctype="multipart/form-data">
+			<input type ="hidden" id="id" name="id" value="" th:value="${stoGoods.id}" />
 			<input type ="hidden" id="opt" name="opt" value="" th:value="${opt}" />
 			
 			<table class="table  table-bordered ">
 				<tr>
-					<td>食物名称</td>
+					<td>商品名称</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name" th:value="${dietFood.name}" />
+						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name" th:value="${stoGoods.name}" />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
 					</td>
-					<td>食物类别</td>
+					<td>商品价格</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="category"  data-describedby="categoryspan" id="category" name="category" th:value="${dietFood.category}" />
+						<input type="text" class="form-control r" data-required="true"  data-description="price"  data-describedby="pricespan" id="price" name="price"  th:value="${stoGoods.price}" />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="categoryspan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="pricespan" style="color: #000000"></span>
 					</td>
 				</tr>
 				
 				<tr>
-					<td>食物亮点</td>
-					<td>
-						<select class="form-control" name="brightSpot">
-							<option value="-1" selected="selected">无</option>
-							<option value="1">GI最低</option>
-						</select>
-					</td>
-					<td>食物亮点排名</td>
-					<td><input type="text" class="form-control" name="spotRank" value="" th:value="${dietFood.spotRank}"/></td>
-				</tr>
-					<td>蛋白质比例</td>
-					<td><input type="text" class="form-control"  id="proteinRadio"  name="proteinRadio" value="" th:value="${dietFood.proteinRadio}" /></td>
-					<td>脂肪比例</td>
-					<td><input type="text" class="form-control" name="fatRadio" value="" th:value="${dietFood.fatRadio}"/></td>
-				
-				<tr>
-					<td>碳水化合物比例</td>
-					<td><input type="text"  class="form-control" name="carbsRadio" value="" th:value="${dietFood.carbsRadio}"/></td>
-					<td>营养膳食</td>
+					<td>商品类型</td>
 					<td>
 						<select class="form-control" name="type">
+							<option value="0" selected="selected">特医食品</option>
+							<option value="1">保健食品</option>
+							<option value="2">智能硬件</option>
+							<option value="3">产品套餐</option>
+						</select>
+					</td>
+					<td>商品描述</td>
+					<td><input type="text" class="form-control" name="description" value="" th:value="${stoGoods.description}" /></td>
+				</tr>
+				
+				<tr>
+					<td>是否推荐</td>
+					<td>
+						<select class="form-control" name="isRecommend">
+							<option value="0" selected="selected">未推荐</option>
+							<option value="1">推荐</option>
+						</select>
+					</td>
+					<td>是否上架</td>
+					<td>
+						<select class="form-control" name="status">
 							<option value="0" selected="selected">膳食</option>
 							<option value="1">营养</option>
 						</select>
 					</td>
 				</tr>
-				
 				<tr>
-					<td>食物份量单位</td>
-					<td>
-						<input type="text" class="form-control "  name="weightUnit" value="" th:value="${dietFood.weightUnit}"/>
-					</td>
-					<td> 每份重量</td>
-					<td>
-						<input type="text" class="form-control "  name="weight" value="" th:value="${dietFood.weight}"/>
-					</td>
-				</tr>
-				
-				<tr>
-					<td> 推荐|禁食</td>
-					<td>
-						<select class="form-control" name="recommend">
-							<option value="false" selected="selected">推荐</option>
-							<option value="true">禁食</option>
-						</select>
-					</td>
-					<td>有效性</td>
-					<td>
-						<select class="form-control" name="deleteStatus">
-							<option value="false" selected="selected">有效</option>
-							<option value="true">无效</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td> 食物图片</td>
+					<td> 商品图片</td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
 							data-provides="fileinput">
@@ -134,7 +109,7 @@
 <script>
 window.foodView = null;
 var foodView  = {
-		fm : jQuery("#food_vfm"),
+		fm : jQuery("#goods_vfm"),
 		
 		basePath : jQuery("#basePath").val(),
 		//初始化
@@ -155,9 +130,9 @@ var foodView  = {
 				Dialog.confirm({
 					content:'确定保存?',
 					onSubmitted:function(){
-   						if(UiUtils.check("food_vfm")){
+   						if(UiUtils.check("goods_vfm")){
    							//updateAdmin();
-   							var url = _this.basePath + "/foods/update";
+   							var url = _this.basePath + "/goods/update";
 							_this.ajaxSubmit(url);
    						}
    					}
@@ -174,7 +149,7 @@ var foodView  = {
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				foodPage.load(1);
+				goodsPage.load(1);
     	},
 		//禁止输入
    		readOnlyPallet: function(){
@@ -242,7 +217,7 @@ var foodView  = {
    		
    		initValidate : function(){
    		
-    		jQuery('#food_vfm').validate({
+    		jQuery('#goods_vfm').validate({
 				onKeyup : true,
 				sendForm : false,
 				eachValidField : function() {
@@ -255,7 +230,7 @@ var foodView  = {
 				description : {
 				
 					name : {
-						required : '请输入食物名称'
+						required : '请输入商品名称'
 					}
 				}
 				

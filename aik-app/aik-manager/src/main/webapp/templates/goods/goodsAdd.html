@@ -2,7 +2,7 @@
 <div class="portlet box blue">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-reorder"></i>食物添加
+			<i class="fa fa-reorder"></i>商品添加
 		</div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse">
@@ -12,45 +12,48 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form class="form-inline"  method ="post" action="" id="foodAdd" enctype="multipart/form-data">
+		<form class="form-inline"  method ="post" action="" id="goodsAdd" enctype="multipart/form-data">
 			<table class="table  table-bordered ">
 				<tr>
-					<td>食物名称</td>
+					<td>商品名称</td>
 					<td>
 						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name"  />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
 					</td>
-					<td>食物类别</td>
+					<td>商品价格</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="category"  data-describedby="categoryspan" id="category" name="category"  />
+						<input type="text" class="form-control r" data-required="true"  data-description="price"  data-describedby="pricespan" id="price" name="price"  />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="categoryspan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="pricespan" style="color: #000000"></span>
 					</td>
 				</tr>
 				
 				<tr>
-					<td>食物亮点</td>
-					<td>
-						<select class="form-control" name="brightSpot">
-							<option value="-1" selected="selected">无</option>
-							<option value="1">GI最低</option>
-						</select>
-					</td>
-					<td>食物亮点排名</td>
-					<td><input type="text" class="form-control" name="spotRank" value="" /></td>
-				</tr>
-					<td>蛋白质比例</td>
-					<td><input type="text" class="form-control"  id="proteinRadio"  name="proteinRadio" value="" /></td>
-					<td>脂肪比例</td>
-					<td><input type="text" class="form-control" name="fatRadio" value="" /></td>
-				
-				<tr>
-					<td>碳水化合物比例</td>
-					<td><input type="text"  class="form-control" name="carbsRadio" value="" /></td>
-					<td>营养膳食</td>
+					<td>商品类型</td>
 					<td>
 						<select class="form-control" name="type">
+							<option value="0" selected="selected">特医食品</option>
+							<option value="1">保健食品</option>
+							<option value="2">智能硬件</option>
+							<option value="3">产品套餐</option>
+						</select>
+					</td>
+					<td>商品描述</td>
+					<td><input type="text" class="form-control" name="description" value="" /></td>
+				</tr>
+				
+				<tr>
+					<td>是否推荐</td>
+					<td>
+						<select class="form-control" name="isRecommend">
+							<option value="0" selected="selected">未推荐</option>
+							<option value="1">推荐</option>
+						</select>
+					</td>
+					<td>是否上架</td>
+					<td>
+						<select class="form-control" name="status">
 							<option value="0" selected="selected">膳食</option>
 							<option value="1">营养</option>
 						</select>
@@ -58,34 +61,7 @@
 				</tr>
 				
 				<tr>
-					<td>食物份量单位</td>
-					<td>
-						<input type="text" class="form-control "  name="weightUnit" value="" />
-					</td>
-					<td> 每份重量</td>
-					<td>
-						<input type="text" class="form-control "  name="weight" value="" />
-					</td>
-				</tr>
-				
-				<tr>
-					<td> 推荐|禁食</td>
-					<td>
-						<select class="form-control" name="recommend">
-							<option value="false" selected="selected">推荐</option>
-							<option value="true">禁食</option>
-						</select>
-					</td>
-					<td>有效性</td>
-					<td>
-						<select class="form-control" name="deleteStatus">
-							<option value="false" selected="selected">有效</option>
-							<option value="true">无效</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td> 个人图片</td>
+					<td> 商品图片</td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
 							data-provides="fileinput">
@@ -131,9 +107,9 @@
 </div>
 
 <script>
-	window.foodAdd = null;
-    var foodAdd = {
-    		fm : jQuery("#foodAdd"),
+	window.goodsAdd = null;
+    var goodsAdd = {
+    		fm : jQuery("#goodsAdd"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -149,7 +125,7 @@
     				Dialog.confirm({
 	    				content:'确定保存?',
 						onSubmitted:function(){
-	   						if(UiUtils.check("foodAdd")){
+	   						if(UiUtils.check("goodsAdd")){
 	   							//addUser();
 	   							_this.ajaxSubmit();
 	   						}
@@ -165,7 +141,7 @@
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				foodPage.load(1);
+				goodsPage.load(1);
     		},
     		//提交数据
     		onSubmit: function(){
@@ -194,7 +170,7 @@
     			var _this = this;
     			Ajax.requestSubmit({
     				fm: _this.fm,
-    				url: _this.basePath + '/foods/save',
+    				url: _this.basePath + '/goods/save',
     				type: "post",
     				success: function(data){
     					if(!data) return;
@@ -225,7 +201,7 @@
 				return data;
     		},    		
 			initValidate : function(){
-				jQuery("#foodAdd").validate({
+				jQuery("#goodsAdd").validate({
 					onKeyup : true,
 					sendForm : false,
 					eachValidField : function() {
@@ -234,31 +210,9 @@
 					eachInvalidField : function() {
 						jQuery(this).addClass('error');
 					},
-					
 					description : {
-					
-						mobile : {
-							required : '请输入手机号码',
-							pattern : '手机号码必须11位以上数字'
-						},
-						
-						password : {
-							required : '请输入密码',
-							pattern : '请输入6-16位字母，数字'
-						},
-						email : {
-							required : '请输入邮箱地址',
-							pattern : '邮箱地址格式不正确'
-						},
-						userName : {
-							required : '请输入登录名',
-							pattern : '长度必须6-16位字符'
-						},
-						trueName : {
+						name : {
 							required : '请输入真实姓名'
-						},
-						qq :{
-							pattern : '长度为5以上的'
 						}
 					}
 					
@@ -269,6 +223,6 @@
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	foodAdd.init();
+	goodsAdd.init();
 });
 </script>

@@ -184,4 +184,32 @@
     </if>
     limit ${(page-1)*size}, #{size}
   </select>
+  
+   <select id="findAll" parameterType="com.aik.model.StoGoods"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sto_goods
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+      and name = #{name}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.model.StoGoods"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sto_goods
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+      and name = #{name}
+    </if>
+  	</select>
+  
+  
 </mapper>
