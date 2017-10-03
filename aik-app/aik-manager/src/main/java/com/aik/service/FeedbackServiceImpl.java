@@ -26,6 +26,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Page<AikFeedback> findPage() {
-        return null;
+        AikFeedback searchAF = new AikFeedback();
+        return aikFeedbackMapper.selectByPage(searchAF);
     }
 }

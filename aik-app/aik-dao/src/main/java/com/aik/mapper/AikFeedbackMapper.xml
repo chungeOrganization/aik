@@ -103,4 +103,16 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPage" parameterType="com.aik.model.AikFeedback" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_feedback
+    where 1=1
+    <if test="type != null">
+      and type = #{type}
+    </if>
+    <if test="description != null">
+      and locate(#{description}, description) &gt; 0
+    </if>
+  </select>
 </mapper>

@@ -24,7 +24,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">问题类型</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control"/>
+                                            <input title="问题类型" type="text" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +32,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">问题描述</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control"/>
+                                            <input title="问题描述" type="text" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -86,10 +86,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    jQuery(function() {
-        feedbackPage.init();
-    });
-
     var feedbackPage = {
         fm: jQuery("form[name='search-form']"),
         basePath : jQuery("#basePath").val(),
@@ -97,20 +93,25 @@
             this.bindEvent();
         },
         bindEvent: function() {
+            var $this = this;
             //绑定查询单击事件
             jQuery("#btn_search").bind("click", function(){
-                this.load(1);
+                $this.load(1, 10);
             });
         },
         getFormData: function() {
 
         },
-        load: function(num) {
+        load: function(num, size) {
             Ajax.load({
-                url: this.basePath + "/users/goto/"+num,
+                url: this.basePath + "/feedback/goto/"+num + "/"+size,
                 data: this.fm.serializeArray(),
                 target:"#list-content"
             });
         }
-    }
+    };
+
+    jQuery(function() {
+        feedbackPage.init();
+    });
 </script>

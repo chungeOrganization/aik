@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikFeedback;
+import com.github.pagehelper.Page;
 
 public interface AikFeedbackMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,6 @@ public interface AikFeedbackMapper {
     int updateByPrimaryKeySelective(AikFeedback record);
 
     int updateByPrimaryKey(AikFeedback record);
+
+    Page<AikFeedback> selectByPage(AikFeedback record);
 }
