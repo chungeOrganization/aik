@@ -75,8 +75,9 @@ public class IndexController {
 	   		 	logger.info("登陆癌康之家失败-->后台");
 			}
 		} catch (Exception e) {
+			
 			result = new ModelAndView("redirect:/");
-   		 	logger.info("登陆癌康之家失败-->后台");
+   		 	logger.error("登陆癌康之家失败-->后台",e);
 		}
         return result;
     }

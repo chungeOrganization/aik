@@ -18,7 +18,7 @@
 				</div>
 				<div class="portlet-body form">
 					<!-- BEGIN FORM-->
-					<form action="" id="foodCollect_mg" class="form-horizontal">
+					<form action="" id="dietPlan_mg" class="form-horizontal">
 						<div class="form-body">
 							<!--/row-->
 							<div class="row">
@@ -144,9 +144,9 @@
 	</div>
 </div>
 <script>
-	window.foodCollectPage = null;
-    var foodCollectPage = {
-    		fm : jQuery("#foodCollect_mg"),
+	window.dietPlanPage = null;
+    var dietPlanPage = {
+    		fm : jQuery("#dietPlan_mg"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -190,7 +190,7 @@
     		load: function(num){
     			var _this = this;
     			Ajax.load({
-    				url: _this.basePath + "/foodCollects/goto/"+num,
+    				url: _this.basePath + "/dietPlans/goto/"+num,
     				data: _this.fm.serializeArray(), 
     				target:"#list-content"
     			});
@@ -199,6 +199,6 @@
   </script>
 <script>
 jQuery(document).ready(function() {    
-	foodCollectPage.init();
+	dietPlanPage.init();
 });
 </script>

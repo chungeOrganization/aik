@@ -7,6 +7,16 @@
     <result column="foodId" jdbcType="INTEGER" property="foodId" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  
+  
+  
+  <resultMap id="BaseResultVoMap" type="com.aik.vo.DietUserCollectFoodVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="foodName" jdbcType="VARCHAR" property="foodName" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, userId, foodId, createDate
   </sql>
@@ -119,25 +129,32 @@
       <if test="userId != null">
       and userId = #{userId}
     </if>
-    <if test="category != null">
+    <if test="foodId != null">
       and foodId = #{foodId}
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.DietUserCollectFood"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.vo.DietUserCollectFoodVo"  resultMap="BaseResultVoMap">
     select
-    <include refid="Base_Column_List" />
-    from diet_userCollectFood
-    where 1=1
+    t.`id` id , m.`id` foodId, m.`name` foodName, a.`id` userId, a.`userName` userName 
+    FROM diet_userCollectFood t , diet_food m  , acc_userAccount a
+    where m.`id` = t.`foodId` AND a.`id` = t.`userId`
       <if test="id != null">
-      and id = #{id}
+      and t.id = #{id}
       </if>
       <if test="userId != null">
-      and userId = #{userId}
+      and t.userId = #{userId}
+    </if>
+    <if test="foodName != null and foodName != ''">
+      and m.name = #{foodName}
     </if>
     <if test="foodId != null">
-      and foodId = #{foodId}
+      and t.foodId = #{foodId}
     </if>
+    <if test="userName != null and userName != ''">
+      and a.name = #{userName}
+    </if>
+    
   	</select>
   
   

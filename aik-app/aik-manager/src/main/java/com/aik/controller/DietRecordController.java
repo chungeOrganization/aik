@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.DietUserCollectFood;
-import com.aik.service.FoodCollectManageService;
+import com.aik.service.DietRecordManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.DietDailyDietRecordVo;
 import com.aik.vo.DietUserCollectFoodVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -21,50 +22,50 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author daixiangning
- * @message 食物收藏管理
+ * @message 饮食实际记录管理
  */
 @RestController
-@RequestMapping("/foodCollects")
-public class FoodCollectController {
+@RequestMapping("/dietRecords")
+public class DietRecordController {
 	
-	private Logger logger = LoggerFactory.getLogger(FoodCollectController.class);
+	private Logger logger = LoggerFactory.getLogger(DietRecordController.class);
 
     @Autowired
-    private FoodCollectManageService foodCollectManageService;
+    private DietRecordManageService dietRecordManageService;
 
     
     /**
-     * 食物收藏管理
+     * 饮食实际记录管理
      * @return
      */
     @RequestMapping(value = "/index")
     public ModelAndView index() {
-    	 ModelAndView result = new ModelAndView("foodCollect/foodCollectManage");
+    	 ModelAndView result = new ModelAndView("dietRecord/dietRecordManage");
          
          return result;
     }
     
     /**
-     * 食物收藏信息列表
+     * 饮食实际记录信息列表
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/goto/{num}")
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietUserCollectFoodVo dietUserCollectFoodVo,@PathVariable Integer num) {
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietDailyDietRecordVo dietUserCollectFoodVo,@PathVariable Integer num) {
        
     	
-    	ModelAndView mv = new ModelAndView("foodCollect/foodCollectList");
-    	Page<DietUserCollectFoodVo> dietUserCollectFoods = new Page<DietUserCollectFoodVo>();
+    	ModelAndView mv = new ModelAndView("dietRecord/dietRecordList");
+    	Page<DietDailyDietRecordVo> dietDailyDietRecords = new Page<DietDailyDietRecordVo>();
 		try {
 			Integer size = 3;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	dietUserCollectFoods = foodCollectManageService.findPage(dietUserCollectFoodVo, pageRequest);
-			logger.info("食物收藏信息列表获取成功");
+	    	dietDailyDietRecords = dietRecordManageService.findPage(dietUserCollectFoodVo, pageRequest);
+			logger.info("饮食实际记录信息列表获取成功");
 		} catch (Exception e) {
-			logger.error("食物收藏信息列表获取失败", e);
+			logger.error("饮食实际记录信息列表获取失败", e);
 		}
-    	PageInfo<DietUserCollectFoodVo> pageInfo = new PageInfo<DietUserCollectFoodVo>(dietUserCollectFoods);
+    	PageInfo<DietDailyDietRecordVo> pageInfo = new PageInfo<DietDailyDietRecordVo>(dietDailyDietRecords);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());

@@ -11,6 +11,19 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.DietDailyDietPlanVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="foodId" jdbcType="INTEGER" property="foodId" />
+    <result column="foodName" jdbcType="VARCHAR" property="foodName" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="dietType" jdbcType="TINYINT" property="dietType" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  
   <sql id="Base_Column_List">
     id, userId, recordDate, foodId, weight, dietType, createDate, updateDate
   </sql>
@@ -153,6 +166,43 @@
     </if>
     <if test="dietType != null">
       and dietType = #{dietType}
+    </if>
+  </select>
+  <select id="findAll" parameterType="com.aik.model.DietDailyDietPlan"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_dailyDietPlan
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="foodId != null">
+      and foodId = #{foodId}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.vo.DietDailyDietPlanVo"  resultMap="BaseResultMapVo">
+    select
+    t.`id` id , m.`id` foodId, m.`name` foodName, a.`id` userId, a.`userName` userName, t.`recordDate` recordDate , t.`dietType` dietType,t.`weight` weight
+    FROM diet_dailyDietPlan t , diet_food m  , acc_userAccount a
+    where m.`id` = t.`foodId` AND a.`id` = t.`userId`
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userId != null">
+      and t.userId = #{userId}
+    </if>
+    <if test="foodName != null and foodName != ''">
+      and m.name = #{foodName}
+    </if>
+    <if test="foodId != null">
+      and t.foodId = #{foodId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.name = #{userName}
     </if>
   </select>
 </mapper>

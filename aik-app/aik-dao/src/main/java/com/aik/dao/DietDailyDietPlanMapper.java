@@ -1,6 +1,10 @@
 package com.aik.dao;
 
 import com.aik.model.DietDailyDietPlan;
+import com.aik.model.DietDailyDietRecord;
+import com.aik.vo.DietDailyDietPlanVo;
+import com.aik.vo.DietDailyDietRecordVo;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +25,16 @@ public interface DietDailyDietPlanMapper {
     List<DietDailyDietPlan> selectBySelective(DietDailyDietPlan record);
 
     List<Map<String, Object>> selectUserDietPlan(Map<String, Object> params);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<DietDailyDietPlan> findAll(DietDailyDietPlan record);
+
+    /**
+     * 分页查询数据
+     * @return
+     */
+    Page<DietDailyDietPlanVo> findByPage(DietDailyDietPlanVo record);
 }

@@ -3,17 +3,11 @@
 <thead>
 <tr>
 	<th>编号</th>
+	<th>用户名称</th>
+	<th>记录日期</th>
+	<th>三餐</th>
 	<th>食物名称</th>
-	<th>食物类别</th>
-	<th>食物亮点</th>
-	<th>食物亮点排名</th>
-	<th>蛋白质比例</th>
-	<th>脂肪比例</th>
-	<th>碳水化合物比例</th>
-	<th>每份重量</th>
-	<th>录入时间</th>
-	<!-- <th>修改时间</th> -->
-	<th>有效性</th>
+	<th>份量</th>
 	<th>操作</th>
 </tr>
 </thead>
@@ -22,28 +16,22 @@
 
 
 
-<tr class="odd gradeX"  th:each="food,iterStat : ${result}"  >
-	<td th:id="${food.id}" th:text="${food.id}"></td>
-	<td th:text="${food.name}"></td>
-	<td th:text="${food.category}"></td>
-	<td th:text="${food.brightSpot}"></td>
-	<td th:text="${food.spotRank}"></td>
-	<td th:text="${food.proteinRadio}"></td>
-	<td th:text="${food.fatRadio}"></td>
-	<td th:text="${food.fatRadio}"></td>
-	<td th:text="${food.weight}"></td>
-	<td class="center" th:text="${#dates.format(food.createDate, 'yyyy-MM-dd HH:mm:ss')}">
-	<td></td>
+<tr class="odd gradeX"  th:each="dietRecord,iterStat : ${result}"  >
+	<td th:id="${dietRecord.id}" th:text="${dietRecord.id}"></td>
+	<td th:text="${dietRecord.userName}"></td>
+	<td class="center" th:text="${#dates.format(dietRecord.recordDate, 'yyyy-MM-dd HH:mm:ss')}">
 	<td>
-		<a href="javascript:;" class="btn default btn-xs blue view">
-				<i class="fa fa-share"></i> 查看
-		</a>
-		<a href="javascript:;" class="btn  default btn-xs purple edit">
-				<i class="fa fa-edit"></i> 编辑
-		</a>
-		<a href="javascript:;" class="btn default btn-xs black delect">
-				<i class="fa fa-trash-o"></i>删除
-		</a>
+	<div th:switch="${dietRecord.dietType}">
+		<span th:case="'0'">早餐</span>
+		<span th:case="'1'">中餐</span>
+		<span th:case="'2'">晚餐</span>
+		<span th:case="'3'">营养补充</span>
+		<span th:case="'4'">加餐</span>
+	</div>
+	</td>
+	<td th:text="${dietRecord.foodName}"></td>
+	<td class="center" th:text="${dietRecord.weight}"></td>
+	<td>
 	</td>
 </tr>			
 

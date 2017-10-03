@@ -1,8 +1,8 @@
 package com.aik.dao;
 
 import com.aik.model.DietUserCollectFood;
+import com.aik.vo.DietUserCollectFoodVo;
 import com.github.pagehelper.Page;
-
 
 import java.util.List;
 import java.util.Map;
@@ -36,5 +36,5 @@ public interface DietUserCollectFoodMapper {
      * 分页查询数据
      * @return
      */
-    Page<DietUserCollectFood> findByPage(DietUserCollectFood record);
+    Page<DietUserCollectFoodVo> findByPage(DietUserCollectFoodVo record);
 }

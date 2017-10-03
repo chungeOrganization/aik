@@ -25,12 +25,18 @@
 	<td th:id="${user.id}" th:text="${user.id}"></td>
 	<td th:text="${user.userName}"></td>
 	<td th:text="${user.mobileNo}"></td>
-	<td th:text="${user.userType}"></td>
+	<td>
+	<div th:switch="${user.userType}">
+		<span th:case="'0'">健康的咨询者</span>
+		<span th:case="'1'">家属</span>
+		<span th:case="'2'">患者</span>
+	</div>
+	</td>
 	<td th:text="${user.realName}"></td>
 	<td th:text="${user.nickName}"></td>
-	<td th:text="${user.sex}"></td>
-	<td th:text="${user.birthday}"></td>
-	<td class="center" th:text="${user.createDate}">
+	<td th:text="${user.sex eq 0}?'男':'女'"></td>
+	<td class="center" th:text="${#dates.format(user.birthday, 'yyyy-MM-dd HH:mm:ss')}">
+	<td class="center" th:text="${#dates.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}">
 	
 	</td>
 	<td></td>
