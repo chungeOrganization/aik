@@ -2,6 +2,7 @@ package com.aik.controller;
 
 import com.aik.model.AikFeedback;
 import com.aik.service.FeedbackService;
+import com.aik.vo.FeedbackVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,12 +37,12 @@ public class FeedbackController {
     }
 
     @RequestMapping("/goto/{num}/{size}")
-    public ModelAndView queryPage(@PathVariable Integer num, @PathVariable Integer size) {
+    public ModelAndView queryPage(@PathVariable Integer num, @PathVariable Integer size, FeedbackVo feedbackVo) {
         ModelAndView mv = new ModelAndView("feedback/feedbackList");
-        Page<AikFeedback> feedbackPageInfo = new Page<AikFeedback>();
+        Page<FeedbackVo> feedbackPageInfo = new Page<FeedbackVo>();
         try {
             PageHelper.startPage(num, size);
-            feedbackPageInfo = feedbackService.findPage();
+            feedbackPageInfo = feedbackService.findPage(feedbackVo);
         } catch (Exception e) {
             //ignore
         }

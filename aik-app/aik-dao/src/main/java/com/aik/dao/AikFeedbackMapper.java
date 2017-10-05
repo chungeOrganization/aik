@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikFeedback;
+import com.aik.vo.FeedbackVo;
 import com.github.pagehelper.Page;
 
 public interface AikFeedbackMapper {
@@ -16,5 +17,5 @@ public interface AikFeedbackMapper {
 
     int updateByPrimaryKey(AikFeedback record);
 
-    Page<AikFeedback> selectByPage(AikFeedback record);
+    Page<FeedbackVo> selectByPage(FeedbackVo record);
 }

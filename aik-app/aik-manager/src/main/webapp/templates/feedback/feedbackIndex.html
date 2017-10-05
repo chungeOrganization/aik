@@ -1,17 +1,20 @@
-<div>
+<div class="tabbable tabbable-custom boxless">
+    <ul class="nav nav-tabs" id="nav-tabs">
+        <li id="tabli_1" class="active">
+            <a id="tabli_11" href="#tab_1" data-toggle="tab">查询信息</a>
+        </li>
+    </ul>
     <div class="tab-content">
-        <div class="tab-pane active">
+        <div class="tab-pane active" id="tab_1">
             <!--search box-->
             <div class="portlet box blue">
                 <!--search box title-->
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-reorder"></i>查询条件
+                        <i class="fa fa-search"></i>条件
                     </div>
                     <div class="tools">
                         <a href="javascript:void(0);" class="collapse">
-                        </a>
-                        <a href="javascript:void(0);" class="reload">
                         </a>
                     </div>
                 </div>
@@ -24,7 +27,15 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">问题类型</label>
                                         <div class="col-md-9">
-                                            <input title="问题类型" type="text" class="form-control"/>
+                                            <input name="userType" title="用户类型" type="text" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">问题类型</label>
+                                        <div class="col-md-9">
+                                            <input name="type" title="问题类型" type="text" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +43,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">问题描述</label>
                                         <div class="col-md-9">
-                                            <input title="问题描述" type="text" class="form-control"/>
+                                            <input name="description" title="问题描述" type="text" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -59,24 +70,16 @@
                 <!--list box title-->
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>内容
+                        <i class="fa fa-list"></i>内容
                     </div>
                     <div class="tools">
-                        <a href="javascript:void(0);" class="collapse">
-                        </a>
-                        <a href="javascript:void(0);" class="reload">
-                        </a>
+                        <a href="javascript:void(0);" class="collapse"></a>
                     </div>
                 </div>
                 <!--list box content-->
                 <div class="portlet-body">
                     <!--content toolbar-->
                     <div class="table-toolbar">
-                        <div class="btn-group">
-                            <button id="add_ar" class="btn green">
-                                添加 <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
                     </div>
                     <!--content-->
                     <div id="list-content"></div>

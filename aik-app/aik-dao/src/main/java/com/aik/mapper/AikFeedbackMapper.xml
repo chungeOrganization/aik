@@ -103,15 +103,21 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPage" parameterType="com.aik.model.AikFeedback" resultMap="BaseResultMap">
+  <select id="selectByPage" parameterType="com.aik.vo.FeedbackVo" resultType="com.aik.vo.FeedbackVo">
     select
-    <include refid="Base_Column_List"/>
-    from aik_feedback
+    f.*,
+    if(f.userType = 0,
+    (select realName from acc_userAccount where id = f.userId),
+    (select realName from acc_doctorAccount where id = f.userId)) as realName
+    from aik_feedback f
     where 1=1
+    <if test="userType != null">
+      and userType = #{userType}
+    </if>
     <if test="type != null">
       and type = #{type}
     </if>
-    <if test="description != null">
+    <if test="description != null and description != ''">
       and locate(#{description}, description) &gt; 0
     </if>
   </select>

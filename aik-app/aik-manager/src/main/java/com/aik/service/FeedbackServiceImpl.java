@@ -2,6 +2,7 @@ package com.aik.service;
 
 import com.aik.dao.AikFeedbackMapper;
 import com.aik.model.AikFeedback;
+import com.aik.vo.FeedbackVo;
 import com.github.pagehelper.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Page<AikFeedback> findPage() {
-        AikFeedback searchAF = new AikFeedback();
-        return aikFeedbackMapper.selectByPage(searchAF);
+    public Page<FeedbackVo> findPage(FeedbackVo feedbackVo) {
+        return aikFeedbackMapper.selectByPage(feedbackVo);
     }
 }

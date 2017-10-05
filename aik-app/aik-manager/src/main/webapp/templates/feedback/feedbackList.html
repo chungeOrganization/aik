@@ -1,53 +1,60 @@
-<div class="table-responsive" xmlns:th="http://www.w3.org/1999/xhtml">
-    <table class="table table-striped table-bordered table-hover" id="sample_1">
-        <thead>
-        <tr>
-            <th>编号</th>
-            <th>用户类型</th>
-            <th>用户姓名</th>
-            <th>反馈内容</th>
-            <th>反馈时间</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="odd gradeX" th:each="feedback,iterStat : ${pageInfo.list}">
-            <td th:id="${feedback.id}" th:text="${feedback.id}"></td>
-            <td th:text="${feedback.userType}"></td>
-            <td th:text="${feedback.userId}"></td>
-            <td th:text="${feedback.description}"></td>
-            <td class="center" th:text="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}">
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="sample_1">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>用户类型</th>
+                <th>用户姓名</th>
+                <th>反馈内容</th>
+                <th>反馈时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd gradeX" th:each="feedback,iterStat : ${pageInfo.list}">
+                <td th:id="${feedback.id}" th:text="${feedback.id}"></td>
+                <td>
+                    <div th:switch="${feedback.userType}">
+                        <p th:case="0">用户</p>
+                        <p th:case="1">医生</p>
+                    </div>
+                </td>
+                <td th:text="${feedback.realName}"></td>
+                <td th:text="${feedback.description}"></td>
+                <td class="center" th:text="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}">
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div class="row">
-        <div class="col-md-5 col-sm-12">
-            <div class="dataTables_info" id="sample_1_info">
-                总数<span th:text="${pageInfo.total}"></span>条,每页显示<span th:text="${pageInfo.pageSize}"></span>条
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <div class="dataTables_info" id="sample_1_info">
+                    总数<span th:text="${pageInfo.total}"></span>条,每页显示<span th:text="${pageInfo.pageSize}"></span>条
+                </div>
             </div>
-        </div>
-        <div class="col-md-7 col-sm-12">
-
-            <div class="dataTables_paginate paging_bootstrap">
-                <ul id="page_id" class="pagination" style="visibility: visible;">
-                    <li data-pre="gar" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' ">
-                        <a th:id="${pageInfo.prePage}" title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a>
-                    </li>
-                    <li class="active"><a href="javascript:;" th:id="${pageNo}">
-                        <span th:text="${pageInfo.prePage}"></span></a>
-                    </li>
-                    <li class="active"><a href="javascript:;" th:id="${pageNo}">
-                        <span th:text="${pageInfo.nextPage}"></span></a>
-                    </li>
-                    <li data-pre="gar" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'">
-                        <a th:id="${pageInfo.nextPage}" title="下一页" href="javascript:;">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
+            <div class="col-md-7 col-sm-12">
+                <div class="dataTables_paginate paging_bootstrap">
+                    <ul id="page_id" class="pagination" style="visibility: visible;">
+                        <li data-pre="gar" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' ">
+                            <a th:id="${pageInfo.prePage}" title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a>
+                        </li>
+                        <li class="active"><a href="javascript:;" th:id="${pageNo}">
+                            <span th:text="${pageInfo.prePage}"></span></a>
+                        </li>
+                        <li class="active"><a href="javascript:;" th:id="${pageNo}">
+                            <span th:text="${pageInfo.nextPage}"></span></a>
+                        </li>
+                        <li data-pre="gar" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'">
+                            <a th:id="${pageInfo.nextPage}" title="下一页" href="javascript:;">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</html>
