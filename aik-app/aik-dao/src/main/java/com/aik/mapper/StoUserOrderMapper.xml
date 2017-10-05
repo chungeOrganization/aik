@@ -210,4 +210,31 @@
     order by uo.createDate
     limit ${(page-1)*size}, #{size}
   </select>
+  
+   <select id="findAll" parameterType="com.aik.model.StoUserOrder"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sto_userOrder
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="orderNum != null and orderNum != ''">
+      and orderNum = #{orderNum}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.model.StoUserOrder"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sto_userOrder
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="orderNum != null and orderNum != ''">
+      and orderNum = #{orderNum}
+    </if>
+  	</select>
+  
 </mapper>
