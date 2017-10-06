@@ -1,6 +1,8 @@
 package com.aik.dao;
 
 import com.aik.model.AikQuestionOrder;
+import com.aik.model.StoUserOrder;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -35,4 +37,16 @@ public interface AikQuestionOrderMapper {
     List<Map<String, Object>> selectOpenQuestionOrders(Map<String, Object> params);
 
     List<AikQuestionOrder> selectUserOrders(Map<String, Object> params);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<AikQuestionOrder> findAll(AikQuestionOrder record);
+
+    /**
+     * 分页查询数据
+     * @return
+     */
+    Page<AikQuestionOrder> findByPage(AikQuestionOrder record);
 }
