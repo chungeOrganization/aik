@@ -69,4 +69,4 @@ system:
 # logger
 logging:
   level:
-    com.aik: DEBUG
+    com.aik: INFO

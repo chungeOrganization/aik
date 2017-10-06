@@ -41,6 +41,28 @@
 							</div>
 							
 							<!--/row-->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">记录开始时间</label>
+										<div class="col-md-9">
+											<input readonly class="form-control date-picker" name="inTime" id="inTime" size="16" type="text" value=""
+											 data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">记录结束时间</label>
+										<div class="col-md-9">
+											<input readonly class="form-control date-picker" name="outTime" id="outTime" size="16" type="text" value=""
+											  data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!--/row-->
 							<!-- <div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
@@ -159,6 +181,16 @@
     			var _this = this;
     			
     			//绑定查询单击事件
+    			jQuery("#inTime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
+    			jQuery("#outTime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
+    			
+    			
     			jQuery("#query_ar").bind("click", function(){
     				_this.load(1);
     				return false;
