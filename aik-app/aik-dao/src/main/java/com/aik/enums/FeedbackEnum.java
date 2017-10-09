@@ -29,21 +29,30 @@ public class FeedbackEnum {
 
     // TODO:枚举类型修改
     enum FbTypeEnum {
-        TYPE_OTHER((byte) 0, "其他");
-        private byte code;
-        private String desc;
+        TYPE_FUNCTION((byte) 0, "功能异常", "功能故障或不能用"),
+        TYPE_ADVICE((byte) 1, "产品建议", "数据错误，我有建议"),
+        TYPE_OTHER((byte) 2, "其他", "");
 
-        FbTypeEnum(byte code, String desc) {
+        private byte code;
+        private String typeName;
+        private String typeDesc;
+
+        FbTypeEnum(byte code, String typeName, String typeDesc) {
             this.code = code;
-            this.desc = desc;
+            this.typeName = typeName;
+            this.typeDesc = typeDesc;
         }
 
         public byte getCode() {
             return code;
         }
 
-        public String getDesc() {
-            return desc;
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public String getTypeDesc() {
+            return typeDesc;
         }
     }
 }

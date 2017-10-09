@@ -121,4 +121,13 @@
       and locate(#{description}, description) &gt; 0
     </if>
   </select>
+  <select id="selectDetailById" parameterType="int" resultType="com.aik.vo.FeedbackVo">
+    select
+    f.*,
+    if(f.userType = 0,
+    (select realName from acc_userAccount where id = f.userId),
+    (select realName from acc_doctorAccount where id = f.userId)) as realName
+    from aik_feedback f
+    where id = #{id}
+  </select>
 </mapper>

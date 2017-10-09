@@ -124,9 +124,8 @@ Ajax = window.Ajax || {
 			}
       	});	
 	},
-	
-	load: function(options){
 
+	load: function(options){
 		if (!options.url) return;
 
 		//不指定target时，默认显示在inbox-content中

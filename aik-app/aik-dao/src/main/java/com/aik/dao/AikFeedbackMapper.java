@@ -18,4 +18,6 @@ public interface AikFeedbackMapper {
     int updateByPrimaryKey(AikFeedback record);
 
     Page<FeedbackVo> selectByPage(FeedbackVo record);
+
+    FeedbackVo selectDetailById(Integer id);
 }

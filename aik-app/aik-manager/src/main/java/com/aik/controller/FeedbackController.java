@@ -1,6 +1,5 @@
 package com.aik.controller;
 
-import com.aik.model.AikFeedback;
 import com.aik.service.FeedbackService;
 import com.aik.vo.FeedbackVo;
 import com.github.pagehelper.Page;
@@ -47,6 +46,19 @@ public class FeedbackController {
             //ignore
         }
         mv.addObject("pageInfo", new PageInfo<>(feedbackPageInfo));
+        return mv;
+    }
+
+    @RequestMapping("/view/{id}")
+    public ModelAndView view(@PathVariable Integer id) {
+        ModelAndView mv = new ModelAndView("feedback/feedbackView");
+        FeedbackVo feedbackVo = new FeedbackVo();
+        try {
+            feedbackVo = feedbackService.findDetail(id);
+        } catch (Exception e) {
+            //ignore
+        }
+        mv.addObject("feedback", feedbackVo);
         return mv;
     }
 }

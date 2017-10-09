@@ -6,6 +6,7 @@
             <tr>
                 <th>编号</th>
                 <th>用户类型</th>
+                <th>问题类型</th>
                 <th>用户姓名</th>
                 <th>反馈内容</th>
                 <th>反馈时间</th>
@@ -19,12 +20,28 @@
                     <div th:switch="${feedback.userType}">
                         <p th:case="0">用户</p>
                         <p th:case="1">医生</p>
+                        <p th:case="*">-</p>
+                    </div>
+                </td>
+                <td>
+                    <div th:switch="${feedback.type}">
+                        <p th:case="0">功能异常</p>
+                        <p th:case="1">产品建议</p>
+                        <p th:case="2">其他</p>
+                        <p th:case="*">-</p>
                     </div>
                 </td>
                 <td th:text="${feedback.realName}"></td>
                 <td th:text="${feedback.description}"></td>
-                <td class="center" th:text="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}">
-                <td></td>
+                <td th:text="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}">
+                <td>
+                    <a href="javascript:void(0);" class="btn default btn-xs blue view">
+                        <i class="fa fa-share"></i> 查看
+                    </a>
+                    <a href="javascript:void(0);" class="btn default btn-xs black delete">
+                        <i class="fa fa-trash-o"></i>删除
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -38,17 +55,18 @@
             <div class="col-md-7 col-sm-12">
                 <div class="dataTables_paginate paging_bootstrap">
                     <ul id="page_id" class="pagination" style="visibility: visible;">
-                        <li data-pre="gar" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' ">
-                            <a th:id="${pageInfo.prePage}" title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a>
+                        <li data-pre="pageNum" th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' ">
+                            <a th:attr="value=${pageInfo.prePage}" title="上一页" href="javascript:void(0);">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         </li>
-                        <li class="active"><a href="javascript:;" th:id="${pageNo}">
-                            <span th:text="${pageInfo.prePage}"></span></a>
+                        <li data-pre="pageNum" th:each="navNum,iterStat : ${pageInfo.navigatepageNums}" th:class="${navNum == pageInfo.pageNum}? 'active' : ''">
+                            <a th:attr="value=${navNum == pageInfo.pageNum} ? 0 : ${navNum}" href="javascript:void(0);">
+                                <span th:text="${navNum}"></span>
+                            </a>
                         </li>
-                        <li class="active"><a href="javascript:;" th:id="${pageNo}">
-                            <span th:text="${pageInfo.nextPage}"></span></a>
-                        </li>
-                        <li data-pre="gar" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'">
-                            <a th:id="${pageInfo.nextPage}" title="下一页" href="javascript:;">
+                        <li data-pre="pageNum" th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'">
+                            <a th:attr="value=${pageInfo.nextPage}" title="下一页" href="javascript:void(0);">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>

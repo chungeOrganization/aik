@@ -1,97 +1,110 @@
-<div class="tabbable tabbable-custom boxless">
-    <ul class="nav nav-tabs" id="nav-tabs">
-        <li id="tabli_1" class="active">
-            <a id="tabli_11" href="#tab_1" data-toggle="tab">查询信息</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab_1">
-            <!--search box-->
-            <div class="portlet box blue">
-                <!--search box title-->
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-search"></i>条件
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="tabbable tabbable-custom boxless">
+        <ul class="nav nav-tabs" id="nav-tabs">
+            <li id="tabli_1" class="active">
+                <a id="tabli_11" href="#tab_1" data-toggle="tab">查询信息</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <!--search box-->
+                <div class="portlet box blue">
+                    <!--search box title-->
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-search"></i>条件
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="collapse">
+                            </a>
+                        </div>
                     </div>
-                    <div class="tools">
-                        <a href="javascript:void(0);" class="collapse">
-                        </a>
-                    </div>
-                </div>
-                <!--search box form-->
-                <div class="portlet-body form">
-                    <form class="form-horizontal" name="search-form">
-                        <div class="form-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">问题类型</label>
-                                        <div class="col-md-9">
-                                            <input name="userType" title="用户类型" type="text" class="form-control"/>
+                    <!--search box form-->
+                    <div class="portlet-body form">
+                        <form class="form-horizontal" name="search-form">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">用户类型</label>
+                                            <div class="col-md-9">
+                                                <select title="用户类型" class="form-control" name="userType">
+                                                    <option value="" selected ="selected">全部</option>
+                                                    <option value="0">用户</option>
+                                                    <option value="1">医生</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">问题类型</label>
-                                        <div class="col-md-9">
-                                            <input name="type" title="问题类型" type="text" class="form-control"/>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">问题类型</label>
+                                            <div class="col-md-9">
+                                                <select title="问题类型" class="form-control" name="type">
+                                                    <option value="" selected ="selected">全部</option>
+                                                    <option value="0">功能异常</option>
+                                                    <option value="1">产品建议</option>
+                                                    <option value="2">其他</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">问题描述</label>
-                                        <div class="col-md-9">
-                                            <input name="description" title="问题描述" type="text" class="form-control"/>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">问题描述</label>
+                                            <div class="col-md-9">
+                                                <input name="description" title="问题描述" type="text" class="form-control"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!--form actions-->
-                        <div class="form-actions fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-offset-5 col-md-1">
-                                        <button type="button" id="btn_search" class="btn blue">查 询</button>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="reset"  class="btn default">重 置</button>
+                            <!--form actions-->
+                            <div class="form-actions fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-offset-5 col-md-1">
+                                            <button type="button" id="btn_search" class="btn blue">查 询</button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="reset"  class="btn default">重 置</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                </div>
+                <!--list box-->
+                <div class="portlet box blue">
+                    <!--list box title-->
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-list"></i>内容
                         </div>
-                    </form>
-                </div>
-            </div>
-            <!--list box-->
-            <div class="portlet box blue">
-                <!--list box title-->
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-list"></i>内容
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="collapse"></a>
+                        </div>
                     </div>
-                    <div class="tools">
-                        <a href="javascript:void(0);" class="collapse"></a>
+                    <!--list box content-->
+                    <div class="portlet-body">
+                        <!--content toolbar-->
+                        <div class="table-toolbar">
+                        </div>
+                        <!--content-->
+                        <div id="list-content"></div>
                     </div>
-                </div>
-                <!--list box content-->
-                <div class="portlet-body">
-                    <!--content toolbar-->
-                    <div class="table-toolbar">
-                    </div>
-                    <!--content-->
-                    <div id="list-content"></div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</html>
 <script type="text/javascript">
     var feedbackPage = {
         fm: jQuery("form[name='search-form']"),
         basePath : jQuery("#basePath").val(),
+        pageSize : 5,
         init: function() {
             this.bindEvent();
         },
@@ -99,15 +112,31 @@
             var $this = this;
             //绑定查询单击事件
             jQuery("#btn_search").bind("click", function(){
-                $this.load(1, 10);
+                $this.load(1);
+            });
+
+            jQuery("#list-content").delegate("li[data-pre=pageNum]", "click", function(){//绑定页码单击事件
+                var num = jQuery(this).find('a').attr("value");
+                if(num > 0) {
+                    $this.load(num);
+                }
+                return false;
+            }).delegate(".view", "click", function(){
+                var _tr = jQuery(this).closest("tr"),
+                    id = jQuery.trim(_tr.children('td').eq(0).attr('id'));
+                Ajax.load({
+                    url: $this.basePath +"/feedback/view/"+id,
+                    tab: "2",
+                    data:{},
+                    iTab: true,
+                    tabTitle: "查看意见反馈"
+                });
+                return false;
             });
         },
-        getFormData: function() {
-
-        },
-        load: function(num, size) {
+        load: function(num) {
             Ajax.load({
-                url: this.basePath + "/feedback/goto/"+num + "/"+size,
+                url: this.basePath + "/feedback/goto/"+ num + "/"+ this.pageSize,
                 data: this.fm.serializeArray(),
                 target:"#list-content"
             });

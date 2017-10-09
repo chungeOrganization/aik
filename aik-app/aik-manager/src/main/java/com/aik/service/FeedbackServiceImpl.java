@@ -29,4 +29,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Page<FeedbackVo> findPage(FeedbackVo feedbackVo) {
         return aikFeedbackMapper.selectByPage(feedbackVo);
     }
+
+    @Override
+    public FeedbackVo findDetail(Integer id) {
+        return aikFeedbackMapper.selectDetailById(id);
+    }
 }

@@ -16,4 +16,12 @@ public interface FeedbackService {
      * @return 意见反馈分页信息
      */
     Page<FeedbackVo> findPage(FeedbackVo feedbackVo);
+
+    /**
+     * 获取意见反馈详情
+     *
+     * @param id 反馈id
+     * @return 意见反馈详情
+     */
+    FeedbackVo findDetail(Integer id);
 }
