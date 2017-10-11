@@ -17,6 +17,25 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  
+  
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.StoUserOrderVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderNum" jdbcType="VARCHAR" property="orderNum" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="acceptAddressId" jdbcType="INTEGER" property="acceptAddressId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="realAmount" jdbcType="DECIMAL" property="realAmount" />
+    <result column="freightAmount" jdbcType="DECIMAL" property="freightAmount" />
+    <result column="leaveMsg" jdbcType="VARCHAR" property="leaveMsg" />
+    <result column="payTime" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="deliveryTime" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, orderNum, userId, acceptAddressId, status, amount, realAmount, freightAmount, 
     leaveMsg, payTime, deliveryTime, endTime, createDate, updateDate
@@ -224,16 +243,18 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.StoUserOrder"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.model.StoUserOrder"  resultMap="BaseResultMapVo">
     select
-    <include refid="Base_Column_List" />
-    from sto_userOrder
+     t.id, t.orderNum, t.userId,p.userName, t.acceptAddressId, t.status, t.amount, t.realAmount, t.freightAmount, 
+     t.leaveMsg, t.payTime, t.deliveryTime, t.endTime, t.createDate, t.updateDate
+    from sto_userOrder t 
+    left join acc_userAccount p on t.userId = p.id
     where 1=1
       <if test="id != null">
-      and id = #{id}
+      and t.id = #{id}
       </if>
       <if test="orderNum != null and orderNum != ''">
-      and orderNum = #{orderNum}
+      and t.orderNum = #{orderNum}
     </if>
   	</select>
   

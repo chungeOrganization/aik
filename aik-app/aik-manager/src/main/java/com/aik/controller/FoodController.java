@@ -17,6 +17,7 @@ import com.aik.model.AccDoctorAccount;
 import com.aik.model.DietFood;
 import com.aik.service.FoodManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.DietFoodVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -58,7 +59,7 @@ public class FoodController {
        
     	
     	ModelAndView mv = new ModelAndView("food/foodList");
-    	Page<DietFood> dietFoods = new Page<DietFood>();
+    	Page<DietFoodVo> dietFoods = new Page<DietFoodVo>();
 		try {
 			Integer size = 3;
 			Integer page = num;
@@ -68,7 +69,7 @@ public class FoodController {
 		} catch (Exception e) {
 			logger.error("食物信息列表获取失败", e);
 		}
-    	PageInfo<DietFood> pageInfo = new PageInfo<DietFood>(dietFoods);
+    	PageInfo<DietFoodVo> pageInfo = new PageInfo<DietFoodVo>(dietFoods);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());

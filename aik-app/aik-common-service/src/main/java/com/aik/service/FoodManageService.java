@@ -2,6 +2,7 @@ package com.aik.service;
 
 import com.aik.model.DietFood;
 import com.aik.util.PageUtils;
+import com.aik.vo.DietFoodVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public interface FoodManageService {
     /**
      * 食物信息分页查询
      */
-    Page<DietFood> findPage(DietFood dietFood, PageUtils pageUtils) throws  Exception;
+    Page<DietFoodVo> findPage(DietFood dietFood, PageUtils pageUtils) throws  Exception;
     
     
     

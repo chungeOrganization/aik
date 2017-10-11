@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.AikQuestionOrderVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Date;
 import java.util.List;
@@ -69,7 +69,7 @@ public class QuestionOrderManageServiceImpl implements QuestionOrderManageServic
 	}
 
 	@Override
-	public Page<AikQuestionOrder> findPage(AikQuestionOrder aikQuestionOrder, PageUtils pageUtils)
+	public Page<AikQuestionOrderVo> findPage(AikQuestionOrder aikQuestionOrder, PageUtils pageUtils)
 			throws Exception {
 		 PageHelper.startPage(pageUtils.getPage(), pageUtils.getSize());
 		 return aikQuestionOrderMapper.findByPage(aikQuestionOrder);

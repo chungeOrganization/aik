@@ -18,6 +18,26 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  
+  
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.DietFoodVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="categoryName" jdbcType="VARCHAR" property="categoryName" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="recommend" jdbcType="VARCHAR" property="recommend" />
+    <result column="brightSpot" jdbcType="TINYINT" property="brightSpot" />
+    <result column="spotRank" jdbcType="INTEGER" property="spotRank" />
+    <result column="proteinRadio" jdbcType="DECIMAL" property="proteinRadio" />
+    <result column="fatRadio" jdbcType="DECIMAL" property="fatRadio" />
+    <result column="carbsRadio" jdbcType="DECIMAL" property="carbsRadio" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, name, category, image, recommend, brightSpot, spotRank, proteinRadio, fatRadio, 
     carbsRadio, type, weightUnit, weight, createDate, updateDate
@@ -244,10 +264,12 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMapVo">
     select
-    <include refid="Base_Column_List" />
-    from diet_food
+     t.id, t.name, t.category, p.name categoryName, t.image, t.recommend, t.brightSpot, t.spotRank, t.proteinRadio, t.fatRadio, 
+    t.carbsRadio, t.type, t.weightUnit, t.weight, t.createDate, t.updateDate
+    from diet_food t
+    left join diet_foodCategory p on t.category = p.id
     where 1=1
       <if test="id != null">
       and id = #{id}

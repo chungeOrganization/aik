@@ -24,6 +24,7 @@ import com.aik.service.GoodsOrderManageService;
 import com.aik.service.QuestionManageService;
 import com.aik.service.QuestionOrderManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.AikQuestionOrderVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -68,7 +69,7 @@ public class QuestionOrderController {
        
     	
     	ModelAndView mv = new ModelAndView("questionOrder/questionOrderList");
-    	Page<AikQuestionOrder> aikQuestionOrderList = new Page<AikQuestionOrder>();
+    	Page<AikQuestionOrderVo> aikQuestionOrderList = new Page<AikQuestionOrderVo>();
 		try {
 			Integer size = 3;
 			Integer page = num;
@@ -78,7 +79,7 @@ public class QuestionOrderController {
 		} catch (Exception e) {
 			logger.error("问题订单信息列表获取失败", e);
 		}
-    	PageInfo<AikQuestionOrder> pageInfo = new PageInfo<AikQuestionOrder>(aikQuestionOrderList);
+    	PageInfo<AikQuestionOrderVo> pageInfo = new PageInfo<AikQuestionOrderVo>(aikQuestionOrderList);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());

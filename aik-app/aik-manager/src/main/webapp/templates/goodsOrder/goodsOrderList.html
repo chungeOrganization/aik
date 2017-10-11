@@ -23,7 +23,7 @@
 <tr class="odd gradeX"  th:each="goodsOrder,iterStat : ${result}"  >
 	<td th:id="${goodsOrder.id}" th:text="${goodsOrder.id}"></td>
 	<td th:text="${goodsOrder.orderNum}"></td>
-	<td th:text="${goodsOrder.userId}"></td>
+	<td th:text="${goodsOrder.userName}"></td>
 	<td>
 	<div th:switch="${goodsOrder.status}">
 		<span th:case="'0'">待付款 </span>

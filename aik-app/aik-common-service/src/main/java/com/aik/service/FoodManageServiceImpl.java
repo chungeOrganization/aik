@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.DietFoodVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Date;
 import java.util.List;
@@ -80,7 +80,7 @@ public class FoodManageServiceImpl implements FoodManageService {
 	}
 
 	@Override
-	public Page<DietFood> findPage(DietFood dietFood, PageUtils pageUtils)
+	public Page<DietFoodVo> findPage(DietFood dietFood, PageUtils pageUtils)
 			throws Exception {
 		 PageHelper.startPage(pageUtils.getPage(), pageUtils.getSize());
 		 return dietFoodMapper.findByPage(dietFood);

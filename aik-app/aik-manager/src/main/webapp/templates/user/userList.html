@@ -35,9 +35,16 @@
 	<td th:text="${user.realName}"></td>
 	<td th:text="${user.nickName}"></td>
 	<td th:text="${user.sex eq 0}?'男':'女'"></td>
-	<td class="center" th:text="${#dates.format(user.birthday, 'yyyy-MM-dd HH:mm:ss')}">
-	<td class="center" th:text="${#dates.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}">
+	<td class="center">
+		<span th:if="${user.birthday ne null}">
+		<span th:text="${#dates.format(user.birthday, 'yyyy-MM-dd')}"> </span>
+		</span>
+	</td>
 	
+	<td class="center">
+		<span th:if="${user.createDate ne null}">
+		<span th:text="${#dates.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
+		</span>
 	</td>
 	<td></td>
 	<td>

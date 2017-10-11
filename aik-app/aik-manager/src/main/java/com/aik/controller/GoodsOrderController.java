@@ -20,6 +20,7 @@ import com.aik.model.StoUserOrderDetail;
 import com.aik.service.GoodsOrderDetailManageService;
 import com.aik.service.GoodsOrderManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -64,7 +65,7 @@ public class GoodsOrderController {
        
     	
     	ModelAndView mv = new ModelAndView("goodsOrder/goodsOrderList");
-    	Page<StoUserOrder> stoGoodsOrderList = new Page<StoUserOrder>();
+    	Page<StoUserOrderVo> stoGoodsOrderList = new Page<StoUserOrderVo>();
 		try {
 			Integer size = 3;
 			Integer page = num;
@@ -74,7 +75,7 @@ public class GoodsOrderController {
 		} catch (Exception e) {
 			logger.error("商品订单信息列表获取失败", e);
 		}
-    	PageInfo<StoUserOrder> pageInfo = new PageInfo<StoUserOrder>(stoGoodsOrderList);
+    	PageInfo<StoUserOrderVo> pageInfo = new PageInfo<StoUserOrderVo>(stoGoodsOrderList);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());

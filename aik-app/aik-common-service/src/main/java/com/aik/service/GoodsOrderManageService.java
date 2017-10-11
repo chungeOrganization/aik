@@ -2,6 +2,7 @@ package com.aik.service;
 
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public interface GoodsOrderManageService {
     /**
      * 商品订单信息分页查询
      */
-    Page<StoUserOrder> findPage(StoUserOrder stoUserOrder, PageUtils pageUtils) throws  Exception;
+    Page<StoUserOrderVo> findPage(StoUserOrder stoUserOrder, PageUtils pageUtils) throws  Exception;
     
     
     

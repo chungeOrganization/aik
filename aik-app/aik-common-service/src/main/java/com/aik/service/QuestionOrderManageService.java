@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.model.AikQuestionOrder;
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.AikQuestionOrderVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public interface QuestionOrderManageService {
     /**
      * 问题订单信息分页查询
      */
-    Page<AikQuestionOrder> findPage(AikQuestionOrder aikQuestionOrder, PageUtils pageUtils) throws  Exception;
+    Page<AikQuestionOrderVo> findPage(AikQuestionOrder aikQuestionOrder, PageUtils pageUtils) throws  Exception;
     
     
     

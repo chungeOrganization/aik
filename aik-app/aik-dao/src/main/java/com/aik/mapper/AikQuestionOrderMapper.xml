@@ -29,6 +29,37 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.AikQuestionOrderVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="illType" jdbcType="TINYINT" property="illType" />
+    <result column="illName" jdbcType="VARCHAR" property="illName" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="doctorName" jdbcType="VARCHAR" property="doctorName" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="failType" jdbcType="TINYINT" property="failType" />
+    <result column="refuseReason" jdbcType="VARCHAR" property="refuseReason" />
+    <result column="isPayDoctor" jdbcType="TINYINT" property="isPayDoctor" />
+    <result column="auditStatus" jdbcType="TINYINT" property="auditStatus" />
+    <result column="auditorId" jdbcType="INTEGER" property="auditorId" />
+    <result column="auditReason" jdbcType="VARCHAR" property="auditReason" />
+    <result column="auditDate" jdbcType="TIMESTAMP" property="auditDate" />
+    <result column="payDate" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="refundStatus" jdbcType="TINYINT" property="refundStatus" />
+    <result column="refundDate" jdbcType="TIMESTAMP" property="refundDate" />
+    <result column="refundAuditorId" jdbcType="INTEGER" property="refundAuditorId" />
+    <result column="refundAuditDate" jdbcType="TIMESTAMP" property="refundAuditDate" />
+    <result column="evaluation" jdbcType="VARCHAR" property="evaluation" />
+    <result column="serviceAttitude" jdbcType="TINYINT" property="serviceAttitude" />
+    <result column="answerQuality" jdbcType="TINYINT" property="answerQuality" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, userId, description, illType, illName, type, doctorId, amount, status, failType, 
     refuseReason, isPayDoctor, auditStatus, auditorId, auditReason, auditDate, payDate, 
@@ -502,17 +533,22 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.AikQuestionOrder"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.model.AikQuestionOrder"  resultMap="BaseResultMapVo">
     select
-    <include refid="Base_Column_List" />
-    from aik_questionOrder
+     t.id, t.userId, p.userName, t.description, t.illType, t.illName, t.type, t.doctorId, n.userName doctorName, t.amount, t.status, t.failType, 
+    t.refuseReason, t.isPayDoctor, t.auditStatus, t.auditorId, t.auditReason, t.auditDate, t.payDate, 
+    t.refundStatus, t.refundDate, t.refundAuditorId, t.refundAuditDate, t.evaluation, t.serviceAttitude, 
+    t.answerQuality, t.createDate, t.updateDate
+    from aik_questionOrder t
+    left join acc_userAccount p on t.userId = p.id
+    left join acc_doctorAccount n on t.doctorId = n.id
     where 1=1
       <if test="id != null">
       and id = #{id}
       </if>
       <if test="status != null">
       and status = #{status}
-    </if>
+      </if>
   	</select>
   
   

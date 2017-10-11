@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.DietFood;
+import com.aik.vo.DietFoodVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -32,5 +33,5 @@ public interface DietFoodMapper {
      * 分页查询数据
      * @return
      */
-    Page<DietFood> findByPage(DietFood record);
+    Page<DietFoodVo> findByPage(DietFood record);
 }

@@ -3,11 +3,11 @@
 <thead>
 <tr>
 	<th>编号</th>
-	<th>用户id</th>
+	<th>用户账户名</th>
 	<th>病症描述</th>
 	<th>疾病类型</th>
 	<th>询问方式</th>
-	<th>医生id</th>
+	<th>医生账户名</th>
 	<th>订单状态</th>
 	<th>订单审核状态</th>
 	<th>退款审核状态</th>
@@ -23,7 +23,7 @@
 
 <tr class="odd gradeX"  th:each="questionOrder,iterStat : ${result}"  >
 	<td th:id="${questionOrder.id}" th:text="${questionOrder.id}"></td>
-	<td th:text="${questionOrder.userId}"></td>
+	<td th:text="${questionOrder.userName}"></td>
 	<td th:text="${questionOrder.description}"></td>
 	<td>
 	<div th:switch="${questionOrder.illType}">
@@ -39,7 +39,7 @@
 		<span th:case="'1'">公开</span>
 	</div>
 	</td>
-	<td th:text="${questionOrder.doctorId}"></td>
+	<td th:text="${questionOrder.doctorName}"></td>
 	<td>
 	<div th:switch="${questionOrder.status}">
 		<span th:case="'0'">审核中 </span>

@@ -53,23 +53,9 @@
 							<option value="2">患者</option>
 						</select>
 					</td>
-					<td>QQ</td>
-					<td>
-						<input type="text" class="form-control" data-pattern="[0-9]{5,13}" data-description="qq" data-describedby="qqspan" id="qq"  name="qq" placeholder="QQ" />
-						<span class="help-inline prompt" id="qqspan" style="color: #000000" ></span>
-					</td>
-					
-				</tr>
-				
-				<tr>
 					<td>通信地址</td>
 					<td><input type="text" class="form-control" name="address" /></td>
-					<td> 邮箱</td>
-					<td>
-						<input type="text" class="form-control r" data-required="true" data-pattern="^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" data-description="email" data-describedby="emailspan"  name="email" id="email" placeholder="Email" />
-						<span class="required">*</span>
-						<span class="help-inline prompt" id="emailspan" style="color: #000000"></span>
-					</td>
+					
 				</tr>
 				
 				<tr>
@@ -89,9 +75,9 @@
 				</tr>
 				
 				<tr>
-					<td> 固定电话</td>
+					<td> 电话</td>
 					<td>
-						<input type="text" class="form-control"  id="telephone" name="telephone" placeholder="固定电话" />
+						<input type="text" class="form-control"  id="mobileNo" name="mobileNo" placeholder="固定电话" />
 					</td>
 					<td> 有效性</td>
 					<td>
@@ -105,12 +91,9 @@
 				<tr>
 					<td> 证件类型</td>
 					<td>
-						<!-- <select class="form-control" name="identityType">
-							#foreach ($codecode in $codeList)
-							<option value="$codecode.id" 
-								>$codecode.codeCName</option>
-							#end
-						</select> -->
+						<select class="form-control">
+							<option value="0" selected="selected">身份证</option>
+						</select>
 					</td>
 					<td> 证件号码</td>
 					<td><input type="text" class="form-control" name="identityCard" />

@@ -2,6 +2,7 @@ package com.aik.dao;
 
 import com.aik.model.AikQuestionOrder;
 import com.aik.model.StoUserOrder;
+import com.aik.vo.AikQuestionOrderVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -48,5 +49,5 @@ public interface AikQuestionOrderMapper {
      * 分页查询数据
      * @return
      */
-    Page<AikQuestionOrder> findByPage(AikQuestionOrder record);
+    Page<AikQuestionOrderVo> findByPage(AikQuestionOrder record);
 }

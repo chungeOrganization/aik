@@ -32,7 +32,11 @@
 	<td th:text="${doctor.hosDepartment}"></td>
 	<td th:text="${doctor.departmentPhone}"></td>
 	<td th:text="${doctor.skill}"></td>
-	<td class="center" th:text="${doctor.createDate}"></td>
+	<td class="center">
+		<span th:if="${doctor.createDate ne null}">
+		<span th:text="${#dates.format(doctor.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
+		</span>
+	</td>
 	<td></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">
