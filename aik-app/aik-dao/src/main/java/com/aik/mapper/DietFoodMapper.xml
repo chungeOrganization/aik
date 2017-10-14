@@ -272,16 +272,16 @@
     left join diet_foodCategory p on t.category = p.id
     where 1=1
       <if test="id != null">
-      and id = #{id}
+      and t.id = #{id}
       </if>
       <if test="name != null and name != ''">
-      and name = #{name}
+      and t.name = #{name}
     </if>
     <if test="category != null">
-      and category = #{category}
+      and t.category = #{category}
     </if>
     <if test="type != null">
-      and type = #{type}
+      and t.type = #{type}
     </if>
   	</select>
   

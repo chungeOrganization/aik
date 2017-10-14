@@ -92,8 +92,8 @@
       <if test="id != null">
       and id = #{id}
       </if>
-      <if test="image != null and image != ''">
-      and image = #{image}
+      <if test="name != null and name != ''">
+      and name = #{name}
     </if>
    
   </select>
@@ -106,8 +106,8 @@
       <if test="id != null">
       and id = #{id}
       </if>
-      <if test="image != null and image != ''">
-      and image = #{image}
+      <if test="name != null and name != ''">
+      and name = #{name}
     </if>
   	</select>
   

@@ -1,21 +1,27 @@
 package com.aik.controller;
 
+import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.DietFood;
 import com.aik.service.FoodManageService;
+import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
 import com.aik.vo.DietFoodVo;
 import com.github.pagehelper.Page;
@@ -33,6 +39,9 @@ import javax.servlet.http.HttpServletResponse;
 public class FoodController {
 	
 	private Logger logger = LoggerFactory.getLogger(FoodController.class);
+	
+	 @Value("${file.upload-root-uri}")
+	 private String uploadRootUri;
 
     @Autowired
     private FoodManageService foodManageService;
@@ -163,10 +172,17 @@ public class FoodController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(DietFood dietFood) {
+    public ModelMap save(DietFood dietFood, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "food" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            dietFood.setImage(imageName);
         	foodManageService.save(dietFood);
         	data.put("code", "1");
         	data.put("info", "食物新增成功!");
@@ -187,10 +203,17 @@ public class FoodController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(DietFood dietFood) {
+    public ModelMap update(DietFood dietFood, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "food" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            dietFood.setImage(imageName);
         	foodManageService.update(dietFood);
         	data.put("code", "1");
         	data.put("info", "食物修改成功!");

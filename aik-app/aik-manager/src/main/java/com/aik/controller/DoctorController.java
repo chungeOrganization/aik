@@ -1,6 +1,8 @@
 package com.aik.controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,12 +18,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
 import com.aik.service.DoctorManageService;
+import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -37,6 +43,9 @@ import javax.servlet.http.HttpServletResponse;
 public class DoctorController {
 	
 	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
+	
+	@Value("${file.upload-root-uri}")
+	private String uploadRootUri;
 
     @Autowired
     private DoctorManageService doctorManageService;
@@ -179,10 +188,18 @@ public class DoctorController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(AccDoctorAccount accDoctorAccount) {
+    public ModelMap save(AccDoctorAccount accDoctorAccount, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "doctor" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            accDoctorAccount.setHeadImg(imageName);
         	doctorManageService.save(accDoctorAccount);
         	data.put("code", "1");
         	data.put("info", "医生新增成功!");
@@ -203,10 +220,18 @@ public class DoctorController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(AccDoctorAccount accDoctorAccount) {
+    public ModelMap update(AccDoctorAccount accDoctorAccount, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "doctor" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            
+            accDoctorAccount.setHeadImg(imageName);
         	doctorManageService.update(accDoctorAccount);
         	data.put("code", "1");
         	data.put("info", "医生修改成功!");

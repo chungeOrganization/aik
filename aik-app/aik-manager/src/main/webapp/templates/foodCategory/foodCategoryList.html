@@ -16,7 +16,7 @@
 <tr class="odd gradeX"  th:each="foodCategory,iterStat : ${result}"  >
 	<td th:id="${foodCategory.id}" th:text="${foodCategory.id}"></td>
 	<td th:text="${foodCategory.name}"></td>
-	<td class="center" th:text="${foodCategory.createDate}"></td>
+	<td class="center" th:text="${#dates.format(foodCategory.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">
 				<i class="fa fa-share"></i> 查看

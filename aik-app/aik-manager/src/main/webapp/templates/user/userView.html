@@ -53,10 +53,12 @@
 					</td>
 					<td> 性别</td>
 					<td>
-						<select class="form-control" name="sex">
-							<option value="0" >男</option>
-							<option value="1" >女</option>
-						</select>
+						 <select name="sex" class="form-control" >
+						    <option value="">请选择</option>
+						    <option value="1" th:if="${accUserAccount.sex eq 0}" th:selected="selected">男</option>
+						    <option value="0" th:if="${accUserAccount.sex eq 1}" th:selected="selected">女</option>
+				             
+				      	</select>
 						<span class="help-inline prompt" id="sexspan" style="color: #000000"></span>
 					</td>
 				</tr>
@@ -89,7 +91,7 @@
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail"
 								style="width: 150px; height: 150px;">
-								<img src=""  name="photo" alt="" />
+								<img th:src="@{'/image/getSrcImg/user/'+${accUserAccount.headImg}}"  name="photo" alt="" />
 								
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail"

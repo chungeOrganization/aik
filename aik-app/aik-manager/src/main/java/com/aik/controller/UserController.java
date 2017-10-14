@@ -1,6 +1,9 @@
 package com.aik.controller;
 
+import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +11,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,13 +19,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.qos.logback.core.util.TimeUtil;
 
 import com.aik.model.AccUserAccount;
 import com.aik.service.UserManageService;
+import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +45,9 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 	
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
+	
+	 @Value("${file.upload-root-uri}")
+	 private String uploadRootUri;
 
     @Autowired
     private UserManageService userManageService;
@@ -181,10 +191,17 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(AccUserAccount accUserAccount) {
+    public ModelMap save(AccUserAccount accUserAccount, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "user" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            accUserAccount.setHeadImg(imageName);
         	userManageService.save(accUserAccount);
         	data.put("code", "1");
         	data.put("info", "用户新增成功!");
@@ -199,16 +216,25 @@ public class UserController {
         return result;
     }
     
+    
     /**
      * 用户修改
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(AccUserAccount accUserAccount) {
+    public ModelMap update(AccUserAccount accUserAccount, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	
+        	 String imageName = Calendar.getInstance().getTimeInMillis()
+                     + file.getName();
+
+             String fileUri = "user" + File.separator + imageName;
+             String uploadUrl = uploadRootUri + fileUri;
+             AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+             accUserAccount.setHeadImg(imageName);
         	userManageService.update(accUserAccount);
         	data.put("code", "1");
         	data.put("info", "用户修改修改!");

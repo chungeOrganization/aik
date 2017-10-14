@@ -29,13 +29,13 @@
 				
 				
 				<tr>
-					<td> 个人图片</td>
+					<td> 分类图片</td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail"
 								style="width: 150px; height: 150px;">
-								<img th:src="@{/static/assets/img/no_image.gif}"  name="userPhoto" alt="" />
+								<img th:src="@{'/image/getSrcImg/foodCategory/'+${dietFoodCategory.image}}"  name="photo" alt="" />
 								
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail"
@@ -74,15 +74,15 @@
 </div>
 
 <script>
-window.foodView = null;
-var foodView  = {
+window.foodCategoryView = null;
+var foodCategoryView  = {
 		fm : jQuery("#foodCategory_vfm"),
 		
 		basePath : jQuery("#basePath").val(),
 		//初始化
 		init : function(){
 			if(jQuery("#opt").val() == "view"){
-				foodView.readOnlyPallet();
+				foodCategoryView.readOnlyPallet();
 			}
 			this.bindEvent();
 			this.initValidate();
@@ -116,7 +116,7 @@ var foodView  = {
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				foodPage.load(1);
+				foodCategoryPage.load(1);
     	},
 		//禁止输入
    		readOnlyPallet: function(){
@@ -209,6 +209,6 @@ var foodView  = {
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	foodView.init();
+	foodCategoryView.init();
 });
 </script>

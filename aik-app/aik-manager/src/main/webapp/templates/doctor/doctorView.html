@@ -82,7 +82,7 @@
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail"
 								style="width: 150px; height: 150px;">
-								<img src=""  name="photo" alt="" />
+								<img th:src="@{'/image/getSrcImg/doctor/'+${accDoctorAccount.headImg}}"  name="photo" alt="" />
 								
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail"

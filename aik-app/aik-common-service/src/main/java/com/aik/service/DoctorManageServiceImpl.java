@@ -75,6 +75,7 @@ public class DoctorManageServiceImpl implements DoctorManageService {
 		doctorAccountOld = accDoctorAccountMapper.selectByPrimaryKey(accDoctorAccount.getId());
 		doctorAccountOld.setRealName(accDoctorAccount.getRealName());
 		doctorAccountOld.setSex(accDoctorAccount.getSex());
+		doctorAccountOld.setHeadImg(accDoctorAccount.getHeadImg());
         doctorAccountOld.setAreaProvince(accDoctorAccount.getAreaProvince());
         doctorAccountOld.setAreaCity(accDoctorAccount.getAreaCity());
         doctorAccountOld.setBirthday(accDoctorAccount.getBirthday());

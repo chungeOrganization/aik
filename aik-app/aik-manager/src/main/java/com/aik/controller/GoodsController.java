@@ -1,20 +1,26 @@
 package com.aik.controller;
 
+import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.StoGoods;
 import com.aik.service.GoodsManageService;
+import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 public class GoodsController {
 	
 	private Logger logger = LoggerFactory.getLogger(GoodsController.class);
+	
+	@Value("${file.upload-root-uri}")
+	 private String uploadRootUri;
 
     @Autowired
     private GoodsManageService goodsManageService;
@@ -161,10 +170,17 @@ public class GoodsController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(StoGoods stoGoods) {
+    public ModelMap save(StoGoods stoGoods, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "goods" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            stoGoods.setImage(imageName);
         	goodsManageService.save(stoGoods);
         	data.put("code", "1");
         	data.put("info", "商品新增成功!");
@@ -185,10 +201,17 @@ public class GoodsController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(StoGoods stoGoods) {
+    public ModelMap update(StoGoods stoGoods, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
+        	String imageName = Calendar.getInstance().getTimeInMillis()
+                    + file.getName();
+
+            String fileUri = "goods" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+            AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
+            stoGoods.setImage(imageName);
         	goodsManageService.update(stoGoods);
         	data.put("code", "1");
         	data.put("info", "商品修改成功!");

@@ -5,8 +5,8 @@
 	<th>编号</th>
 	<th>食物名称</th>
 	<th>食物类别</th>
-	<th>食物亮点</th>
-	<th>食物亮点排名</th>
+	<!-- <th>食物亮点</th>
+	<th>食物亮点排名</th> -->
 	<th>蛋白质比例</th>
 	<th>脂肪比例</th>
 	<th>碳水化合物比例</th>
@@ -26,13 +26,13 @@
 	<td th:id="${food.id}" th:text="${food.id}"></td>
 	<td th:text="${food.name}"></td>
 	<td th:text="${food.categoryName}"></td>
-	<td th:text="${food.brightSpot}"></td>
-	<td th:text="${food.spotRank}"></td>
+<!-- 	<td th:text="${food.brightSpot}"></td>
+	<td th:text="${food.spotRank}"></td> -->
 	<td th:text="${food.proteinRadio}"></td>
 	<td th:text="${food.fatRadio}"></td>
 	<td th:text="${food.fatRadio}"></td>
 	<td th:text="${food.weight}"></td>
-	<td class="center" th:text="${#dates.format(food.createDate, 'yyyy-MM-dd HH:mm:ss')}">
+	<td class="center" th:text="${#dates.format(food.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 	<td></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">

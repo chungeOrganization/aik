@@ -152,7 +152,7 @@
       and t.foodId = #{foodId}
     </if>
     <if test="userName != null and userName != ''">
-      and a.name = #{userName}
+      and a.userName = #{userName}
     </if>
     
   	</select>

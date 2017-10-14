@@ -66,8 +66,8 @@ public class FoodCategoryManageServiceImpl implements FoodCategoryManageService 
 
 		DietFoodCategory dietFoodCategoryOld = new DietFoodCategory();
 		dietFoodCategoryOld = dietFoodCategoryMapper.selectByPrimaryKey(dietFoodCategory.getId());
-		dietFoodCategoryOld.setName(dietFoodCategoryOld.getName());
-		dietFoodCategoryOld.setImage(dietFoodCategoryOld.getImage());
+		dietFoodCategoryOld.setName(dietFoodCategory.getName());
+		dietFoodCategoryOld.setImage(dietFoodCategory.getImage());
 		dietFoodCategoryMapper.updateByPrimaryKeySelective(dietFoodCategoryOld);
 		
 	}

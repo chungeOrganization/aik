@@ -27,7 +27,14 @@
 	<td th:text="${doctor.userName}"></td>
 	<td th:text="${doctor.mobileNo}"></td>
 	<td th:text="${doctor.realName}"></td>
-	<td th:text="${doctor.position}"></td>
+	<td>
+	<div th:switch="${doctor.position}">
+		<span th:case="'0'">主治医生</span>
+		<span th:case="'1'">副主任医生</span>
+		<span th:case="'2'">主任医生</span>
+		<span th:case="'2'">知名专家</span>
+	</div>
+	</td>
 	<td th:text="${doctor.hosName}"></td>
 	<td th:text="${doctor.hosDepartment}"></td>
 	<td th:text="${doctor.departmentPhone}"></td>
