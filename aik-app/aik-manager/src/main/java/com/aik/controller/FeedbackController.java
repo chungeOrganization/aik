@@ -1,5 +1,6 @@
 package com.aik.controller;
 
+import com.aik.response.ResultResp;
 import com.aik.service.FeedbackService;
 import com.aik.vo.FeedbackVo;
 import com.github.pagehelper.Page;
@@ -60,5 +61,18 @@ public class FeedbackController {
         }
         mv.addObject("feedback", feedbackVo);
         return mv;
+    }
+
+    @RequestMapping("/delete/{id}")
+    public ResultResp delete(@PathVariable Integer id) {
+        ResultResp resp = new ResultResp();
+        try {
+            if (!feedbackService.deleteFeedback(id)) {
+                resp.withCode(ResultResp.RESULT_FAIL).withDataKV(ResultResp.RESULT_MSG_KEY, ResultResp.RESULT_FAIL_MSG);
+            }
+        } catch (Exception e) {
+            resp.withCode(ResultResp.RESULT_FAIL).withDataKV(ResultResp.RESULT_MSG_KEY, ResultResp.RESULT_FAIL_MSG);
+        }
+        return resp;
     }
 }

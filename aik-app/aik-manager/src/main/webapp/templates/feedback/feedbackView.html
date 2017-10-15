@@ -1,7 +1,93 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    用户姓名<input type="text" th:value="${feedback.realName}">
+<div class="portlet box blue">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-reorder"></i>内容
+        </div>
+        <div class="tools">
+            <a href="javascript:void(0);" class="collapse">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form id="feedback_view_form">
+            <table class="table table-bordered">
+                <tr>
+                    <td>用户类型</td>
+                    <td>
+                        <select title="用户类型">
+                            <option value="0" th:selected="${feedback.userType == 0}">用户</option>
+                            <option value="1" th:selected="${feedback.userType == 1}">医生</option>
+                        </select>
+                    </td>
+                    <td>问题类型</td>
+                    <td>
+                        <select title="问题类型">
+                            <option value="0" th:selected="${feedback.type == 0}">功能异常</option>
+                            <option value="1" th:selected="${feedback.type == 1}">产品建议</option>
+                            <option value="2" th:selected="${feedback.type == 2}">其他</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户姓名</td>
+                    <td>
+                        <input title="用户姓名" type="text" value="" th:value="${feedback.realName}"/>
+                    </td>
+                    <td>反馈时间</td>
+                    <td>
+                        <input title="反馈时间" type="text" value="" th:value="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>反馈内容</td>
+                    <td colspan="3">
+                        <textarea title="反馈内容" cols="75" th:text="${feedback.description}">
+                        </textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-actions fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-offset-5 col-md-3">
+                        <button type="button" id="back_ar" class="btn default">返 回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
 </html>
 <script type="text/javascript">
-
+    window.feedbackView = null;
+    var feedbackView = {
+        fm: jQuery("#feedback_view_form"),
+        basePath : jQuery("#basePath").val(),
+        init : function(){
+            this.readOnlyPallet();
+            this.bindEvent();
+        },
+        readOnlyPallet: function(){
+            this.fm.find("input, textarea").attr("readOnly", true);
+            this.fm.find("input[type='radio']").attr("disable",true);
+            this.fm.find("select").attr("disabled", true);
+        },
+        bindEvent : function() {
+            var _this = this;
+            jQuery("#back_ar").bind("click",function(){
+                _this.closedTab();
+            });
+        },
+        closedTab : function(){
+            jQuery('#tabli_11').trigger('click');
+            jQuery('#tabli_2').remove();
+            jQuery('#tab_2').remove();
+        }
+    };
+    jQuery(function(){
+       feedbackView.init();
+    });
 </script>

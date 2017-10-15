@@ -22,7 +22,7 @@
                     </div>
                     <!--search box form-->
                     <div class="portlet-body form">
-                        <form class="form-horizontal" name="search-form">
+                        <form class="form-horizontal" id="feedback_form">
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -102,7 +102,7 @@
 </html>
 <script type="text/javascript">
     var feedbackPage = {
-        fm: jQuery("form[name='search-form']"),
+        fm: jQuery("#feedback_form"),
         basePath : jQuery("#basePath").val(),
         pageSize : 5,
         init: function() {
@@ -130,6 +130,32 @@
                     data:{},
                     iTab: true,
                     tabTitle: "查看意见反馈"
+                });
+                return false;
+            }).delegate(".delete", "click", function(){
+                var _tr = jQuery(this).closest("tr"),
+                    id = jQuery.trim(_tr.children('td').eq(0).attr('id'));
+
+                Dialog.confirm({
+                    content: "确定要删除？",
+                    onSubmitted: function() {
+                        Ajax.request({
+                            url: $this.basePath +"/feedback/delete/"+id,
+                            data:{},
+                            success: function(data){
+                                if(!data) return;
+                                Dialog.notice({
+                                    content: data.msg,
+                                    onSubmitted: function(){
+                                        $this.load(1);
+                                    },
+                                    onClosed: function(){
+                                        $this.load(1);
+                                    }
+                                });
+                            }
+                        });
+                    }
                 });
                 return false;
             });

@@ -24,4 +24,12 @@ public interface FeedbackService {
      * @return 意见反馈详情
      */
     FeedbackVo findDetail(Integer id);
+
+    /**
+     * 删除意见反馈
+     *
+     * @param id 反馈id
+     * @return true false
+     */
+    boolean deleteFeedback(Integer id);
 }

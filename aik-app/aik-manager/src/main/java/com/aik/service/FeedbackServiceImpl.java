@@ -34,4 +34,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackVo findDetail(Integer id) {
         return aikFeedbackMapper.selectDetailById(id);
     }
+
+    @Override
+    public boolean deleteFeedback(Integer id) {
+        return aikFeedbackMapper.deleteByPrimaryKey(id) > 0;
+    }
 }
