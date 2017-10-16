@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-reorder"></i>常见问题添加
+            </div>
+            <div class="tools">
+                <a href="javascript:void(0);" class="collapse">
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="form-inline"  method ="post" action="" id="commonProblem_add_form" enctype="multipart/form-data">
+                <table class="table  table-bordered">
+                    <tr>
+                        <td>常见问题</td>
+                        <td>
+                            <input title="常见问题" type="text" name="question">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案</td>
+                        <td>
+                            <textarea name="answer" cols="75"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案（图片）</td>
+                        <td colspan="3">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+                                    <img src=""  name="photo" alt=""/>
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 150px;"></div>
+                                <div>
+								    <span class="default btn-file">
+                                        <span class="fileinput-new">选择照片</span>
+                                        <span class="fileinput-exists">更换照片</span>
+									    <input type="file" name="file"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="form-actions fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-offset-5 col-md-3">
+                                <button type="button" id="save_ar" class="btn blue" >保 存</button>
+                                <button type="button" id="goback_ar" class="btn default">返 回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</html>
+<script type="text/javascript">
+    window.commonProblemAdd = null;
+    var commonProblemAdd = {
+        fm : jQuery("#commonProblem_add_form"),
+        basePath : jQuery("#basePath").val(),
+        //初始化
+        init : function(){
+            this.bindEvent();
+        },
+        //事件绑定
+        bindEvent : function(){
+            var _this = this;
+            //绑定添加单击事件
+            jQuery("#save_ar").bind("click", function(){
+                Dialog.confirm({
+                    content:'确定保存?',
+                    onSubmitted:function(){
+                        _this.ajaxSubmit();
+                    }
+                });
+                return false;
+            });
+            jQuery("#goback_ar").bind("click",function(){
+                _this.closedTab();
+            });
+        },
+        closedTab : function(){
+            jQuery('#tabli_11').trigger('click');
+            jQuery('#tabli_2').remove();
+            jQuery('#tab_2').remove();
+                commonProblemPage.load(1);
+        },
+        ajaxSubmit: function(){
+            var _this = this;
+            Ajax.requestSubmit({
+                fm: _this.fm,
+                url: _this.basePath + '/commonProblem/add',
+                type: "post",
+                success: function(data){
+                    if(!data) return;
+                    Dialog.notice({
+                        content: data.msg,
+                        onSubmitted: function(){
+                            _this.closedTab();
+                        },
+                        onClosed: function(){
+                            _this.closedTab();
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+
+    jQuery(function(){
+        commonProblemAdd.init();
+    });
+</script>

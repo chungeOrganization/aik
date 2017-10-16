@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-reorder"></i>内容
+            </div>
+            <div class="tools">
+                <a href="javascript:void(0);" class="collapse">
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form method="post" id="commonProblem_view_form" class="form-inline" enctype="multipart/form-data">
+                <input type ="hidden" id="id" name="id" value="" th:value="${commonProblem.id}" />
+                <input type ="hidden" id="opt" name="opt" value="" th:value="${opt}" />
+
+                <table class="table table-bordered">
+                    <tr>
+                        <td>常见问题</td>
+                        <td>
+                            <input title="常见问题" name="question" type="text" th:value="${commonProblem.question}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案</td>
+                        <td>
+                            <textarea name="answer" cols="75" th:text="${commonProblem.answer}"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案（图片）</td>
+                        <td>
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+                                    <img src="" th:src="@{'/image/getImg/'+${commonProblem.fileUrl}+'/surfix'}"  name="photo" alt=""/>
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 150px;"></div>
+                                <div>
+								    <span class="default btn-file">
+                                        <span class="fileinput-new">选择照片</span>
+                                        <span class="fileinput-exists">更换照片</span>
+									    <input type="file" name="file"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="form-actions fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-offset-5 col-md-3">
+                                <button type="button" id="save_ar" class="btn blue" >保 存</button>
+                                <button type="button" id="goback_ar" class="btn default">返 回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</html>
+<script type="text/javascript">
+    window.commonProblemView = null;
+    var commonProblemView = {
+        fm: jQuery("#commonProblem_view_form"),
+        basePath : jQuery("#basePath").val(),
+        init : function(){
+            if(jQuery("#opt").val() == "view") {
+                this.readOnlyPallet();
+            }
+            this.bindEvent();
+        },
+        //禁止输入
+        readOnlyPallet: function(){
+            this.fm.find("input, textarea").attr("readOnly", true);
+            this.fm.find("input[type='radio']").attr("disable",true);
+            this.fm.find("input[type='file']").css("display", "none");
+            this.fm.find("select").attr("disabled", true);
+            jQuery("#save_ar").remove();
+        },
+        //事件绑定
+        bindEvent : function(){
+            var _this = this;
+
+            //绑定保存单击事件
+            jQuery("#save_ar").bind("click", function(){
+                Dialog.confirm({
+                    content:'确定保存?',
+                    onSubmitted:function(){
+                        var url = _this.basePath + "/commonProblem/edit";
+                        _this.ajaxSubmit(url);
+                    }
+                });
+            });
+
+            jQuery("#goback_ar").bind("click",function(){
+                _this.closedTab();
+            });
+        },
+        //有图片的页面提交
+        ajaxSubmit: function(url){
+            var _this = this;
+            Ajax.requestSubmit({
+                fm: _this.fm,
+                url: url,
+                type: "post",
+                success: function(data){
+                    if(!data) return;
+                    Dialog.notice({
+                        content: data.msg,
+                        onSubmitted: function(){
+                            _this.closedTab();
+                        },
+                        onClosed: function(){
+                            _this.closedTab();
+                        }
+                    });
+                }
+            });
+        },
+        closedTab : function(){
+            jQuery('#tabli_11').trigger('click');
+            jQuery('#tabli_2').remove();
+            jQuery('#tab_2').remove();
+            commonProblemPage.load(1);
+        },
+    };
+
+    jQuery(function(){
+        commonProblemView.init();
+    });
+</script>

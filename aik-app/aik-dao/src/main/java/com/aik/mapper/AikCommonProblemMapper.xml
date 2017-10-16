@@ -5,11 +5,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="question" jdbcType="VARCHAR" property="question" />
     <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="fileUrl" jdbcType="VARCHAR" property="fileUrl" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, question, answer, createDate, updateDate
+    id, question, answer, fileUrl, createDate, updateDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,9 +24,11 @@
   </delete>
   <insert id="insert" parameterType="com.aik.model.AikCommonProblem">
     insert into aik_commonProblem (id, question, answer, 
-      createDate, updateDate)
+      fileUrl, createDate, updateDate
+      )
     values (#{id,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+      #{fileUrl,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.AikCommonProblem">
     insert into aik_commonProblem
@@ -38,6 +41,9 @@
       </if>
       <if test="answer != null">
         answer,
+      </if>
+      <if test="fileUrl != null">
+        fileUrl,
       </if>
       <if test="createDate != null">
         createDate,
@@ -56,6 +62,9 @@
       <if test="answer != null">
         #{answer,jdbcType=VARCHAR},
       </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -73,6 +82,9 @@
       <if test="answer != null">
         answer = #{answer,jdbcType=VARCHAR},
       </if>
+      <if test="fileUrl != null">
+        fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -86,6 +98,7 @@
     update aik_commonProblem
     set question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
+      fileUrl = #{fileUrl,jdbcType=VARCHAR},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
@@ -95,9 +108,19 @@
     from aik_commonProblem
     where 1=1
     <if test="searchDesc != null and searchDesc != ''">
-      and locate(#{searchDesc}, question) > 0
+      and locate(#{searchDesc}, question) &gt; 0
     </if>
     order by id desc
     limit ${(page-1)*size}, #{size}
+  </select>
+  <select id="selectByPage" parameterType="com.aik.model.AikCommonProblem" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_commonProblem
+    where 1=1
+    <if test="question != null and question != ''">
+      and locate(#{question}, question) &gt; 0
+    </if>
+    order by createDate desc
   </select>
 </mapper>

@@ -9,6 +9,8 @@ public class AikCommonProblem {
 
     private String answer;
 
+    private String fileUrl;
+
     private Date createDate;
 
     private Date updateDate;
@@ -35,6 +37,14 @@ public class AikCommonProblem {
 
     public void setAnswer(String answer) {
         this.answer = answer == null ? null : answer.trim();
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl == null ? null : fileUrl.trim();
     }
 
     public Date getCreateDate() {

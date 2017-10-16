@@ -16,7 +16,7 @@
 
         <!-- !!!! Database Configurations !!!! -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/aikang" userId="root" password="123456"/>
+                        connectionURL="jdbc:mysql://104.224.159.254:3306/aikang" userId="root" password="As_123456"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="acc_doctorAccount" domainObjectName="AccDoctorAccount" enableCountByExample="false"
+        <table tableName="aik_commonProblem" domainObjectName="AikCommonProblem" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>

@@ -5,38 +5,22 @@
             <thead>
                 <tr>
                     <th>编号</th>
-                    <th>用户类型</th>
-                    <th>问题类型</th>
-                    <th>用户姓名</th>
-                    <th>反馈内容</th>
-                    <th>反馈时间</th>
+                    <th>问题</th>
+                    <th>创建时间</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd gradeX" th:each="feedback,iterStat : ${pageInfo.list}">
-                    <td th:id="${feedback.id}" th:text="${feedback.id}"></td>
-                    <td>
-                        <div th:switch="${feedback.userType}">
-                            <p th:case="0">用户</p>
-                            <p th:case="1">医生</p>
-                            <p th:case="*">-</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div th:switch="${feedback.type}">
-                            <p th:case="0">功能异常</p>
-                            <p th:case="1">产品建议</p>
-                            <p th:case="2">其他</p>
-                            <p th:case="*">-</p>
-                        </div>
-                    </td>
-                    <td th:text="${feedback.realName}"></td>
-                    <td th:text="${feedback.description}"></td>
-                    <td th:text="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}">
+                <tr class="odd gradeX" th:each="commonProblem,iterStat : ${pageInfo.list}">
+                    <td th:id="${commonProblem.id}"  th:text="${commonProblem.id}"></td>
+                    <td th:text="${commonProblem.question}"></td>
+                    <td th:text="${#dates.format(commonProblem.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
                         <a href="javascript:void(0);" class="btn default btn-xs blue view">
                             <i class="fa fa-share"></i> 查看
+                        </a>
+                        <a href="javascript:void(0);" class="btn default btn-xs blue edit">
+                            <i class="fa fa-edit"></i> 编辑
                         </a>
                         <a href="javascript:void(0);" class="btn default btn-xs black delete">
                             <i class="fa fa-trash-o"></i>删除
@@ -48,7 +32,7 @@
 
         <div class="row">
             <div class="col-md-5 col-sm-12">
-                <div class="dataTables_info" id="sample_1_info">
+                <div class="dataTables_info">
                     总数<span th:text="${pageInfo.total}"></span>条,每页显示<span th:text="${pageInfo.pageSize}"></span>条
                 </div>
             </div>
