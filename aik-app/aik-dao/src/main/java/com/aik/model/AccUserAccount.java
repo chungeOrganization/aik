@@ -34,6 +34,8 @@ public class AccUserAccount {
     private Date createDate;
 
     private Date updateDate;
+    
+    private Byte deleteStatus;
 
     public Integer getId() {
         return id;
@@ -162,4 +164,14 @@ public class AccUserAccount {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
+	public Byte getDeleteStatus() {
+		return deleteStatus;
+	}
+
+	public void setDeleteStatus(Byte deleteStatus) {
+		this.deleteStatus = deleteStatus;
+	}
+    
+    
 }

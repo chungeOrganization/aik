@@ -82,6 +82,7 @@ public class UserManageServiceImpl implements UserManageService {
         userAccountOld.setAreaCity(accUserAccount.getAreaCity());
         userAccountOld.setIsElseIllness(accUserAccount.getIsElseIllness());
         userAccountOld.setUpdateDate(new Date());
+        userAccountOld.setDeleteStatus(accUserAccount.getDeleteStatus());
         accUserAccountMapper.updateByPrimaryKeySelective(userAccountOld);
     }
 

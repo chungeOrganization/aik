@@ -18,10 +18,11 @@
     <result column="headImg" jdbcType="VARCHAR" property="headImg" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="deleteStatus" jdbcType="TINYINT" property="deleteStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     id, mobileNo, userName, password, userType, realName, nickName, sex, areaProvince, 
-    areaCity, birthday, isElseIllness, devType, headImg, createDate, updateDate
+    areaCity, birthday, isElseIllness, devType, headImg, createDate, updateDate, deleteStatus
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,13 +40,13 @@
       nickName, sex, areaProvince, 
       areaCity, birthday, isElseIllness, 
       devType, headImg, createDate, 
-      updateDate)
+      updateDate, deleteStatus)
     values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{userType,jdbcType=TINYINT}, #{realName,jdbcType=VARCHAR}, 
       #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{areaProvince,jdbcType=VARCHAR}, 
       #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{isElseIllness,jdbcType=TINYINT}, 
       #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{updateDate,jdbcType=TIMESTAMP},  #{deleteStatus,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount" useGeneratedKeys="true" keyProperty="id">
     insert into acc_userAccount
@@ -98,6 +99,9 @@
       <if test="updateDate != null">
         updateDate,
       </if>
+       <if test="updateDate != null">
+        deleteStatus,
+       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -145,8 +149,8 @@
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -198,6 +202,9 @@
       <if test="updateDate != null">
         updateDate = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="deleteStatus != null">
+        deleteStatus = #{deleteStatus,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -217,7 +224,8 @@
       devType = #{devType,jdbcType=VARCHAR},
       headImg = #{headImg,jdbcType=VARCHAR},
       createDate = #{createDate,jdbcType=TIMESTAMP},
-      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+      updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      deleteStatus = #{deleteStatus,jdbcType=TINYINT} 
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectBySelective" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap">
@@ -304,6 +312,9 @@
     <if test="devType != null">
       and devType = #{devType,jdbcType=VARCHAR}
     </if>
+    <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+    </if>
   </select>
 
   <select id="findByPage" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap" >
@@ -344,5 +355,10 @@
     <if test="devType != null">
       and devType = #{devType,jdbcType=VARCHAR}
     </if>
+    <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+    </if>
+    
+    
   </select>
 </mapper>

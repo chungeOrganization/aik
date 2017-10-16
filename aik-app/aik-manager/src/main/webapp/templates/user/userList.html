@@ -46,7 +46,7 @@
 		<span th:text="${#dates.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
 		</span>
 	</td>
-	<td></td>
+	<td th:text="${user.deleteStatus eq 0}?'正常':'封号'"></td>
 	<td>
 		<a href="javascript:;" class="btn default btn-xs blue view">
 				<i class="fa fa-share"></i> 查看

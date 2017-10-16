@@ -86,6 +86,7 @@ public class DoctorManageServiceImpl implements DoctorManageService {
         doctorAccountOld.setSkill(accDoctorAccount.getSkill());
         doctorAccountOld.setDepartmentPhone(accDoctorAccount.getDepartmentPhone());
         doctorAccountOld.setUpdateDate(new Date());
+        doctorAccountOld.setDeleteStatus(accDoctorAccount.getDeleteStatus());
         accDoctorAccountMapper.updateByPrimaryKeySelective(doctorAccountOld);
 		
 	}

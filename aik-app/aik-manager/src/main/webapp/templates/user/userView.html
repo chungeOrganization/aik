@@ -27,8 +27,8 @@
 					<td>有效性</td>
 					<td>
 						<select class="form-control" name="deleteStatus">
-							<option selected="selected" value="false">有效</option>
-							<option selected="selected" value="true">无效</option>
+						   	<option value="0" th:if="${accUserAccount.deleteStatus eq 0}" th:selected="selected">正常</option>
+						   	<option value="1" th:if="${accUserAccount.deleteStatus eq 1}" th:selected="selected">封号</option>
 						</select>
 					</td>
 				</tr>

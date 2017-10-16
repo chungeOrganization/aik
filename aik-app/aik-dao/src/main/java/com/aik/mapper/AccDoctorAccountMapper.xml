@@ -24,11 +24,12 @@
     <result column="starLevel" jdbcType="DECIMAL" property="starLevel" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="deleteStatus" jdbcType="TINYINT" property="deleteStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     id, mobileNo, userName, password, realName, sex, areaProvince, areaCity, birthday, 
     identityCard, email, hosName, hosDepartment, skill, departmentPhone, devType, headImg, 
-    position, price, starLevel, createDate, updateDate
+    position, price, starLevel, createDate, updateDate, deleteStatus
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -48,7 +49,7 @@
       hosDepartment, skill, departmentPhone, 
       devType, headImg, position, 
       price, starLevel, createDate, 
-      updateDate)
+      updateDate, deleteStatus)
     values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, 
       #{areaProvince,jdbcType=VARCHAR}, #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
@@ -56,7 +57,7 @@
       #{hosDepartment,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, #{departmentPhone,jdbcType=VARCHAR}, 
       #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{position,jdbcType=TINYINT}, 
       #{price,jdbcType=DECIMAL}, #{starLevel,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{updateDate,jdbcType=TIMESTAMP} , #{deleteStatus,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount" useGeneratedKeys="true" keyProperty="id">
     insert into acc_doctorAccount
@@ -127,6 +128,9 @@
       <if test="updateDate != null">
         updateDate,
       </if>
+       <if test="deleteStatus != null">
+        deleteStatus,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -194,6 +198,9 @@
       </if>
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -263,6 +270,9 @@
       <if test="updateDate != null">
         updateDate = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+       <if test="deleteStatus != null">
+        deleteStatus = #{deleteStatus,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -288,7 +298,8 @@
       price = #{price,jdbcType=DECIMAL},
       starLevel = #{starLevel,jdbcType=DECIMAL},
       createDate = #{createDate,jdbcType=TIMESTAMP},
-      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+      updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectBySelective" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
@@ -343,6 +354,9 @@
     </if>
     <if test="position != null">
       and position = #{position,jdbcType=TINYINT}
+    </if>
+     <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     </if>
   </select>
   <select id="selectByMobileNo" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -430,6 +444,9 @@
     <if test="position != null">
       and position = #{position,jdbcType=TINYINT}
     </if>
+     <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+    </if>
   </select>
   
   <select id="findByPage" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
@@ -484,6 +501,9 @@
     </if>
     <if test="position != null">
       and position = #{position,jdbcType=TINYINT}
+    </if>
+    <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     </if>
   </select>
   
