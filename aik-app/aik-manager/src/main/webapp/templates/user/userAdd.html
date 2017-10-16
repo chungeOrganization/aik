@@ -216,14 +216,10 @@
     					Dialog.notice({
     						content: data.info,
     						onSubmitted: function(){
-    							if("用户名已经注册，请重新输入" != data.info){
-    								_this.closedTab();
-    							}
+    							_this.closedTab();
     						},
     						onClosed: function(){
-    							if("用户名已经注册，请重新输入" != data.info){
-    								_this.closedTab();
-    							}
+    							_this.closedTab();
     						}
     					});
     				}
@@ -260,14 +256,9 @@
 							required : '请输入手机号码',
 							pattern : '手机号码必须11位以上数字'
 						},
-						
 						password : {
 							required : '请输入密码',
 							pattern : '请输入6-16位字母，数字'
-						},
-						email : {
-							required : '请输入邮箱地址',
-							pattern : '邮箱地址格式不正确'
 						},
 						userName : {
 							required : '请输入登录名',
@@ -275,9 +266,6 @@
 						},
 						realName : {
 							required : '请输入真实姓名'
-						},
-						qq :{
-							pattern : '长度为5以上的'
 						}
 					}
 					
