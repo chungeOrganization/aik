@@ -33,17 +33,17 @@
                 <tr>
                     <td>用户姓名</td>
                     <td>
-                        <input title="用户姓名" type="text" value="" th:value="${feedback.realName}"/>
+                        <input class="form-control" title="用户姓名" type="text" value="" th:value="${feedback.realName}"/>
                     </td>
                     <td>反馈时间</td>
                     <td>
-                        <input title="反馈时间" type="text" value="" th:value="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}"/>
+                        <input class="form-control" title="反馈时间" type="text" value="" th:value="${#dates.format(feedback.createDate, 'yyyy-MM-dd HH:mm:ss')}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>反馈内容</td>
                     <td colspan="3">
-                        <textarea title="反馈内容" cols="75" th:text="${feedback.description}">
+                        <textarea class="form-control" title="反馈内容" cols="75" th:text="${feedback.description}">
                         </textarea>
                     </td>
                 </tr>
