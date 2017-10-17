@@ -9,7 +9,8 @@ import com.aik.enums.SecurityCodeTypeEnum;
 import com.aik.enums.ValidStatusEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccSecurityCode;
-import com.aik.util.SendSMSUtils;
+import com.aik.util.SendSmsUtils;
+import com.aik.util.SendVoiceUtils;
 import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -78,7 +79,7 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
         try {
-            SendSMSUtils.sendSMS(mobileNo, securityCode);
+            SendSmsUtils.sendSecurityCodeSms(mobileNo, securityCode);
         } catch (Exception e) {
             logger.error("send security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001001);
@@ -116,9 +117,9 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
         try {
-            SendSMSUtils.sendVoiceSMS(mobileNo, securityCode);
+            SendVoiceUtils.sendSecurityCodeVoice(mobileNo, securityCode);
         } catch (Exception e) {
-            logger.error("send security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
+            logger.error("send voice security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001001);
         }
 

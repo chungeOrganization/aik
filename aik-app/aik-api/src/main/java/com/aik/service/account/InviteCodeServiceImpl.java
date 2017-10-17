@@ -5,7 +5,7 @@ import com.aik.assist.InviteCodeUtil;
 import com.aik.dao.AccInviteCodeMapper;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccInviteCode;
-import com.aik.util.SendSMSUtils;
+import com.aik.util.SendSmsUtils;
 import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
             String inviteCode = InviteCodeUtil.generatorCode();
 
             try {
-                SendSMSUtils.sendSMS(mobileNo, inviteCode);
+                SendSmsUtils.sendSecurityCodeSms(mobileNo, inviteCode);
             } catch (Exception e) {
                 logger.error("send invite code[{}] to mobileNo[{}] error:", inviteCode, mobileNo, e);
                 throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
@@ -81,7 +81,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         }
 
         try {
-            SendSMSUtils.sendSMS(mobileNo, accInviteCode.getInviteCode());
+            SendSmsUtils.sendSecurityCodeSms(mobileNo, accInviteCode.getInviteCode());
         } catch (Exception e) {
             logger.error("send invite code[{}] to mobileNo[{}] error:", accInviteCode.getInviteCode(), mobileNo, e);
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
