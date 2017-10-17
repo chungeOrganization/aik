@@ -114,6 +114,24 @@ public class PublicApi {
     }
 
     @GET
+    @Path("/sendVoiceSecurityCode/{codeType}/{mobileNo}")
+    public ApiResult sendVoiceSecurityCode(@PathParam("codeType") String codeType, @PathParam("mobileNo") String mobileNo) {
+        ApiResult result = new ApiResult();
+
+        try {
+            securityCodeService.generateVoiceSecurityCode(codeType, mobileNo);
+        } catch (ApiServiceException e) {
+            logger.error("get voice security code error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get voice security code error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
     @Path("/validSecurityCode/{codeType}/{mobileNo}/{securityCode}")
     public ApiResult validSecurityCode(@PathParam("codeType") String codeType, @PathParam("mobileNo") String mobileNo,
                                        @PathParam("securityCode") String securityCode) {

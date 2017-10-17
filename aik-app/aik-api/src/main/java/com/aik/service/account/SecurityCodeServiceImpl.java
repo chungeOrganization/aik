@@ -94,6 +94,44 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
     }
 
     @Override
+    public void generateVoiceSecurityCode(String codeTypeStr, String mobileNo) throws ApiServiceException {
+        if (StringUtils.isBlank(codeTypeStr) || StringUtils.isBlank(mobileNo)) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        if (!StringValidUtils.validMobileNo(mobileNo)) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        SecurityCodeTypeEnum typeEnum = SecurityCodeTypeEnum.getTypeEnumByTypeStr(codeTypeStr);
+        if (null == typeEnum) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        // 验证手机号码是否已经被使用过
+        if (validMobileNoIsUsed(typeEnum, mobileNo)) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
+        }
+
+        // 发送手机验证码
+        String securityCode = SecurityCodeUtil.generatorCode();
+        try {
+            SendSMSUtils.sendVoiceSMS(mobileNo, securityCode);
+        } catch (Exception e) {
+            logger.error("send security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001001);
+        }
+
+        // 插入验证码记录
+        AccSecurityCode accSecurityCode = new AccSecurityCode();
+        accSecurityCode.setMobileNo(mobileNo);
+        accSecurityCode.setSecurityCode(securityCode);
+        accSecurityCode.setCodeType(typeEnum.getType());
+        accSecurityCode.setCreateDate(new Date());
+        accSecurityCodeMapper.insertSelective(accSecurityCode);
+    }
+
+    @Override
     public Boolean validSecurityCode(String codeTypeStr, String mobileNo, String securityCode) throws ApiServiceException {
         if (StringUtils.isBlank(codeTypeStr) || StringUtils.isBlank(mobileNo) || StringUtils.isBlank(securityCode)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);

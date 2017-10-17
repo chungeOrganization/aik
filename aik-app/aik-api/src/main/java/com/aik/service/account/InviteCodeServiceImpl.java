@@ -78,13 +78,13 @@ public class InviteCodeServiceImpl implements InviteCodeService {
             accInviteCode.setMobileNo(mobileNo);
             accInviteCode.setCreateDate(new Date());
             accInviteCodeMapper.insertSelective(accInviteCode);
-        } else {
-            try {
-                SendSMSUtils.sendSMS(mobileNo, accInviteCode.getInviteCode());
-            } catch (Exception e) {
-                logger.error("send invite code[{}] to mobileNo[{}] error:", accInviteCode.getInviteCode(), mobileNo, e);
-                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
-            }
+        }
+
+        try {
+            SendSMSUtils.sendSMS(mobileNo, accInviteCode.getInviteCode());
+        } catch (Exception e) {
+            logger.error("send invite code[{}] to mobileNo[{}] error:", accInviteCode.getInviteCode(), mobileNo, e);
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
         }
     }
 
