@@ -7,6 +7,15 @@
     <result column="lessonId" jdbcType="INTEGER" property="lessonId" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  
+   <resultMap id="BaseResultMapVo" type="com.aik.vo.AikNutritionLessonViewVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="lessonId" jdbcType="INTEGER" property="lessonId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, userId, lessonId, createDate
   </sql>
@@ -90,4 +99,45 @@
       and lessonId = #{lessonId}
     </if>
   </select>
+  
+  <select id="findAll" parameterType="com.aik.model.AikNutritionLessonView"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_nutritionLessonView
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="lessonId != null">
+      and lessonId = #{lessonId}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.vo.AikNutritionLessonViewVo"  resultMap="BaseResultMapVo">
+    select
+    t.`id` id , m.`id` lessonId, m.`title` title, a.`id` userId, a.`userName` userName 
+    FROM aik_nutritionLessonView t , aik_nutritionLesson m  , acc_userAccount a
+    where m.`id` = t.`lessonId` AND a.`id` = t.`userId`
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userId != null">
+      and t.userId = #{userId}
+    </if>
+    <if test="title != null and title != ''">
+      and m.title = #{title}
+    </if>
+    <if test="lessonId != null">
+      and t.lessonId = #{lessonId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.userName = #{userName}
+    </if>
+    
+  	</select>
+  
+  
 </mapper>
