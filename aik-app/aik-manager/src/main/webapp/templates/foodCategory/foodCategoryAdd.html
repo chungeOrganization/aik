@@ -12,12 +12,13 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form class="form-inline"  method ="post" action="" id="foodCategoryAdd" enctype="multipart/form-data">
+		<form action="" method="post" class="form-inline" id="foodCategoryAdd" enctype="multipart/form-data">
+		
 			<table class="table  table-bordered ">
 				<tr>
 					<td>名称</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name"  />
+						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name" value="" />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
 					</td>
@@ -72,6 +73,8 @@
 	</div>
 </div>
 
+
+
 <script>
 	window.foodCategoryAdd = null;
     var foodCategoryAdd = {
@@ -91,6 +94,7 @@
     				Dialog.confirm({
 	    				content:'确定保存?',
 						onSubmitted:function(){
+						alert(UiUtils.check("foodCategoryAdd"));
 	   						if(UiUtils.check("foodCategoryAdd")){
 	   							//addUser();
 	   							_this.ajaxSubmit();
@@ -108,27 +112,6 @@
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
 				foodCategoryPage.load(1);
-    		},
-    		//提交数据
-    		onSubmit: function(){
-    			var _this = this;
-    			Ajax.request({
-    				url:"",
-    				type:"post",
-    				data: {partner:JSON.stringify(_this.getFormData())},
-    				success: function(data){
-    					if(!data) return;
-    					Dialog.notice({
-    						content: data.info,
-    						onSubmitted: function(){
-    							_this.closedTab();
-    						},
-    						onClosed: function(){
-    							_this.closedTab();
-    						}
-    					});
-    				}
-    			});
     		},
     		//有图片的页面提交
     		ajaxSubmit: function(){
@@ -178,8 +161,6 @@
 					},
 					
 					description : {
-					
-						
 						name : {
 							required : '请输入名称'
 						}

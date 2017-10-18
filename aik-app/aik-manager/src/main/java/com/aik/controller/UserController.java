@@ -87,11 +87,9 @@ public class UserController {
     	ModelAndView mv = new ModelAndView("user/userList");
     	Page<AccUserAccount> accUserAccounts = new Page<AccUserAccount>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-			//TODO
-	    	//accUserAccount = new AccUserAccount();
 			accUserAccounts = userManageService.findPage(accUserAccount, pageRequest);
 			logger.info("用户信息列表获取成功");
 		} catch (Exception e) {

@@ -8,11 +8,11 @@ public class PageUtils {
 
     private Integer page;
 
-    private Integer size;
+    private Integer size = 10;
     
     public PageUtils(Integer page, Integer size) {
     	this.page = page;
-    	this.size = size;
+    	this.size = size == null ? 10 : size;
 	}
 
     public Integer getPage() {

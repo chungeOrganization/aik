@@ -86,7 +86,7 @@ public class DoctorController {
     	ModelAndView mv = new ModelAndView("doctor/doctorList");
     	Page<AccDoctorAccount> accDoctorAccounts = new Page<AccDoctorAccount>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	accDoctorAccounts = doctorManageService.findPage(accDoctorAccount, pageRequest);

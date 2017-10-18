@@ -56,7 +56,7 @@ public class FoodCollectController {
     	ModelAndView mv = new ModelAndView("foodCollect/foodCollectList");
     	Page<DietUserCollectFoodVo> dietUserCollectFoods = new Page<DietUserCollectFoodVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	dietUserCollectFoods = foodCollectManageService.findPage(dietUserCollectFoodVo, pageRequest);

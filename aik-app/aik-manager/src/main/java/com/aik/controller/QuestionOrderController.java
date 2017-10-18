@@ -71,7 +71,7 @@ public class QuestionOrderController {
     	ModelAndView mv = new ModelAndView("questionOrder/questionOrderList");
     	Page<AikQuestionOrderVo> aikQuestionOrderList = new Page<AikQuestionOrderVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	aikQuestionOrderList = questionOrderManageService.findPage(aikQuestionOrder, pageRequest);

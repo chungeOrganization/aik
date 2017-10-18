@@ -58,7 +58,7 @@ server:
 
 file:
 # windows
-  upload-root-uri: "C:/Users/as/Pictures/"
+  upload-root-uri: "H:/Users/as/Pictures/"
 # linux
 #  upload-root-uri: "/usr/soft/file/"
   mapping-root-uri: "/file"

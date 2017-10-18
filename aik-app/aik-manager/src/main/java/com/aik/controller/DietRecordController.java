@@ -75,7 +75,7 @@ public class DietRecordController {
     	ModelAndView mv = new ModelAndView("dietRecord/dietRecordList");
     	Page<DietDailyDietRecordVo> dietDailyDietRecords = new Page<DietDailyDietRecordVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	dietDailyDietRecords = dietRecordManageService.findPage(dietUserCollectFoodVo, pageRequest);

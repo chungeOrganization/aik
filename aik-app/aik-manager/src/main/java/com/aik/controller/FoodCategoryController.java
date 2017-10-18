@@ -68,7 +68,7 @@ public class FoodCategoryController {
     	ModelAndView mv = new ModelAndView("foodCategory/foodCategoryList");
     	Page<DietFoodCategory> dietFoodCategorys = new Page<DietFoodCategory>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	dietFoodCategorys = foodCategoryManageService.findPage(dietFoodCategory, pageRequest);
