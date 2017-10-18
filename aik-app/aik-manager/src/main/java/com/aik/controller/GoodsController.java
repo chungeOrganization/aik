@@ -68,7 +68,7 @@ public class GoodsController {
     	ModelAndView mv = new ModelAndView("goods/goodsList");
     	Page<StoGoods> stoGoodsList = new Page<StoGoods>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	stoGoodsList = goodsManageService.findPage(stoGoods, pageRequest);

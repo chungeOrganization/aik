@@ -67,7 +67,7 @@ public class GoodsOrderController {
     	ModelAndView mv = new ModelAndView("goodsOrder/goodsOrderList");
     	Page<StoUserOrderVo> stoGoodsOrderList = new Page<StoUserOrderVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	stoGoodsOrderList = goodsOrderManageService.findPage(stoUserOrder, pageRequest);

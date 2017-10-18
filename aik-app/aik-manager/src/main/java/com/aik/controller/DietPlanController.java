@@ -73,7 +73,7 @@ public class DietPlanController {
     	ModelAndView mv = new ModelAndView("dietPlan/dietPlanList");
     	Page<DietDailyDietPlanVo> dietDailydietPlans = new Page<DietDailyDietPlanVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	dietDailydietPlans = dietPlanManageService.findPage(dietDailyDietPlanVo, pageRequest);

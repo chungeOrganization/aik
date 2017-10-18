@@ -18,26 +18,15 @@
 				</div>
 				<div class="portlet-body form">
 					<!-- BEGIN FORM-->
-					<form action="" id="goodsOrder_mg" class="form-horizontal">
+					<form action="" id="article_mg" class="form-horizontal">
 						<div class="form-body">
 							<!--/row-->
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label col-md-3">订单号</label>
+										<label class="control-label col-md-3">标题</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" name="orderNum" />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="control-label col-md-3">是否有效</label>
-										<div class="col-md-9">
-											<select class="form-control" name="deleteStatus">
-												<option value="false" selected ="selected">有效</option>
-												<option value="true">无效</option>
-											</select>
+											<input type="text" class="form-control" name="title" />
 										</div>
 									</div>
 								</div>
@@ -111,9 +100,9 @@
 						<div class="portlet-body">
 							<div class="table-toolbar">
 								<div class="btn-group">
-									<!-- <button id="add_ar" class="btn green">
+									<button id="add_ar" class="btn green">
 									添加 <i class="fa fa-plus"></i>
-									</button> -->
+									</button>
 								</div>
 								<!-- <div class="btn-group pull-right">
 									<button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i class="fa fa-angle-down"></i>
@@ -147,9 +136,9 @@
 	</div>
 </div>
 <script>
-	window.goodsOrderPage = null;
-    var goodsOrderPage = {
-    		fm : jQuery("#goodsOrder_mg"),
+	window.articlePage = null;
+    var articlePage = {
+    		fm : jQuery("#article_mg"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -161,16 +150,16 @@
     		bindEvent : function(){
     			var _this = this;
     			//绑定添加单击事件
-    			/* jQuery("#add_ar").bind("click", function(){
+    			jQuery("#add_ar").bind("click", function(){
 					Ajax.load({
-	    				url: _this.basePath + "/goodsOrders/add",
+	    				url: _this.basePath + "/article/add",
 	    				tab: "2",
 	    				data:{},
 	    				iTab: true,
-	    				tabTitle: "添加商品订单"
+	    				tabTitle: "添加文章"
 	    			});
 					return false;
-    			}); */
+    			});
     			//绑定查询单击事件
     			jQuery("#query_ar").bind("click", function(){
     				_this.load(1);
@@ -181,22 +170,22 @@
     				var _tr = jQuery(this).closest("tr"),
     					userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
     				Ajax.load({
-        				url: _this.basePath +"/goodsOrders/view/"+userId,
+        				url: _this.basePath +"/article/view/"+userId,
         				tab: "2",
         				data:{},
         				iTab: true,
-        				tabTitle: "查看商品订单"
+        				tabTitle: "查看文章"
         			});
     				return false;
     			}).delegate(".edit", "click", function(){//绑定编辑单击事件
     				var _tr = jQuery(this).closest("tr"),
 						userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
 					Ajax.load({
-	    				url: _this.basePath +"/goodsOrders/edit/"+userId,
+	    				url: _this.basePath +"/article/edit/"+userId,
 	    				tab: "2",
 	    				data:{},
 	    				iTab: true,
-	    				tabTitle: "编辑商品订单"
+	    				tabTitle: "编辑文章"
 	    			});
 					return false;
 				}).delegate(".delect", "click", function(){//绑定删除单击事件
@@ -207,7 +196,7 @@
 						onSubmitted:function(){
 						
 						Ajax.request({
-		    				url: _this.basePath +"/goodsOrders/delete/"+userId,
+		    				url: _this.basePath +"/article/delete/"+userId,
 		    				type:"get",
 		    				data:{},
 		    				success: function(data){
@@ -254,7 +243,7 @@
     		load: function(num){
     			var _this = this;
     			Ajax.load({
-    				url: _this.basePath + "/goodsOrders/goto/"+num,
+    				url: _this.basePath + "/article/goto/"+num,
     				data: _this.fm.serializeArray(), 
     				target:"#list-content"
     			});
@@ -263,6 +252,6 @@
   </script>
 <script>
 jQuery(document).ready(function() {    
-	goodsOrderPage.init();
+	articlePage.init();
 });
 </script>

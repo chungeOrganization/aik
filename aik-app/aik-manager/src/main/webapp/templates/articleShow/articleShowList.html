@@ -4,10 +4,7 @@
 <tr>
 	<th>编号</th>
 	<th>用户名称</th>
-	<th>记录日期</th>
-	<th>三餐</th>
-	<th>食物名称</th>
-	<th>份量</th>
+	<th>文章标题</th>
 	<th>操作</th>
 </tr>
 </thead>
@@ -16,21 +13,10 @@
 
 
 
-<tr class="odd gradeX"  th:each="dietRecord,iterStat : ${result}"  >
-	<td th:id="${dietRecord.id}" th:text="${dietRecord.id}"></td>
-	<td th:text="${dietRecord.userName}"></td>
-	<td class="center" th:text="${#dates.format(dietRecord.recordDate, 'yyyy-MM-dd HH:mm:ss')}">
-	<td>
-	<div th:switch="${dietRecord.dietType}">
-		<span th:case="'0'">早餐</span>
-		<span th:case="'1'">中餐</span>
-		<span th:case="'2'">晚餐</span>
-		<span th:case="'3'">营养补充</span>
-		<span th:case="'4'">加餐</span>
-	</div>
-	</td>
-	<td th:text="${dietRecord.foodName}"></td>
-	<td class="center" th:text="${dietRecord.weight}"></td>
+<tr class="odd gradeX"  th:each="articleShow,iterStat : ${result}"  >
+	<td th:id="${articleShow.id}" th:text="${articleShow.id}"></td>
+	<td th:text="${articleShow.userName}"></td>
+	<td class="center" th:text="${articleShow.title}"></td>
 	<td>
 	</td>
 </tr>			

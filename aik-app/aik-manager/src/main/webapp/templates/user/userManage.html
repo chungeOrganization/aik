@@ -269,11 +269,13 @@
 						}
 					});
 					return false;
-				}).delegate("li[data-pre=gar]", "click", function(){//绑定页码单击事件
-					var num = jQuery(this).find('a').attr("id");
-					_this.load(num);
-					return false;
-				});
+				}).delegate("li[data-pre=pageNum]", "click", function(){//绑定页码单击事件
+	                var num = jQuery(this).find('a').attr("value");
+	                if(num > 0) {
+	                   _this.load(num);
+	                }
+	                return false;
+	            });
     		},
     		
     		//基本信息表单域取值

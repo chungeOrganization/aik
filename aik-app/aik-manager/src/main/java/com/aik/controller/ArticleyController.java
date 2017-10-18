@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aik.model.AikNutritionLesson;
 import com.aik.model.DietFoodCategory;
+import com.aik.service.ArticleManageService;
 import com.aik.service.FoodCategoryManageService;
 import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
@@ -30,53 +32,53 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author daixiangning
- * @message 食物分类管理
+ * @message 文章管理
  */
 @RestController
-@RequestMapping("/foodCategorys")
-public class FoodCategoryController {
+@RequestMapping("/article")
+public class ArticleyController {
 	
-	private Logger logger = LoggerFactory.getLogger(FoodCategoryController.class);
+	private Logger logger = LoggerFactory.getLogger(ArticleyController.class);
 	
 	 @Value("${file.upload-root-uri}")
 	 private String uploadRootUri;
 
     @Autowired
-    private FoodCategoryManageService foodCategoryManageService;
+    private ArticleManageService articleManageService;
 
     
     /**
-     * 食物分类管理
+     * 文章管理
      * @return
      */
     @RequestMapping(value = "/index")
     public ModelAndView index() {
-    	 ModelAndView result = new ModelAndView("foodCategory/foodCategoryManage");
+    	 ModelAndView result = new ModelAndView("article/articleManage");
          
          return result;
     }
     
     /**
-     * 食物分类信息列表
+     * 文章信息列表
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/goto/{num}")
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,DietFoodCategory dietFoodCategory,@PathVariable Integer num) {
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AikNutritionLesson aikNutritionLesson,@PathVariable Integer num) {
        
     	
-    	ModelAndView mv = new ModelAndView("foodCategory/foodCategoryList");
-    	Page<DietFoodCategory> dietFoodCategorys = new Page<DietFoodCategory>();
+    	ModelAndView mv = new ModelAndView("article/articleList");
+    	Page<AikNutritionLesson> aikNutritionLessons = new Page<AikNutritionLesson>();
 		try {
 			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	dietFoodCategorys = foodCategoryManageService.findPage(dietFoodCategory, pageRequest);
+	    	aikNutritionLessons = articleManageService.findPage(aikNutritionLesson, pageRequest);
 			logger.info("食物信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("食物信息列表获取失败", e);
 		}
-    	PageInfo<DietFoodCategory> pageInfo = new PageInfo<DietFoodCategory>(dietFoodCategorys);
+    	PageInfo<AikNutritionLesson> pageInfo = new PageInfo<AikNutritionLesson>(aikNutritionLessons);
     	mv.addObject("result",pageInfo.getList());
 		mv.addObject("pageNo", pageInfo.getNextPage());
 		mv.addObject("pageSize", pageInfo.getPageSize());
@@ -86,63 +88,63 @@ public class FoodCategoryController {
     }
 
     /**
-     * 食物分类信息新增
+     * 文章信息新增
      * @return
      */
     @RequestMapping(value = "/add")
     public ModelAndView add() {
-    	 ModelAndView result = new ModelAndView("foodCategory/foodCategoryAdd");
-    	 DietFoodCategory dietFoodCategory = new DietFoodCategory();
- 		 result.addObject("dietFoodCategory", dietFoodCategory);
- 		 logger.info("食物分类信息新增查询成功");
+    	 ModelAndView result = new ModelAndView("article/articleAdd");
+    	 AikNutritionLesson aikNutritionLesson = new AikNutritionLesson();
+ 		 result.addObject("aikNutritionLesson", aikNutritionLesson);
+ 		 logger.info("文章信息新增查询成功");
          return result;
     }
     
     
     
     /**
-     * 食物分类信息编辑
+     * 文章信息编辑
      * @return
      */
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
-    	ModelAndView result = new ModelAndView("foodCategory/foodCategoryView");
-    	DietFoodCategory dietFoodCategory = new DietFoodCategory();
+    	ModelAndView result = new ModelAndView("article/articleView");
+    	AikNutritionLesson aikNutritionLesson = new AikNutritionLesson();
  		try {
- 			dietFoodCategory = foodCategoryManageService.findById(id);
- 			logger.info("食物分类信息编辑查询成功");
+ 			aikNutritionLesson = articleManageService.findById(id);
+ 			logger.info("文章信息编辑查询成功");
  		} catch (Exception e) {
- 			logger.error("食物分类信息编辑查询", e.getMessage());
+ 			logger.error("文章信息编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
- 		result.addObject("dietFoodCategory", dietFoodCategory);
+ 		result.addObject("aikNutritionLesson", aikNutritionLesson);
         return result;
     }
     
     
 
     /**
-     * 食物分类信息明细
+     * 文章信息明细
      * @param id
      * @return
      */
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
-        ModelAndView result = new ModelAndView("foodCategory/foodCategoryView");
-        DietFoodCategory dietFoodCategory = new DietFoodCategory();
+        ModelAndView result = new ModelAndView("article/articleView");
+        AikNutritionLesson aikNutritionLesson = new AikNutritionLesson();
 		try {
-			dietFoodCategory = foodCategoryManageService.findById(id);
-			logger.info("食物分类信息明细查询成功");
+			aikNutritionLesson = articleManageService.findById(id);
+			logger.info("文章信息明细查询成功");
 		}catch (Exception e) {
- 			logger.error("食物分类信息明细查询", e);
+ 			logger.error("文章信息明细查询", e);
 		}
 		result.addObject("opt", "view");
-		result.addObject("dietFoodCategory", dietFoodCategory);
+		result.addObject("aikNutritionLesson", aikNutritionLesson);
         return result;
     }
 
     /**
-     * 食物分类删除
+     * 文章删除
      * @param id
      * @return
      */
@@ -151,57 +153,57 @@ public class FoodCategoryController {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
-        	foodCategoryManageService.deleteByPrimaryKey(id);
+        	articleManageService.deleteByPrimaryKey(id);
         	data.put("code", "1");
-        	data.put("info", "食物分类删除成功!");
-			logger.info("食物分类删除成功!");
+        	data.put("info", "文章删除成功!");
+			logger.info("文章删除成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物分类删除失败!原因未知异常");
-			logger.error("食物分类删除失败!原因未知异常", e);
+			data.put("info", "文章删除失败!原因未知异常");
+			logger.error("文章删除失败!原因未知异常", e);
 		}
         result.put("data", data);
         return result;
     }
 
     /**
-     * 食物分类新增
+     * 文章新增
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelMap save(DietFoodCategory dietFoodCategory, @RequestParam MultipartFile file) {
+    public ModelMap save(AikNutritionLesson aikNutritionLesson, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
         	String imageName = Calendar.getInstance().getTimeInMillis()
                     + file.getName();
 
-            String fileUri = "foodCategory" + File.separator + imageName;
+            String fileUri = "article" + File.separator + imageName;
             String uploadUrl = uploadRootUri + fileUri;
             AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
-            dietFoodCategory.setImage(imageName);
-        	foodCategoryManageService.save(dietFoodCategory);
+            aikNutritionLesson.setImage(imageName);
+            articleManageService.save(aikNutritionLesson);
         	data.put("code", "1");
-        	data.put("info", "食物分类新增成功!");
-			logger.info("食物分类新增成功!");
+        	data.put("info", "文章新增成功!");
+			logger.info("文章新增成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物分类新增失败!原因未知异常");
-			logger.error("食物分类新增失败!原因未知异常", e);
+			data.put("info", "文章新增失败!原因未知异常");
+			logger.error("文章新增失败!原因未知异常", e);
 		}
         result.put("data", data);
-        result.put("dietFood", dietFoodCategory);
+        result.put("aikNutritionLesson", aikNutritionLesson);
         return result;
     }
     
     /**
-     * 食物分类修改
+     * 文章修改
      * @param accUserAccount
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelMap update(DietFoodCategory dietFoodCategory, @RequestParam MultipartFile file) {
+    public ModelMap update(AikNutritionLesson aikNutritionLesson, @RequestParam MultipartFile file) {
         ModelMap result = new ModelMap();
         Map data = new HashMap();
         try {
@@ -209,21 +211,21 @@ public class FoodCategoryController {
         	String imageName = Calendar.getInstance().getTimeInMillis()
                     + file.getName();
 
-            String fileUri = "foodCategory" + File.separator + imageName;
+            String fileUri = "article" + File.separator + imageName;
             String uploadUrl = uploadRootUri + fileUri;
             AikFileUtils.uploadImg(file.getInputStream(), uploadUrl);
-            dietFoodCategory.setImage(imageName);
-        	foodCategoryManageService.update(dietFoodCategory);
+            aikNutritionLesson.setImage(imageName);
+            articleManageService.update(aikNutritionLesson);
         	data.put("code", "1");
-        	data.put("info", "食物分类修改成功!");
-			logger.info("食物分类修改成功!");
+        	data.put("info", "文章修改成功!");
+			logger.info("文章修改成功!");
 		} catch (Exception e) {
 			data.put("code", "0");
-			data.put("info", "食物分类修改失败!原因未知异常");
-			logger.error("食物分类修改失败!原因未知异常", e);
+			data.put("info", "文章修改失败!原因未知异常");
+			logger.error("文章修改失败!原因未知异常", e);
 		}
         result.put("data", data);
-        result.put("dietFoodCategory", dietFoodCategory);
+        result.put("aikNutritionLesson", aikNutritionLesson);
         return result;
     }
     

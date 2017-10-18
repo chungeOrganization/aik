@@ -70,7 +70,7 @@ public class FoodController {
     	ModelAndView mv = new ModelAndView("food/foodList");
     	Page<DietFoodVo> dietFoods = new Page<DietFoodVo>();
 		try {
-			Integer size = 3;
+			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
 	    	dietFoods = foodManageService.findPage(dietFood, pageRequest);
