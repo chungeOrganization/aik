@@ -30,6 +30,8 @@
         <commons.io.version>2.4</commons.io.version>
         <com.alibaba.version>1.0.14</com.alibaba.version>
         <io.jsonwebtoken.vesion>0.7.0</io.jsonwebtoken.vesion>
+        <fastjson.version>1.2.38</fastjson.version>
+        <httpcomponents.version>4.5.2</httpcomponents.version>
     </properties>
 
     <dependencyManagement>
@@ -57,6 +59,18 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+            <!--fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!--httpComponents-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpcomponents.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
