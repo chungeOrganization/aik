@@ -12,23 +12,23 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="" method="post" class="form-inline" id="foodCategoryAdd" enctype="multipart/form-data">
+		<form action="" method="post" class="form-inline" id="articleAdd" enctype="multipart/form-data">
 		
 			<table class="table  table-bordered ">
 				<tr>
-					<td>名称</td>
+					<td>标题</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name" value="" />
+						<input type="text" class="form-control r" data-required="true"  data-description="title"  data-describedby="titlespan" id="title" name="title" value="" />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="titlespan" style="color: #000000"></span>
 					</td>
-					<td></td>
-					<td></td>
+					<td>内容</td>
+					<td><input type="text" class="form-control" name="content" value="" /></td>
 				</tr>
 				
 				
 				<tr>
-					<td>分类图片</td>
+					<td>文章图片</td>
 					<td  colspan="3">
 						<div class="fileinput fileinput-new"
 							data-provides="fileinput">
@@ -76,9 +76,9 @@
 
 
 <script>
-	window.foodCategoryAdd = null;
-    var foodCategoryAdd = {
-    		fm : jQuery("#foodCategoryAdd"),
+	window.articleAdd = null;
+    var articleAdd = {
+    		fm : jQuery("#articleAdd"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -94,7 +94,7 @@
     				Dialog.confirm({
 	    				content:'确定保存?',
 						onSubmitted:function(){
-	   						if(UiUtils.check("foodCategoryAdd")){
+	   						if(UiUtils.check("articleAdd")){
 	   							//addUser();
 	   							_this.ajaxSubmit();
 	   						}
@@ -110,7 +110,7 @@
     			jQuery('#tabli_11').trigger('click'),
 				jQuery('#tabli_2').remove(),
 				jQuery('#tab_2').remove(),
-				foodCategoryPage.load(1);
+				articlePage.load(1);
     		},
     		//有图片的页面提交
     		ajaxSubmit: function(){
@@ -118,7 +118,7 @@
     			var _this = this;
     			Ajax.requestSubmit({
     				fm: _this.fm,
-    				url: _this.basePath + '/foodCategorys/save',
+    				url: _this.basePath + '/article/save',
     				type: "post",
     				success: function(data){
     					if(!data) return;
@@ -149,7 +149,7 @@
 				return data;
     		},    		
 			initValidate : function(){
-				jQuery("#foodCategoryAdd").validate({
+				jQuery("#articleAdd").validate({
 					onKeyup : true,
 					sendForm : false,
 					eachValidField : function() {
@@ -160,7 +160,7 @@
 					},
 					
 					description : {
-						name : {
+						title : {
 							required : '请输入名称'
 						}
 					}
@@ -172,6 +172,6 @@
  </script> 
 <script>
 jQuery(document).ready(function(){    
-	foodCategoryAdd.init();
+	articleAdd.init();
 });
 </script>
