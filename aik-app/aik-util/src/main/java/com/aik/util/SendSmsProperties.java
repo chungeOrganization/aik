@@ -17,6 +17,8 @@ public class SendSmsProperties {
 
     private Integer securityCodeTID;
 
+    private Integer inviteCodeTID;
+
     public String getApi() {
         return api;
     }
@@ -39,5 +41,13 @@ public class SendSmsProperties {
 
     public void setSecurityCodeTID(Integer securityCodeTID) {
         this.securityCodeTID = securityCodeTID;
+    }
+
+    public Integer getInviteCodeTID() {
+        return inviteCodeTID;
+    }
+
+    public void setInviteCodeTID(Integer inviteCodeTID) {
+        this.inviteCodeTID = inviteCodeTID;
     }
 }

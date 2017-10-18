@@ -5,7 +5,6 @@ import com.aik.exception.ApiServiceException;
 import com.aik.request.IssueQORequest;
 import com.aik.request.MatchDoctorsRequest;
 import com.aik.response.MatchDoctorsResponse;
-import org.omg.CORBA.OBJ_ADAPTER;
 
 import java.util.List;
 import java.util.Map;

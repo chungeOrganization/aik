@@ -75,6 +75,7 @@ juhe:
     api: "http://v.juhe.cn/sms/send"
     appKey: "60c8caf06319012aab075a924ab9f4f1"
     securityCodeTID: 48262
+    inviteCodeTID: 48422
   voice:
     api: "http://op.juhe.cn/yuntongxun/voice"
     appkey: "5125ad3ae26b2385cf7f39a84d390c41"

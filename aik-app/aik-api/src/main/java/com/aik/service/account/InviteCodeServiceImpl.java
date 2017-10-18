@@ -6,6 +6,7 @@ import com.aik.dao.AccInviteCodeMapper;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccInviteCode;
 import com.aik.util.SendSmsUtils;
+import com.aik.util.SendVoiceUtils;
 import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,6 +31,10 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     private UserAccountService userAccountService;
 
+    private SendSmsUtils sendSmsUtils;
+
+    private SendVoiceUtils sendVoiceUtils;
+
     @Autowired
     public void setAccInviteCodeMapper(AccInviteCodeMapper accInviteCodeMapper) {
         this.accInviteCodeMapper = accInviteCodeMapper;
@@ -43,6 +48,16 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     @Autowired
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
+    }
+
+    @Autowired
+    public void setSendSmsUtils(SendSmsUtils sendSmsUtils) {
+        this.sendSmsUtils = sendSmsUtils;
+    }
+
+    @Autowired
+    public void setSendVoiceUtils(SendVoiceUtils sendVoiceUtils) {
+        this.sendVoiceUtils = sendVoiceUtils;
     }
 
     @Override
@@ -65,13 +80,6 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         if (null == accInviteCode) {
             String inviteCode = InviteCodeUtil.generatorCode();
 
-            try {
-                SendSmsUtils.sendSecurityCodeSms(mobileNo, inviteCode);
-            } catch (Exception e) {
-                logger.error("send invite code[{}] to mobileNo[{}] error:", inviteCode, mobileNo, e);
-                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
-            }
-
             // 生成邀请码记录
             accInviteCode = new AccInviteCode();
             accInviteCode.setInviteCode(inviteCode);
@@ -80,12 +88,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
             accInviteCodeMapper.insertSelective(accInviteCode);
         }
 
-        try {
-            SendSmsUtils.sendSecurityCodeSms(mobileNo, accInviteCode.getInviteCode());
-        } catch (Exception e) {
-            logger.error("send invite code[{}] to mobileNo[{}] error:", accInviteCode.getInviteCode(), mobileNo, e);
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001003);
-        }
+        sendSmsUtils.sendInviteCodeSms(mobileNo, accInviteCode.getInviteCode());
     }
 
     @Override
@@ -97,10 +100,6 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         // 验证手机号是否已被使用过
         if (doctorAccountService.validMobileNoIsUsed(mobileNo)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
-        }
-
-        if (inviteCode.equals("999999")) {
-            return true;
         }
 
         AccInviteCode accInviteCode = accInviteCodeMapper.selectByMobileNo(mobileNo);

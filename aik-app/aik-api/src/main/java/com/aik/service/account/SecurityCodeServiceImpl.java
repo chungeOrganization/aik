@@ -36,6 +36,10 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
 
     private UserAccountService userAccountService;
 
+    private SendSmsUtils sendSmsUtils;
+
+    private SendVoiceUtils sendVoiceUtils;
+
     @Autowired
     public void setAccSecurityCodeMapper(AccSecurityCodeMapper accSecurityCodeMapper) {
         this.accSecurityCodeMapper = accSecurityCodeMapper;
@@ -54,6 +58,16 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
     @Autowired
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
+    }
+
+    @Autowired
+    public void setSendSmsUtils(SendSmsUtils sendSmsUtils) {
+        this.sendSmsUtils = sendSmsUtils;
+    }
+
+    @Autowired
+    public void setSendVoiceUtils(SendVoiceUtils sendVoiceUtils) {
+        this.sendVoiceUtils = sendVoiceUtils;
     }
 
     @Override
@@ -79,7 +93,7 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
         try {
-            SendSmsUtils.sendSecurityCodeSms(mobileNo, securityCode);
+            sendSmsUtils.sendSecurityCodeSms(mobileNo, securityCode);
         } catch (Exception e) {
             logger.error("send security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001001);
@@ -117,7 +131,7 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
         try {
-            SendVoiceUtils.sendSecurityCodeVoice(mobileNo, securityCode);
+            sendVoiceUtils.sendSecurityCodeVoice(mobileNo, securityCode);
         } catch (Exception e) {
             logger.error("send voice security code[{}] to mobileNo[{}] error:", securityCode, mobileNo, e);
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001001);
@@ -141,10 +155,6 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         SecurityCodeTypeEnum typeEnum = SecurityCodeTypeEnum.getTypeEnumByTypeStr(codeTypeStr);
         if (null == typeEnum) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
-        }
-
-        if (securityCode.equals("999999")) {
-            return true;
         }
 
         AccSecurityCode accSecurityCode = accSecurityCodeMapper.selectValidSecurityCode(mobileNo, typeEnum.getType());
