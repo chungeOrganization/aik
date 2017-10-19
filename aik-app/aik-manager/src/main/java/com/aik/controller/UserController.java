@@ -30,6 +30,7 @@ import com.aik.model.AccUserAccount;
 import com.aik.service.UserManageService;
 import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccUserAccountVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -83,14 +84,14 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/goto/{num}")
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount,@PathVariable Integer num) {
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccUserAccountVo accUserAccountVo,@PathVariable Integer num) {
     	ModelAndView mv = new ModelAndView("user/userList");
     	Page<AccUserAccount> accUserAccounts = new Page<AccUserAccount>();
 		try {
 			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-			accUserAccounts = userManageService.findPage(accUserAccount, pageRequest);
+			accUserAccounts = userManageService.findPage(accUserAccountVo, pageRequest);
 			logger.info("用户信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("用户信息列表获取失败", e);

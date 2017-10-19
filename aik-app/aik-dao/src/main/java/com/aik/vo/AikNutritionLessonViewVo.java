@@ -14,6 +14,11 @@ public class AikNutritionLessonViewVo {
     private String title;
 
     private Date createDate;
+    
+    private String starttime;
+    
+    private String endtime;
+    
 
     public Integer getId() {
         return id;
@@ -62,6 +67,21 @@ public class AikNutritionLessonViewVo {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-    
+
+	public String getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
     
 }

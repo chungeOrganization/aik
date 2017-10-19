@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AccDoctorAccount;
+import com.aik.vo.AccDoctorAccountVo;
 import com.github.pagehelper.Page;
 
 import org.apache.ibatis.annotations.Param;
@@ -41,6 +42,6 @@ public interface AccDoctorAccountMapper {
      * 分页查询数据
      * @return
      */
-    Page<AccDoctorAccount> findByPage(AccDoctorAccount record);
+    Page<AccDoctorAccount> findByPage(AccDoctorAccountVo record);
     
 }

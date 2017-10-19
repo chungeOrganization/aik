@@ -4,6 +4,7 @@ import com.aik.dao.AccUserAccountMapper;
 import com.aik.model.AccUserAccount;
 import com.aik.util.MD5Utils;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccUserAccountVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -87,9 +88,9 @@ public class UserManageServiceImpl implements UserManageService {
     }
 
 	@Override
-	public Page<AccUserAccount> findPage(AccUserAccount accUserAccount, PageUtils pgeUtils) throws  Exception {
+	public Page<AccUserAccount> findPage(AccUserAccountVo accUserAccountVo, PageUtils pgeUtils) throws  Exception {
 		 PageHelper.startPage(pgeUtils.getPage(), pgeUtils.getSize());
-		 return accUserAccountMapper.findByPage(accUserAccount);
+		 return accUserAccountMapper.findByPage(accUserAccountVo);
 	}
 
 	@Override
