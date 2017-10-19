@@ -4,10 +4,12 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.response.DoctorLoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
 import com.aik.service.account.AuthService;
+import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,8 +67,9 @@ public class AuthApi {
         ApiResult result = new ApiResult();
 
         try {
-            String token = authService.doctorLogin(loginDTO);
-            result.withDataKV("token", token);
+            DoctorLoginRespDTO respDTO = authService.doctorLogin(loginDTO);
+            // 获取医生审核状态
+            result.withData(BeansUtils.transBean2Map(respDTO));
         } catch (ApiServiceException e) {
             logger.error("doctor login error: ", e);
             result.withFailResult(e.getErrorCodeEnum());

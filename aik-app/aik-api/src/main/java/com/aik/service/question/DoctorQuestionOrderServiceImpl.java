@@ -82,13 +82,13 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         params.put("doctorId", doctorId);
         params.put("type", QuestionOrderTypeEnum.MATCH_DOCTOR.getCode());
         params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatusWithRefuse());
-        params.put("fileTypeArray", new byte[]{QuestionOrderFailTypeEnum.NOT_FAIL.getCode(), QuestionOrderFailTypeEnum.DOCTOR_REFUSE.getCode()});
+        params.put("failTypeArray", new byte[]{QuestionOrderFailTypeEnum.NOT_FAIL.getCode(), QuestionOrderFailTypeEnum.DOCTOR_REFUSE.getCode()});
 
         return aikQuestionOrderMapper.selectCountByParams(params);
     }
 
     @Override
-    public Integer getInHandleOrderCount(Integer doctorId) throws ApiServiceException {
+    public Integer getInHandOrderCount(Integer doctorId) throws ApiServiceException {
         if (null == doctorId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -108,6 +108,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
 
         List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorDiagnosedOrders(params);
 
+        // TODO: 回答显示处理
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));
             map.put("createDate", DateUtils.aikPersonaliseDate((Date) map.get("createDate")));
@@ -137,7 +138,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     public List<Map<String, Object>> getInHandleOrders(Map<String, Object> params) throws ApiServiceException {
         params.put("statusArray", new byte[]{QuestionOrderStatusEnum.ON_HANDLE.getCode()});
         params.put("typesArray", new byte[]{QuestionTypeEnum.INITIAL.getCode()});
-        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorInHandleOrders(params);
+        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorInHandOrders(params);
 
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));

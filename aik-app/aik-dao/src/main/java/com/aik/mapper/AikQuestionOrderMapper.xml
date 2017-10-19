@@ -448,7 +448,7 @@
     order by aa.createDate desc
     limit ${(page-1)*size}, #{size}
   </select>
-  <select id="selectDoctorInHandleOrders" parameterType="java.util.Map" resultType="java.util.Map">
+  <select id="selectDoctorInHandOrders" parameterType="java.util.Map" resultType="java.util.Map">
     select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
     aq.description, aq.createDate, qo.id as orderId
     from aik_questionOrder qo

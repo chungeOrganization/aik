@@ -25,11 +25,16 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="deleteStatus" jdbcType="TINYINT" property="deleteStatus" />
+    <result column="auditStatus" jdbcType="TINYINT" property="auditStatus" />
+    <result column="auditManager" jdbcType="INTEGER" property="auditManager" />
+    <result column="auditTDate" jdbcType="TIMESTAMP" property="auditTDate" />
+    <result column="isCompleteInfo" jdbcType="TINYINT" property="isCompleteInfo" />
   </resultMap>
   <sql id="Base_Column_List">
     id, mobileNo, userName, password, realName, sex, areaProvince, areaCity, birthday, 
     identityCard, email, hosName, hosDepartment, skill, departmentPhone, devType, headImg, 
-    position, price, starLevel, createDate, updateDate, deleteStatus
+    position, price, starLevel, createDate, updateDate, deleteStatus, auditStatus, auditManager, 
+    auditTDate, isCompleteInfo
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -49,7 +54,9 @@
       hosDepartment, skill, departmentPhone, 
       devType, headImg, position, 
       price, starLevel, createDate, 
-      updateDate, deleteStatus)
+      updateDate, deleteStatus, auditStatus, 
+      auditManager, auditTDate, isCompleteInfo
+      )
     values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, 
       #{areaProvince,jdbcType=VARCHAR}, #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
@@ -57,9 +64,11 @@
       #{hosDepartment,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, #{departmentPhone,jdbcType=VARCHAR}, 
       #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{position,jdbcType=TINYINT}, 
       #{price,jdbcType=DECIMAL}, #{starLevel,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP} , #{deleteStatus,jdbcType=TINYINT})
+      #{updateDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT}, #{auditStatus,jdbcType=TINYINT}, 
+      #{auditManager,jdbcType=INTEGER}, #{auditTDate,jdbcType=TIMESTAMP}, #{isCompleteInfo,jdbcType=TINYINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount">
     insert into acc_doctorAccount
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -128,8 +137,20 @@
       <if test="updateDate != null">
         updateDate,
       </if>
-       <if test="deleteStatus != null">
+      <if test="deleteStatus != null">
         deleteStatus,
+      </if>
+      <if test="auditStatus != null">
+        auditStatus,
+      </if>
+      <if test="auditManager != null">
+        auditManager,
+      </if>
+      <if test="auditTDate != null">
+        auditTDate,
+      </if>
+      <if test="isCompleteInfo != null">
+        isCompleteInfo,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -199,8 +220,20 @@
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
-       <if test="deleteStatus != null">
+      <if test="deleteStatus != null">
         #{deleteStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditManager != null">
+        #{auditManager,jdbcType=INTEGER},
+      </if>
+      <if test="auditTDate != null">
+        #{auditTDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isCompleteInfo != null">
+        #{isCompleteInfo,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -270,8 +303,20 @@
       <if test="updateDate != null">
         updateDate = #{updateDate,jdbcType=TIMESTAMP},
       </if>
-       <if test="deleteStatus != null">
+      <if test="deleteStatus != null">
         deleteStatus = #{deleteStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null">
+        auditStatus = #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditManager != null">
+        auditManager = #{auditManager,jdbcType=INTEGER},
+      </if>
+      <if test="auditTDate != null">
+        auditTDate = #{auditTDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isCompleteInfo != null">
+        isCompleteInfo = #{isCompleteInfo,jdbcType=TINYINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -299,7 +344,11 @@
       starLevel = #{starLevel,jdbcType=DECIMAL},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP},
-      deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+      deleteStatus = #{deleteStatus,jdbcType=TINYINT},
+      auditStatus = #{auditStatus,jdbcType=TINYINT},
+      auditManager = #{auditManager,jdbcType=INTEGER},
+      auditTDate = #{auditTDate,jdbcType=TIMESTAMP},
+      isCompleteInfo = #{isCompleteInfo,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectBySelective" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
@@ -379,7 +428,7 @@
   </select>
   <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from acc_doctorAccount
     where 1=1
     <if test="hosName != null">

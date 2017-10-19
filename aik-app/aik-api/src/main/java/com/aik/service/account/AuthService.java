@@ -2,6 +2,7 @@ package com.aik.service.account;
 
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.response.DoctorLoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
@@ -24,10 +25,10 @@ public interface AuthService {
      * 医生端登录
      *
      * @param loginDTO 登录DTO
-     * @return token
+     * @return respDTO
      * @throws ApiServiceException Api服务异常
      */
-    String doctorLogin(LoginDTO loginDTO) throws ApiServiceException;
+    DoctorLoginRespDTO doctorLogin(LoginDTO loginDTO) throws ApiServiceException;
 
     /**
      * 医生端刷新token

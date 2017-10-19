@@ -31,7 +31,7 @@ public interface AikQuestionOrderMapper {
 
     List<Map<String, Object>> selectDoctorDiagnosedOrders(Map<String, Object> params);
 
-    List<Map<String, Object>> selectDoctorInHandleOrders(Map<String, Object> params);
+    List<Map<String, Object>> selectDoctorInHandOrders(Map<String, Object> params);
 
     List<Map<String, Object>> selectDoctorMyOrders(Map<String, Object> params);
 

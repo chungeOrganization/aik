@@ -47,8 +47,16 @@ public class AccDoctorAccount {
     private Date createDate;
 
     private Date updateDate;
-    
+
     private Byte deleteStatus;
+
+    private Byte auditStatus;
+
+    private Integer auditManager;
+
+    private Date auditTDate;
+
+    private Byte isCompleteInfo;
 
     public Integer getId() {
         return id;
@@ -226,12 +234,43 @@ public class AccDoctorAccount {
         this.updateDate = updateDate;
     }
 
-	public Byte getDeleteStatus() {
-		return deleteStatus;
-	}
+    public Byte getDeleteStatus() {
+        return deleteStatus;
+    }
 
-	public void setDeleteStatus(Byte deleteStatus) {
-		this.deleteStatus = deleteStatus;
-	}
-    
+    public void setDeleteStatus(Byte deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+    public Byte getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Byte auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public Integer getAuditManager() {
+        return auditManager;
+    }
+
+    public void setAuditManager(Integer auditManager) {
+        this.auditManager = auditManager;
+    }
+
+    public Date getAuditTDate() {
+        return auditTDate;
+    }
+
+    public void setAuditTDate(Date auditTDate) {
+        this.auditTDate = auditTDate;
+    }
+
+    public Byte getIsCompleteInfo() {
+        return isCompleteInfo;
+    }
+
+    public void setIsCompleteInfo(Byte isCompleteInfo) {
+        this.isCompleteInfo = isCompleteInfo;
+    }
 }

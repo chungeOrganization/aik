@@ -78,6 +78,6 @@ juhe:
     inviteCodeTID: 48422
   voice:
     api: "http://op.juhe.cn/yuntongxun/voice"
-    appkey: "5125ad3ae26b2385cf7f39a84d390c41"
+    appKey: "5125ad3ae26b2385cf7f39a84d390c41"
 
 

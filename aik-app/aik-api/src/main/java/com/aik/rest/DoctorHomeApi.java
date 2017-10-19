@@ -2,6 +2,7 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dto.response.DoctorSimpleInfoRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
@@ -21,7 +22,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +87,12 @@ public class DoctorHomeApi {
 
             // 医生信息
             AccDoctorAccount doctorAccount = doctorAccountService.getDoctorAccount(doctorId);
-            Map<String, Object> doctorInfo = new HashMap<>();
-            doctorInfo.put("headImg", doctorAccount.getHeadImg());
-            doctorInfo.put("realName", doctorAccount.getRealName());
-            doctorInfo.put("position", DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
-            doctorInfo.put("hospital", doctorAccount.getHosName());
+            DoctorSimpleInfoRespDTO doctorInfo = new DoctorSimpleInfoRespDTO();
+            doctorInfo.setHeadImg(doctorAccount.getHeadImg());
+            doctorInfo.setRealName(doctorAccount.getRealName());
+            doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
+            doctorInfo.setHosName(doctorAccount.getHosName());
+            doctorInfo.setHosDepartment(doctorAccount.getHosDepartment());
             result.withDataKV("doctorInfo", doctorInfo);
 
             // 已诊患者总数
@@ -99,7 +100,7 @@ public class DoctorHomeApi {
             result.withDataKV("processedCount", processedCount);
 
             // 待诊患者总数
-            int inhandCount = doctorQuestionOrderService.getInHandleOrderCount(doctorId);
+            int inhandCount = doctorQuestionOrderService.getInHandOrderCount(doctorId);
             result.withDataKV("inhandCount", inhandCount);
 
             // 待办列表

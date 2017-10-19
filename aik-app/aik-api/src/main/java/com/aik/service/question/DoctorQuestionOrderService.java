@@ -27,7 +27,7 @@ public interface DoctorQuestionOrderService {
      * @return 待处理患者数量
      * @throws ApiServiceException Api服务异常
      */
-    Integer getInHandleOrderCount(Integer doctorId) throws ApiServiceException;
+    Integer getInHandOrderCount(Integer doctorId) throws ApiServiceException;
 
     /**
      * 获取医生已诊订单

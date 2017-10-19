@@ -5,6 +5,7 @@ import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.response.DoctorLoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
@@ -131,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String doctorLogin(LoginDTO loginDTO) throws ApiServiceException {
+    public DoctorLoginRespDTO doctorLogin(LoginDTO loginDTO) throws ApiServiceException {
         if (null == loginDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -143,7 +144,6 @@ public class AuthServiceImpl implements AuthService {
         AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByUserNameAndPwd(
                 loginDTO.getUserName(), loginDTO.getPassword());
 
-        // TODO:用户密码错误次数限制
         if (null == doctorAccount) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1002001);
         }
@@ -158,7 +158,12 @@ public class AuthServiceImpl implements AuthService {
         final UserDetails userDetails = userDetailService.loadUserByUsername(loginDTO.getUserName() + jwtDoctorSign);
         final String token = jwtTokenUtil.generateToken(userDetails, jwtDoctorSign);
 
-        return token;
+        DoctorLoginRespDTO respDTO = new DoctorLoginRespDTO();
+        respDTO.setToken(token);
+        respDTO.setAuditStatus(doctorAccount.getAuditStatus());
+        respDTO.setIsCompleteInfo(doctorAccount.getIsCompleteInfo());
+
+        return respDTO;
     }
 
     @Override
