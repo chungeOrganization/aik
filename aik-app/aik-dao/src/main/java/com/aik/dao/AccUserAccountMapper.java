@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AccUserAccount;
+import com.aik.vo.AccUserAccountVo;
 import com.github.pagehelper.Page;
 
 import org.apache.ibatis.annotations.Param;
@@ -34,5 +35,5 @@ public interface AccUserAccountMapper {
      * 分页查询数据
      * @return
      */
-    Page<AccUserAccount> findByPage(AccUserAccount record);
+    Page<AccUserAccount> findByPage(AccUserAccountVo record);
 }

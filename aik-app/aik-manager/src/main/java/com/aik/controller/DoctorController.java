@@ -28,6 +28,7 @@ import com.aik.model.AccUserAccount;
 import com.aik.service.DoctorManageService;
 import com.aik.util.AikFileUtils;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccDoctorAccountVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -81,7 +82,7 @@ public class DoctorController {
      * @return
      */
     @RequestMapping(value = "/goto/{num}")
-    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccDoctorAccount accDoctorAccount,@PathVariable Integer num) {
+    public ModelAndView queryPage(HttpServletRequest request, HttpServletResponse response,AccDoctorAccountVo accDoctorAccountVo,@PathVariable Integer num) {
        
     	ModelAndView mv = new ModelAndView("doctor/doctorList");
     	Page<AccDoctorAccount> accDoctorAccounts = new Page<AccDoctorAccount>();
@@ -89,7 +90,7 @@ public class DoctorController {
 			Integer size = null;
 			Integer page = num;
 	    	PageUtils pageRequest = new PageUtils(page, size);
-	    	accDoctorAccounts = doctorManageService.findPage(accDoctorAccount, pageRequest);
+	    	accDoctorAccounts = doctorManageService.findPage(accDoctorAccountVo, pageRequest);
 			logger.info("医生信息列表获取成功");
 		} catch (Exception e) {
 			logger.error("医生信息列表获取失败", e);

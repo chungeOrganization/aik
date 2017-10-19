@@ -498,7 +498,7 @@
     </if>
   </select>
   
-  <select id="findByPage" parameterType="com.aik.model.AccDoctorAccount" resultMap="BaseResultMap">
+  <select id="findByPage" parameterType="com.aik.vo.AccDoctorAccountVo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from acc_doctorAccount
@@ -554,6 +554,14 @@
     <if test="deleteStatus != null">
       and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     </if>
+    <if test="starttime !=null and starttime!='' ">
+        <![CDATA[ and to_char(createDate,'YYYY-MM-DD') >= #{startTime}]]>
+	</if>
+
+	<if test="endtime !=null and endtime!='' ">
+        <![CDATA[ and to_char(createDate,'YYYY-MM-DD') <= #{endTime} ]]>
+	</if>
+    
   </select>
   
   

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccDoctorAccountVo;
 import com.github.pagehelper.Page;
 
 
@@ -58,6 +59,6 @@ public interface DoctorManageService {
      * @return
      * @throws Exception
      */
-    Page<AccDoctorAccount> findPage(AccDoctorAccount accDoctorAccount, PageUtils pageUtils) throws  Exception;
+    Page<AccDoctorAccount> findPage(AccDoctorAccountVo accDoctorAccountVo, PageUtils pageUtils) throws  Exception;
     
 }

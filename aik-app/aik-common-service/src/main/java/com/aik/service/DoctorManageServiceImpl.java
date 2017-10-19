@@ -4,6 +4,7 @@ import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.MD5Utils;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccDoctorAccountVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -92,10 +93,10 @@ public class DoctorManageServiceImpl implements DoctorManageService {
 	}
 
 	@Override
-	public Page<AccDoctorAccount> findPage(AccDoctorAccount accDoctorAccount,
+	public Page<AccDoctorAccount> findPage(AccDoctorAccountVo accDoctorAccountVo,
 			PageUtils pageUtils) throws Exception {
 		 PageHelper.startPage(pageUtils.getPage(), pageUtils.getSize());
-		 return accDoctorAccountMapper.findByPage(accDoctorAccount);
+		 return accDoctorAccountMapper.findByPage(accDoctorAccountVo);
 	}
 
 	

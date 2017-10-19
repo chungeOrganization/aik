@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.aik.model.AccUserAccount;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccUserAccountVo;
 import com.github.pagehelper.Page;
 
 /**
@@ -59,7 +60,7 @@ public interface UserManageService {
     * @return
     * @throws Exception
     */
-    Page<AccUserAccount> findPage(AccUserAccount accUserAccount, PageUtils pageParam) throws  Exception;
+    Page<AccUserAccount> findPage(AccUserAccountVo accUserAccountVo, PageUtils pageParam) throws  Exception;
     
     /**
      * 根据用户名查找用户
