@@ -357,36 +357,6 @@ public class DoctorCenterApi {
     }
 
     @POST
-    @Path("/uploadDoctorFile")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public ApiResult uploadDoctorFile(@FormDataParam("accountId") Integer accountId, @FormDataParam("file") InputStream fileInputStream,
-                                      @FormDataParam("file") FormDataContentDisposition disposition) {
-        ApiResult result = new ApiResult();
-
-        try {
-            String imageName = Calendar.getInstance().getTimeInMillis()
-                    + disposition.getFileName();
-
-            String fileUri = "doctor" + File.separator + imageName;
-            String fileUrl = systemResource.getApiFileUri() + fileUri;
-            String uploadUrl = uploadRootUri + fileUri;
-
-            AikFileUtils.uploadImg(fileInputStream, uploadUrl);
-
-            result.withDataKV("fileUri", fileUri);
-            result.withDataKV("fileUrl", fileUrl);
-        } catch (IOException e) {
-            logger.error("upload doctor file error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
-        } catch (Exception e) {
-            logger.error("upload doctor file error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
     @Path("/updatePassword")
     public ApiResult updatePassword(UpdatePwdReqDTO updatePwdDTO) {
         ApiResult result = new ApiResult();

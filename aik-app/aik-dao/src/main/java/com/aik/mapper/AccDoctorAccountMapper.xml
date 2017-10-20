@@ -68,7 +68,7 @@
       #{auditManager,jdbcType=INTEGER}, #{auditTDate,jdbcType=TIMESTAMP}, #{isCompleteInfo,jdbcType=TINYINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount">
+  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount" useGeneratedKeys="true" keyProperty="id">
     insert into acc_doctorAccount
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

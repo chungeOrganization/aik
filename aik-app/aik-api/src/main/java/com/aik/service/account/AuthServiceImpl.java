@@ -5,6 +5,7 @@ import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
@@ -96,37 +97,53 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AccDoctorAccount doctorRegister(RegisterDTO registerDTO) throws ApiServiceException {
-        if (null == registerDTO) {
+    public AccDoctorAccount doctorRegister(DoctorRegisterReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
-        if (!validRegisterDTO(registerDTO)) {
+        if (!validDoctorRegisterDTO(reqDTO)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
         }
 
         // 验证手机号是否已被使用
-        if (doctorAccountService.validMobileNoIsUsed(registerDTO.getMobileNo())) {
+        if (doctorAccountService.validMobileNoIsUsed(reqDTO.getMobileNo())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
         }
 
         // 验证用户名是否已被使用
-        if (doctorAccountService.validUserNameIsUsed(registerDTO.getUserName())) {
+        if (doctorAccountService.validUserNameIsUsed(reqDTO.getUserName())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001005);
         }
 
         AccDoctorAccount doctorAccount = new AccDoctorAccount();
-        doctorAccount.setMobileNo(registerDTO.getMobileNo());
-        doctorAccount.setUserName(registerDTO.getUserName());
-        String md5Password = MD5Utils.md5(registerDTO.getPassword());
+        doctorAccount.setMobileNo(reqDTO.getMobileNo());
+        doctorAccount.setUserName(reqDTO.getUserName());
+        String md5Password = MD5Utils.md5(reqDTO.getPassword());
         if (StringUtils.isBlank(md5Password)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000001);
         }
         doctorAccount.setPassword(md5Password);
-        doctorAccount.setDevType(registerDTO.getDevType());
+        doctorAccount.setRealName(reqDTO.getRealName());
+        doctorAccount.setSex(reqDTO.getSex());
+        doctorAccount.setAreaProvince(reqDTO.getAreaProvince());
+        doctorAccount.setAreaCity(reqDTO.getAreaCity());
+        doctorAccount.setBirthday(reqDTO.getBirthday());
+        doctorAccount.setIdentityCard(reqDTO.getIdentityCard());
+        doctorAccount.setEmail(reqDTO.getEmail());
+        doctorAccount.setHosName(reqDTO.getHosName());
+        doctorAccount.setHosDepartment(reqDTO.getHosDepartment());
+        doctorAccount.setSkill(reqDTO.getSkill());
+        doctorAccount.setDepartmentPhone(reqDTO.getDepartmentPhone());
+        doctorAccount.setDevType(reqDTO.getDevType());
         doctorAccount.setCreateDate(new Date());
 
         accDoctorAccountMapper.insertSelective(doctorAccount);
+
+        // 图片信息
+        if (StringUtils.isNotBlank(reqDTO.getFileUrl())) {
+            doctorAccountService.uploadDoctorFile(doctorAccount.getId(), reqDTO.getFileUrl());
+        }
 
         return doctorAccount;
     }
@@ -248,6 +265,40 @@ public class AuthServiceImpl implements AuthService {
             return jwtTokenUtil.refreshToken(token);
         }
         return null;
+    }
+
+    /**
+     * 校验医生注册
+     *
+     * @param reqDTO request DTO
+     * @return true：校验通过 false：校验不通过
+     */
+    private Boolean validDoctorRegisterDTO(DoctorRegisterReqDTO reqDTO) {
+        if (null == reqDTO) {
+            return false;
+        }
+
+        if (StringUtils.isBlank(reqDTO.getUserName()) || StringUtils.isBlank(reqDTO.getPassword()) ||
+                StringUtils.isBlank(reqDTO.getMobileNo())) {
+            return false;
+        }
+
+        if (!StringValidUtils.validUserName(reqDTO.getUserName())) {
+            return false;
+        } else if (!StringValidUtils.validPassword(reqDTO.getPassword())) {
+            return false;
+        } else if (!StringValidUtils.validMobileNo(reqDTO.getMobileNo())) {
+            return false;
+        }
+
+        if (StringUtils.isBlank(reqDTO.getRealName()) || null == reqDTO.getSex() ||
+                StringUtils.isBlank(reqDTO.getAreaProvince()) || StringUtils.isBlank(reqDTO.getAreaCity()) ||
+                StringUtils.isBlank(reqDTO.getHosName()) || StringUtils.isBlank(reqDTO.getHosDepartment()) ||
+                StringUtils.isBlank(reqDTO.getSkill()) || StringUtils.isBlank(reqDTO.getDepartmentPhone())) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

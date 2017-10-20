@@ -4,6 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
@@ -44,11 +45,11 @@ public class AuthApi {
 
     @POST
     @Path("/auth/doctor/register")
-    public ApiResult doctorRegister(RegisterDTO registerDTO) throws AuthenticationException{
+    public ApiResult doctorRegister(DoctorRegisterReqDTO reqDTO) throws AuthenticationException{
         ApiResult result = new ApiResult();
 
         try {
-            AccDoctorAccount doctorAccount = authService.doctorRegister(registerDTO);
+            AccDoctorAccount doctorAccount = authService.doctorRegister(reqDTO);
             result.withDataKV("accountId", doctorAccount.getId());
         } catch (ApiServiceException e) {
             logger.error("doctor register error: ", e);

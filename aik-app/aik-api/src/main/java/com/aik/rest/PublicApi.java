@@ -6,6 +6,7 @@ import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.UserInfoDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.SysBank;
+import com.aik.resource.SystemResource;
 import com.aik.service.AreaService;
 import com.aik.service.HospitalService;
 import com.aik.service.SysBankService;
@@ -60,6 +61,8 @@ public class PublicApi {
 
     private UserAccountService userAccountService;
 
+    private SystemResource systemResource;
+
     @Inject
     public void setSecurityCodeService(SecurityCodeService securityCodeService) {
         this.securityCodeService = securityCodeService;
@@ -93,6 +96,11 @@ public class PublicApi {
     @Inject
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
+    }
+
+    @Inject
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
     }
 
     @GET
@@ -261,7 +269,7 @@ public class PublicApi {
     @POST
     @Path("/uploadDoctorFile")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public ApiResult uploadDoctorFile(@FormDataParam("accountId") Integer accountId, @FormDataParam("file") InputStream fileInputStream,
+    public ApiResult uploadDoctorFile(@FormDataParam("file") InputStream fileInputStream,
                                       @FormDataParam("file") FormDataContentDisposition disposition) {
         ApiResult result = new ApiResult();
 
@@ -270,17 +278,16 @@ public class PublicApi {
                     + disposition.getFileName();
 
             String fileUri = "doctor" + File.separator + imageName;
+            String fileUrl = systemResource.getApiFileUri() + fileUri;
             String uploadUrl = uploadRootUri + fileUri;
 
             AikFileUtils.uploadImg(fileInputStream, uploadUrl);
 
-            doctorAccountService.uploadDoctorFile(accountId, fileUri);
+            result.withDataKV("fileUri", fileUri);
+            result.withDataKV("fileUrl", fileUrl);
         } catch (IOException e) {
             logger.error("upload doctor file error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
-        } catch (ApiServiceException e) {
-            logger.error("upload doctor file error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("upload doctor file error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
