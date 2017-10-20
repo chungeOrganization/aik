@@ -5,7 +5,7 @@ import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
-import com.aik.dto.response.DoctorLoginRespDTO;
+import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
@@ -132,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public DoctorLoginRespDTO doctorLogin(LoginDTO loginDTO) throws ApiServiceException {
+    public LoginRespDTO doctorLogin(LoginDTO loginDTO) throws ApiServiceException {
         if (null == loginDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -158,7 +158,7 @@ public class AuthServiceImpl implements AuthService {
         final UserDetails userDetails = userDetailService.loadUserByUsername(loginDTO.getUserName() + jwtDoctorSign);
         final String token = jwtTokenUtil.generateToken(userDetails, jwtDoctorSign);
 
-        DoctorLoginRespDTO respDTO = new DoctorLoginRespDTO();
+        LoginRespDTO respDTO = new LoginRespDTO();
         respDTO.setToken(token);
         respDTO.setAuditStatus(doctorAccount.getAuditStatus());
         respDTO.setIsCompleteInfo(doctorAccount.getIsCompleteInfo());
@@ -268,7 +268,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (!StringValidUtils.validUserName(registerDTO.getUserName())) {
             return false;
-        } else if (!StringValidUtils.validPassoword(registerDTO.getPassword())) {
+        } else if (!StringValidUtils.validPassword(registerDTO.getPassword())) {
             return false;
         } else if (!StringValidUtils.validMobileNo(registerDTO.getMobileNo())) {
             return false;

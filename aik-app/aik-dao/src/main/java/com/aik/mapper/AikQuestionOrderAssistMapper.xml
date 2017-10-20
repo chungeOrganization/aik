@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AikQuestionOrderAssistMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AikQuestionOrderAssist">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderId" jdbcType="INTEGER" property="orderId" />
+    <result column="latelyReplyContent" jdbcType="VARCHAR" property="latelyReplyContent" />
+    <result column="latelyReplyDate" jdbcType="TIMESTAMP" property="latelyReplyDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderId, latelyReplyContent, latelyReplyDate, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aik_questionOrderAssist
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aik_questionOrderAssist
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AikQuestionOrderAssist">
+    insert into aik_questionOrderAssist (id, orderId, latelyReplyContent, 
+      latelyReplyDate, createDate, updateDate
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{latelyReplyContent,jdbcType=VARCHAR}, 
+      #{latelyReplyDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AikQuestionOrderAssist">
+    insert into aik_questionOrderAssist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="latelyReplyContent != null">
+        latelyReplyContent,
+      </if>
+      <if test="latelyReplyDate != null">
+        latelyReplyDate,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="latelyReplyContent != null">
+        #{latelyReplyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="latelyReplyDate != null">
+        #{latelyReplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AikQuestionOrderAssist">
+    update aik_questionOrderAssist
+    <set>
+      <if test="orderId != null">
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="latelyReplyContent != null">
+        latelyReplyContent = #{latelyReplyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="latelyReplyDate != null">
+        latelyReplyDate = #{latelyReplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AikQuestionOrderAssist">
+    update aik_questionOrderAssist
+    set orderId = #{orderId,jdbcType=INTEGER},
+      latelyReplyContent = #{latelyReplyContent,jdbcType=VARCHAR},
+      latelyReplyDate = #{latelyReplyDate,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

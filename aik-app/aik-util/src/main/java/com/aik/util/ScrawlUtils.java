@@ -1,5 +1,6 @@
 package com.aik.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.Date;
@@ -9,6 +10,9 @@ import java.util.Date;
  * Created by as on 2017/8/12.
  */
 public class ScrawlUtils {
+
+    private static final int AIK_STRING_OMIT_MIN_LENGTH = 10;
+    private static final String AIK_STRING_OMIT_SIGN = "......";
 
     public static int getAgeFromBirthday(Date birthday) {
         if (null == birthday) {
@@ -27,9 +31,22 @@ public class ScrawlUtils {
         return age;
     }
 
+    public static String aikStringOmit(String content) {
+        if (StringUtils.isBlank(content)) {
+            return "";
+        }
+
+        if (content.length() <= AIK_STRING_OMIT_MIN_LENGTH) {
+            return content;
+        }
+
+        return content.substring(0, 10) + AIK_STRING_OMIT_SIGN;
+    }
+
     public static void main(String[] args) {
-        DateTime dateTime = new DateTime("2016-08-13");
-        Date birthday = dateTime.toDate();
-        System.out.println(getAgeFromBirthday(birthday));
+//        DateTime dateTime = new DateTime("2016-08-13");
+//        Date birthday = dateTime.toDate();
+//        System.out.println(getAgeFromBirthday(birthday));
+        System.out.println(aikStringOmit("12345678911"));
     }
 }

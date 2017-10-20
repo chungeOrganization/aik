@@ -1,10 +1,10 @@
-package com.aik.dto.response;
+package com.aik.dto.response.doctor;
 
 /**
  * Description:
  * Created by as on 2017/10/19.
  */
-public class DoctorSimpleInfoRespDTO {
+public class SimpleInfoRespDTO {
 
     private String headImg;
 
@@ -16,7 +16,7 @@ public class DoctorSimpleInfoRespDTO {
 
     private String hosDepartment;
 
-    public DoctorSimpleInfoRespDTO() {
+    public SimpleInfoRespDTO() {
     }
 
     public String getHeadImg() {

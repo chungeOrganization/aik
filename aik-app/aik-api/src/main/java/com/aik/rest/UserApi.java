@@ -3,6 +3,8 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.*;
+import com.aik.dto.request.FeedbackReqDTO;
+import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SexEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
@@ -612,12 +614,12 @@ public class UserApi {
 
     @POST
     @Path("/addUserFeedback")
-    public ApiResult addDoctorFeedback(AikUserFeedback feedback) {
+    public ApiResult addUserFeedback(FeedbackReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            feedback.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
-            feedbackService.addUserFeedback(feedback);
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            feedbackService.addFeedback(reqDTO, FeedbackEnum.FbUserTypeEnum.TYPE_USER);
         } catch (ApiServiceException e) {
             logger.error("add user feedback error: ", e);
             result.withFailResult(e.getErrorCodeEnum());

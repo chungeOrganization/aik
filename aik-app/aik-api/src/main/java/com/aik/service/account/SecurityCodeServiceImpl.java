@@ -182,7 +182,8 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
      * @return true：已被使用过 false：未被使用过
      */
     private boolean validMobileNoIsUsed(SecurityCodeTypeEnum codeTypeEnum, String mobileNo) throws ApiServiceException {
-        if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_REGISTER) {
+        if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_REGISTER ||
+                codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING) {
             return doctorAccountService.validMobileNoIsUsed(mobileNo);
         } else if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER) {
             return userAccountService.validMobileNoIsUsed(mobileNo);

@@ -8,7 +8,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum SecurityCodeTypeEnum {
     CODE_TYPE_DOCTOR_REGISTER((byte) 1, "医生注册申请邀请码获取验证码"),
-    CODE_TYPE_USER_REGISTER((byte) 2, "用户注册获取验证码");
+    CODE_TYPE_USER_REGISTER((byte) 2, "用户注册获取验证码"),
+    CODE_TYPE_DOCTOR_MOBILE_RELIEVE((byte) 3, "医生解绑手机号验证码"),
+    CODE_TYPE_USER_REGISTER_BINDING((byte) 4, "医生绑定手机号验证码");
     private byte type;
     private String desc;
 

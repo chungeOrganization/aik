@@ -104,14 +104,14 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     @Override
     public List<Map<String, Object>> getDiagnosedOrders(Map<String, Object> params) throws ApiServiceException {
         params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatusWithRefuse());
-        params.put("typesArray", new byte[]{AnswerTypeEnum.INITIAL.getCode(), AnswerTypeEnum.REFUSE.getCode()});
 
         List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorDiagnosedOrders(params);
 
         // TODO: 回答显示处理
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));
-            map.put("createDate", DateUtils.aikPersonaliseDate((Date) map.get("createDate")));
+            map.put("replyDate", DateUtils.aikPersonaliseDate((Date) map.get("replyDate")));
+            map.put("replyContent", ScrawlUtils.aikStringOmit(map.get("replayContent").toString()));
         }
 
         return rsList;

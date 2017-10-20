@@ -1,6 +1,8 @@
 package com.aik.service.account;
 
 import com.aik.dto.DoctorInfoDTO;
+import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.UpdatePwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 
@@ -110,4 +112,20 @@ public interface DoctorAccountService {
      * @throws ApiServiceException
      */
     Map<String, Object> getQRCode(Integer doctorId) throws ApiServiceException;
+
+    /**
+     * 修改密码
+     *
+     * @param updatePwdDTO DTO
+     * @throws ApiServiceException
+     */
+    void updatePassword(UpdatePwdReqDTO updatePwdDTO) throws ApiServiceException;
+
+    /**
+     * 重新绑定手机号
+     *
+     * @param rebindingMobileReqDTO DTO
+     * @throws ApiServiceException
+     */
+    void rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) throws ApiServiceException;
 }

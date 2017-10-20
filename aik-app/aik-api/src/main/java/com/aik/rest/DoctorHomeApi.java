@@ -2,7 +2,7 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
-import com.aik.dto.response.DoctorSimpleInfoRespDTO;
+import com.aik.dto.response.doctor.SimpleInfoRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
@@ -87,7 +87,7 @@ public class DoctorHomeApi {
 
             // 医生信息
             AccDoctorAccount doctorAccount = doctorAccountService.getDoctorAccount(doctorId);
-            DoctorSimpleInfoRespDTO doctorInfo = new DoctorSimpleInfoRespDTO();
+            SimpleInfoRespDTO doctorInfo = new SimpleInfoRespDTO();
             doctorInfo.setHeadImg(doctorAccount.getHeadImg());
             doctorInfo.setRealName(doctorAccount.getRealName());
             doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));

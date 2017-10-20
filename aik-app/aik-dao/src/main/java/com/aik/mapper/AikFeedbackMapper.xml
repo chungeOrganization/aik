@@ -30,7 +30,7 @@
       #{type,jdbcType=TINYINT}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AikFeedback">
+  <insert id="insertSelective" parameterType="com.aik.model.AikFeedback" useGeneratedKeys="true" keyProperty="id">
     insert into aik_feedback
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

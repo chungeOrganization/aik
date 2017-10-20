@@ -4,7 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
-import com.aik.dto.response.DoctorLoginRespDTO;
+import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
@@ -67,7 +67,7 @@ public class AuthApi {
         ApiResult result = new ApiResult();
 
         try {
-            DoctorLoginRespDTO respDTO = authService.doctorLogin(loginDTO);
+            LoginRespDTO respDTO = authService.doctorLogin(loginDTO);
             // 获取医生审核状态
             result.withData(BeansUtils.transBean2Map(respDTO));
         } catch (ApiServiceException e) {

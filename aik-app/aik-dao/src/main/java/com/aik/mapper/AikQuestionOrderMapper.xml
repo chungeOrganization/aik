@@ -425,9 +425,9 @@
   </select>
   <select id="selectDoctorDiagnosedOrders" parameterType="java.util.Map" resultType="java.util.Map">
     select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
-    aa.answer, aa.createDate, qo.id as orderId
+    qoa.latelyReplyContent as replayContent, qoa.latelyReplyDate replyDate, qo.id as orderId
     from aik_questionOrder qo
-    inner join aik_answer aa on qo.id = aa.orderId
+    inner join aik_questionOrderAssist qoa on qo.id = qoa.orderId
     inner join acc_userAccount ua on qo.userId = ua.id
     where 1=1 and qo.type = 0
     <if test="doctorId != null">
@@ -439,13 +439,7 @@
         #{stu}
       </foreach>
     </if>
-    <if test="typesArray != null">
-      and aa.type in
-      <foreach close=")" collection="typesArray" item="tp" open="(" separator=",">
-        #{tp}
-      </foreach>
-    </if>
-    order by aa.createDate desc
+    order by qoa.latelyReplyDate desc
     limit ${(page-1)*size}, #{size}
   </select>
   <select id="selectDoctorInHandOrders" parameterType="java.util.Map" resultType="java.util.Map">

@@ -1,10 +1,10 @@
-package com.aik.dto.response;
+package com.aik.dto.response.doctor;
 
 /**
  * Description:
  * Created by as on 2017/10/19.
  */
-public class DoctorLoginRespDTO {
+public class LoginRespDTO {
 
     private String token;
 

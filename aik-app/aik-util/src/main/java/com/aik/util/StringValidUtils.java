@@ -34,12 +34,12 @@ public class StringValidUtils {
      * @param password 密码
      * @return true：验证通过 false：验证失败
      */
-    public static boolean validPassoword(String password) {
+    public static boolean validPassword(String password) {
         if (StringUtils.isBlank(password)) {
             return false;
         }
 
-        String regExp = "^(?=.*\\d.*)(?=.*[a-zA-Z].*).{6,16}$";
+        String regExp = "^.{6,16}$";
         Pattern p = Pattern.compile(regExp);
         Matcher m = p.matcher(password);
         return m.matches();

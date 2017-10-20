@@ -3,10 +3,14 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.*;
 import com.aik.dto.DoctorInfoDTO;
+import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.UpdatePwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
+import com.aik.util.MD5Utils;
+import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,6 +246,49 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         rsMap.put("qrCode", "xxxxx.jpg");
 
         return rsMap;
+    }
+
+    @Override
+    public void updatePassword(UpdatePwdReqDTO updatePwdDTO) throws ApiServiceException {
+        if (null == updatePwdDTO || StringUtils.isBlank(updatePwdDTO.getOldPassword()) ||
+                StringUtils.isBlank(updatePwdDTO.getNewPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAccount doctorAccount = getDoctorAccount(updatePwdDTO.getAccountId());
+        if (!updatePwdDTO.getOldPassword().equals(doctorAccount.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003009);
+        }
+
+        if (!StringValidUtils.validPassword(updatePwdDTO.getNewPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        AccDoctorAccount updateAccount = new AccDoctorAccount();
+        updateAccount.setId(updatePwdDTO.getAccountId());
+        updateAccount.setPassword(MD5Utils.md5(updatePwdDTO.getNewPassword()));
+        updateAccount.setUpdateDate(new Date());
+
+        accDoctorAccountMapper.updateByPrimaryKeySelective(updateAccount);
+    }
+
+    @Override
+    public void rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) throws ApiServiceException {
+        if (null == rebindingMobileReqDTO || null == rebindingMobileReqDTO.getAccountId() ||
+                StringUtils.isBlank(rebindingMobileReqDTO.getMobileNo())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByMobileNo(rebindingMobileReqDTO.getMobileNo());
+        if (null != doctorAccount) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
+        }
+
+        AccDoctorAccount updateDoctorAccount = new AccDoctorAccount();
+        updateDoctorAccount.setId(rebindingMobileReqDTO.getAccountId());
+        updateDoctorAccount.setMobileNo(rebindingMobileReqDTO.getMobileNo());
+        updateDoctorAccount.setUpdateDate(new Date());
+        accDoctorAccountMapper.updateByPrimaryKeySelective(updateDoctorAccount);
     }
 
     /**

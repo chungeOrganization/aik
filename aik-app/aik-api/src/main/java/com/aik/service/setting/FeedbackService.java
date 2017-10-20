@@ -1,8 +1,8 @@
 package com.aik.service.setting;
 
+import com.aik.dto.request.FeedbackReqDTO;
+import com.aik.enums.FeedbackEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.AikDoctorFeedback;
-import com.aik.model.AikUserFeedback;
 
 /**
  * Description:
@@ -11,18 +11,11 @@ import com.aik.model.AikUserFeedback;
 public interface FeedbackService {
 
     /**
-     * 添加医生问题反馈
+     * 添加问题反馈
      *
-     * @param doctorFeedback 问题反馈
+     * @param feedbackReq 问题反馈
+     * @param userTypeEnum 用户类型
      * @throws ApiServiceException Api服务异常
      */
-    void addDoctorFeedback(AikDoctorFeedback doctorFeedback) throws ApiServiceException;
-
-    /**
-     * 添加用户问题反馈
-     *
-     * @param userFeedback 问题反馈
-     * @throws ApiServiceException Api服务异常
-     */
-    void addUserFeedback(AikUserFeedback userFeedback) throws ApiServiceException;
+    void addFeedback(FeedbackReqDTO feedbackReq, FeedbackEnum.FbUserTypeEnum userTypeEnum) throws ApiServiceException;
 }

@@ -3,14 +3,19 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.DoctorInfoDTO;
+import com.aik.dto.request.FeedbackReqDTO;
+import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.enums.FeedbackEnum;
+import com.aik.enums.SecurityCodeTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccDoctorBankCard;
-import com.aik.model.AikDoctorFeedback;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
 import com.aik.service.account.DoctorAccountService;
+import com.aik.service.account.SecurityCodeService;
 import com.aik.service.question.AnswerService;
 import com.aik.service.relation.DoctorRelationService;
 import com.aik.service.setting.FeedbackService;
@@ -66,6 +71,8 @@ public class DoctorCenterApi {
 
     private SystemResource systemResource;
 
+    private SecurityCodeService securityCodeService;
+
     @Inject
     public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
         this.doctorAccountService = doctorAccountService;
@@ -99,6 +106,11 @@ public class DoctorCenterApi {
     @Inject
     public void setSystemResource(SystemResource systemResource) {
         this.systemResource = systemResource;
+    }
+
+    @Inject
+    public void setSecurityCodeService(SecurityCodeService securityCodeService) {
+        this.securityCodeService = securityCodeService;
     }
 
     @POST
@@ -311,12 +323,12 @@ public class DoctorCenterApi {
 
     @POST
     @Path("/addDoctorFeedback")
-    public ApiResult addDoctorFeedback(AikDoctorFeedback feedback) {
+    public ApiResult addDoctorFeedback(FeedbackReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            feedback.setDoctorId(AuthUserDetailsThreadLocal.getCurrentUserId());
-            feedbackService.addDoctorFeedback(feedback);
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            feedbackService.addFeedback(reqDTO, FeedbackEnum.FbUserTypeEnum.TYPE_DOCTOR);
         } catch (ApiServiceException e) {
             logger.error("add doctor feedback error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
@@ -368,6 +380,64 @@ public class DoctorCenterApi {
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
         } catch (Exception e) {
             logger.error("upload doctor file error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/updatePassword")
+    public ApiResult updatePassword(UpdatePwdReqDTO updatePwdDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            updatePwdDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            doctorAccountService.updatePassword(updatePwdDTO);
+        } catch (ApiServiceException e) {
+            logger.error("update password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("update password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getBindingMobileNo")
+    public ApiResult getBindingMobileNo() {
+        ApiResult result = new ApiResult();
+
+        try {
+            AccDoctorAccount doctorAccount = doctorAccountService.getDoctorAccount(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("mobileNo", doctorAccount.getMobileNo());
+        } catch (Exception e) {
+            logger.error("get binding mobile error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/rebindingMobileNo")
+    public ApiResult rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            // 校验验证码
+            boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING.getType()),
+                    rebindingMobileReqDTO.getMobileNo(), rebindingMobileReqDTO.getSecurityCode());
+            if (!validRs) {
+                result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
+            }
+
+            rebindingMobileReqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            doctorAccountService.rebindingMobileNo(rebindingMobileReqDTO);
+        } catch (Exception e) {
+            logger.error("rebinding mobile error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
