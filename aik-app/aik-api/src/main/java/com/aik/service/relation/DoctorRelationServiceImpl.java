@@ -3,6 +3,10 @@ package com.aik.service.relation;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.assist.RelationTypeUtil;
 import com.aik.dao.*;
+import com.aik.dto.request.doctor.SickListReqDTO;
+import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.SickListRespDTO;
+import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.enums.QuestionOrderEnum.*;
 import com.aik.enums.SexEnum;
 import com.aik.enums.UserAccountUserTypeEnum;
@@ -10,6 +14,8 @@ import com.aik.enums.UserAttentionTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.service.account.UserHealthRecordService;
+import com.aik.util.BeansUtils;
+import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,33 +106,59 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     }
 
     @Override
-    public List<Map<String, Object>> getSickList(Map<String, Object> params) throws ApiServiceException {
-        List<Map<String, Object>> sickList = aikDoctorSickMapper.selectListByParams(params);
-        for (Map<String, Object> map : sickList) {
-            byte sickSex = null != map.get("sickSex") ? Byte.valueOf(map.get("sickSex").toString()) : 0;
-            map.put("sickSex", SexEnum.getDescFromCode(sickSex));
+    public List<SickListRespDTO> getSickList(SickListReqDTO sickListReqDTO) throws ApiServiceException {
+        Map<String, Object> params = BeansUtils.transBean2Map(sickListReqDTO);
+        List<Map<String, Object>> sickListMap = aikDoctorSickMapper.selectListByParams(params);
 
-            // 获取该用户提问订单id
-            Integer questionOrderId = Integer.valueOf(map.get("questionOrderId").toString());
-            AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(questionOrderId);
+        List<SickListRespDTO> sickList = BeansUtils.transListMap2ListBean(sickListMap, SickListRespDTO.class);
+//        for (Map<String, Object> map : sickList) {
+//            byte sickSex = null != map.get("sickSex") ? Byte.valueOf(map.get("sickSex").toString()) : 0;
+//            map.put("sickSex", SexEnum.getDescFromCode(sickSex));
+//
+//            // 获取该用户提问订单id
+//            Integer questionOrderId = Integer.valueOf(map.get("questionOrderId").toString());
+//            AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(questionOrderId);
+//
+//            // 描述
+//            if (questionOrder.getStatus() == QuestionOrderStatusEnum.NORMAL_END.getCode() &&
+//                    questionOrder.getServiceAttitude() == 5 && questionOrder.getAnswerQuality() == 5) {
+//                map.put("description", "给您评了五星");
+//            } else {
+//                map.put("description", questionOrder.getDescription());
+//            }
+//
+//            // 订单状态
+//            if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+//                map.put("questionStatus", "待回答");
+//            } else {
+//                map.put("questionStatus", "完成");
+//            }
+//        }
 
-            // 描述
-            if (questionOrder.getStatus() == QuestionOrderStatusEnum.NORMAL_END.getCode() &&
-                    questionOrder.getServiceAttitude() == 5 && questionOrder.getAnswerQuality() == 5) {
-                map.put("description", "给您评了五星");
-            } else {
-                map.put("description", questionOrder.getDescription());
-            }
+        return sickList;
+    }
 
+    @Override
+    public List<SickOrderListRespDTO> getSickOrderList(SickOrderListReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || null == reqDTO.getSickId()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        Map<String, Object> params = BeansUtils.transBean2Map(reqDTO);
+        List<Map<String, Object>> sickOrderListMap = aikQuestionOrderMapper.selectSickOrders(params);
+
+        List<SickOrderListRespDTO> sickOrderList = BeansUtils.transListMap2ListBean(sickOrderListMap, SickOrderListRespDTO.class);
+        for (SickOrderListRespDTO sickOrder : sickOrderList) {
+            sickOrder.setDescription(ScrawlUtils.aikStringOmit(sickOrder.getDescription()));
             // 订单状态
-            if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
-                map.put("questionStatus", "待回答");
+            if (sickOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+                sickOrder.setAnswerStatus("待回答");
             } else {
-                map.put("questionStatus", "完成");
+                sickOrder.setAnswerStatus("完成");
             }
         }
 
-        return sickList;
+        return sickOrderList;
     }
 
     @Override

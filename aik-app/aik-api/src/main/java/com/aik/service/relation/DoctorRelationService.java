@@ -1,5 +1,9 @@
 package com.aik.service.relation;
 
+import com.aik.dto.request.doctor.SickListReqDTO;
+import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.SickListRespDTO;
+import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikDoctorSickGroup;
 
@@ -42,11 +46,19 @@ public interface DoctorRelationService {
     /**
      * 获取患者列表
      *
-     * @param params 参数
+     * @param sickListReqDTO request DTO
      * @return 患者列表
      * @throws ApiServiceException Api服务异常
      */
-    List<Map<String, Object>> getSickList(Map<String, Object> params) throws ApiServiceException;
+    List<SickListRespDTO> getSickList(SickListReqDTO sickListReqDTO) throws ApiServiceException;
+
+    /**
+     * 获取患者订单列表
+     * @param reqDTO request DTO
+     * @return 患者订单列表
+     * @throws ApiServiceException
+     */
+    List<SickOrderListRespDTO> getSickOrderList(SickOrderListReqDTO reqDTO) throws ApiServiceException;
 
     /**
      * 获取患者详情

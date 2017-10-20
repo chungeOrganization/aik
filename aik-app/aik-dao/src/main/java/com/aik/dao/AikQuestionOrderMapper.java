@@ -38,6 +38,8 @@ public interface AikQuestionOrderMapper {
     List<Map<String, Object>> selectOpenQuestionOrders(Map<String, Object> params);
 
     List<AikQuestionOrder> selectUserOrders(Map<String, Object> params);
+
+    List<Map<String, Object>> selectSickOrders(Map<String, Object> params);
     
     /**
      * 获取所有数据

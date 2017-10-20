@@ -127,11 +127,9 @@
   </update>
   <select id="selectListByParams" parameterType="java.util.Map" resultType="java.util.Map">
     select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex,
-    ad.id as sickId, qo.id as questionOrderId
+    ad.id as sickId
     from aik_doctorSick ad
     inner join acc_userAccount ua on ad.userId = ua.id
-    inner join aik_questionOrder qo on ad.doctorId = qo.doctorId
-    and ad.userId = qo.userId and qo.type = 0 and qo.status in(2, 3, 4, 5)
     where 1=1
     <if test="doctorId != null">
       and ad.doctorId = #{doctorId}
@@ -139,10 +137,10 @@
     <if test="groupId != null and groupId != -1">
       and ad.groupId = #{groupId}
     </if>
-    <if test="remark != null and remark != ''">
-      and ad.remark = #{remark}
+    <if test="nickName != null and nickName != ''">
+      and ad.remark = #{nickName}
     </if>
-    order by qo.id desc
+    order by ad.createDate desc
     limit ${(page-1)*size}, #{size}
   </select>
   <select id="selectSickDetailBySickId" parameterType="int" resultType="java.util.Map">

@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="aik_commonProblem" domainObjectName="AikCommonProblem" enableCountByExample="false"
+        <table tableName="aik_questionOrderAssist" domainObjectName="AikQuestionOrderAssist" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>

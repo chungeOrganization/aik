@@ -3,6 +3,10 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.RefuseAnswerDTO;
+import com.aik.dto.request.doctor.SickListReqDTO;
+import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.SickListRespDTO;
+import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikAnswer;
 import com.aik.model.AikDoctorSickGroup;
@@ -74,18 +78,37 @@ public class SickManagerApi {
 
     @POST
     @Path("/getSickList")
-    public ApiResult getSickList(Map<String, Object> params) {
+    public ApiResult getSickList(SickListReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            params.put("doctorId", AuthUserDetailsThreadLocal.getCurrentUserId());
-            List<Map<String, Object>> sickList = doctorRelationService.getSickList(params);
+            reqDTO.setDoctorId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            List<SickListRespDTO> sickList = doctorRelationService.getSickList(reqDTO);
             result.withDataKV("sickList", sickList);
         } catch (ApiServiceException e) {
             logger.error("get sick list error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get sick list error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("getSickOrders")
+    public ApiResult getSickOrders(SickOrderListReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<SickOrderListRespDTO> sickOrderList = doctorRelationService.getSickOrderList(reqDTO);
+            result.withDataKV("sickOrderList", sickOrderList);
+        } catch (ApiServiceException e) {
+            logger.error("get sick orders error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get sick orders error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
