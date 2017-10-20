@@ -1,5 +1,8 @@
 package com.aik.dao;
 
+import java.util.List;
+
+import com.aik.model.AikHrBloodSugar;
 import com.aik.model.AikHrRoutineBlood;
 
 public interface AikHrRoutineBloodMapper {
@@ -16,4 +19,10 @@ public interface AikHrRoutineBloodMapper {
     int updateByPrimaryKey(AikHrRoutineBlood record);
 
     AikHrRoutineBlood selectByHRid(Integer hrId);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<AikHrRoutineBlood> findAll(AikHrRoutineBlood record);
 }

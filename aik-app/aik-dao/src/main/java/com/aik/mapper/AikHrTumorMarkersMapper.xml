@@ -166,4 +166,21 @@
     from aik_hrTumorMarkers
     where hrId = #{hrId}
   </select>
+  <select id="findAll" parameterType="com.aik.model.AikHrTumorMarkers"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_hrTumorMarkers
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+    <if test="hrId != null">
+      and hrId = #{hrId}
+    </if>
+  </select>
+  
+  
 </mapper>
