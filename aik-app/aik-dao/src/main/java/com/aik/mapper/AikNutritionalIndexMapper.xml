@@ -11,6 +11,18 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  
+  <resultMap id="BaseResultVoMap" type="com.aik.vo.AikNutritionalIndexVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="height" jdbcType="DECIMAL" property="height" />
+    <result column="weight" jdbcType="DECIMAL" property="weight" />
+    <result column="bmi" jdbcType="DECIMAL" property="bmi" />
+    <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, userId, height, weight, bmi, recordDate, createDate, updateDate
   </sql>
@@ -131,4 +143,37 @@
     from aik_nutritionalIndex
     where userId = #{userId}
   </select>
+  
+   <select id="findAll" parameterType="com.aik.model.AikNutritionalIndex"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_nutritionalIndex
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.vo.AikNutritionalIndexVo"  resultMap="BaseResultVoMap">
+    select
+    t.`id` id , a.`id` userId, a.`userName` userName ,t.`height` height,t.`weight` weight,t.`bmi` bmi,
+    t.`recordDate` recordDate
+    FROM aik_nutritionalIndex t , acc_userAccount a
+    where  a.`id` = t.`userId`
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userId != null">
+      and t.userId = #{userId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.userName = #{userName}
+    </if>
+    
+  	</select>
+  
+  
 </mapper>
