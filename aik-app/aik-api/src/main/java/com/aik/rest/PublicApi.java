@@ -2,7 +2,6 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
-import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.UserInfoDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.SysBank;
@@ -10,12 +9,10 @@ import com.aik.resource.SystemResource;
 import com.aik.service.AreaService;
 import com.aik.service.HospitalService;
 import com.aik.service.SysBankService;
-import com.aik.service.account.DoctorAccountService;
 import com.aik.service.account.InviteCodeService;
 import com.aik.service.account.SecurityCodeService;
 import com.aik.service.account.UserAccountService;
 import com.aik.util.AikFileUtils;
-import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -34,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description:
+ * Description: 公共接口
  * Created by as on 2017/8/3.
  */
 @Path("/public")
@@ -54,8 +51,6 @@ public class PublicApi {
     private AreaService areaService;
 
     private HospitalService hospitalService;
-
-    private DoctorAccountService doctorAccountService;
 
     private SysBankService sysBankService;
 
@@ -81,11 +76,6 @@ public class PublicApi {
     @Inject
     public void setHospitalService(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
-    }
-
-    @Inject
-    public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
-        this.doctorAccountService = doctorAccountService;
     }
 
     @Inject
@@ -224,24 +214,6 @@ public class PublicApi {
             result.withDataKV("departments", departments);
         } catch (Exception e) {
             logger.error("get departments error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("/fillDoctorInfo")
-    public ApiResult fillDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
-        ApiResult result = new ApiResult();
-
-        try {
-            doctorAccountService.fillDoctorInfo(doctorInfoDTO);
-        } catch (ApiServiceException e) {
-            logger.error("fill doctor info error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("fill doctor info error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

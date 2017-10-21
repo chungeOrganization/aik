@@ -45,7 +45,7 @@ public class AuthApi {
 
     @POST
     @Path("/auth/doctor/register")
-    public ApiResult doctorRegister(DoctorRegisterReqDTO reqDTO) throws AuthenticationException{
+    public ApiResult doctorRegister(DoctorRegisterReqDTO reqDTO) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
         try {
@@ -84,13 +84,13 @@ public class AuthApi {
 
     @POST
     @Path("/doctor/refresh")
-    public ApiResult doctorRefresh(HttpServletRequest request) throws AuthenticationException{
+    public ApiResult doctorRefresh(HttpServletRequest request) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
         try {
             String token = request.getHeader(tokenHeader);
             String refreshedToken = authService.doctorRefreshToken(token);
-            if(refreshedToken == null) {
+            if (refreshedToken == null) {
                 result.withFailResult(ErrorCodeEnum.ERROR_CODE_1002002);
             }
         } catch (ApiServiceException e) {
@@ -106,7 +106,7 @@ public class AuthApi {
 
     @POST
     @Path("/auth/user/register")
-    public ApiResult userRegister(RegisterDTO registerDTO) throws AuthenticationException{
+    public ApiResult userRegister(RegisterDTO registerDTO) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
         try {
@@ -144,13 +144,13 @@ public class AuthApi {
 
     @POST
     @Path("/user/refresh")
-    public ApiResult userRefresh(HttpServletRequest request) throws AuthenticationException{
+    public ApiResult userRefresh(HttpServletRequest request) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
         try {
             String token = request.getHeader(tokenHeader);
             String refreshedToken = authService.userRefreshToken(token);
-            if(refreshedToken == null) {
+            if (refreshedToken == null) {
                 result.withFailResult(ErrorCodeEnum.ERROR_CODE_1002002);
             }
         } catch (ApiServiceException e) {

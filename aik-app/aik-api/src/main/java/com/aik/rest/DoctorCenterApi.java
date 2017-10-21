@@ -106,6 +106,10 @@ public class DoctorCenterApi {
         this.securityCodeService = securityCodeService;
     }
 
+    /**
+     * 获取医生-个人中心页面信息
+     * @return
+     */
     @POST
     @Path("/pageInfo")
     public ApiResult getPageInfo() {
