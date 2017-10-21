@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.SysUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="deleteStatus" jdbcType="BIT" property="deleteStatus" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="lastLoginDate" jdbcType="TIMESTAMP" property="lastLoginDate" />
+    <result column="lastLoginIp" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="loginCount" jdbcType="INTEGER" property="loginCount" />
+    <result column="loginDate" jdbcType="TIMESTAMP" property="loginDate" />
+    <result column="loginIp" jdbcType="VARCHAR" property="loginIp" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="trueName" jdbcType="VARCHAR" property="trueName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, createDate, deleteStatus, userName, password, lastLoginDate, lastLoginIp, loginCount, 
+    loginDate, loginIp, mobile, trueName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.SysUser">
+    insert into sys_user (id, createDate, deleteStatus, 
+      userName, password, lastLoginDate, 
+      lastLoginIp, loginCount, loginDate, 
+      loginIp, mobile, trueName
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=BIT}, 
+      #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{lastLoginDate,jdbcType=TIMESTAMP}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{loginCount,jdbcType=INTEGER}, #{loginDate,jdbcType=TIMESTAMP}, 
+      #{loginIp,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="deleteStatus != null">
+        deleteStatus,
+      </if>
+      <if test="userName != null">
+        userName,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="lastLoginDate != null">
+        lastLoginDate,
+      </if>
+      <if test="lastLoginIp != null">
+        lastLoginIp,
+      </if>
+      <if test="loginCount != null">
+        loginCount,
+      </if>
+      <if test="loginDate != null">
+        loginDate,
+      </if>
+      <if test="loginIp != null">
+        loginIp,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="trueName != null">
+        trueName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=BIT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginDate != null">
+        #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null">
+        #{loginCount,jdbcType=INTEGER},
+      </if>
+      <if test="loginDate != null">
+        #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.SysUser">
+    update sys_user
+    <set>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteStatus != null">
+        deleteStatus = #{deleteStatus,jdbcType=BIT},
+      </if>
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginDate != null">
+        lastLoginDate = #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        lastLoginIp = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null">
+        loginCount = #{loginCount,jdbcType=INTEGER},
+      </if>
+      <if test="loginDate != null">
+        loginDate = #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        loginIp = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        trueName = #{trueName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.SysUser">
+    update sys_user
+    set createDate = #{createDate,jdbcType=TIMESTAMP},
+      deleteStatus = #{deleteStatus,jdbcType=BIT},
+      userName = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      lastLoginDate = #{lastLoginDate,jdbcType=TIMESTAMP},
+      lastLoginIp = #{lastLoginIp,jdbcType=VARCHAR},
+      loginCount = #{loginCount,jdbcType=INTEGER},
+      loginDate = #{loginDate,jdbcType=TIMESTAMP},
+      loginIp = #{loginIp,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      trueName = #{trueName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
