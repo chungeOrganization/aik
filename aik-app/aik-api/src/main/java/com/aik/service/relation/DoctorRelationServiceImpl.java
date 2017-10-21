@@ -13,6 +13,7 @@ import com.aik.enums.UserAccountUserTypeEnum;
 import com.aik.enums.UserAttentionTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
+import com.aik.resource.SystemResource;
 import com.aik.service.account.UserHealthRecordService;
 import com.aik.util.BeansUtils;
 import com.aik.util.ScrawlUtils;
@@ -46,6 +47,8 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
 
     private UserHealthRecordService userHealthRecordService;
 
+    private SystemResource systemResource;
+
     @Autowired
     public void setAccUserAttentionMapper(AccUserAttentionMapper accUserAttentionMapper) {
         this.accUserAttentionMapper = accUserAttentionMapper;
@@ -76,6 +79,11 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         this.userHealthRecordService = userHealthRecordService;
     }
 
+    @Autowired
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
+    }
+
     @Override
     public Integer getDoctorFansCount(Integer doctorId) throws ApiServiceException {
         AccUserAttention searchAU = new AccUserAttention();
@@ -93,6 +101,10 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
 
             byte userType = null != map.get("fansUserType") ? Byte.valueOf(map.get("fansUserType").toString()) : 0;
             map.put("fansUserType", UserAccountUserTypeEnum.getDescFromCode(userType));
+
+            if (null != map.get("fansHeadImg")) {
+                map.put("fansHeadImg", systemResource.getApiFileUri() + map.get("fansHeadImg").toString());
+            }
         }
         return rsList;
     }

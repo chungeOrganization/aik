@@ -108,7 +108,6 @@ public class DoctorCenterApi {
 
     /**
      * 获取医生-个人中心页面信息
-     * @return
      */
     @POST
     @Path("/pageInfo")
@@ -150,6 +149,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 获取医生信息
+     */
     @POST
     @Path("getDoctorInfo")
     public ApiResult getDoctorInfo() {
@@ -169,6 +171,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 编辑医生信息
+     */
     @POST
     @Path("/editDoctorInfo")
     public ApiResult editDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
@@ -188,6 +193,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 我的回答列表
+     */
     @POST
     @Path("/answerList")
     public ApiResult answerList(Map<String, Object> params) {
@@ -208,6 +216,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 销售订单
+     */
     @POST
     @Path("/sellOrderList")
     public ApiResult sellOrderList(Map<String, Object> params) {
@@ -228,6 +239,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 粉丝列表
+     */
     @POST
     @Path("/fansList")
     public ApiResult fansList(Map<String, Object> params) {
@@ -405,7 +419,7 @@ public class DoctorCenterApi {
             boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING.getType()),
                     rebindingMobileReqDTO.getMobileNo(), rebindingMobileReqDTO.getSecurityCode());
             if (!validRs) {
-               return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
+                return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
             }
 
             rebindingMobileReqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
