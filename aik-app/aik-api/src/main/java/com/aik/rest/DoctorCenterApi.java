@@ -401,7 +401,7 @@ public class DoctorCenterApi {
             boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING.getType()),
                     rebindingMobileReqDTO.getMobileNo(), rebindingMobileReqDTO.getSecurityCode());
             if (!validRs) {
-                result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
+               return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
             }
 
             rebindingMobileReqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());

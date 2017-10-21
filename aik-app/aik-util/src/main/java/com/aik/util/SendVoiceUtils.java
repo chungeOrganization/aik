@@ -1,8 +1,7 @@
 package com.aik.util;
 
-import com.aik.dto.SendSmsRespDTO;
 import com.aik.dto.SendVoiceRespDTO;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,8 @@ public class SendVoiceUtils {
 
             String response = HttpClientUtils.doGet(sendVoiceProperties.getApi(), params, DEFAULT_ENCODE_CHARSET);
             logger.debug("send voice:[{}]", response);
-            SendVoiceRespDTO sendVoiceResp = JSONObject.parseObject(response, SendVoiceRespDTO.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            SendVoiceRespDTO sendVoiceResp = objectMapper.convertValue(response, SendVoiceRespDTO.class);
             if (SEND_VOICE_OK_CODE == sendVoiceResp.getError_code()) {
                 return true;
             }

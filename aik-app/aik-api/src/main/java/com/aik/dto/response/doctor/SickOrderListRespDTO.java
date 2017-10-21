@@ -13,7 +13,7 @@ public class SickOrderListRespDTO {
 
     private Date createDate;
 
-    private Byte status;
+    private Integer status;
 
     private String answerStatus;
 
@@ -41,11 +41,11 @@ public class SickOrderListRespDTO {
         this.createDate = createDate;
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

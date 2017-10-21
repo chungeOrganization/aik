@@ -1,7 +1,7 @@
 package com.aik.util;
 
 import com.aik.dto.SendSmsRespDTO;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,8 @@ public class SendSmsUtils {
         try {
             String response = HttpClientUtils.doGet(sendSmsProperties.getApi(), params, DEFAULT_ENCODE_CHARSET);
             logger.debug("send sms response:[{}]", response);
-            SendSmsRespDTO sendSmsResp = JSONObject.parseObject(response, SendSmsRespDTO.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            SendSmsRespDTO sendSmsResp = objectMapper.convertValue(response, SendSmsRespDTO.class);
             if (SEND_SMS_OK_CODE == sendSmsResp.getError_code()) {
                 return true;
             }

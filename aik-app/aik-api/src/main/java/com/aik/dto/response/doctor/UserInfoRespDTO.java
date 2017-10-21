@@ -6,34 +6,43 @@ package com.aik.dto.response.doctor;
  */
 public class UserInfoRespDTO {
 
-    private Integer sickId;
+    private Integer userId;
 
-    private String sickRealName;
+    private String userRealName;
 
-    private Byte sickSex;
+    private String userHeadImg;
 
-    public Integer getSickId() {
-        return sickId;
+    private Integer userSex;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSickId(Integer sickId) {
-        this.sickId = sickId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getSickRealName() {
-        return sickRealName;
+    public String getUserRealName() {
+        return userRealName;
     }
 
-    public void setSickRealName(String sickRealName) {
-        this.sickRealName = sickRealName;
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName;
     }
 
-    public Byte getSickSex() {
-        return sickSex;
+    public String getUserHeadImg() {
+        return userHeadImg;
     }
 
-    public void setSickSex(Byte sickSex) {
-        this.sickSex = sickSex;
+    public void setUserHeadImg(String userHeadImg) {
+        this.userHeadImg = userHeadImg;
     }
 
+    public Integer getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(Integer userSex) {
+        this.userSex = userSex;
+    }
 }

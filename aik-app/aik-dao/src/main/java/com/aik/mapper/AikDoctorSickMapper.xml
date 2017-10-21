@@ -126,8 +126,8 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectListByParams" parameterType="java.util.Map" resultType="java.util.Map">
-    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex,
-    ad.id as sickId
+    select ua.headImg as userHeadImg, ua.realName as userRealName, ua.sex as userSex, ua.id as userId,
+    ad.id as sickId, ad.remark as sickNickName
     from aik_doctorSick ad
     inner join acc_userAccount ua on ad.userId = ua.id
     where 1=1
