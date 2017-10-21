@@ -1,7 +1,9 @@
 package com.aik.dao;
 
+import com.aik.model.AikHrRoutineBlood;
 import com.aik.model.AikHrTumorMarkers;
 
+import java.util.List;
 import java.util.Map;
 
 public interface AikHrTumorMarkersMapper {
@@ -18,4 +20,10 @@ public interface AikHrTumorMarkersMapper {
     int updateByPrimaryKey(AikHrTumorMarkers record);
 
     AikHrTumorMarkers selectByHRid(Integer hrId);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<AikHrTumorMarkers> findAll(AikHrTumorMarkers record);
 }

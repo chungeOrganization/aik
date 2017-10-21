@@ -12,6 +12,20 @@
     <result column="mrRecordDate" jdbcType="TIMESTAMP" property="mrRecordDate" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.AikHealthRecordVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="height" jdbcType="DECIMAL" property="height" />
+    <result column="weight" jdbcType="DECIMAL" property="weight" />
+    <result column="medicalRecord" jdbcType="VARCHAR" property="medicalRecord" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="hwRecordDate" jdbcType="TIMESTAMP" property="hwRecordDate" />
+    <result column="mrRecordDate" jdbcType="TIMESTAMP" property="mrRecordDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  
   <sql id="Base_Column_List">
     id, userId, height, weight, medicalRecord, remark, hwRecordDate, mrRecordDate, createDate
   </sql>
@@ -155,4 +169,20 @@
     order by createDate desc
     limit ${(page-1)*size}, #{size}
   </select>
+  <select id="findByPage" parameterType="com.aik.vo.AikHealthRecordVo"  resultMap="BaseResultMapVo">
+    select
+     t.id, t.userId, p.userName, t.height, t.weight, t.remark, t.hwRecordDate, t.mrRecordDate, 
+     t.createDate
+    from aik_healthRecord t 
+    left join acc_userAccount p on t.userId = p.id
+    where 1=1
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userName != null and userName != ''">
+      and p.userName = #{userName}
+    </if>
+  	</select>
+  
+  
 </mapper>
