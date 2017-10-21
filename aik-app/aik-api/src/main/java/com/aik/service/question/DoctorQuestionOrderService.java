@@ -1,5 +1,6 @@
 package com.aik.service.question;
 
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -100,4 +101,14 @@ public interface DoctorQuestionOrderService {
      * @throws ApiServiceException Api服务异常
      */
     Map<String, Object> getOpenQuestionOrderDetail(Integer orderId) throws ApiServiceException;
+
+    /**
+     * 获取订单详情
+     * 患者管理-订单详情
+     *
+     * @param orderId 订单id
+     * @return response DTO
+     * @throws ApiServiceException
+     */
+    QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException;
 }

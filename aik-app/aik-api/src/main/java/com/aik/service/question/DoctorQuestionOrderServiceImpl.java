@@ -1,17 +1,20 @@
 package com.aik.service.question;
 
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dao.*;
+import com.aik.dto.response.doctor.AnswerRespDTO;
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO.*;
+import com.aik.dto.response.doctor.QuestionRespDTO;
 import com.aik.enums.AnswerTypeEnum;
 import com.aik.enums.QuestionOrderEnum.*;
 import com.aik.enums.QuestionTypeEnum;
 import com.aik.enums.SexEnum;
 import com.aik.enums.UserFileTypeEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.AccUserFile;
-import com.aik.model.AikAnswer;
-import com.aik.model.AikQuestion;
-import com.aik.model.AikQuestionOrder;
+import com.aik.model.*;
+import com.aik.resource.SystemResource;
 import com.aik.util.DateUtils;
 import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
@@ -42,6 +45,8 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
 
     private AccUserFileMapper accUserFileMapper;
 
+    private SystemResource systemResource;
+
     @Autowired
     public void setAikQuestionOrderMapper(AikQuestionOrderMapper aikQuestionOrderMapper) {
         this.aikQuestionOrderMapper = aikQuestionOrderMapper;
@@ -70,6 +75,11 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     @Autowired
     public void setAccUserFileMapper(AccUserFileMapper accUserFileMapper) {
         this.accUserFileMapper = accUserFileMapper;
+    }
+
+    @Autowired
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
     }
 
     @Override
@@ -254,6 +264,96 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         return rsData;
     }
 
+    @Override
+    public QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
+        if (null == questionOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
+        }
+
+        QuestionOrderDetailRespDTO questionOrderDetail = new QuestionOrderDetailRespDTO();
+
+        // 订单状态
+        questionOrderDetail.setOrderStatus(getDoctorOrderStatus(questionOrder));
+
+        // 回答状态
+        if (questionOrder.getStatus() != QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+            questionOrderDetail.setAnswerStatus("完成");
+        } else {
+            questionOrderDetail.setAnswerStatus("待回答");
+        }
+
+        // serviceAttitude 服务态度评分
+        questionOrderDetail.setServiceAttitude(questionOrder.getServiceAttitude());
+
+        // answerQuality 回答质量评分
+        questionOrderDetail.setAnswerQuality(questionOrder.getAnswerQuality());
+
+        // 用户头像
+        AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(questionOrder.getUserId());
+        questionOrderDetail.setUserHeaderImg(systemResource.getApiFileUri() + userAccount.getHeadImg());
+
+        // 医生头像
+        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(questionOrder.getDoctorId());
+        questionOrderDetail.setUserHeaderImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+
+        // 问答列表
+        List<QuestionAnswer> questionAnswerList = getQuestionAnswerList(questionOrder);
+        questionOrderDetail.setQuestionAnswerList(questionAnswerList);
+
+        return questionOrderDetail;
+    }
+
+    /**
+     * 获取问答列表
+     *
+     * @param questionOrder 咨询订单
+     * @return 问答列表
+     */
+    private List<QuestionAnswer> getQuestionAnswerList(AikQuestionOrder questionOrder) {
+        List<QuestionAnswer> questionAnswerList = new ArrayList<>();
+
+        AikQuestion searchAQ = new AikQuestion();
+        searchAQ.setOrderId(questionOrder.getId());
+        List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
+
+        for (AikQuestion aikQuestion : questionsList) {
+            QuestionAnswer questionAnswer = new QuestionAnswer();
+
+            // 提问
+            QuestionRespDTO question = new QuestionRespDTO();
+            question.setDescription(aikQuestion.getDescription());
+            question.setCreateDate(aikQuestion.getCreateDate());
+            if (aikQuestion.getType() == QuestionTypeEnum.INITIAL.getCode()) {
+                // 获取图片信息
+                AccUserFile searchAU = new AccUserFile();
+                searchAU.setUserId(questionOrder.getUserId());
+                searchAU.setType(UserFileTypeEnum.ORDER_REFUND_FILE.getCode());
+                searchAU.setRelationId(questionOrder.getId());
+                List<String> files = accUserFileMapper.selectFilesBySelective(searchAU);
+                question.setFiles(files);
+            }
+            questionAnswer.setQuestion(question);
+
+            AikAnswer aikAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getId());
+            if (null != aikAnswer) {
+                AnswerRespDTO answer = new AnswerRespDTO();
+                answer.setAnswer(aikAnswer.getAnswer());
+                answer.setCreateDate(aikAnswer.getCreateDate());
+
+                questionAnswer.setAnswer(answer);
+            }
+
+            questionAnswerList.add(questionAnswer);
+        }
+
+        return questionAnswerList;
+    }
+
     private void fillOrderDetail(AikQuestionOrder questionOrder, Map<String, Object> rsData) {
         // 用户头像
         String sickHeadImg = accUserAccountMapper.selectByPrimaryKey(questionOrder.getUserId()).getHeadImg();
@@ -369,13 +469,17 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
      * @return 1：付款 2：完成回答 3：平台处理 4：金额到账
      */
     private byte getDoctorOrderStatus(AikQuestionOrder questionOrder) {
-        byte doctorOorderStatus = 2;
-        if (questionOrder.getStatus() == QuestionOrderStatusEnum.NORMAL_END.getCode()) {
-            doctorOorderStatus = 3;
+        byte doctorOrderStatus;
+        if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+            doctorOrderStatus = 2;
+        } else {
+            if (questionOrder.getIsPayDoctor() == QuestionOrderIsPayDoctorEnum.IS_PAY.getCode()) {
+                doctorOrderStatus = 4;
+            } else {
+                doctorOrderStatus = 3;
+            }
         }
-        if (questionOrder.getIsPayDoctor() == QuestionOrderIsPayDoctorEnum.IS_PAY.getCode()) {
-            doctorOorderStatus = 4;
-        }
-        return doctorOorderStatus;
+
+        return doctorOrderStatus;
     }
 }

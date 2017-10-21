@@ -31,7 +31,7 @@ public class DoctorDealServiceImpl implements DoctorDealService{
 
     @Override
     public Integer getSellDealCount(Integer doctorId) throws ApiServiceException {
-        byte dealType = DoctorDealTypeEnum.SELL_COMMISION.getCode();
+        byte dealType = DoctorDealTypeEnum.SELL_COMMISSION.getCode();
         AccDoctorDealDetail searchAD = new AccDoctorDealDetail();
         searchAD.setDoctorId(doctorId);
         searchAD.setDealType(dealType);
@@ -42,7 +42,7 @@ public class DoctorDealServiceImpl implements DoctorDealService{
     @Override
     public Map<String, Object> getSellDealDetails(Map<String, Object> params) throws ApiServiceException {
         Map<String, Object> rsData = new HashMap<>();
-        byte dealType = DoctorDealTypeEnum.SELL_COMMISION.getCode();
+        byte dealType = DoctorDealTypeEnum.SELL_COMMISSION.getCode();
         params.put("dealType", dealType);
         BigDecimal sumAmount = accDoctorDealDetailMapper.selectSumAmountByParams(params);
         rsData.put("sumIncome", sumAmount);

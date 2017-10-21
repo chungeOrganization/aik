@@ -6,6 +6,8 @@ import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.response.doctor.DoctorInfoRespDTO;
+import com.aik.enums.DoctorPositionEnum;
 import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SecurityCodeTypeEnum;
 import com.aik.exception.ApiServiceException;
@@ -20,31 +22,22 @@ import com.aik.service.question.AnswerService;
 import com.aik.service.relation.DoctorRelationService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.service.store.DoctorDealService;
-import com.aik.util.AikFileUtils;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Description:
+ * Description: 医生端-个人中心
  * Created by as on 2017/8/7.
  */
 @Path("/doctorCenter")
@@ -120,19 +113,26 @@ public class DoctorCenterApi {
 
         try {
             Integer doctorId = AuthUserDetailsThreadLocal.getCurrentUserId();
+
+            // 医生信息
             AccDoctorAccount doctorAccount = doctorAccountService.getDoctorAccount(doctorId);
-            Map<String, Object> doctorInfo = new HashMap<>();
-            doctorInfo.put("headImg", systemResource.getApiFileUri() + doctorAccount.getHeadImg());
-            doctorInfo.put("realName", doctorAccount.getRealName());
-            doctorInfo.put("position", doctorAccount.getPosition());
-            doctorInfo.put("hosName", doctorAccount.getHosName());
-            doctorInfo.put("hosDepartment", doctorAccount.getHosDepartment());
+            DoctorInfoRespDTO doctorInfo = new DoctorInfoRespDTO();
+            doctorInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+            doctorInfo.setRealName(doctorAccount.getRealName());
+            doctorInfo.setHosName(doctorAccount.getHosName());
+            doctorInfo.setHosDepartment(doctorAccount.getHosDepartment());
+            doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
             result.withDataKV("doctorInfo", doctorInfo);
 
+            // "我的回答"数量
             int answersCount = answerService.getDoctorAnswersCount(doctorId);
             result.withDataKV("answersCount", answersCount);
+
+            // "销售订单"数量
             int ordersCount = doctorDealService.getSellDealCount(doctorId);
             result.withDataKV("ordersCount", ordersCount);
+
+            // "粉丝"数量
             int fansCount = doctorRelationService.getDoctorFansCount(doctorId);
             result.withDataKV("fansCount", fansCount);
         } catch (ApiServiceException e) {

@@ -5,6 +5,7 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.RefuseAnswerDTO;
 import com.aik.dto.request.doctor.SickListReqDTO;
 import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
@@ -12,15 +13,14 @@ import com.aik.model.AikAnswer;
 import com.aik.model.AikDoctorSickGroup;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.question.AnswerService;
+import com.aik.service.question.DoctorQuestionOrderService;
 import com.aik.service.question.QuestionService;
 import com.aik.service.relation.DoctorRelationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +41,8 @@ public class SickManagerApi {
 
     private AnswerService answerService;
 
+    private DoctorQuestionOrderService doctorQuestionOrderService;
+
     @Inject
     public void setDoctorRelationService(DoctorRelationService doctorRelationService) {
         this.doctorRelationService = doctorRelationService;
@@ -54,6 +56,11 @@ public class SickManagerApi {
     @Inject
     public void setAnswerService(AnswerService answerService) {
         this.answerService = answerService;
+    }
+
+    @Inject
+    public void setDoctorQuestionOrderService(DoctorQuestionOrderService doctorQuestionOrderService) {
+        this.doctorQuestionOrderService = doctorQuestionOrderService;
     }
 
     @POST
@@ -216,6 +223,25 @@ public class SickManagerApi {
         return result;
     }
 
+    @GET
+    @Path("/getQuestionOrderDetail/{orderId}")
+    public ApiResult getQuestionOrderDetail(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            QuestionOrderDetailRespDTO questionOrderDetail = doctorQuestionOrderService.getQuestionOrderDetail(orderId);
+            result.withDataKV("questionOrderDetail", questionOrderDetail);
+        } catch (ApiServiceException e) {
+            logger.error("get question order detail error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get question order detail error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
     @POST
     @Path("/processingQuestionOrder")
     public ApiResult processingQuestionOrder(Map<String, Object> params) {
@@ -230,6 +256,26 @@ public class SickManagerApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get processing question order detail error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/completedQuestionOrder")
+    public ApiResult completedQuestionOrder(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            Integer questionOrderId = Integer.valueOf(params.get("questionOrderId").toString());
+            Map<String, Object> rsData = questionService.getCompletedQODetail(questionOrderId);
+            result.withData(rsData);
+        } catch (ApiServiceException e) {
+            logger.error("get completed question order detail error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get completed question order detail error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
@@ -273,23 +319,4 @@ public class SickManagerApi {
         return result;
     }
 
-    @POST
-    @Path("/completedQuestionOrder")
-    public ApiResult completedQuestionOrder(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer questionOrderId = Integer.valueOf(params.get("questionOrderId").toString());
-            Map<String, Object> rsData = questionService.getCompletedQODetail(questionOrderId);
-            result.withData(rsData);
-        } catch (ApiServiceException e) {
-            logger.error("get completed question order detail error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get completed question order detail error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
 }

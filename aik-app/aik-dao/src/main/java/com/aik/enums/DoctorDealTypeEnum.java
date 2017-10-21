@@ -6,7 +6,7 @@ package com.aik.enums;
  */
 public enum DoctorDealTypeEnum {
     // 交易类型 0：提成 1：回答问题 2：提现
-    SELL_COMMISION((byte) 0, "提成"),
+    SELL_COMMISSION((byte) 0, "提成"),
     ANSWER_QUESTION((byte) 1, "回答问题"),
     WITHDRAW((byte) 2, "提现");
 
