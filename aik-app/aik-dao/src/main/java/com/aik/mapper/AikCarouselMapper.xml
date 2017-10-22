@@ -90,4 +90,34 @@
       image = #{image,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="findAll" parameterType="com.aik.model.AikCarousel"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_carousel
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+     <if test="appNo != null and appNo != ''">
+      and appNo = #{appNo}
+    </if>
+   
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.model.AikCarousel"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from aik_carousel
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="appNo != null and appNo != ''">
+      and appNo = #{appNo}
+      </if>
+  	</select>
+  
+  
+  
 </mapper>

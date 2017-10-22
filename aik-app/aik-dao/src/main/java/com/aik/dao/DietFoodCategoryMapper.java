@@ -19,7 +19,8 @@ public interface DietFoodCategoryMapper {
 
     int updateByPrimaryKey(DietFoodCategory record);
 
-    List<DietFoodCategory> selectAllFoodCategory();/**
+    List<DietFoodCategory> selectAllFoodCategory();
+    /**
      * 获取所有数据
      * @return
      */
