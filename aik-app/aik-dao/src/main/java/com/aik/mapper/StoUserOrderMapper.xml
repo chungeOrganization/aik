@@ -16,12 +16,16 @@
     <result column="refundStatus" jdbcType="TINYINT" property="refundStatus" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
     <result column="delFlag" jdbcType="TINYINT" property="delFlag" />
+    <result column="appraise" jdbcType="VARCHAR" property="appraise" />
+    <result column="goodsQuality" jdbcType="TINYINT" property="goodsQuality" />
+    <result column="logisticsSpeed" jdbcType="TINYINT" property="logisticsSpeed" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, orderNum, userId, acceptAddressId, status, amount, realAmount, freightAmount, 
-    leaveMsg, payTime, deliveryTime, refundStatus, endTime, delFlag, createDate, updateDate
+    leaveMsg, payTime, deliveryTime, refundStatus, endTime, delFlag, appraise, goodsQuality, 
+    logisticsSpeed, createDate, updateDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -38,13 +42,15 @@
       acceptAddressId, status, amount, 
       realAmount, freightAmount, leaveMsg, 
       payTime, deliveryTime, refundStatus, 
-      endTime, delFlag, createDate, 
+      endTime, delFlag, appraise, 
+      goodsQuality, logisticsSpeed, createDate, 
       updateDate)
     values (#{id,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
       #{acceptAddressId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{amount,jdbcType=DECIMAL}, 
       #{realAmount,jdbcType=DECIMAL}, #{freightAmount,jdbcType=DECIMAL}, #{leaveMsg,jdbcType=VARCHAR}, 
       #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, #{refundStatus,jdbcType=TINYINT}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=TINYINT}, #{appraise,jdbcType=VARCHAR}, 
+      #{goodsQuality,jdbcType=TINYINT}, #{logisticsSpeed,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.StoUserOrder">
@@ -91,6 +97,15 @@
       </if>
       <if test="delFlag != null">
         delFlag,
+      </if>
+      <if test="appraise != null">
+        appraise,
+      </if>
+      <if test="goodsQuality != null">
+        goodsQuality,
+      </if>
+      <if test="logisticsSpeed != null">
+        logisticsSpeed,
       </if>
       <if test="createDate != null">
         createDate,
@@ -142,6 +157,15 @@
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="appraise != null">
+        #{appraise,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsQuality != null">
+        #{goodsQuality,jdbcType=TINYINT},
+      </if>
+      <if test="logisticsSpeed != null">
+        #{logisticsSpeed,jdbcType=TINYINT},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -192,6 +216,15 @@
       <if test="delFlag != null">
         delFlag = #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="appraise != null">
+        appraise = #{appraise,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsQuality != null">
+        goodsQuality = #{goodsQuality,jdbcType=TINYINT},
+      </if>
+      <if test="logisticsSpeed != null">
+        logisticsSpeed = #{logisticsSpeed,jdbcType=TINYINT},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -216,6 +249,9 @@
       refundStatus = #{refundStatus,jdbcType=TINYINT},
       endTime = #{endTime,jdbcType=TIMESTAMP},
       delFlag = #{delFlag,jdbcType=TINYINT},
+      appraise = #{appraise,jdbcType=VARCHAR},
+      goodsQuality = #{goodsQuality,jdbcType=TINYINT},
+      logisticsSpeed = #{logisticsSpeed,jdbcType=TINYINT},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

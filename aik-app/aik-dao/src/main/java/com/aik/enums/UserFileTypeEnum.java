@@ -7,7 +7,8 @@ package com.aik.enums;
 public enum UserFileTypeEnum {
     QUESTION_FILE((byte) 0, "问题订单图片"),
     ORDER_REFUND_FILE((byte) 1, "订单退回图片"),
-    CIRCLE_FILE((byte) 2, "互助圈文件");
+    CIRCLE_FILE((byte) 2, "互助圈文件"),
+    STORE_APPRAISE((byte) 3, "商品评价");
     private byte code;
     private String desc;
 

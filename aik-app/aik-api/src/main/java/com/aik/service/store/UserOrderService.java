@@ -1,6 +1,7 @@
 package com.aik.service.store;
 
 import com.aik.dto.PayStoOrderDTO;
+import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.exception.ApiServiceException;
 
@@ -64,4 +65,28 @@ public interface UserOrderService {
      * @throws ApiServiceException
      */
     void confirmReceipt(Integer orderId) throws ApiServiceException;
+
+    /**
+     * 订单退货
+     *
+     * @param orderId 订单id
+     * @throws ApiServiceException
+     */
+    void returnOrder(Integer orderId) throws ApiServiceException;
+
+    /**
+     * 再来一单
+     *
+     * @param orderId 订单id
+     * @throws ApiServiceException
+     */
+    void againOrder(Integer orderId) throws ApiServiceException;
+
+    /**
+     * 评价订单
+     *
+     * @param reqDTO DTO
+     * @throws ApiServiceException
+     */
+    void appraiseOrder(AppraiseOrderReqDTO reqDTO) throws ApiServiceException;
 }

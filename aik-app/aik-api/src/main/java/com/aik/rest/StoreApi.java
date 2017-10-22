@@ -4,6 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.UpdateShoppingCartDTO;
+import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.GoodsTypeEnum;
 import com.aik.exception.ApiServiceException;
@@ -144,6 +145,60 @@ public class StoreApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("confirm receipt error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/returnOrder/{orderId}")
+    public ApiResult returnOrder(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userOrderService.returnOrder(orderId);
+        } catch (ApiServiceException e) {
+            logger.error("return order error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("return order error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/againOrder/{orderId}")
+    public ApiResult againOrder(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userOrderService.againOrder(orderId);
+        } catch (ApiServiceException e) {
+            logger.error("again order error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("again order error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/appraiseOrder")
+    public ApiResult appraiseOrder(AppraiseOrderReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userOrderService.appraiseOrder(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("appraise order error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("appraise order error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

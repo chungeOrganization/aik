@@ -32,6 +32,12 @@ public class StoUserOrder {
 
     private Byte delFlag;
 
+    private String appraise;
+
+    private Byte goodsQuality;
+
+    private Byte logisticsSpeed;
+
     private Date createDate;
 
     private Date updateDate;
@@ -146,6 +152,30 @@ public class StoUserOrder {
 
     public void setDelFlag(Byte delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getAppraise() {
+        return appraise;
+    }
+
+    public void setAppraise(String appraise) {
+        this.appraise = appraise == null ? null : appraise.trim();
+    }
+
+    public Byte getGoodsQuality() {
+        return goodsQuality;
+    }
+
+    public void setGoodsQuality(Byte goodsQuality) {
+        this.goodsQuality = goodsQuality;
+    }
+
+    public Byte getLogisticsSpeed() {
+        return logisticsSpeed;
+    }
+
+    public void setLogisticsSpeed(Byte logisticsSpeed) {
+        this.logisticsSpeed = logisticsSpeed;
     }
 
     public Date getCreateDate() {

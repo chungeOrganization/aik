@@ -3,8 +3,10 @@ package com.aik.service.store;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.*;
 import com.aik.dto.PayStoOrderDTO;
+import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.DelFlagEnum;
+import com.aik.enums.UserFileTypeEnum;
 import com.aik.enums.UserOrderStatusEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
@@ -38,6 +40,8 @@ public class UserOrderServiceImpl implements UserOrderService {
 
     private StoLogisticsTrackInfoMapper stoLogisticsTrackInfoMapper;
 
+    private AccUserFileMapper accUserFileMapper;
+
     @Resource
     private SystemResource systemResource;
 
@@ -69,6 +73,11 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Autowired
     public void setStoLogisticsTrackInfoMapper(StoLogisticsTrackInfoMapper stoLogisticsTrackInfoMapper) {
         this.stoLogisticsTrackInfoMapper = stoLogisticsTrackInfoMapper;
+    }
+
+    @Autowired
+    public void setAccUserFileMapper(AccUserFileMapper accUserFileMapper) {
+        this.accUserFileMapper = accUserFileMapper;
     }
 
     @Override
@@ -257,5 +266,72 @@ public class UserOrderServiceImpl implements UserOrderService {
         updateUserOrder.setStatus(UserOrderStatusEnum.COMPLETE.getStatus());
         updateUserOrder.setUpdateDate(new Date());
         stoUserOrderMapper.updateByPrimaryKeySelective(updateUserOrder);
+    }
+
+    @Override
+    public void returnOrder(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(orderId);
+        if (null == userOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
+        }
+
+        if (userOrder.getStatus() != UserOrderStatusEnum.DELIVERED.getStatus()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
+        }
+
+        StoUserOrder updateUserOrder = new StoUserOrder();
+        updateUserOrder.setId(userOrder.getId());
+        updateUserOrder.setStatus(UserOrderStatusEnum.RETURN.getStatus());
+        updateUserOrder.setUpdateDate(new Date());
+        stoUserOrderMapper.updateByPrimaryKeySelective(updateUserOrder);
+
+        // TODO:是否插入退货申请
+    }
+
+    @Override
+    public void againOrder(Integer orderId) throws ApiServiceException {
+        // TODO:再来一单
+    }
+
+    @Override
+    public void appraiseOrder(AppraiseOrderReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(reqDTO.getOrderId());
+        if (null == userOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
+        }
+
+        if (userOrder.getStatus() != UserOrderStatusEnum.COMPLETE.getStatus()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
+        }
+
+        StoUserOrder updateUserOrder = new StoUserOrder();
+        updateUserOrder.setId(userOrder.getId());
+        updateUserOrder.setAppraise(reqDTO.getAppraise());
+        updateUserOrder.setGoodsQuality(reqDTO.getGoodsQuality().byteValue());
+        updateUserOrder.setLogisticsSpeed(reqDTO.getLogisticsSpeed().byteValue());
+        updateUserOrder.setUpdateDate(new Date());
+        stoUserOrderMapper.updateByPrimaryKeySelective(updateUserOrder);
+
+        List<String> files = reqDTO.getFiles();
+        if (null != files && files.size() > 0) {
+            for (String fileUrl : files) {
+                AccUserFile userFile = new AccUserFile();
+                userFile.setUserId(userOrder.getUserId());
+                userFile.setType(UserFileTypeEnum.STORE_APPRAISE.getCode());
+                userFile.setFileUrl(fileUrl);
+                userFile.setRelationId(userOrder.getId());
+                userFile.setCreateDate(new Date());
+
+                accUserFileMapper.insertSelective(userFile);
+            }
+        }
     }
 }
