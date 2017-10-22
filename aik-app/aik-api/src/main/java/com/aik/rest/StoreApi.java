@@ -4,6 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.UpdateShoppingCartDTO;
+import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.GoodsTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.StoAcceptAddress;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,6 +89,61 @@ public class StoreApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get my order error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/cancelUserOrder/{orderId}")
+    public ApiResult cancelUserOrder(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userOrderService.cancelUserOrder(orderId, AuthUserDetailsThreadLocal.getCurrentUserId());
+        } catch (ApiServiceException e) {
+            logger.error("cancel order error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("cancel order error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getOrderLogisticsInfo/{orderId}")
+    public ApiResult getOrderLogisticsInfo(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            OrderLogisticsInfoRespDTO orderLogisticsInfo = userOrderService.getOrderLogisticsInfo(orderId);
+            result.withDataKV("orderLogisticsInfo", orderLogisticsInfo);
+        } catch (ApiServiceException e) {
+            logger.error("get order logistics info error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get order logistics info error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/confirmReceipt/{orderId}")
+    public ApiResult confirmReceipt(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userOrderService.confirmReceipt(orderId);
+        } catch (ApiServiceException e) {
+            logger.error("confirm receipt error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("confirm receipt error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

@@ -26,7 +26,11 @@ public class StoUserOrder {
 
     private Date deliveryTime;
 
+    private Byte refundStatus;
+
     private Date endTime;
+
+    private Byte delFlag;
 
     private Date createDate;
 
@@ -120,12 +124,28 @@ public class StoUserOrder {
         this.deliveryTime = deliveryTime;
     }
 
+    public Byte getRefundStatus() {
+        return refundStatus;
+    }
+
+    public void setRefundStatus(Byte refundStatus) {
+        this.refundStatus = refundStatus;
+    }
+
     public Date getEndTime() {
         return endTime;
     }
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Byte getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Byte delFlag) {
+        this.delFlag = delFlag;
     }
 
     public Date getCreateDate() {

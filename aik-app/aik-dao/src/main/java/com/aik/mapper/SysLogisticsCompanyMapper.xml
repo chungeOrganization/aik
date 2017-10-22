@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.SysLogisticsCompanyMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.SysLogisticsCompany">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyName" />
+    <result column="officialPhone" jdbcType="VARCHAR" property="officialPhone" />
+    <result column="logisticsImg" jdbcType="VARCHAR" property="logisticsImg" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, companyName, officialPhone, logisticsImg, createDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_logisticsCompany
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_logisticsCompany
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.SysLogisticsCompany">
+    insert into sys_logisticsCompany (id, companyName, officialPhone, 
+      logisticsImg, createDate)
+    values (#{id,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{officialPhone,jdbcType=VARCHAR}, 
+      #{logisticsImg,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.SysLogisticsCompany">
+    insert into sys_logisticsCompany
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="companyName != null">
+        companyName,
+      </if>
+      <if test="officialPhone != null">
+        officialPhone,
+      </if>
+      <if test="logisticsImg != null">
+        logisticsImg,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="officialPhone != null">
+        #{officialPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsImg != null">
+        #{logisticsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.SysLogisticsCompany">
+    update sys_logisticsCompany
+    <set>
+      <if test="companyName != null">
+        companyName = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="officialPhone != null">
+        officialPhone = #{officialPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsImg != null">
+        logisticsImg = #{logisticsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.SysLogisticsCompany">
+    update sys_logisticsCompany
+    set companyName = #{companyName,jdbcType=VARCHAR},
+      officialPhone = #{officialPhone,jdbcType=VARCHAR},
+      logisticsImg = #{logisticsImg,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

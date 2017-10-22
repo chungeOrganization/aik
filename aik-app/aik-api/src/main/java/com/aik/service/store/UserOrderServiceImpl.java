@@ -1,15 +1,13 @@
 package com.aik.service.store;
 
 import com.aik.assist.ErrorCodeEnum;
-import com.aik.dao.StoAcceptAddressMapper;
-import com.aik.dao.StoUserOrderDetailMapper;
-import com.aik.dao.StoUserOrderMapper;
+import com.aik.dao.*;
 import com.aik.dto.PayStoOrderDTO;
-import com.aik.enums.UserStoOrderStatusEnum;
+import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
+import com.aik.enums.DelFlagEnum;
+import com.aik.enums.UserOrderStatusEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.StoAcceptAddress;
-import com.aik.model.StoUserOrder;
-import com.aik.model.StoUserOrderDetail;
+import com.aik.model.*;
 import com.aik.resource.SystemResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,12 @@ public class UserOrderServiceImpl implements UserOrderService {
 
     private StoAcceptAddressMapper stoAcceptAddressMapper;
 
+    private StoOrderLogisticsInfoMapper stoOrderLogisticsInfoMapper;
+
+    private SysLogisticsCompanyMapper sysLogisticsCompanyMapper;
+
+    private StoLogisticsTrackInfoMapper stoLogisticsTrackInfoMapper;
+
     @Resource
     private SystemResource systemResource;
 
@@ -50,6 +54,21 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Autowired
     public void setStoAcceptAddressMapper(StoAcceptAddressMapper stoAcceptAddressMapper) {
         this.stoAcceptAddressMapper = stoAcceptAddressMapper;
+    }
+
+    @Autowired
+    public void setStoOrderLogisticsInfoMapper(StoOrderLogisticsInfoMapper stoOrderLogisticsInfoMapper) {
+        this.stoOrderLogisticsInfoMapper = stoOrderLogisticsInfoMapper;
+    }
+
+    @Autowired
+    public void setSysLogisticsCompanyMapper(SysLogisticsCompanyMapper sysLogisticsCompanyMapper) {
+        this.sysLogisticsCompanyMapper = sysLogisticsCompanyMapper;
+    }
+
+    @Autowired
+    public void setStoLogisticsTrackInfoMapper(StoLogisticsTrackInfoMapper stoLogisticsTrackInfoMapper) {
+        this.stoLogisticsTrackInfoMapper = stoLogisticsTrackInfoMapper;
     }
 
     @Override
@@ -91,7 +110,7 @@ public class UserOrderServiceImpl implements UserOrderService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
         }
 
-        if (userOrder.getStatus() != UserStoOrderStatusEnum.WAITING_PAY.getStatus()) {
+        if (userOrder.getStatus() != UserOrderStatusEnum.WAITING_PAY.getStatus()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
         }
 
@@ -153,16 +172,90 @@ public class UserOrderServiceImpl implements UserOrderService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
         }
 
-        if (userOrder.getStatus() != UserStoOrderStatusEnum.WAITING_PAY.getStatus()) {
+        if (userOrder.getStatus() != UserOrderStatusEnum.WAITING_PAY.getStatus()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
         }
 
         userOrder.setAcceptAddressId(payStoOrderDTO.getAcceptAddressId());
-        userOrder.setStatus(UserStoOrderStatusEnum.WAITING_DELIVERY.getStatus());
+        userOrder.setStatus(UserOrderStatusEnum.WAITING_DELIVERY.getStatus());
         userOrder.setPayTime(payStoOrderDTO.getPayTime());
         userOrder.setLeaveMsg(payStoOrderDTO.getLeaveMsg());
         userOrder.setUpdateDate(new Date());
 
         stoUserOrderMapper.updateByPrimaryKeySelective(userOrder);
+    }
+
+    @Override
+    public void cancelUserOrder(Integer orderId, Integer userId) throws ApiServiceException {
+        if (null == orderId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(orderId);
+        if (null == userOrder || userOrder.getUserId().intValue() != userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
+        }
+
+        if (userOrder.getStatus() != UserOrderStatusEnum.WAITING_PAY.getStatus()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
+        }
+
+        StoUserOrder updateUserOrder = new StoUserOrder();
+        updateUserOrder.setId(userOrder.getId());
+        updateUserOrder.setDelFlag(DelFlagEnum.DELETED.getCode());
+        updateUserOrder.setUpdateDate(new Date());
+        stoUserOrderMapper.updateByPrimaryKeySelective(updateUserOrder);
+    }
+
+    @Override
+    public OrderLogisticsInfoRespDTO getOrderLogisticsInfo(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoOrderLogisticsInfo orderLogisticsInfo = stoOrderLogisticsInfoMapper.selectByOrderId(orderId);
+        if (null == orderLogisticsInfo) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005003);
+        }
+
+        OrderLogisticsInfoRespDTO orderLogisticsInfoResp = new OrderLogisticsInfoRespDTO();
+        SysLogisticsCompany logisticsCompany = sysLogisticsCompanyMapper.selectByPrimaryKey(orderLogisticsInfo.getLogisticsCompany());
+
+        orderLogisticsInfoResp.setLogisticsCompany(logisticsCompany.getCompanyName());
+        orderLogisticsInfoResp.setExpressNum(orderLogisticsInfo.getExpressNum());
+        orderLogisticsInfoResp.setPlaceTime(orderLogisticsInfo.getPlaceTime());
+        orderLogisticsInfoResp.setOfficialPhone(logisticsCompany.getOfficialPhone());
+        orderLogisticsInfoResp.setLogisticsImg(systemResource.getApiFileUri() + logisticsCompany.getLogisticsImg());
+
+        List<String> trackInfos = new ArrayList<>();
+        List<StoLogisticsTrackInfo> trackInfoList = stoLogisticsTrackInfoMapper.selectByOrderId(orderId);
+        for (StoLogisticsTrackInfo logisticsTrackInfo : trackInfoList) {
+            trackInfos.add(logisticsTrackInfo.getTrackInfo());
+        }
+        orderLogisticsInfoResp.setTrackInfos(trackInfos);
+
+        return orderLogisticsInfoResp;
+    }
+
+    @Override
+    public void confirmReceipt(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(orderId);
+        if (null == userOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
+        }
+
+        if (userOrder.getStatus() != UserOrderStatusEnum.DELIVERED.getStatus()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005002);
+        }
+
+        StoUserOrder updateUserOrder = new StoUserOrder();
+        updateUserOrder.setId(userOrder.getId());
+        updateUserOrder.setStatus(UserOrderStatusEnum.COMPLETE.getStatus());
+        updateUserOrder.setUpdateDate(new Date());
+        stoUserOrderMapper.updateByPrimaryKeySelective(updateUserOrder);
     }
 }
