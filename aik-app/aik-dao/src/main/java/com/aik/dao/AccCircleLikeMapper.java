@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AccCircleLike;
+import com.aik.model.AikHrBloodSugar;
 
 import java.util.List;
 
@@ -20,4 +21,10 @@ public interface AccCircleLikeMapper {
     int selectCountBySelective(AccCircleLike record);
 
     List<AccCircleLike> selectBySelective(AccCircleLike record);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<AccCircleLike> findAll(AccCircleLike record);
 }

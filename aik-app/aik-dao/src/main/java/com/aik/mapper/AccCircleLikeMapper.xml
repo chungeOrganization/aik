@@ -102,4 +102,21 @@
       and likerId = #{likerId,jdbcType=INTEGER}
     </if>
   </select>
+  
+  
+  <select id="findAll" parameterType="com.aik.model.AccCircleLike"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_circleLike
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="likerId != null">
+      and likerId = #{likerId}
+    </if>
+    <if test="circleId != null">
+      and circleId = #{circleId}
+    </if>
+  </select>
 </mapper>

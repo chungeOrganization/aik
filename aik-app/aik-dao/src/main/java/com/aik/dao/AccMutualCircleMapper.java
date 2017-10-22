@@ -1,6 +1,9 @@
 package com.aik.dao;
 
 import com.aik.model.AccMutualCircle;
+import com.aik.vo.AccMutualCircleVo;
+import com.aik.vo.AikHealthRecordVo;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +22,11 @@ public interface AccMutualCircleMapper {
     int updateByPrimaryKey(AccMutualCircle record);
 
     List<Map<String, Object>> selectByParams(Map<String, Object> params);
+    
+    
+    /**
+     * 分页查询数据
+     * @return
+     */
+    Page<AccMutualCircleVo> findByPage(AccMutualCircleVo record);
 }
