@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aik.model.AccCircleComment;
+import com.aik.model.AccCircleLike;
 import com.aik.model.AccMutualCircle;
 import com.aik.model.AikHealthRecord;
 import com.aik.model.AikHrBloodSugar;
 import com.aik.model.AikHrRoutineBlood;
 import com.aik.model.AikHrTumorMarkers;
+import com.aik.service.CircleCommentManageService;
+import com.aik.service.CircleLikeManageService;
 import com.aik.service.HealthRecordManageService;
 import com.aik.service.HrBloodSugarManageService;
 import com.aik.service.HrRoutineBloodManageService;
@@ -46,6 +50,13 @@ public class MutualCircleController {
 
     @Autowired
     private MutualCircleManageService mutualCircleManageService;
+    
+    @Autowired
+    private CircleLikeManageService circleLikeManageService;
+    
+    
+    @Autowired
+    private CircleCommentManageService circleCommentManageService;
     
     
     /**
@@ -111,29 +122,24 @@ public class MutualCircleController {
     public ModelAndView edit(@PathVariable Integer id) {
     	ModelAndView result = new ModelAndView("mutualCircle/mutualCircleView");
     	AccMutualCircle accMutualCircle = new AccMutualCircle();
-    	/*List<AikHrBloodSugar> aikHrBloodSugars = new ArrayList();
-    	List<AikHrRoutineBlood> aikHrRoutineBloods = new ArrayList();
-    	List<AikHrTumorMarkers> aikHrTumorMarkerss = new ArrayList();*/
+    	List<AccCircleComment> accCircleComments = new ArrayList();
+    	List<AccCircleLike> accCircleLikes = new ArrayList();
  		try {
  			accMutualCircle = mutualCircleManageService.findById(id);
- 			/*AikHrBloodSugar aikHrBloodSugar = new AikHrBloodSugar();
- 			aikHrBloodSugar.setHrId(id);
- 			aikHrBloodSugars = hrBloodSugarManageService.findAll(aikHrBloodSugar);
- 			AikHrRoutineBlood aikHrRoutineBlood = new AikHrRoutineBlood();
- 			aikHrRoutineBlood.setHrId(id);
- 			aikHrRoutineBloods = hrRoutineBloodManageService.findAll(aikHrRoutineBlood);
- 			AikHrTumorMarkers aikHrTumorMarkers = new AikHrTumorMarkers();
- 			aikHrTumorMarkers.setHrId(id);
- 			aikHrTumorMarkerss = hrTumorMarkersManageService.findAll(aikHrTumorMarkers);*/
+ 			AccCircleComment accCircleComment = new AccCircleComment();
+ 			accCircleComment.setCircleId(id);
+ 			accCircleComments = circleCommentManageService.findAll(accCircleComment);
+ 			AccCircleLike accCircleLike = new AccCircleLike();
+ 			accCircleLike.setCircleId(id);
+ 			accCircleLikes = circleLikeManageService.findAll(accCircleLike);
  			logger.info("互助圈编辑查询成功");
  		} catch (Exception e) {
  			logger.error("互助圈编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
  		result.addObject("mutualCircle", accMutualCircle);
- 		/*result.addObject("aikHrBloodSugars", aikHrBloodSugars);
- 		result.addObject("aikHrRoutineBloods", aikHrRoutineBloods);
- 		result.addObject("aikHrTumorMarkerss", aikHrTumorMarkerss);*/
+ 		result.addObject("accCircleLikes", accCircleLikes);
+ 		result.addObject("accCircleComments", accCircleComments);
         return result;
     }
     
@@ -148,30 +154,24 @@ public class MutualCircleController {
     public ModelAndView view(@PathVariable Integer id) {
         ModelAndView result = new ModelAndView("mutualCircle/mutualCircleView");
         AccMutualCircle accMutualCircle = new AccMutualCircle();
-    	/*List<AikHrBloodSugar> aikHrBloodSugars = new ArrayList();
-    	List<AikHrRoutineBlood> aikHrRoutineBloods = new ArrayList();
-    	List<AikHrTumorMarkers> aikHrTumorMarkerss = new ArrayList();*/
+    	List<AccCircleComment> accCircleComments = new ArrayList();
+    	List<AccCircleLike> accCircleLikes = new ArrayList();
  		try {
  			accMutualCircle = mutualCircleManageService.findById(id);
- 			/*AikHrBloodSugar aikHrBloodSugar = new AikHrBloodSugar();
- 			aikHrBloodSugar.setHrId(id);
- 			aikHrBloodSugars = hrBloodSugarManageService.findAll(aikHrBloodSugar);
- 			AikHrRoutineBlood aikHrRoutineBlood = new AikHrRoutineBlood();
- 			aikHrRoutineBlood.setHrId(id);
- 			aikHrRoutineBloods = hrRoutineBloodManageService.findAll(aikHrRoutineBlood);
- 			AikHrTumorMarkers aikHrTumorMarkers = new AikHrTumorMarkers();
- 			aikHrTumorMarkers.setHrId(id);
- 			aikHrTumorMarkerss = hrTumorMarkersManageService.findAll(aikHrTumorMarkers);*/
+ 			AccCircleComment accCircleComment = new AccCircleComment();
+ 			accCircleComment.setCircleId(id);
+ 			accCircleComments = circleCommentManageService.findAll(accCircleComment);
+ 			AccCircleLike accCircleLike = new AccCircleLike();
+ 			accCircleLike.setCircleId(id);
+ 			accCircleLikes = circleLikeManageService.findAll(accCircleLike);
  			logger.info("互助圈编辑查询成功");
  		} catch (Exception e) {
  			logger.error("互助圈编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "view");
  		result.addObject("mutualCircle", accMutualCircle);
- 		/*result.addObject("aikHrBloodSugars", aikHrBloodSugars);
- 		result.addObject("aikHrRoutineBloods", aikHrRoutineBloods);
- 		result.addObject("aikHrTumorMarkerss", aikHrTumorMarkerss);
-*/
+ 		result.addObject("accCircleLikes", accCircleLikes);
+ 		result.addObject("accCircleComments", accCircleComments);
         return result;
     }
 

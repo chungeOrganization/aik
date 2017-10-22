@@ -1,6 +1,9 @@
 package com.aik.dao;
 
+import java.util.List;
+
 import com.aik.model.AccCircleComment;
+import com.aik.model.AikHrBloodSugar;
 
 public interface AccCircleCommentMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,10 @@ public interface AccCircleCommentMapper {
     int updateByPrimaryKey(AccCircleComment record);
 
     int selectCountBySelective(AccCircleComment record);
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<AccCircleComment> findAll(AccCircleComment record);
 }
