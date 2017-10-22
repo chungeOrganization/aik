@@ -1,6 +1,7 @@
 package com.aik.service;
 
 import com.aik.dao.AikCommonProblemMapper;
+import com.aik.model.AikCommonProblem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,10 @@ public class CommonProblemServiceImpl implements CommonProblemService {
     @Override
     public List<Map<String, Object>> getCommonProblems(Map<String, Object> params) {
         return aikCommonProblemMapper.selectCommonProblemsByParams(params);
+    }
+
+    @Override
+    public AikCommonProblem getCommonProblemDetial(Integer problemId) {
+        return aikCommonProblemMapper.selectByPrimaryKey(problemId);
     }
 }

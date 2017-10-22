@@ -4,8 +4,8 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dao.*;
 import com.aik.dto.response.doctor.AnswerRespDTO;
+import com.aik.dto.response.doctor.QuestionAnswerRespDTO;
 import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
-import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO.*;
 import com.aik.dto.response.doctor.QuestionRespDTO;
 import com.aik.enums.AnswerTypeEnum;
 import com.aik.enums.QuestionOrderEnum.*;
@@ -302,7 +302,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         questionOrderDetail.setUserHeaderImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
 
         // 问答列表
-        List<QuestionAnswer> questionAnswerList = getQuestionAnswerList(questionOrder);
+        List<QuestionAnswerRespDTO> questionAnswerList = getQuestionAnswerList(questionOrder);
         questionOrderDetail.setQuestionAnswerList(questionAnswerList);
 
         return questionOrderDetail;
@@ -314,18 +314,19 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
      * @param questionOrder 咨询订单
      * @return 问答列表
      */
-    private List<QuestionAnswer> getQuestionAnswerList(AikQuestionOrder questionOrder) {
-        List<QuestionAnswer> questionAnswerList = new ArrayList<>();
+    private List<QuestionAnswerRespDTO> getQuestionAnswerList(AikQuestionOrder questionOrder) {
+        List<QuestionAnswerRespDTO> questionAnswerList = new ArrayList<>();
 
         AikQuestion searchAQ = new AikQuestion();
         searchAQ.setOrderId(questionOrder.getId());
         List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
 
         for (AikQuestion aikQuestion : questionsList) {
-            QuestionAnswer questionAnswer = new QuestionAnswer();
+            QuestionAnswerRespDTO questionAnswer = new QuestionAnswerRespDTO();
 
             // 提问
             QuestionRespDTO question = new QuestionRespDTO();
+            question.setQuestionId(aikQuestion.getId());
             question.setDescription(aikQuestion.getDescription());
             question.setCreateDate(aikQuestion.getCreateDate());
             if (aikQuestion.getType() == QuestionTypeEnum.INITIAL.getCode()) {
@@ -342,6 +343,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
             AikAnswer aikAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getId());
             if (null != aikAnswer) {
                 AnswerRespDTO answer = new AnswerRespDTO();
+                answer.setAnswerId(aikAnswer.getId());
                 answer.setAnswer(aikAnswer.getAnswer());
                 answer.setCreateDate(aikAnswer.getCreateDate());
 

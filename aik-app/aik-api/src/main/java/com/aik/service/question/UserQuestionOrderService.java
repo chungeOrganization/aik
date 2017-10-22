@@ -1,6 +1,7 @@
 package com.aik.service.question;
 
 import com.aik.dto.*;
+import com.aik.dto.response.user.QuestionOrderDetailRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.request.IssueQORequest;
 import com.aik.request.MatchDoctorsRequest;
@@ -34,6 +35,15 @@ public interface UserQuestionOrderService {
     List<Map<String, Object>> getQuestionOrderList(Map<String, Object> params) throws ApiServiceException;
 
     /**
+     * 获取订单详情
+     *
+     * @param orderId 订单id
+     * @return response DTO
+     * @throws ApiServiceException
+     */
+    QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException;
+
+    /**
      * 获取未审核通过订单详情
      *
      * @param orderId 订单id
@@ -60,7 +70,7 @@ public interface UserQuestionOrderService {
     Map<String, Object> getOnPayOrderDetail(Integer orderId) throws ApiServiceException;
 
     /**
-     * 获取支付付款订单详情
+     * 获取已付款订单详情
      *
      * @param orderId 订单id
      * @return 订单详情

@@ -28,7 +28,7 @@ public class QuestionViewServiceImpl implements QuestionViewService {
     }
 
     @Override
-    public Integer getQuestionViewCount(Integer userId) throws ApiServiceException {
+    public Integer getUserQuestionViewCount(Integer userId) throws ApiServiceException {
         AikQuestionViewHis searchAQ = new AikQuestionViewHis();
         searchAQ.setUserId(userId);
 
@@ -38,5 +38,13 @@ public class QuestionViewServiceImpl implements QuestionViewService {
     @Override
     public List<Map<String, Object>> getQuestionViewHis(Map<String, Object> params) throws ApiServiceException {
         return aikQuestionViewHisMapper.selectViewHisByParams(params);
+    }
+
+    @Override
+    public Integer getQuestionViewCount(Integer orderId) throws ApiServiceException {
+        AikQuestionViewHis searchAQ = new AikQuestionViewHis();
+        searchAQ.setOrderId(orderId);
+
+        return aikQuestionViewHisMapper.selectCountBySelective(searchAQ);
     }
 }

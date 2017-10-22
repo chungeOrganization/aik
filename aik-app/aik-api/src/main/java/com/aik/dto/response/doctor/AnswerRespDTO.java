@@ -8,9 +8,19 @@ import java.util.Date;
  */
 public class AnswerRespDTO {
 
+    private Integer answerId;
+
     private String answer;
 
     private Date createDate;
+
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
+    }
 
     public String getAnswer() {
         return answer;

@@ -6,13 +6,12 @@ import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
 import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
-import com.aik.dto.response.user.CirclesRespDTO;
-import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
-import com.aik.dto.response.user.GetAttentionUserRespDTO;
+import com.aik.dto.response.user.*;
 import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SexEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
+import com.aik.model.AikCommonProblem;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
@@ -34,10 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.InputStream;
@@ -146,7 +142,7 @@ public class UserApi {
             result.withDataKV("userAccount", userAccountMap);
             result.withDataKV("attentionCount", userAttentionService.getUserAttentionCount(userId));
             result.withDataKV("questionOrderCount", userQuestionOrderService.getQuestionOrderCount(userId));
-            result.withDataKV("questionViewCount", questionViewService.getQuestionViewCount(userId));
+            result.withDataKV("questionViewCount", questionViewService.getUserQuestionViewCount(userId));
         } catch (ApiServiceException e) {
             logger.error("get user page info error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
@@ -412,8 +408,27 @@ public class UserApi {
         return result;
     }
 
+    @GET
+    @Path("/getQuestionOrderDetail/{orderId}")
+    public ApiResult getQuestionOrderDetail(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            QuestionOrderDetailRespDTO orderDetail = userQuestionOrderService.getQuestionOrderDetail(orderId);
+            result.withDataKV("orderDetail", orderDetail);
+        } catch (ApiServiceException e) {
+            logger.error("get question order detail error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get question order detail error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+        return result;
+    }
+
     @POST
     @Path("/notPassAuditOrderDetail")
+    @Deprecated
     public ApiResult notPassAuditOrderDetail(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
@@ -452,6 +467,7 @@ public class UserApi {
 
     @POST
     @Path("/getOnPayOrderDetail")
+    @Deprecated
     public ApiResult getOnPayOrderDetail(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
@@ -492,6 +508,7 @@ public class UserApi {
 
     @POST
     @Path("/onEvaluationOrderDetail")
+    @Deprecated
     public ApiResult onEvaluationOrderDetail(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
@@ -566,6 +583,7 @@ public class UserApi {
 
     @POST
     @Path("getOnRefuseOrderDetail")
+    @Deprecated
     public ApiResult getOnRefuseOrderDetail(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
@@ -660,6 +678,25 @@ public class UserApi {
         return result;
     }
 
+    @GET
+    @Path("/getQuestionViewDetail/{orderId}")
+    public ApiResult getQuestionViewDetail(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            QuestionViewDetailRespDTO orderDetail = (QuestionViewDetailRespDTO) userQuestionOrderService.getQuestionOrderDetail(orderId);
+            orderDetail.setViewCount(questionViewService.getQuestionViewCount(orderId));
+            result.withDataKV("orderDetail", orderDetail);
+        } catch (ApiServiceException e) {
+            logger.error("get question view detail error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get question view detail error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+        return result;
+    }
+
     @POST
     @Path("/addUserFeedback")
     public ApiResult addUserFeedback(FeedbackReqDTO reqDTO) {
@@ -689,6 +726,22 @@ public class UserApi {
             result.withDataKV("commonProblemList", commonProblems);
         } catch (Exception e) {
             logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getCommonProblemDetail/{problemId}")
+    public ApiResult getCommonProblemDetail(@PathParam("problemId") Integer problemId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            AikCommonProblem commonProblem = commonProblemService.getCommonProblemDetial(problemId);
+            result.withDataKV("commonProblem", commonProblem);
+        } catch (Exception e) {
+            logger.error("get common problem detail error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

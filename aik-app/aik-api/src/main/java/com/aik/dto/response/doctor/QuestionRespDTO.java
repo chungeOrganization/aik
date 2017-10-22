@@ -9,11 +9,21 @@ import java.util.List;
  */
 public class QuestionRespDTO {
 
+    private Integer questionId;
+
     private String description;
 
     private Date createDate;
 
     private List<String> files;
+
+    public Integer getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
 
     public String getDescription() {
         return description;

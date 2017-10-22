@@ -18,7 +18,7 @@ public interface QuestionViewService {
      * @return 问题查看总数
      * @throws ApiServiceException Api服务异常
      */
-    Integer getQuestionViewCount(Integer userId) throws ApiServiceException;
+    Integer getUserQuestionViewCount(Integer userId) throws ApiServiceException;
 
     /**
      * 获取用户查看历史
@@ -28,4 +28,12 @@ public interface QuestionViewService {
      * @throws ApiServiceException Api服务异常
      */
     List<Map<String, Object>> getQuestionViewHis(Map<String, Object> params) throws ApiServiceException;
+
+    /**
+     * 获取订单查看次数
+     * @param orderId
+     * @return
+     * @throws ApiServiceException
+     */
+    Integer getQuestionViewCount(Integer orderId) throws ApiServiceException;
 }

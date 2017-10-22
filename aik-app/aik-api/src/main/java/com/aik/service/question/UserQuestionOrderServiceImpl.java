@@ -4,6 +4,11 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.bean.userside.DoctorWithAnswerInfo;
 import com.aik.dao.*;
 import com.aik.dto.*;
+import com.aik.dto.response.doctor.AnswerRespDTO;
+import com.aik.dto.response.doctor.QuestionAnswerRespDTO;
+import com.aik.dto.response.doctor.QuestionRespDTO;
+import com.aik.dto.response.user.OrderDoctorInfoRespDTO;
+import com.aik.dto.response.user.QuestionOrderDetailRespDTO;
 import com.aik.enums.*;
 import com.aik.enums.QuestionOrderEnum.*;
 import com.aik.exception.ApiServiceException;
@@ -13,6 +18,7 @@ import com.aik.request.MatchDoctorsRequest;
 import com.aik.resource.SystemResource;
 import com.aik.response.MatchDoctorsResponse;
 import com.aik.util.BeansUtils;
+import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,10 @@ import java.util.*;
 public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserQuestionOrderServiceImpl.class);
+
+    private static final String WAIT_AUDIT_TIPS = "平台正在审核您的问题，请您耐心等待，及时刷新状态！";
+    private static final String WAIT_PAY_TIPS = "请您尽快付款，付款后问题才会提交到医生端！";
+    private static final String AUDIT_FAIL_TIPS = "您好，请您咨询与肿瘤防治相关的问题，三万位医生为您解答，谢谢！可以重新编辑问题，再次提交。";
 
     private AikQuestionOrderMapper aikQuestionOrderMapper;
 
@@ -91,7 +101,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         for (AikQuestionOrder questionOrder : questionOrders) {
             Map<String, Object> orderInfo = new HashMap<>();
             orderInfo.put("id", questionOrder.getId());
-            orderInfo.put("description", questionOrder.getDescription());
+            orderInfo.put("description", ScrawlUtils.aikStringOmit(questionOrder.getDescription()));
             orderInfo.put("createDate", questionOrder.getCreateDate());
             orderInfo.put("status", questionOrder.getStatus());
             orderInfo.put("failType", questionOrder.getFailType());
@@ -105,6 +115,58 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         }
 
         return rsList;
+    }
+
+    @Override
+    public QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
+        if (null == questionOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004001);
+        }
+
+        QuestionOrderDetailRespDTO questionOrderDetail = new QuestionOrderDetailRespDTO();
+
+        // 医生信息
+        OrderDoctorInfoRespDTO doctorInfo = new OrderDoctorInfoRespDTO();
+
+        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(questionOrder.getDoctorId());
+        doctorInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+        doctorInfo.setRealName(doctorAccount.getRealName());
+        doctorInfo.setHosName(doctorAccount.getHosName());
+        doctorInfo.setHosDepartment(doctorAccount.getHosDepartment());
+        doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
+        doctorInfo.setAnswerCount(answerService.getDoctorAnswersCount(questionOrder.getDoctorId()));
+        doctorInfo.setStartLevel(doctorAccount.getStarLevel());
+        questionOrderDetail.setDoctorInfo(doctorInfo);
+
+        // 订单价格
+        questionOrderDetail.setOrderPrice(questionOrder.getAmount());
+
+        // 审核提示（待审核、审核通过（待付款）、审核不通过）
+        if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_AUDIT.getCode()) {
+            questionOrderDetail.setAuditTips(WAIT_AUDIT_TIPS);
+        } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_PAY.getCode()) {
+            questionOrderDetail.setAuditTips(WAIT_PAY_TIPS);
+        } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.FAIL_END.getCode() &&
+                questionOrder.getFailType() == QuestionOrderFailTypeEnum.AUDIT_FAIL.getCode()) {
+            questionOrderDetail.setAuditTips(AUDIT_FAIL_TIPS);
+        }
+
+        // 疾病名称
+        questionOrderDetail.setIllName(questionOrder.getIllName());
+
+        // 状态
+        questionOrderDetail.setOrderStatus(questionOrder.getStatus());
+        questionOrderDetail.setFailType(questionOrder.getFailType());
+
+        // 问答列表
+        questionOrderDetail.setQuestionAnswerList(getQuestionAnswerList(questionOrder));
+
+        return questionOrderDetail;
     }
 
     @Override
@@ -464,7 +526,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
             orderAnswer.put("answerId", aikAnswer.getId());
             orderAnswer.put("doctorHeadImg", systemResource.getApiFileUri() + doctorAccount.getHeadImg());
             orderAnswer.put("doctorName", doctorAccount.getRealName());
-            orderAnswer.put("answer", aikAnswer.getAnswer());
+            orderAnswer.put("answer", ScrawlUtils.aikStringOmit(aikAnswer.getAnswer()));
 
             orderAnswers.add(orderAnswer);
         }
@@ -576,5 +638,53 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         doctorInfo.put("starLevel", doctorAccount.getStarLevel());
 
         return doctorInfo;
+    }
+
+    /**
+     * 获取问答列表
+     *
+     * @param questionOrder 咨询订单
+     * @return 问答列表
+     */
+    private List<QuestionAnswerRespDTO> getQuestionAnswerList(AikQuestionOrder questionOrder) {
+        List<QuestionAnswerRespDTO> questionAnswerList = new ArrayList<>();
+
+        AikQuestion searchAQ = new AikQuestion();
+        searchAQ.setOrderId(questionOrder.getId());
+        List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
+
+        for (AikQuestion aikQuestion : questionsList) {
+            QuestionAnswerRespDTO questionAnswer = new QuestionAnswerRespDTO();
+
+            // 提问
+            QuestionRespDTO question = new QuestionRespDTO();
+            question.setQuestionId(aikQuestion.getId());
+            question.setDescription(aikQuestion.getDescription());
+            question.setCreateDate(aikQuestion.getCreateDate());
+            if (aikQuestion.getType() == QuestionTypeEnum.INITIAL.getCode()) {
+                // 获取图片信息
+                AccUserFile searchAU = new AccUserFile();
+                searchAU.setUserId(questionOrder.getUserId());
+                searchAU.setType(UserFileTypeEnum.ORDER_REFUND_FILE.getCode());
+                searchAU.setRelationId(questionOrder.getId());
+                List<String> files = accUserFileMapper.selectFilesBySelective(searchAU);
+                question.setFiles(files);
+            }
+            questionAnswer.setQuestion(question);
+
+            AikAnswer aikAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getId());
+            if (null != aikAnswer) {
+                AnswerRespDTO answer = new AnswerRespDTO();
+                answer.setAnswerId(aikAnswer.getId());
+                answer.setAnswer(aikAnswer.getAnswer());
+                answer.setCreateDate(aikAnswer.getCreateDate());
+
+                questionAnswer.setAnswer(answer);
+            }
+
+            questionAnswerList.add(questionAnswer);
+        }
+
+        return questionAnswerList;
     }
 }

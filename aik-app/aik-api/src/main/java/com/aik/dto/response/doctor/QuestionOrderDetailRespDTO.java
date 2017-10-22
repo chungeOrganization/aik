@@ -21,7 +21,7 @@ public class QuestionOrderDetailRespDTO {
 
     private Byte answerQuality;
 
-    private List<QuestionAnswer> questionAnswerList;
+    private List<QuestionAnswerRespDTO> questionAnswerList;
 
     public Byte getOrderStatus() {
         return orderStatus;
@@ -71,34 +71,11 @@ public class QuestionOrderDetailRespDTO {
         this.answerQuality = answerQuality;
     }
 
-    public List<QuestionAnswer> getQuestionAnswerList() {
+    public List<QuestionAnswerRespDTO> getQuestionAnswerList() {
         return questionAnswerList;
     }
 
-    public void setQuestionAnswerList(List<QuestionAnswer> questionAnswerList) {
+    public void setQuestionAnswerList(List<QuestionAnswerRespDTO> questionAnswerList) {
         this.questionAnswerList = questionAnswerList;
-    }
-
-    public static class QuestionAnswer{
-
-        private QuestionRespDTO question;
-
-        private AnswerRespDTO answer;
-
-        public QuestionRespDTO getQuestion() {
-            return question;
-        }
-
-        public void setQuestion(QuestionRespDTO question) {
-            this.question = question;
-        }
-
-        public AnswerRespDTO getAnswer() {
-            return answer;
-        }
-
-        public void setAnswer(AnswerRespDTO answer) {
-            this.answer = answer;
-        }
     }
 }

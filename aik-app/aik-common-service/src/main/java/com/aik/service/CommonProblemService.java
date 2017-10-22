@@ -18,4 +18,12 @@ public interface CommonProblemService {
      * @return 常见问题列表
      */
     List<Map<String, Object>> getCommonProblems(Map<String, Object> params);
+
+    /**
+     * 获取常见问题详情
+     *
+     * @param problemId 问题id
+     * @return 问题详情
+     */
+    AikCommonProblem getCommonProblemDetial(Integer problemId);
 }
