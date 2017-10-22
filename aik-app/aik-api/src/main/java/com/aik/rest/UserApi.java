@@ -4,14 +4,19 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
+import com.aik.dto.request.user.GetAttentionListReqDTO;
+import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
+import com.aik.dto.response.user.CirclesRespDTO;
+import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
+import com.aik.dto.response.user.GetAttentionUserRespDTO;
 import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SexEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
-import com.aik.model.AikUserFeedback;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
+import com.aik.service.account.CircleService;
 import com.aik.service.account.SmartDeviceService;
 import com.aik.service.account.UserAccountService;
 import com.aik.service.question.QuestionService;
@@ -73,6 +78,8 @@ public class UserApi {
 
     private SmartDeviceService smartDeviceService;
 
+    private CircleService circleService;
+
     @Inject
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
@@ -118,6 +125,11 @@ public class UserApi {
         this.smartDeviceService = smartDeviceService;
     }
 
+    @Inject
+    public void setCircleService(CircleService circleService) {
+        this.circleService = circleService;
+    }
+
     @POST
     @Path("/pageInfo")
     public ApiResult pageInfo() {
@@ -130,7 +142,7 @@ public class UserApi {
             AccUserAccount userAccount = userAccountService.getUserAccount(userId);
             Map<String, Object> userAccountMap = new HashMap<>();
             userAccountMap.put("nickName", userAccount.getNickName());
-            userAccountMap.put("headImg", userAccount.getHeadImg());
+            userAccountMap.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
             result.withDataKV("userAccount", userAccountMap);
             result.withDataKV("attentionCount", userAttentionService.getUserAttentionCount(userId));
             result.withDataKV("questionOrderCount", userQuestionOrderService.getQuestionOrderCount(userId));
@@ -229,13 +241,33 @@ public class UserApi {
     }
 
     @POST
-    @Path("/getAttentionList")
-    public ApiResult getAttentionList(Map<String, Object> params) {
+    @Path("/getAttentionDoctorList")
+    public ApiResult getAttentionDoctorList(GetAttentionListReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            params.put("userId", AuthUserDetailsThreadLocal.getCurrentUserId());
-            List<Map<String, Object>> rsList = userAttentionService.getUserAttentionList(params);
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            List<GetAttentionDoctorRespDTO> rsList = userAttentionService.getAttentionDoctorList(reqDTO);
+            result.withDataKV("attentionList", rsList);
+        } catch (ApiServiceException e) {
+            logger.error("get user attention list error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get user attention list error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getAttentionUserList")
+    public ApiResult getAttentionUserList(GetAttentionListReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            List<GetAttentionUserRespDTO> rsList = userAttentionService.getAttentionUserList(reqDTO);
             result.withDataKV("attentionList", rsList);
         } catch (ApiServiceException e) {
             logger.error("get user attention list error:", e);
@@ -262,6 +294,22 @@ public class UserApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get doctor introduction error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getAttentionUserCircles")
+    public ApiResult getAttentionUserCircles(GetAttentionUserCirclesReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<CirclesRespDTO> userCircles = circleService.getAttentionUserCircles(reqDTO, AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("userCircles", userCircles);
+        } catch (Exception e) {
+            logger.error("get attention user circles error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

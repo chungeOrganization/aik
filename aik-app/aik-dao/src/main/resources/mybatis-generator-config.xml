@@ -39,12 +39,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="aik_carousel" domainObjectName="AikCarousel" enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        <table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false"
+        <table tableName="acc_userAccount" domainObjectName="AccUserAccount" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>

@@ -1,5 +1,8 @@
 package com.aik.service.relation;
 
+import com.aik.dto.request.user.GetAttentionListReqDTO;
+import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
+import com.aik.dto.response.user.GetAttentionUserRespDTO;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -21,13 +24,22 @@ public interface UserAttentionService {
     Integer getUserAttentionCount(Integer userId) throws ApiServiceException;
 
     /**
-     * 获取用户关注列表
+     * 获取用户关注医生列表
      *
-     * @param params 参数
+     * @param reqDTO request DTO
      * @return 关注列表
      * @throws ApiServiceException Api服务异常
      */
-    List<Map<String, Object>> getUserAttentionList(Map<String, Object> params) throws ApiServiceException;
+    List<GetAttentionDoctorRespDTO> getAttentionDoctorList(GetAttentionListReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 获取用户关注用户列表
+     *
+     * @param reqDTO request DTO
+     * @return 关注列表
+     * @throws ApiServiceException Api服务异常
+     */
+    List<GetAttentionUserRespDTO> getAttentionUserList(GetAttentionListReqDTO reqDTO) throws ApiServiceException;
 
     /**
      * 获取医生简介

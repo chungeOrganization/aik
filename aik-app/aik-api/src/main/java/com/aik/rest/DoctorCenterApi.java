@@ -22,6 +22,9 @@ import com.aik.service.question.AnswerService;
 import com.aik.service.relation.DoctorRelationService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.service.store.DoctorDealService;
+import com.aik.util.AikFileUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +35,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -429,6 +436,35 @@ public class DoctorCenterApi {
             doctorAccountService.rebindingMobileNo(rebindingMobileReqDTO);
         } catch (Exception e) {
             logger.error("rebinding mobile error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/updateDoctorFile")
+    public ApiResult uploadDoctorFile(@FormDataParam("file") InputStream fileInputStream,
+                                      @FormDataParam("file") FormDataContentDisposition disposition) {
+        ApiResult result = new ApiResult();
+
+        try {
+            String imageName = Calendar.getInstance().getTimeInMillis()
+                    + disposition.getFileName();
+
+            String fileUri = "doctor" + File.separator + imageName;
+            String fileUrl = systemResource.getApiFileUri() + fileUri;
+            String uploadUrl = uploadRootUri + fileUri;
+
+            AikFileUtils.uploadImg(fileInputStream, uploadUrl);
+
+            result.withDataKV("fileUri", fileUri);
+            result.withDataKV("fileUrl", fileUrl);
+        } catch (IOException e) {
+            logger.error("upload doctor file error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
+        } catch (Exception e) {
+            logger.error("upload doctor file error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

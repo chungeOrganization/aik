@@ -1,9 +1,12 @@
 package com.aik.service.account;
 
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.assist.RelationTypeUtil;
 import com.aik.common.Constants;
 import com.aik.dao.*;
 import com.aik.dto.IssueCircleDTO;
+import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
+import com.aik.dto.response.user.CirclesRespDTO;
 import com.aik.enums.DelFlagEnum;
 import com.aik.enums.MutualCircleEnum;
 import com.aik.enums.UserAttentionTypeEnum;
@@ -11,6 +14,7 @@ import com.aik.enums.UserFileTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
+import com.aik.util.BeansUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.beans.Beans;
 import java.util.*;
 
 /**
@@ -179,6 +184,58 @@ public class CircleServiceImpl implements CircleService {
 
         circleComment.setCreateDate(new Date());
         accCircleCommentMapper.insertSelective(circleComment);
+    }
+
+    @Override
+    public List<CirclesRespDTO> getAttentionUserCircles(GetAttentionUserCirclesReqDTO reqDTO, Integer userId) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        Map<String, Object> params = BeansUtils.transBean2Map(reqDTO);
+        List<Map<String, Object>> circleMaps = accMutualCircleMapper.selectByParams(params);
+        List<CirclesRespDTO> circles = BeansUtils.transListMap2ListBean(circleMaps, CirclesRespDTO.class);
+
+        for (CirclesRespDTO circle : circles) {
+            // 关注状态
+            AccUserAttention searchAU = new AccUserAttention();
+            searchAU.setUserId(circle.getUserId());
+            searchAU.setAttentionId(userId);
+            searchAU.setType(UserAttentionTypeEnum.ATTENTION_USER.getCode());
+            boolean isUserAttention = accUserAttentionMapper.selectCountBySelective(searchAU) > 0;
+            circle.setRelation(RelationTypeUtil.getABRelation(true, isUserAttention));
+
+            // 互助圈文件
+            AccUserFile searchUF = new AccUserFile();
+            searchUF.setUserId(circle.getUserId());
+            searchUF.setType(UserFileTypeEnum.CIRCLE_FILE.getCode());
+            searchUF.setRelationId(circle.getId());
+            searchUF.setDelflag(DelFlagEnum.NOT_DELETED.getCode());
+            List<String> circleFiles = accUserFileMapper.selectFilesBySelective(searchUF);
+            for (int i = 0; i < circleFiles.size(); i++) {
+                circleFiles.set(i, systemResource.getApiFileUri() + circleFiles.get(i));
+            }
+            circle.setFiles(circleFiles);
+
+            // 点赞总数
+            AccCircleLike searchCL = new AccCircleLike();
+            searchCL.setCircleId(circle.getId());
+            int likeCount = accCircleLikeMapper.selectCountBySelective(searchCL);
+            circle.setLickCount(likeCount);
+
+            // 是否已点赞
+            searchCL.setLikerId(userId);
+            boolean isLiked = accCircleLikeMapper.selectCountBySelective(searchCL) > 0;
+            circle.setLiked(isLiked);
+
+            // 评论总数
+            AccCircleComment searchCC = new AccCircleComment();
+            searchCC.setCircleId(circle.getId());
+            int commentCount = accCircleCommentMapper.selectCountBySelective(searchCC);
+            circle.setCommentCount(commentCount);
+        }
+
+        return circles;
     }
 
     private void fillCircleDetail(List<Map<String, Object>> circles, Integer userId) {

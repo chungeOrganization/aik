@@ -6,6 +6,9 @@ import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccDoctorAttentionMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dao.AccUserAttentionMapper;
+import com.aik.dto.request.user.GetAttentionListReqDTO;
+import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
+import com.aik.dto.response.user.GetAttentionUserRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.enums.UserAttentionTypeEnum;
 import com.aik.exception.ApiServiceException;
@@ -15,6 +18,7 @@ import com.aik.model.AccUserAccount;
 import com.aik.model.AccUserAttention;
 import com.aik.resource.SystemResource;
 import com.aik.service.question.AnswerService;
+import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,45 +83,69 @@ public class UserAttentionServiceImpl implements UserAttentionService {
     }
 
     @Override
-    public List<Map<String, Object>> getUserAttentionList(Map<String, Object> params) throws ApiServiceException {
-        List<Map<String, Object>> rsList = new ArrayList<>();
+    public List<GetAttentionDoctorRespDTO> getAttentionDoctorList(GetAttentionListReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
 
+        List<GetAttentionDoctorRespDTO> rsList = new ArrayList<>();
+
+        AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(reqDTO.getUserId());
+
+        Map<String, Object> params = BeansUtils.transBean2Map(reqDTO);
+        params.put("type", UserAttentionTypeEnum.ATTENTION_DOCTOR.getCode());
         List<AccUserAttention> userAttentions = accUserAttentionMapper.selectAttentionsPage(params);
         for (AccUserAttention userAttention : userAttentions) {
-            Map<String, Object> attentionInfo = new HashMap<>();
-            if (userAttention.getType() == UserAttentionTypeEnum.ATTENTION_DOCTOR.getCode()) {
-                AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(userAttention.getAttentionId());
+            AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(userAttention.getAttentionId());
 
-                attentionInfo.put("id", doctorAccount.getId());
-                attentionInfo.put("headImg", systemResource.getApiFileUri() + doctorAccount.getHeadImg());
-                attentionInfo.put("realName", doctorAccount.getRealName());
-                attentionInfo.put("department", doctorAccount.getHosDepartment());
-                attentionInfo.put("position", DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
-                attentionInfo.put("hospital", doctorAccount.getHosName());
+            GetAttentionDoctorRespDTO attentionInfo = new GetAttentionDoctorRespDTO();
+            attentionInfo.setDoctorId(attentionInfo.getDoctorId());
+            attentionInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+            attentionInfo.setRealName(doctorAccount.getRealName());
+            attentionInfo.setHosName(doctorAccount.getHosName());
+            attentionInfo.setHosDepartment(doctorAccount.getHosDepartment());
+            attentionInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
 
-                AccDoctorAttention searchAD = new AccDoctorAttention();
-                searchAD.setDoctorId(doctorAccount.getId());
-                searchAD.setUserId(userAttention.getUserId());
-                boolean isDoctorAttention = accDoctorAttentionMapper.selectCountBySelective(searchAD) > 0;
+            AccDoctorAttention searchAD = new AccDoctorAttention();
+            searchAD.setDoctorId(doctorAccount.getId());
+            searchAD.setUserId(userAttention.getUserId());
+            boolean isDoctorAttention = accDoctorAttentionMapper.selectCountBySelective(searchAD) > 0;
+            attentionInfo.setRelation(RelationTypeUtil.getABRelation(true, isDoctorAttention));
 
-                attentionInfo.put("relation", RelationTypeUtil.getABRelation(true, isDoctorAttention));
+            if (null != userAccount.getAttendingDoctor() && userAccount.getAttendingDoctor() == doctorAccount.getId().intValue()) {
+                attentionInfo.setAttending(true);
             } else {
-                AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userAttention.getAttentionId());
-
-                attentionInfo.put("id", userAccount.getId());
-                attentionInfo.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
-                attentionInfo.put("realName", userAccount.getRealName());
-                // TODO:
-                attentionInfo.put("news", "最新消息？");
-
-                AccUserAttention searchAU = new AccUserAttention();
-                searchAU.setUserId(userAccount.getId());
-                searchAU.setAttentionId(userAttention.getUserId());
-                searchAU.setType(UserAttentionTypeEnum.ATTENTION_USER.getCode());
-                boolean isUserAttention = accUserAttentionMapper.selectCountBySelective(searchAU) > 0;
-
-                attentionInfo.put("relation", RelationTypeUtil.getABRelation(true, isUserAttention));
+                attentionInfo.setAttending(false);
             }
+
+            rsList.add(attentionInfo);
+        }
+
+        return rsList;
+    }
+
+    @Override
+    public List<GetAttentionUserRespDTO> getAttentionUserList(GetAttentionListReqDTO reqDTO) throws ApiServiceException {
+        List<GetAttentionUserRespDTO> rsList = new ArrayList<>();
+
+        Map<String, Object> params = BeansUtils.transBean2Map(reqDTO);
+        params.put("type", UserAttentionTypeEnum.ATTENTION_USER.getCode());
+        List<AccUserAttention> userAttentions = accUserAttentionMapper.selectAttentionsPage(params);
+        for (AccUserAttention userAttention : userAttentions) {
+            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userAttention.getAttentionId());
+
+            GetAttentionUserRespDTO attentionInfo = new GetAttentionUserRespDTO();
+            attentionInfo.setUserId(userAccount.getId());
+            attentionInfo.setHeadImg(systemResource.getApiFileUri() + userAccount.getHeadImg());
+            attentionInfo.setRealName(userAccount.getRealName());
+
+            AccUserAttention searchAU = new AccUserAttention();
+            searchAU.setUserId(userAccount.getId());
+            searchAU.setAttentionId(userAttention.getUserId());
+            searchAU.setType(UserAttentionTypeEnum.ATTENTION_USER.getCode());
+            boolean isUserAttention = accUserAttentionMapper.selectCountBySelective(searchAU) > 0;
+
+            attentionInfo.setRelation(RelationTypeUtil.getABRelation(true, isUserAttention));
             rsList.add(attentionInfo);
         }
 

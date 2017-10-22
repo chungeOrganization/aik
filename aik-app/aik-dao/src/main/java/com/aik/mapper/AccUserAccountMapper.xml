@@ -16,13 +16,15 @@
     <result column="isElseIllness" jdbcType="TINYINT" property="isElseIllness" />
     <result column="devType" jdbcType="VARCHAR" property="devType" />
     <result column="headImg" jdbcType="VARCHAR" property="headImg" />
+    <result column="attendingDoctor" jdbcType="INTEGER" property="attendingDoctor" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="deleteStatus" jdbcType="TINYINT" property="deleteStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     id, mobileNo, userName, password, userType, realName, nickName, sex, areaProvince, 
-    areaCity, birthday, isElseIllness, devType, headImg, createDate, updateDate, deleteStatus
+    areaCity, birthday, isElseIllness, devType, headImg, attendingDoctor, createDate, 
+    updateDate, deleteStatus
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,16 +41,18 @@
       password, userType, realName, 
       nickName, sex, areaProvince, 
       areaCity, birthday, isElseIllness, 
-      devType, headImg, createDate, 
-      updateDate, deleteStatus)
+      devType, headImg, attendingDoctor, 
+      createDate, updateDate, deleteStatus
+      )
     values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{userType,jdbcType=TINYINT}, #{realName,jdbcType=VARCHAR}, 
       #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{areaProvince,jdbcType=VARCHAR}, 
       #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{isElseIllness,jdbcType=TINYINT}, 
-      #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP},  #{deleteStatus,jdbcType=TINYINT})
+      #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{attendingDoctor,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount">
     insert into acc_userAccount
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -93,15 +97,18 @@
       <if test="headImg != null">
         headImg,
       </if>
+      <if test="attendingDoctor != null">
+        attendingDoctor,
+      </if>
       <if test="createDate != null">
         createDate,
       </if>
       <if test="updateDate != null">
         updateDate,
       </if>
-       <if test="updateDate != null">
+      <if test="deleteStatus != null">
         deleteStatus,
-       </if>
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -146,8 +153,14 @@
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
       </if>
+      <if test="attendingDoctor != null">
+        #{attendingDoctor,jdbcType=INTEGER},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
       <if test="deleteStatus != null">
         #{deleteStatus,jdbcType=TINYINT},
@@ -196,6 +209,9 @@
       <if test="headImg != null">
         headImg = #{headImg,jdbcType=VARCHAR},
       </if>
+      <if test="attendingDoctor != null">
+        attendingDoctor = #{attendingDoctor,jdbcType=INTEGER},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -223,9 +239,10 @@
       isElseIllness = #{isElseIllness,jdbcType=TINYINT},
       devType = #{devType,jdbcType=VARCHAR},
       headImg = #{headImg,jdbcType=VARCHAR},
+      attendingDoctor = #{attendingDoctor,jdbcType=INTEGER},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP},
-      deleteStatus = #{deleteStatus,jdbcType=TINYINT} 
+      deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectBySelective" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap">
@@ -285,7 +302,7 @@
     from acc_userAccount
     where userName = #{userName} or mobileNo = #{userName} limit 1
   </select>
-  <select id="findAll"  parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
+  <select id="findAll" parameterType="com.aik.model.AccUserAccount" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from acc_userAccount
@@ -328,7 +345,7 @@
     </if>
   </select>
 
-  <select id="findByPage" parameterType="com.aik.vo.AccUserAccountVo" resultMap="BaseResultMap" >
+  <select id="findByPage" parameterType="com.aik.vo.AccUserAccountVo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from acc_userAccount

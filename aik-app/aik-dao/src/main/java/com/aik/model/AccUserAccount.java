@@ -31,10 +31,12 @@ public class AccUserAccount {
 
     private String headImg;
 
+    private Integer attendingDoctor;
+
     private Date createDate;
 
     private Date updateDate;
-    
+
     private Byte deleteStatus;
 
     public Integer getId() {
@@ -149,6 +151,14 @@ public class AccUserAccount {
         this.headImg = headImg == null ? null : headImg.trim();
     }
 
+    public Integer getAttendingDoctor() {
+        return attendingDoctor;
+    }
+
+    public void setAttendingDoctor(Integer attendingDoctor) {
+        this.attendingDoctor = attendingDoctor;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -165,13 +175,11 @@ public class AccUserAccount {
         this.updateDate = updateDate;
     }
 
-	public Byte getDeleteStatus() {
-		return deleteStatus;
-	}
+    public Byte getDeleteStatus() {
+        return deleteStatus;
+    }
 
-	public void setDeleteStatus(Byte deleteStatus) {
-		this.deleteStatus = deleteStatus;
-	}
-    
-    
+    public void setDeleteStatus(Byte deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
 }

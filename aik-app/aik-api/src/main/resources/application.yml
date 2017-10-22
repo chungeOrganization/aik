@@ -58,9 +58,9 @@ jwt:
 # file
 file:
 # windows
-#  upload-root-uri: "C:/Users/as/Pictures/"
+  upload-root-uri: "C:/Users/as/Pictures/"
 # linux
-  upload-root-uri: "/usr/soft/file/"
+#  upload-root-uri: "/usr/soft/file/"
   mapping-root-uri: "/file"
 # system
 system:

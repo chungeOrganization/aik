@@ -1,6 +1,8 @@
 package com.aik.service.account;
 
 import com.aik.dto.IssueCircleDTO;
+import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
+import com.aik.dto.response.user.CirclesRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccCircleComment;
 
@@ -66,4 +68,14 @@ public interface CircleService {
      * @throws ApiServiceException Api服务异常
      */
     void userCommentCircle(AccCircleComment circleComment) throws ApiServiceException;
+
+    /**
+     * 获取关注用户互助圈
+     *
+     * @param reqDTO DTO
+     * @param userId 用户id
+     * @return 用户互助圈
+     * @throws ApiServiceException
+     */
+    List<CirclesRespDTO> getAttentionUserCircles(GetAttentionUserCirclesReqDTO reqDTO, Integer userId) throws ApiServiceException;
 }
