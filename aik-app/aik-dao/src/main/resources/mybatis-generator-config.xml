@@ -39,9 +39,9 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="acc_userAccount" domainObjectName="AccUserAccount" enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false">
+        <table tableName="sto_userOrder" domainObjectName="StoUserOrder" enableCountByExample="false"
+                       enableDeleteByExample="false"
+                       enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
     </context>
