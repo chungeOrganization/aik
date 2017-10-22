@@ -3,8 +3,11 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.UserInfoDTO;
+import com.aik.dto.request.user.UserResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
+import com.aik.util.MD5Utils;
+import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +111,28 @@ public class UserAccountServiceImpl implements UserAccountService {
         userAccount.setIsElseIllness(userInfoDTO.getIsElseIllness());
         userAccount.setUpdateDate(new Date());
         accUserAccountMapper.updateByPrimaryKeySelective(userAccount);
+    }
+
+    @Override
+    public void updateUserPwd(UserResetPwdReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || StringUtils.isBlank(reqDTO.getMobileNo()) || StringUtils.isBlank(reqDTO.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccUserAccount userAccount = accUserAccountMapper.selectByMobileNo(reqDTO.getMobileNo());
+        if (null == userAccount) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001009);
+        }
+
+        if (!StringValidUtils.validPassword(reqDTO.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000004);
+        }
+
+        AccUserAccount updateUserAccount = new AccUserAccount();
+        updateUserAccount.setId(userAccount.getId());
+        updateUserAccount.setPassword(MD5Utils.md5(reqDTO.getPassword()));
+        updateUserAccount.setUpdateDate(new Date());
+        accUserAccountMapper.updateByPrimaryKeySelective(updateUserAccount);
     }
 
     private boolean validUserInfoDTO(UserInfoDTO userInfoDTO) {

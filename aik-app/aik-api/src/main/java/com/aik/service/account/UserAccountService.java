@@ -1,12 +1,9 @@
 package com.aik.service.account;
 
-import com.aik.dto.LoginDTO;
 import com.aik.dto.UserInfoDTO;
+import com.aik.dto.request.user.UserResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Description:
@@ -55,4 +52,12 @@ public interface UserAccountService {
      * @throws ApiServiceException Api服务异常
      */
     void updateUserInfo(UserInfoDTO userInfoDTO) throws ApiServiceException;
+
+    /**
+     * 修改用户密码
+     *
+     * @param reqDTO DTO
+     * @throws ApiServiceException
+     */
+    void updateUserPwd(UserResetPwdReqDTO reqDTO) throws ApiServiceException;
 }

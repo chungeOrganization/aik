@@ -24,6 +24,10 @@ public interface AccUserAccountMapper {
     List<AccUserAccount> selectBySelective(AccUserAccount record);
 
     AccUserAccount selectByUserName(@Param("userName") String userName);
+
+    AccUserAccount selectByMobileNo(@Param("mobileNo") String mobileNo);
+
+    AccUserAccount selectByUserNameOrMobileNo(@Param("userName") String userName);
     
     /**
      * 获取所有数据

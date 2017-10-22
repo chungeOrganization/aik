@@ -262,6 +262,9 @@ public class DoctorCenterApi {
         return result;
     }
 
+    /**
+     * 医生钱包
+     */
     @POST
     @Path("/doctorWallet")
     public ApiResult doctorWallet() {
@@ -416,7 +419,7 @@ public class DoctorCenterApi {
 
         try {
             // 校验验证码
-            boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING.getType()),
+            boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_MOBILE_BINDING.getType()),
                     rebindingMobileReqDTO.getMobileNo(), rebindingMobileReqDTO.getSecurityCode());
             if (!validRs) {
                 return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);

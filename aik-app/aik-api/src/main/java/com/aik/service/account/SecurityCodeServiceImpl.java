@@ -86,9 +86,7 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
         }
 
         // 验证手机号码是否已经被使用过
-        if (validMobileNoIsUsed(typeEnum, mobileNo)) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
-        }
+        validMobileNoIsUsed(typeEnum, mobileNo);
 
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
@@ -123,10 +121,8 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
         }
 
-        // 验证手机号码是否已经被使用过
-        if (validMobileNoIsUsed(typeEnum, mobileNo)) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
-        }
+        // 验证手机号码
+        validMobileNoIsUsed(typeEnum, mobileNo);
 
         // 发送手机验证码
         String securityCode = SecurityCodeUtil.generatorCode();
@@ -179,16 +175,21 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
      *
      * @param codeTypeEnum 验证码类型
      * @param mobileNo     手机号码
-     * @return true：已被使用过 false：未被使用过
      */
-    private boolean validMobileNoIsUsed(SecurityCodeTypeEnum codeTypeEnum, String mobileNo) throws ApiServiceException {
+    private void validMobileNoIsUsed(SecurityCodeTypeEnum codeTypeEnum, String mobileNo) throws ApiServiceException {
         if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_REGISTER ||
-                codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER_BINDING) {
-            return doctorAccountService.validMobileNoIsUsed(mobileNo);
+                codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_MOBILE_BINDING) {
+            if (doctorAccountService.validMobileNoIsUsed(mobileNo)) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
+            }
         } else if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_USER_REGISTER) {
-            return userAccountService.validMobileNoIsUsed(mobileNo);
-        } else {
-            return false;
+            if (userAccountService.validMobileNoIsUsed(mobileNo)) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001006);
+            }
+        } else if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_USER_FIND_PASSWORD) {
+            if (!userAccountService.validMobileNoIsUsed(mobileNo)) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001009);
+            }
         }
     }
 }

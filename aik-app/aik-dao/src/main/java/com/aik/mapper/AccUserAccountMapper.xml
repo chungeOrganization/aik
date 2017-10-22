@@ -271,9 +271,20 @@
     select
     <include refid="Base_Column_List" />
     from acc_userAccount
-    where userName = #{userName}
+    where userName = #{userName} limit 1
   </select>
-  
+  <select id="selectByMobileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where mobileNo = #{mobileNo} limit 1
+  </select>
+  <select id="selectByUserNameOrMobileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from acc_userAccount
+    where userName = #{userName} or mobileNo = #{userName} limit 1
+  </select>
   <select id="findAll"  parameterType="com.aik.model.AccUserAccount"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

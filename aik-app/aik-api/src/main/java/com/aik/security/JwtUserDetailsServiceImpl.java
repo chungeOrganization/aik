@@ -56,7 +56,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         } else if (userName.contains((jwtUserSign))) {
             userName = userName.replace(jwtUserSign, "");
 
-            AccUserAccount user = accUserAccountMapper.selectByUserName(userName);
+            AccUserAccount user = accUserAccountMapper.selectByUserNameOrMobileNo(userName);
 
             if (user == null) {
                 throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));

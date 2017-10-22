@@ -5,15 +5,18 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
+import com.aik.dto.request.user.UserResetPwdReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
 import com.aik.service.account.AuthService;
+import com.aik.service.account.UserAccountService;
 import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
@@ -38,9 +41,16 @@ public class AuthApi {
 
     private AuthService authService;
 
+    private UserAccountService userAccountService;
+
     @Inject
     public void setAuthService(AuthService authService) {
         this.authService = authService;
+    }
+
+    @Inject
+    public void setUserAccountService(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
     }
 
     @POST
@@ -74,6 +84,9 @@ public class AuthApi {
         } catch (ApiServiceException e) {
             logger.error("doctor login error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
+        } catch (BadCredentialsException e) {
+            logger.error("user login error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1002001);
         } catch (Exception e) {
             logger.error("doctor login error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
@@ -83,7 +96,7 @@ public class AuthApi {
     }
 
     @POST
-    @Path("/doctor/refresh")
+    @Path("/auth/doctor/refresh")
     public ApiResult doctorRefresh(HttpServletRequest request) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
@@ -134,6 +147,9 @@ public class AuthApi {
         } catch (ApiServiceException e) {
             logger.error("user login error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
+        } catch (BadCredentialsException e) {
+            logger.error("user login error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1002001);
         } catch (Exception e) {
             logger.error("user login error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
@@ -143,7 +159,7 @@ public class AuthApi {
     }
 
     @POST
-    @Path("/user/refresh")
+    @Path("/auth/user/refresh")
     public ApiResult userRefresh(HttpServletRequest request) throws AuthenticationException {
         ApiResult result = new ApiResult();
 
@@ -158,6 +174,24 @@ public class AuthApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("user refresh error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/auth/user/resetPwd")
+    public ApiResult userResetPwd(UserResetPwdReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            userAccountService.updateUserPwd(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("user reset password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("user reset password error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
