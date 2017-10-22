@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccUserAccount;
+import com.aik.model.SysUser;
+import com.aik.service.SysUserManageService;
 import com.aik.service.UserManageService;
 import com.aik.util.MD5Utils;
 
@@ -28,7 +30,7 @@ public class IndexController {
 	private Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private UserManageService userManageService;
+    private SysUserManageService sysUserManageService;
     
     /**
      * 癌康之家后台
@@ -65,7 +67,7 @@ public class IndexController {
     	 String passWord = accUserAccount.getPassword();
     	//登陆成功跳转到主页   否则 返回登陆界面
     	 try {
-			AccUserAccount user = userManageService.selectByUserName(userName);
+			SysUser user = sysUserManageService.selectByUserName(userName);
 			if(user != null && user.getPassword().equalsIgnoreCase(MD5Utils.md5(passWord))){
 				 request.getSession().setAttribute("user", user);
 				 result = new ModelAndView("redirect:/index");

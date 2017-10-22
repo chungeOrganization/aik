@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.aik.model.SysUser">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="deleteStatus" jdbcType="BIT" property="deleteStatus" />
+    <result column="deleteStatus" jdbcType="TINYINT" property="deleteStatus" />
     <result column="userName" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="lastLoginDate" jdbcType="TIMESTAMP" property="lastLoginDate" />
@@ -35,7 +35,7 @@
       lastLoginIp, loginCount, loginDate, 
       loginIp, mobile, trueName
       )
-    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=BIT}, 
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT}, 
       #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{lastLoginDate,jdbcType=TIMESTAMP}, 
       #{lastLoginIp,jdbcType=VARCHAR}, #{loginCount,jdbcType=INTEGER}, #{loginDate,jdbcType=TIMESTAMP}, 
       #{loginIp,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}
@@ -89,7 +89,7 @@
         #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="deleteStatus != null">
-        #{deleteStatus,jdbcType=BIT},
+        #{deleteStatus,jdbcType=TINYINT},
       </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
@@ -127,7 +127,7 @@
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="deleteStatus != null">
-        deleteStatus = #{deleteStatus,jdbcType=BIT},
+        deleteStatus = #{deleteStatus,jdbcType=TINYINT},
       </if>
       <if test="userName != null">
         userName = #{userName,jdbcType=VARCHAR},
@@ -162,7 +162,7 @@
   <update id="updateByPrimaryKey" parameterType="com.aik.model.SysUser">
     update sys_user
     set createDate = #{createDate,jdbcType=TIMESTAMP},
-      deleteStatus = #{deleteStatus,jdbcType=BIT},
+      deleteStatus = #{deleteStatus,jdbcType=TINYINT},
       userName = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       lastLoginDate = #{lastLoginDate,jdbcType=TIMESTAMP},
@@ -174,4 +174,42 @@
       trueName = #{trueName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByUserName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where userName = #{userName}
+  </select>
+  <select id="findAll"  parameterType="com.aik.model.SysUser"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+    </if>
+  </select>
+
+  <select id="findByPage" parameterType="com.aik.model.SysUser" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+     where 1=1
+     <if test="id != null">
+      and id = #{id}
+    </if>
+    <if test="userName != null">
+      and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="deleteStatus != null">
+      and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
+    </if>
+  </select>
+  
 </mapper>
