@@ -8,6 +8,16 @@
     <result column="isChoiceness" jdbcType="TINYINT" property="isChoiceness" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.AccMutualCircleVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="isChoiceness" jdbcType="TINYINT" property="isChoiceness" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  
+  
   <sql id="Base_Column_List">
     id, userId, content, isChoiceness, createDate
   </sql>
@@ -109,4 +119,19 @@
     </if>
     limit ${(page-1)*size}, #{size}
   </select>
+  
+  <select id="findByPage" parameterType="com.aik.vo.AccMutualCircleVo"  resultMap="BaseResultMapVo">
+    select
+     t.id, t.userId, p.userName, t.isChoiceness, t.content, t.createDate
+    from acc_mutualCircle t 
+    left join acc_userAccount p on t.userId = p.id
+    where 1=1
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userName != null and userName != ''">
+      and p.userName = #{userName}
+    </if>
+  	</select>
+  
 </mapper>
