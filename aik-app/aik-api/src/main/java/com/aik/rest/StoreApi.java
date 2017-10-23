@@ -5,6 +5,9 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.UpdateShoppingCartDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
+import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
+import com.aik.dto.request.user.ShoppingCartAddGoodsReqDTO;
+import com.aik.dto.response.user.GoodsDetailRespDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.GoodsTypeEnum;
 import com.aik.exception.ApiServiceException;
@@ -437,6 +440,99 @@ public class StoreApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get goods with type error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getGoodsDetail/{goodsId}")
+    public ApiResult getGoodsDetail(@PathParam("goodsId") Integer goodsId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            GoodsDetailRespDTO goodsDetail = goodsService.getGoodsDetail(goodsId, AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("goodsDetail", goodsDetail);
+        } catch (ApiServiceException e) {
+            logger.error("get goods detail error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get goods detail error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/userCollectionGoods/{goodsId}")
+    public ApiResult userCollectionGoods(@PathParam("goodsId") Integer goodsId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            goodsService.collectionGoods(goodsId, AuthUserDetailsThreadLocal.getCurrentUserId());
+        } catch (ApiServiceException e) {
+            logger.error("user collection goods error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("user collection goods error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/userCancelCollectionGoods/{goodsId}")
+    public ApiResult userCancelCollectionGoods(@PathParam("goodsId") Integer goodsId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            goodsService.cancelCollectionGoods(goodsId, AuthUserDetailsThreadLocal.getCurrentUserId());
+        } catch (ApiServiceException e) {
+            logger.error("user cancel collection goods error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("user cancel collection goods error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/shoppingCartAddGoods")
+    public ApiResult shoppingCartAddGoods(ShoppingCartAddGoodsReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            shoppingCartService.shoppingCartAddGoods(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("shopping cart add goods error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("shopping cart add goods error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/atOncePurchaseGoods")
+    public ApiResult atOncePurchaseGoods(AtOncePurchaseGoodsReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            userOrderService.atOncePurchaseGoods(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("at once purchase goods error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("at once purchase goods error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

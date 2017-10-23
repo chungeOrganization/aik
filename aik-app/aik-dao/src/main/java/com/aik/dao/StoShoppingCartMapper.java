@@ -21,4 +21,6 @@ public interface StoShoppingCartMapper {
     List<Map<String, Object>> selectUserShoppingCart(Integer userId);
 
     int deleteByPrimaryKeyBatch(List<Integer> ids);
+
+    int selectUserShoppingCartCount(Integer userId);
 }

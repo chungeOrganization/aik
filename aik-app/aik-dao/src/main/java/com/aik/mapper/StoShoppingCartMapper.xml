@@ -117,4 +117,9 @@
       #{id}
     </foreach>
   </delete>
+  <select id="selectUserShoppingCartCount" parameterType="int" resultType="int">
+    select count(*)
+    from sto_shoppingCart
+    where userId = #{userId}
+  </select>
 </mapper>

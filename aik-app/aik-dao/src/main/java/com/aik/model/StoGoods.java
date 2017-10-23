@@ -20,6 +20,8 @@ public class StoGoods {
 
     private Byte isRecommend;
 
+    private Integer stock;
+
     private Date createDate;
 
     private Date updateDate;
@@ -86,6 +88,14 @@ public class StoGoods {
 
     public void setIsRecommend(Byte isRecommend) {
         this.isRecommend = isRecommend;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Date getCreateDate() {

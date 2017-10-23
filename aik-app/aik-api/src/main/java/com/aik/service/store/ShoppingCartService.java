@@ -1,6 +1,7 @@
 package com.aik.service.store;
 
 import com.aik.dto.UpdateShoppingCartDTO;
+import com.aik.dto.request.user.ShoppingCartAddGoodsReqDTO;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public interface ShoppingCartService {
      * @throws ApiServiceException Api服务异常
      */
     void updateShoppingCart(UpdateShoppingCartDTO updateShoppingCartDTO) throws ApiServiceException;
+
+    /**
+     * 购物车新增商品
+     *
+     * @param reqDTO DTO
+     * @throws ApiServiceException
+     */
+    void shoppingCartAddGoods(ShoppingCartAddGoodsReqDTO reqDTO) throws ApiServiceException;
 }

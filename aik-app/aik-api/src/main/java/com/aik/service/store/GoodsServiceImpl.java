@@ -1,10 +1,15 @@
 package com.aik.service.store;
 
+import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.StoGoodsMapper;
+import com.aik.dao.StoShoppingCartMapper;
+import com.aik.dao.StoUserCollectionGoodsMapper;
+import com.aik.dto.response.user.GoodsDetailRespDTO;
 import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.enums.GoodsStatusEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.StoGoods;
+import com.aik.model.StoUserCollectionGoods;
 import com.aik.resource.SystemResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +32,26 @@ public class GoodsServiceImpl implements GoodsService {
 
     private StoGoodsMapper stoGoodsMapper;
 
+    private StoUserCollectionGoodsMapper stoUserCollectionGoodsMapper;
+
+    private StoShoppingCartMapper stoShoppingCartMapper;
+
     @Resource
     private SystemResource systemResource;
 
     @Autowired
     public void setStoGoodsMapper(StoGoodsMapper stoGoodsMapper) {
         this.stoGoodsMapper = stoGoodsMapper;
+    }
+
+    @Autowired
+    public void setStoUserCollectionGoodsMapper(StoUserCollectionGoodsMapper stoUserCollectionGoodsMapper) {
+        this.stoUserCollectionGoodsMapper = stoUserCollectionGoodsMapper;
+    }
+
+    @Autowired
+    public void setStoShoppingCartMapper(StoShoppingCartMapper stoShoppingCartMapper) {
+        this.stoShoppingCartMapper = stoShoppingCartMapper;
     }
 
     @Override
@@ -57,5 +77,65 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         return goodsList;
+    }
+
+    @Override
+    public GoodsDetailRespDTO getGoodsDetail(Integer goodsId, Integer userId) throws ApiServiceException {
+        if (null == goodsId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoGoods goods = stoGoodsMapper.selectByPrimaryKey(goodsId);
+        if (null == goods) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005004);
+        }
+
+        GoodsDetailRespDTO goodsDetail = new GoodsDetailRespDTO();
+        goodsDetail.setGoodsId(goods.getId());
+        goodsDetail.setGoodsName(goods.getName());
+        goodsDetail.setGoodsImg(systemResource.getApiFileUri() + goods.getImage());
+        goodsDetail.setGoodsPrice(goods.getPrice());
+        goodsDetail.setGoodsStock(goods.getStock());
+
+        boolean isCollection = null != stoUserCollectionGoodsMapper.selectByUserIdAndGoodsID(userId, goodsId);
+        goodsDetail.setCollection(isCollection);
+
+        int cartGoodsCount = stoShoppingCartMapper.selectUserShoppingCartCount(userId);
+        goodsDetail.setCartGoodsCount(cartGoodsCount);
+
+        return goodsDetail;
+    }
+
+    @Override
+    public void collectionGoods(Integer goodsId, Integer userId) throws ApiServiceException {
+        if (null == goodsId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserCollectionGoods userCollectionGoods = stoUserCollectionGoodsMapper.selectByUserIdAndGoodsID(userId, goodsId);
+        if (null != userCollectionGoods) {
+            return;
+        }
+
+        userCollectionGoods = new StoUserCollectionGoods();
+        userCollectionGoods.setUserId(userId);
+        userCollectionGoods.setGoodsId(goodsId);
+        userCollectionGoods.setCreateDate(new Date());
+
+        stoUserCollectionGoodsMapper.insertSelective(userCollectionGoods);
+    }
+
+    @Override
+    public void cancelCollectionGoods(Integer goodsId, Integer userId) throws ApiServiceException {
+        if (null == goodsId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserCollectionGoods userCollectionGoods = stoUserCollectionGoodsMapper.selectByUserIdAndGoodsID(userId, goodsId);
+        if (null == userCollectionGoods) {
+            return;
+        }
+
+        stoUserCollectionGoodsMapper.deleteByPrimaryKey(userCollectionGoods.getId());
     }
 }

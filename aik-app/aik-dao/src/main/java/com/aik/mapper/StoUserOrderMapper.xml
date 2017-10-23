@@ -53,7 +53,7 @@
       #{goodsQuality,jdbcType=TINYINT}, #{logisticsSpeed,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.StoUserOrder">
+  <insert id="insertSelective" parameterType="com.aik.model.StoUserOrder" useGeneratedKeys="true" keyProperty="id">
     insert into sto_userOrder
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

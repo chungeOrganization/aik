@@ -4,6 +4,7 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.*;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
+import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.DelFlagEnum;
 import com.aik.enums.UserFileTypeEnum;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -41,6 +43,8 @@ public class UserOrderServiceImpl implements UserOrderService {
     private StoLogisticsTrackInfoMapper stoLogisticsTrackInfoMapper;
 
     private AccUserFileMapper accUserFileMapper;
+
+    private StoGoodsMapper stoGoodsMapper;
 
     @Resource
     private SystemResource systemResource;
@@ -78,6 +82,11 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Autowired
     public void setAccUserFileMapper(AccUserFileMapper accUserFileMapper) {
         this.accUserFileMapper = accUserFileMapper;
+    }
+
+    @Autowired
+    public void setStoGoodsMapper(StoGoodsMapper stoGoodsMapper) {
+        this.stoGoodsMapper = stoGoodsMapper;
     }
 
     @Override
@@ -333,5 +342,36 @@ public class UserOrderServiceImpl implements UserOrderService {
                 accUserFileMapper.insertSelective(userFile);
             }
         }
+    }
+
+    @Override
+    public Map<String, Object> atOncePurchaseGoods(AtOncePurchaseGoodsReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoGoods goods = stoGoodsMapper.selectByPrimaryKey(reqDTO.getGoodsId());
+        BigDecimal amount = goods.getPrice().multiply(new BigDecimal(reqDTO.getGoodsNumber()));
+
+        StoUserOrder userOrder = new StoUserOrder();
+        // TODO:生成订单号
+        userOrder.setOrderNum("xxxxxxx0001");
+        userOrder.setUserId(reqDTO.getUserId());
+        userOrder.setAmount(amount);
+        userOrder.setCreateDate(new Date());
+        stoUserOrderMapper.insertSelective(userOrder);
+
+        // 插入userOrderDetail
+        StoUserOrderDetail userOrderDetail = new StoUserOrderDetail();
+        userOrderDetail.setUserId(reqDTO.getUserId());
+        userOrderDetail.setOrderId(userOrder.getId());
+        userOrderDetail.setGoodsId(reqDTO.getGoodsId());
+        userOrderDetail.setNumber(reqDTO.getGoodsNumber());
+        userOrderDetail.setAmount(amount);
+        userOrderDetail.setCreateDate(new Date());
+
+        stoUserOrderDetailMapper.insertSelective(userOrderDetail);
+
+        return getConfirmOrderDetail(userOrder.getId());
     }
 }

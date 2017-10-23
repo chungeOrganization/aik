@@ -2,6 +2,7 @@ package com.aik.service.store;
 
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
+import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.exception.ApiServiceException;
 
@@ -89,4 +90,13 @@ public interface UserOrderService {
      * @throws ApiServiceException
      */
     void appraiseOrder(AppraiseOrderReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 立即购买商品
+     *
+     * @param reqDTO DTO
+     * @return 获取结算订单详情
+     * @throws ApiServiceException
+     */
+    Map<String, Object> atOncePurchaseGoods(AtOncePurchaseGoodsReqDTO reqDTO) throws ApiServiceException;
 }

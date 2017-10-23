@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="sto_userOrder" domainObjectName="StoUserOrder" enableCountByExample="false"
+        <table tableName="sto_userCollectionGoods" domainObjectName="StoUserCollectionGoods" enableCountByExample="false"
                        enableDeleteByExample="false"
                        enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>

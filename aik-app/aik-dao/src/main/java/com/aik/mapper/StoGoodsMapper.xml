@@ -10,11 +10,13 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="isRecommend" jdbcType="TINYINT" property="isRecommend" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, price, image, description, type, status, isRecommend, createDate, updateDate
+    id, name, price, image, description, type, status, isRecommend, stock, createDate, 
+    updateDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,12 +31,12 @@
   <insert id="insert" parameterType="com.aik.model.StoGoods">
     insert into sto_goods (id, name, price, 
       image, description, type, 
-      status, isRecommend, createDate, 
-      updateDate)
+      status, isRecommend, stock, 
+      createDate, updateDate)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{image,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{status,jdbcType=TINYINT}, #{isRecommend,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{status,jdbcType=TINYINT}, #{isRecommend,jdbcType=TINYINT}, #{stock,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.StoGoods">
     insert into sto_goods
@@ -62,6 +64,9 @@
       </if>
       <if test="isRecommend != null">
         isRecommend,
+      </if>
+      <if test="stock != null">
+        stock,
       </if>
       <if test="createDate != null">
         createDate,
@@ -95,6 +100,9 @@
       <if test="isRecommend != null">
         #{isRecommend,jdbcType=TINYINT},
       </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -127,6 +135,9 @@
       <if test="isRecommend != null">
         isRecommend = #{isRecommend,jdbcType=TINYINT},
       </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -145,6 +156,7 @@
       type = #{type,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       isRecommend = #{isRecommend,jdbcType=TINYINT},
+      stock = #{stock,jdbcType=INTEGER},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
@@ -185,7 +197,7 @@
     limit ${(page-1)*size}, #{size}
   </select>
   
-   <select id="findAll" parameterType="com.aik.model.StoGoods"  resultMap="BaseResultMap">
+   <select id="findAll" parameterType="com.aik.model.StoGoods" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from sto_goods
@@ -198,7 +210,7 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.StoGoods"  resultMap="BaseResultMap">
+   <select id="findByPage" parameterType="com.aik.model.StoGoods" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from sto_goods

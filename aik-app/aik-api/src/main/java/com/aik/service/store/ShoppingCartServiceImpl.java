@@ -4,6 +4,7 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.StoShoppingCartMapper;
 import com.aik.dto.UpdateShoppingCartDTO;
 import com.aik.dto.UpdateShoppingCartDTO.*;
+import com.aik.dto.request.user.ShoppingCartAddGoodsReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.StoShoppingCart;
 import com.aik.resource.SystemResource;
@@ -73,5 +74,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 stoShoppingCartMapper.updateByPrimaryKeySelective(shoppingCart);
             }
         }
+    }
+
+    @Override
+    public void shoppingCartAddGoods(ShoppingCartAddGoodsReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            return;
+        }
+
+        StoShoppingCart shoppingCart = new StoShoppingCart();
+        shoppingCart.setUserId(reqDTO.getUserId());
+        shoppingCart.setGoodsId(reqDTO.getGoodsId());
+        shoppingCart.setNumber(reqDTO.getGoodsNumber());
+        shoppingCart.setCreateDate(new Date());
+
+        stoShoppingCartMapper.insertSelective(shoppingCart);
     }
 }

@@ -1,5 +1,6 @@
 package com.aik.service.store;
 
+import com.aik.dto.response.user.GoodsDetailRespDTO;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -27,4 +28,32 @@ public interface GoodsService {
      * @throws ApiServiceException Api服务异常
      */
     List<Map<String, Object>> getGoodsWithType(Map<String, Object> params) throws ApiServiceException;
+
+    /**
+     * 获取商品详情
+     *
+     * @param goodsId 商品id
+     * @param userId  用户id
+     * @return 商品详情
+     * @throws ApiServiceException
+     */
+    GoodsDetailRespDTO getGoodsDetail(Integer goodsId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 收藏商品
+     *
+     * @param goodsId 商品id
+     * @param userId  用户id
+     * @throws ApiServiceException
+     */
+    void collectionGoods(Integer goodsId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 用户取消收藏商品
+     *
+     * @param goodsId 商品id
+     * @param userId  用户id
+     * @throws ApiServiceException
+     */
+    void cancelCollectionGoods(Integer goodsId, Integer userId) throws ApiServiceException;
 }
