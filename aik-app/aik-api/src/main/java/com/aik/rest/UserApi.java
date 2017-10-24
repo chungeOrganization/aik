@@ -304,6 +304,9 @@ public class UserApi {
         try {
             List<CirclesRespDTO> userCircles = circleService.getAttentionUserCircles(reqDTO, AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("userCircles", userCircles);
+        } catch (ApiServiceException e) {
+            logger.error("get doctor introduction error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get attention user circles error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);

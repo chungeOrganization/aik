@@ -188,7 +188,7 @@ public class CircleServiceImpl implements CircleService {
 
     @Override
     public List<CirclesRespDTO> getAttentionUserCircles(GetAttentionUserCirclesReqDTO reqDTO, Integer userId) throws ApiServiceException {
-        if (null == reqDTO) {
+        if (null == reqDTO || null ==  reqDTO.getUserId()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 

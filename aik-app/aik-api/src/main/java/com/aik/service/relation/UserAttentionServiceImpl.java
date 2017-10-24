@@ -99,7 +99,7 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(userAttention.getAttentionId());
 
             GetAttentionDoctorRespDTO attentionInfo = new GetAttentionDoctorRespDTO();
-            attentionInfo.setDoctorId(attentionInfo.getDoctorId());
+            attentionInfo.setDoctorId(doctorAccount.getId());
             attentionInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
             attentionInfo.setRealName(doctorAccount.getRealName());
             attentionInfo.setHosName(doctorAccount.getHosName());
@@ -176,11 +176,8 @@ public class UserAttentionServiceImpl implements UserAttentionService {
 
         introduction.put("relation", RelationTypeUtil.getABRelation(true, isDoctorAttention));
 
-        // TODO：获取医生简介
-        introduction.put("introduction", "简介信息");
-
-        // TODO：获取第二执业地点
-        introduction.put("secondPractice", "第二执业地点");
+        // 获取医生简介
+        introduction.put("introduction", doctorAccount.getSkill());
 
         return introduction;
     }
