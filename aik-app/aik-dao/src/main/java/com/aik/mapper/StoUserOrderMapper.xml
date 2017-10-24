@@ -281,7 +281,7 @@
     <if test="userId != null">
       and uo.userId = #{userId}
     </if>
-    <if test="status != null">
+    <if test="status != null and status != -1">
       and uo.status = #{status}
     </if>
     order by uo.createDate

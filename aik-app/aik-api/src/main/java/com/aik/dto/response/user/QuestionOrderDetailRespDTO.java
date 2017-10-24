@@ -1,8 +1,11 @@
 package com.aik.dto.response.user;
 
 import com.aik.dto.response.doctor.QuestionAnswerRespDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +15,8 @@ import java.util.List;
 public class QuestionOrderDetailRespDTO {
     
     private OrderDoctorInfoRespDTO doctorInfo;
+
+    private Integer orderId;
 
     private BigDecimal orderPrice;
 
@@ -23,7 +28,7 @@ public class QuestionOrderDetailRespDTO {
 
     private Byte failType;
 
-    private List<QuestionAnswerRespDTO> questionAnswerList;
+    private List<QuestionAnswerRespDTO> questionAnswerList = new ArrayList<>();
 
     public OrderDoctorInfoRespDTO getDoctorInfo() {
         return doctorInfo;
@@ -31,6 +36,14 @@ public class QuestionOrderDetailRespDTO {
 
     public void setDoctorInfo(OrderDoctorInfoRespDTO doctorInfo) {
         this.doctorInfo = doctorInfo;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public BigDecimal getOrderPrice() {

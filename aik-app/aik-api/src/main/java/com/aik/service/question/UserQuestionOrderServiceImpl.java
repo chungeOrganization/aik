@@ -129,6 +129,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         }
 
         QuestionOrderDetailRespDTO questionOrderDetail = new QuestionOrderDetailRespDTO();
+        questionOrderDetail.setOrderId(questionOrder.getId());
 
         // 医生信息
         OrderDoctorInfoRespDTO doctorInfo = new OrderDoctorInfoRespDTO();
@@ -668,6 +669,9 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
                 searchAU.setType(UserFileTypeEnum.ORDER_REFUND_FILE.getCode());
                 searchAU.setRelationId(questionOrder.getId());
                 List<String> files = accUserFileMapper.selectFilesBySelective(searchAU);
+                for (int i = 0; i < files.size(); i++) {
+                    files.set(i, systemResource.getApiFileUri() + files.get(i));
+                }
                 question.setFiles(files);
             }
             questionAnswer.setQuestion(question);

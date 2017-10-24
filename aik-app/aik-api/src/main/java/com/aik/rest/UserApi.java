@@ -2,6 +2,7 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
@@ -430,27 +431,6 @@ public class UserApi {
     }
 
     @POST
-    @Path("/notPassAuditOrderDetail")
-    @Deprecated
-    public ApiResult notPassAuditOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = userQuestionOrderService.getNotPassAuditOrderDetail(orderId);
-            result.withData(orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get not pass audit order detail error:", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get not pass audit order detail error:", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
     @Path("/editNotPassAuditOrder")
     public ApiResult editNotPassAuditOrder(EditQuestionOrderDTO questionOrderDTO) {
         ApiResult result = new ApiResult();
@@ -462,27 +442,6 @@ public class UserApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get not pass audit order detail error:", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("/getOnPayOrderDetail")
-    @Deprecated
-    public ApiResult getOnPayOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = userQuestionOrderService.getOnPayOrderDetail(orderId);
-            result.withData(orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get on pay order detail error:", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get on pay order detail error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
@@ -503,27 +462,6 @@ public class UserApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get pay order detail error:", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("/onEvaluationOrderDetail")
-    @Deprecated
-    public ApiResult onEvaluationOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = userQuestionOrderService.getOnEvaluationOrderDetail(orderId);
-            result.withData(orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get on evaluation order detail error:", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get on evaluation order detail error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
@@ -578,27 +516,6 @@ public class UserApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("evaluate order error:", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("getOnRefuseOrderDetail")
-    @Deprecated
-    public ApiResult getOnRefuseOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = userQuestionOrderService.getOnRefuseOrderDetail(orderId);
-            result.withData(orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get on refuse order detail error:", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get on refuse order detail error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
@@ -687,9 +604,11 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            QuestionViewDetailRespDTO orderDetail = (QuestionViewDetailRespDTO) userQuestionOrderService.getQuestionOrderDetail(orderId);
-            orderDetail.setViewCount(questionViewService.getQuestionViewCount(orderId));
-            result.withDataKV("orderDetail", orderDetail);
+            QuestionViewDetailRespDTO viewOrderDetail = new QuestionViewDetailRespDTO();
+            QuestionOrderDetailRespDTO orderDetail = userQuestionOrderService.getQuestionOrderDetail(orderId);
+            viewOrderDetail.setOrderDetail(orderDetail);
+            viewOrderDetail.setViewCount(questionViewService.getQuestionViewCount(orderId));
+            result.withDataKV("viewOrderDetail", viewOrderDetail);
         } catch (ApiServiceException e) {
             logger.error("get question view detail error:", e);
             result.withFailResult(e.getErrorCodeEnum());

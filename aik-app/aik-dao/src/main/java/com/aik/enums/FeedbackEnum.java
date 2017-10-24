@@ -27,7 +27,7 @@ public class FeedbackEnum {
         }
     }
 
-    // TODO:枚举类型修改
+    // 枚举类型修改
     public static enum FbTypeEnum {
         TYPE_FUNCTION((byte) 0, "功能异常", "功能故障或不能用"),
         TYPE_ADVICE((byte) 1, "产品建议", "数据错误，我有建议"),

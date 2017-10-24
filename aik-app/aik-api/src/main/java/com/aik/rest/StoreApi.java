@@ -527,7 +527,8 @@ public class StoreApi {
 
         try {
             reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
-            userOrderService.atOncePurchaseGoods(reqDTO);
+            Map<String, Object> orderDetail = userOrderService.atOncePurchaseGoods(reqDTO);
+            result.withDataKV("orderDetail", orderDetail);
         } catch (ApiServiceException e) {
             logger.error("at once purchase goods error:", e);
             result.withFailResult(e.getErrorCodeEnum());
