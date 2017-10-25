@@ -3,10 +3,15 @@
 <thead>
 <tr>
 	<th>编号</th>
-	<th>用户名</th>
-	<th>互助圈内容</th>
-	<th>是否精选（0：不是 1：是）</th>
-	<th>录入时间</th>
+	<th>用户名称</th>
+	<th>记录日期</th>
+	<th>蛋白质</th>
+	<th>脂类</th>
+	<th>碳水化合物</th>
+	<th>维他命</th>
+	<th>矿物质</th>
+	<th>水</th>	
+	<th>膳食纤维</th>	
 	<th>操作</th>
 </tr>
 </thead>
@@ -15,26 +20,18 @@
 
 
 
-<tr class="odd gradeX"  th:each="mutualCircle,iterStat : ${result}"  >
-	<td th:id="${mutualCircle.id}" th:text="${mutualCircle.id}"></td>
-	<td th:text="${mutualCircle.userName}"></td>
-	<td th:text="${mutualCircle.content}"></td>
-	<td th:text="${mutualCircle.isChoiceness}"></td>
-	<td class="center">
-		<span th:if="${mutualCircle.createDate ne null}">
-		<span th:text="${#dates.format(mutualCircle.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
-		</span>
-	</td>
+<tr class="odd gradeX"  th:each="dailyNutrition,iterStat : ${result}"  >
+	<td th:id="${dailyNutrition.id}" th:text="${dailyNutrition.id}"></td>
+	<td th:text="${dailyNutrition.userName}"></td>
+	<td class="center" th:text="${#dates.format(dailyNutrition.recordDate, 'yyyy-MM-dd HH:mm:ss')}">
+	<td th:text="${dailyNutrition.protein}"></td>
+	<td class="center" th:text="${dailyNutrition.lipid}"></td>
+	<td th:text="${dailyNutrition.carbs}"></td>
+	<td th:text="${dailyNutrition.vitamin}"></td>
+	<td th:text="${dailyNutrition.minerals}"></td>
+	<td th:text="${dailyNutrition.water}"></td>
+	<td th:text="${dailyNutrition.dietaryFiber}"></td>
 	<td>
-		<a href="javascript:;" class="btn default btn-xs blue view">
-				<i class="fa fa-share"></i> 查看
-		</a>
-		<!-- <a href="javascript:;" class="btn  default btn-xs purple edit">
-				<i class="fa fa-edit"></i> 编辑
-		</a> -->
-		<a href="javascript:;" class="btn default btn-xs black delect">
-				<i class="fa fa-trash-o"></i>删除
-		</a>
 	</td>
 </tr>			
 
