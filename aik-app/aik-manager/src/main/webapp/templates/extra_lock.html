@@ -32,13 +32,13 @@
 <body>
 	<div class="page-lock">
 		<div class="page-logo">
-			<a class="brand" href="index.htm">
+			<a class="brand" href="index">
 			<!-- <img src="assets/img/logo-big.png" alt="logo" /> -->
-				癌康之家后台管理系统
+				<h1 class="seth1">癌康之家后台管理系统</h1>
 			</a>
 		</div>
 		<div class="page-body">
-			<img class="page-lock-img" th:src="@{/static/assets/img/no_image.gif}" alt="" />
+			<img class="page-lock-img" th:src="@{/static/assets/img/admin.jpg}" alt="" />
 			<div class="page-lock-info">
 				<h1>管理员</h1>
 				<span class="email" th:text="${session.user.userName}"></span>
@@ -59,7 +59,7 @@
 			</div>
 		</div>
 		<div class="page-footer">
-			2014 &copy; www.aik.com
+			2017 &copy; www.aik.com
 		</div>
 	</div>
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
