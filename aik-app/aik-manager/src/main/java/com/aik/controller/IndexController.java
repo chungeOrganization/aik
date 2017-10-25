@@ -60,11 +60,11 @@ public class IndexController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount) {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,SysUser sysUser) {
     	 ModelAndView result = new ModelAndView();
     	 
-    	 String userName = accUserAccount.getUserName();
-    	 String passWord = accUserAccount.getPassword();
+    	 String userName = sysUser.getUserName();
+    	 String passWord = sysUser.getPassword();
     	//登陆成功跳转到主页   否则 返回登陆界面
     	 try {
 			SysUser user = sysUserManageService.selectByUserName(userName);

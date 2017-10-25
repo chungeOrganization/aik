@@ -5,6 +5,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.aik.model.AccUserAccount;
+import com.aik.model.SysUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,17 +26,17 @@ public class CommonInterceptor implements HandlerInterceptor {
         httpServletRequest.setAttribute("basePath", basePath);
         
         //如果是登陆 不拦截
-//        String url = httpServletRequest.getServletPath();
-//        if("/".equals(url) || "".equals(url) || "/login".equals(url) || "/logout".equals(url)){
-//        	return true;
-//        }
-//
-//        //登陆拦截  没有登陆跳转到登陆界面
-//        Object obj = httpServletRequest.getSession().getAttribute("user");
-//        if (obj == null || !(obj instanceof AccUserAccount)) {
-//        	httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
-//            return false;
-//        }
+        String url = httpServletRequest.getServletPath();
+        if("/".equals(url) || "".equals(url) || "/login".equals(url) || "/logout".equals(url)){
+        	return true;
+        }
+
+        //登陆拦截  没有登陆跳转到登陆界面
+        Object obj = httpServletRequest.getSession().getAttribute("user");
+        if (obj == null || !(obj instanceof SysUser)) {
+        	httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
+            return false;
+        }
         
         return true;
     }
