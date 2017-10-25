@@ -6,6 +6,7 @@ import com.aik.dao.AikExpertsAnswerViewMapper;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikExpertsAnswer;
 import com.aik.model.AikExpertsAnswerView;
+import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class ExpertsAnswerServiceImple implements ExpertsAnswerService {
         for (AikExpertsAnswer aikExpertsAnswer : aikExpertsAnswers) {
             Map<String, Object> expertsAnswerMap = new HashMap<>();
             expertsAnswerMap.put("id", aikExpertsAnswer.getId());
-            expertsAnswerMap.put("question", aikExpertsAnswer.getQuestion());
+            expertsAnswerMap.put("question", ScrawlUtils.aikStringOmit(aikExpertsAnswer.getQuestion()));
 
             expertsAnswerList.add(expertsAnswerMap);
         }

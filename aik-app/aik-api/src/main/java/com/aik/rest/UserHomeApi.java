@@ -105,8 +105,9 @@ public class UserHomeApi {
         ApiResult result = new ApiResult();
 
         try {
-            // TODO:头部图片
-            result.withDataKV("headImage", systemResource.getApiFileUri() + "/headImage.jpg");
+
+            // TODO:头部图片（多张）
+            result.withDataKV("headImage", new String[]{systemResource.getApiFileUri() + "/headImage.jpg", systemResource.getApiFileUri() + "/headImage2.jpg"});
 
             // 今日营养
             result.withDataKV("userTodayNutrition", dietPlanService.getUserTodayNutrition(
@@ -166,6 +167,24 @@ public class UserHomeApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get experts answer detail error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getNutritionLessons")
+    public ApiResult getNutritionLessons(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            result.withDataKV("nutritionLessons", nutritionLessonService.getNutritionLessons(params));
+        } catch (ApiServiceException e) {
+            logger.error("get nutrition lesson list error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get nutrition lesson list error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
