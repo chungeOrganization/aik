@@ -52,7 +52,7 @@ public interface GoodsOrderManageService {
      * @return
      * @throws Exception
      */
-    List<StoUserOrder> findAll(StoUserOrder stoUserOrder) throws Exception;
+    List<StoUserOrderVo> findAll(StoUserOrder stoUserOrder) throws Exception;
     
     /**
      * 商品订单信息分页查询

@@ -2,6 +2,7 @@ package com.aik.service;
 
 import com.aik.model.StoUserOrderDetail;
 import com.aik.util.PageUtils;
+import com.aik.vo.StoUserOrderDetailVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public interface GoodsOrderDetailManageService {
      * @return
      * @throws Exception
      */
-    List<StoUserOrderDetail> findAll(StoUserOrderDetail stoUserOrderDetail) throws Exception;
+    List<StoUserOrderDetailVo> findAll(StoUserOrderDetail stoUserOrderDetail) throws Exception;
     
     /**
      * 商品订单明细信息分页查询

@@ -23,11 +23,12 @@
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="orderNumpan" style="color: #000000"></span>
 					</td>
-					<td>用户Id</td>
+					<td>用户名</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="userId"  data-describedby="userIdspan" id="userId" name="userId"  th:value="${stoUserOrder.userId}" />
+						<input type="text" class="form-control r" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${stoUserOrder.userName}" />
+						<input type="hidden" class="form-control"  id="userId" name="userId"  th:value="${stoUserOrder.userId}" />
 						<span class="required">*</span>
-						<span class="help-inline prompt" id="userIdspan" style="color: #000000"></span>
+						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
 					</td>
 				</tr>
 				<tr>
@@ -81,7 +82,7 @@
 					<tbody>
 					<tr class="odd gradeX"  th:each="stoUserOrderDetail,iterStat : ${stoUserOrderDetails}"  >
 						<td th:text="${stoUserOrderDetail.id}"></td>
-						<td th:text="${stoUserOrderDetail.goodsId}"></td>
+						<td th:text="${stoUserOrderDetail.goodsName}"></td>
 						<td th:text="${stoUserOrderDetail.number}"></td>
 						<td th:text="${stoUserOrderDetail.amount}"></td>
 						<td></td>
@@ -228,7 +229,7 @@ var foodOrderView  = {
 				
 				description : {
 				
-					name : {
+					orderNum : {
 						required : '请输入商品名称'
 					}
 				}

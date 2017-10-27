@@ -26,7 +26,7 @@ public interface StoUserOrderMapper {
      * 获取所有数据
      * @return
      */
-    List<StoUserOrder> findAll(StoUserOrder record);
+    List<StoUserOrderVo> findAll(StoUserOrder record);
 
     /**
      * 分页查询数据
