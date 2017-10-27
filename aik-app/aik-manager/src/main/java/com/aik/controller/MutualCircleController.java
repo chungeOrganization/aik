@@ -30,6 +30,8 @@ import com.aik.service.HrRoutineBloodManageService;
 import com.aik.service.HrTumorMarkersManageService;
 import com.aik.service.MutualCircleManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleCommentVo;
+import com.aik.vo.AccCircleLikeVo;
 import com.aik.vo.AccMutualCircleVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.github.pagehelper.Page;
@@ -121,11 +123,18 @@ public class MutualCircleController {
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
     	ModelAndView result = new ModelAndView("mutualCircle/mutualCircleView");
-    	AccMutualCircle accMutualCircle = new AccMutualCircle();
-    	List<AccCircleComment> accCircleComments = new ArrayList();
-    	List<AccCircleLike> accCircleLikes = new ArrayList();
+        AccMutualCircleVo accMutualCircleVo = new AccMutualCircleVo();
+        
+        List<AccMutualCircleVo> accMutualCircles = new ArrayList();
+    	List<AccCircleCommentVo> accCircleComments = new ArrayList();
+    	List<AccCircleLikeVo> accCircleLikes = new ArrayList();
  		try {
- 			accMutualCircle = mutualCircleManageService.findById(id);
+ 			AccMutualCircle accMutualCircle = new AccMutualCircle();
+ 		    accMutualCircle.setId(id);
+ 			accMutualCircles = mutualCircleManageService.findAll(accMutualCircle);
+ 			if(accMutualCircles != null && accMutualCircles.size() > 0){
+ 				accMutualCircleVo = accMutualCircles.get(0);
+ 			}
  			AccCircleComment accCircleComment = new AccCircleComment();
  			accCircleComment.setCircleId(id);
  			accCircleComments = circleCommentManageService.findAll(accCircleComment);
@@ -137,7 +146,7 @@ public class MutualCircleController {
  			logger.error("互助圈编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
- 		result.addObject("mutualCircle", accMutualCircle);
+ 		result.addObject("mutualCircle", accMutualCircleVo);
  		result.addObject("accCircleLikes", accCircleLikes);
  		result.addObject("accCircleComments", accCircleComments);
         return result;
@@ -153,11 +162,21 @@ public class MutualCircleController {
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
         ModelAndView result = new ModelAndView("mutualCircle/mutualCircleView");
-        AccMutualCircle accMutualCircle = new AccMutualCircle();
-    	List<AccCircleComment> accCircleComments = new ArrayList();
-    	List<AccCircleLike> accCircleLikes = new ArrayList();
+        
+        AccMutualCircleVo accMutualCircleVo = new AccMutualCircleVo();
+        
+      
+        List<AccMutualCircleVo> accMutualCircles = new ArrayList();
+    	List<AccCircleCommentVo> accCircleComments = new ArrayList();
+    	List<AccCircleLikeVo> accCircleLikes = new ArrayList();
  		try {
- 			accMutualCircle = mutualCircleManageService.findById(id);
+ 			AccMutualCircle accMutualCircle = new AccMutualCircle();
+ 		    accMutualCircle.setId(id);
+ 			accMutualCircles = mutualCircleManageService.findAll(accMutualCircle);
+ 			if(accMutualCircles != null && accMutualCircles.size() > 0){
+ 				accMutualCircleVo = accMutualCircles.get(0);
+ 			}
+ 			
  			AccCircleComment accCircleComment = new AccCircleComment();
  			accCircleComment.setCircleId(id);
  			accCircleComments = circleCommentManageService.findAll(accCircleComment);
@@ -169,7 +188,7 @@ public class MutualCircleController {
  			logger.error("互助圈编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "view");
- 		result.addObject("mutualCircle", accMutualCircle);
+ 		result.addObject("mutualCircle", accMutualCircleVo);
  		result.addObject("accCircleLikes", accCircleLikes);
  		result.addObject("accCircleComments", accCircleComments);
         return result;

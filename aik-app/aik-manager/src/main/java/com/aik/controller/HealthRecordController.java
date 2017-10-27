@@ -116,12 +116,20 @@ public class HealthRecordController {
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
     	ModelAndView result = new ModelAndView("healthRecord/healthRecordView");
-    	AikHealthRecord aikHealthRecord = new AikHealthRecord();
+    	
+    	AikHealthRecordVo aikHealthRecordVo = new AikHealthRecordVo();
+    	List<AikHealthRecordVo> aikHealthRecordVos = new ArrayList();
     	List<AikHrBloodSugar> aikHrBloodSugars = new ArrayList();
     	List<AikHrRoutineBlood> aikHrRoutineBloods = new ArrayList();
     	List<AikHrTumorMarkers> aikHrTumorMarkerss = new ArrayList();
  		try {
- 			aikHealthRecord = healthRecordManageService.findById(id);
+ 			AikHealthRecord aikHealthRecord = new AikHealthRecord();
+ 			aikHealthRecord.setId(id);
+ 			aikHealthRecordVos = healthRecordManageService.findAll(aikHealthRecord);
+ 			if(aikHealthRecordVos != null && aikHealthRecordVos.size() > 0){
+ 				aikHealthRecordVo = aikHealthRecordVos.get(0);
+ 			}
+ 			
  			AikHrBloodSugar aikHrBloodSugar = new AikHrBloodSugar();
  			aikHrBloodSugar.setHrId(id);
  			aikHrBloodSugars = hrBloodSugarManageService.findAll(aikHrBloodSugar);
@@ -136,7 +144,7 @@ public class HealthRecordController {
  			logger.error("健康档案信息编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
- 		result.addObject("healthRecord", aikHealthRecord);
+ 		result.addObject("healthRecord", aikHealthRecordVo);
  		result.addObject("aikHrBloodSugars", aikHrBloodSugars);
  		result.addObject("aikHrRoutineBloods", aikHrRoutineBloods);
  		result.addObject("aikHrTumorMarkerss", aikHrTumorMarkerss);
@@ -153,12 +161,18 @@ public class HealthRecordController {
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
         ModelAndView result = new ModelAndView("healthRecord/healthRecordView");
-        AikHealthRecord aikHealthRecord = new AikHealthRecord();
+        AikHealthRecordVo aikHealthRecordVo = new AikHealthRecordVo();
+    	List<AikHealthRecordVo> aikHealthRecordVos = new ArrayList();
     	List<AikHrBloodSugar> aikHrBloodSugars = new ArrayList();
     	List<AikHrRoutineBlood> aikHrRoutineBloods = new ArrayList();
     	List<AikHrTumorMarkers> aikHrTumorMarkerss = new ArrayList();
  		try {
- 			aikHealthRecord = healthRecordManageService.findById(id);
+ 			AikHealthRecord aikHealthRecord = new AikHealthRecord();
+ 			aikHealthRecord.setId(id);
+ 			aikHealthRecordVos = healthRecordManageService.findAll(aikHealthRecord);
+ 			if(aikHealthRecordVos != null && aikHealthRecordVos.size() > 0){
+ 				aikHealthRecordVo = aikHealthRecordVos.get(0);
+ 			}
  			AikHrBloodSugar aikHrBloodSugar = new AikHrBloodSugar();
  			aikHrBloodSugar.setHrId(id);
  			aikHrBloodSugars = hrBloodSugarManageService.findAll(aikHrBloodSugar);
@@ -173,7 +187,7 @@ public class HealthRecordController {
  			logger.error("健康档案信息编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "view");
- 		result.addObject("healthRecord", aikHealthRecord);
+ 		result.addObject("healthRecord", aikHealthRecordVo);
  		result.addObject("aikHrBloodSugars", aikHrBloodSugars);
  		result.addObject("aikHrRoutineBloods", aikHrRoutineBloods);
  		result.addObject("aikHrTumorMarkerss", aikHrTumorMarkerss);

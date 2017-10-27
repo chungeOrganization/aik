@@ -41,33 +41,26 @@
 							</div>
 							
 							<!--/row-->
-							<!-- <div class="row">
+							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label col-md-3">性别</label>
+										<label class="control-label col-md-3">发布开始时间</label>
 										<div class="col-md-9">
-											<select class="form-control" name="sex">
-												<option value="" selected ="selected">无限制</option>
-												<option value="0">男</option>
-												<option value="1">女</option>
-											</select>
+											<input readonly class="form-control date-picker" name="starttime" id="starttime" size="16" type="text" value=""
+											 data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label col-md-3">手机号码</label>
+										<label class="control-label col-md-3">发布结束时间</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" name="mobile"/>
+											<input readonly class="form-control date-picker" name="endtime" id="endtime" size="16" type="text" value=""
+											  data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
 										</div>
 									</div>
 								</div>
-							</div> -->
-							
-							<!--/row-->
-							<!-- <div class="row">
-								
-							</div> -->
+							</div>
 							
 						</div>
 						<div class="form-actions fluid">
@@ -157,6 +150,15 @@
     		//事件绑定
     		bindEvent : function(){
     			var _this = this;
+    			
+    			jQuery("#starttime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
+    			jQuery("#endtime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
     			
     			//绑定查询单击事件
     			jQuery("#query_ar").bind("click", function(){

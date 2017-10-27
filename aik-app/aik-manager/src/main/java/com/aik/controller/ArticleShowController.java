@@ -1,9 +1,15 @@
 package com.aik.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +40,17 @@ public class ArticleShowController {
     @Autowired
     private ArticleShowManageService articleShowManageService;
 
+    
+    @InitBinder
+  	public void initBinder(WebDataBinder binder) {
+  		SimpleDateFormat dateFormat = new SimpleDateFormat(
+  				"yyyy-MM-dd HH:mm:ss");
+  		SimpleDateFormat stampFormat = new SimpleDateFormat("yyyy-MM-dd");
+  		dateFormat.setLenient(false);
+  		stampFormat.setLenient(false);
+  		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true,19));
+  		binder.registerCustomEditor(Date.class, new CustomDateEditor(stampFormat, true, 10)); 
+  	}
     
     /**
      * 文章查看记录管理

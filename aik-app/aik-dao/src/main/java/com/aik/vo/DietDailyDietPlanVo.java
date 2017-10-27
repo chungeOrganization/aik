@@ -10,6 +10,10 @@ public class DietDailyDietPlanVo {
     private String userName;
 
     private Date recordDate;
+    
+    private String starttime;//记录开始时间
+    
+    private String endtime;//记录结束时间
 
     private Integer foodId;
     
@@ -101,6 +105,22 @@ public class DietDailyDietPlanVo {
 
 	public void setFoodName(String foodName) {
 		this.foodName = foodName;
+	}
+
+	public String getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
     
     

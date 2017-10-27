@@ -56,10 +56,17 @@
 					<td>是否上架</td>
 					<td>
 						<select class="form-control" name="status">
-							<option value="0" selected="selected">膳食</option>
-							<option value="1">营养</option>
+							<option value="0" selected="selected">未下架（上架中）</option>
+							<option value="1">已下架</option>
 						</select>
 					</td>
+				</tr>
+				
+				<tr>
+					<td>库存</td>
+					<td><input type="text" class="form-control" name="stock" value="" th:value="${stoGoods.stock}"  /></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td> 商品图片</td>

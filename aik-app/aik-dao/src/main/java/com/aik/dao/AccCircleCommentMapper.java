@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.aik.model.AccCircleComment;
 import com.aik.model.AikHrBloodSugar;
+import com.aik.vo.AccCircleCommentVo;
 
 public interface AccCircleCommentMapper {
     int deleteByPrimaryKey(Integer id);
@@ -24,5 +25,5 @@ public interface AccCircleCommentMapper {
      * 获取所有数据
      * @return
      */
-    List<AccCircleComment> findAll(AccCircleComment record);
+    List<AccCircleCommentVo> findAll(AccCircleComment record);
 }

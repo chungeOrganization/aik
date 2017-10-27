@@ -6,6 +6,7 @@ import com.aik.model.AikHrBloodSugar;
 import com.aik.model.AikQuestionOrder;
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleCommentVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
@@ -56,6 +57,6 @@ public interface CircleCommentManageService {
      * @return
      * @throws Exception
      */
-    List<AccCircleComment> findAll(AccCircleComment accCircleComment) throws Exception;
+    List<AccCircleCommentVo> findAll(AccCircleComment accCircleComment) throws Exception;
     
 }

@@ -11,6 +11,10 @@ public class DietDailyNutritionVo {
     private String userName;
 
     private Date recordDate;
+    
+    private String starttime;//记录开始时间
+    
+    private String endtime;//记录结束时间
 
     private BigDecimal protein;
 
@@ -133,6 +137,23 @@ public class DietDailyNutritionVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	public String getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
     
+	
     
 }

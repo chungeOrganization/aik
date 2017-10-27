@@ -1,9 +1,11 @@
 package com.aik.service;
 
+import com.aik.model.AccCircleComment;
 import com.aik.model.AccMutualCircle;
 import com.aik.model.AikHealthRecord;
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleCommentVo;
 import com.aik.vo.AccMutualCircleVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
@@ -48,6 +50,14 @@ public interface MutualCircleManageService {
      * @throws Exception 异常
      */
     AccMutualCircle findById(Integer id) throws  Exception;
+    
+    /**
+     * 查询所有互助圈-评论
+     * @param aikQuestionOrder
+     * @return
+     * @throws Exception
+     */
+    List<AccMutualCircleVo> findAll(AccMutualCircle accMutualCircle) throws Exception;
     
     /**
      * 互助圈分页查询

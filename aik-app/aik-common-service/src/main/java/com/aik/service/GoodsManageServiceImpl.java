@@ -73,6 +73,7 @@ public class GoodsManageServiceImpl implements GoodsManageService {
 		stoGoodsOld.setStatus(stoGoods.getStatus());
 		stoGoodsOld.setDescription(stoGoods.getDescription());
 		stoGoodsOld.setType(stoGoods.getType());
+		stoGoodsOld.setStock(stoGoods.getStock());
 		//TODO
 		stoGoodsOld.setUpdateDate(new Date());
 		stoGoodsMapper.updateByPrimaryKeySelective(stoGoodsOld);

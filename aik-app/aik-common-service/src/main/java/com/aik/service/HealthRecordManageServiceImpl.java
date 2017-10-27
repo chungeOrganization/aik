@@ -62,6 +62,13 @@ public class HealthRecordManageServiceImpl implements HealthRecordManageService 
 
 		AikHealthRecord aikHealthRecordOld = new AikHealthRecord();
 		aikHealthRecordOld = aikHealthRecordMapper.selectByPrimaryKey(aikHealthRecord.getId());
+		aikHealthRecordOld.setId(aikHealthRecord.getId());
+		aikHealthRecordOld.setHeight(aikHealthRecord.getHeight());
+		aikHealthRecordOld.setHwRecordDate(aikHealthRecord.getHwRecordDate());
+		aikHealthRecordOld.setMedicalRecord(aikHealthRecord.getMedicalRecord());
+		aikHealthRecordOld.setRemark(aikHealthRecord.getRemark());
+		aikHealthRecordOld.setUserId(aikHealthRecord.getUserId());
+		aikHealthRecordOld.setWeight(aikHealthRecord.getWeight());
 		//TODO
 		aikHealthRecordMapper.updateByPrimaryKeySelective(aikHealthRecordOld);
 		
@@ -81,6 +88,13 @@ public class HealthRecordManageServiceImpl implements HealthRecordManageService 
             throw new Exception("健康档案查询,根据主键查询,主键为空");
         }
 		return aikHealthRecordMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<AikHealthRecordVo> findAll(AikHealthRecord aikHealthRecord)
+			throws Exception {
+		
+		return aikHealthRecordMapper.findAll(aikHealthRecord);
 	}
 
 

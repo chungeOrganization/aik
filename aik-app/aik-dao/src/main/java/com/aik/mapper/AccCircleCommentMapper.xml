@@ -8,6 +8,15 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.AccCircleCommentVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="circleId" jdbcType="INTEGER" property="circleId" />
+    <result column="commenterName" jdbcType="VARCHAR" property="commenterName" />
+    <result column="commenterId" jdbcType="INTEGER" property="commenterId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  
   <sql id="Base_Column_List">
     id, circleId, commenterId, content, createDate
   </sql>
@@ -101,19 +110,20 @@
       and commenterId = #{commenterId,jdbcType=INTEGER}
     </if>
   </select>
-  <select id="findAll" parameterType="com.aik.model.AccCircleComment"  resultMap="BaseResultMap">
+  <select id="findAll" parameterType="com.aik.model.AccCircleComment"  resultMap="BaseResultMapVo">
     select
-    <include refid="Base_Column_List" />
-    from acc_circleComment
+  	 t.id, t.circleId,p.userName commenterName, t.commenterId, t.content, t.createDate
+    from acc_circleComment t
+    left join acc_userAccount p on t.circleId = p.id
     where 1=1
       <if test="id != null">
-      and id = #{id}
+      and t.id = #{id}
       </if>
       <if test="commenterId != null">
-      and commenterId = #{commenterId}
+      and t.commenterId = #{commenterId}
     </if>
     <if test="circleId != null">
-      and circleId = #{circleId}
+      and t.circleId = #{circleId}
     </if>
   </select>
   

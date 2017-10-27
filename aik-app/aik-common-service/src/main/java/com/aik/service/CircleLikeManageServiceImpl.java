@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleLikeVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
@@ -80,7 +81,7 @@ public class CircleLikeManageServiceImpl implements CircleLikeManageService {
 	}
 
 	@Override
-	public List<AccCircleLike> findAll(AccCircleLike accCircleLike)
+	public List<AccCircleLikeVo> findAll(AccCircleLike accCircleLike)
 			throws Exception {
 		return accCircleLikeMapper.findAll(accCircleLike);
 	}

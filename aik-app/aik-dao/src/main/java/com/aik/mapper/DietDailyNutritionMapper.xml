@@ -21,6 +21,8 @@
     <result column="userId" jdbcType="INTEGER" property="userId" />
     <result column="userName" jdbcType="VARCHAR" property="userName" />
     <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="starttime" jdbcType="VARCHAR" property="starttime" />
+    <result column="endtime" jdbcType="VARCHAR" property="endtime" />
     <result column="protein" jdbcType="DECIMAL" property="protein" />
     <result column="lipid" jdbcType="DECIMAL" property="lipid" />
     <result column="carbs" jdbcType="DECIMAL" property="carbs" />
@@ -226,5 +228,13 @@
     <if test="userName != null and userName != ''">
       and a.name = #{userName}
     </if>
+    <if test="starttime !=null and starttime!='' ">
+        <![CDATA[ and DATE_FORMAT(t.recordDate,'%Y-%m-%d') >= #{starttime}]]>
+	</if>
+
+	<if test="endtime !=null and endtime!='' ">
+        <![CDATA[ and DATE_FORMAT(t.recordDate,'%Y-%m-%d') <= #{endtime} ]]>
+	</if>
+    
   </select>
 </mapper>
