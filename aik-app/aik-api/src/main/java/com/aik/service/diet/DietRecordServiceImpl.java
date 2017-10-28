@@ -3,16 +3,24 @@ package com.aik.service.diet;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.DietDailyDietRecordMapper;
 import com.aik.dao.DietDailyNutritionMapper;
+import com.aik.dto.request.user.BygoneDietRecordAnalyzeReqDTO;
+import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.enums.DietTypeEnum;
+import com.aik.enums.ExcursionEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.DietDailyDietPlan;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
+import com.aik.vo.DailyNutritionGradeVO;
+import com.aik.vo.NotQualifiedNutritionDetailVO;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.DurationFieldType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -169,6 +177,35 @@ public class DietRecordServiceImpl implements DietRecordService {
         return dietPlanAnalyze;
     }
 
+    @Override
+    public BygoneDietRecordAnalyzeRespDTO getBygoneDietRecordAnalyze(BygoneDietRecordAnalyzeReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        BygoneDietRecordAnalyzeRespDTO dietRecordAnalyze = new BygoneDietRecordAnalyzeRespDTO();
+        dietRecordAnalyze.setHealthMinGrade(new BigDecimal("85"));
+        dietRecordAnalyze.setHealthMaxGrade(new BigDecimal("100"));
+
+        // 分析结果
+        dietRecordAnalyze.setAnalyzeResult(false);
+        dietRecordAnalyze.setAnalyzeResultGrade(new BigDecimal("59"));
+
+        // 营养名称
+        dietRecordAnalyze.setNutritionName("蛋白质");
+
+        // 每日营养评分
+        dietRecordAnalyze.setDailyNutritionGrades(getBygoneDailyNutritionGrades(reqDTO));
+
+        // 每日营养不满足详情
+        dietRecordAnalyze.setNotQualifiedNutritionDetail(getBygoneNotQualifiedNutritionDetails(reqDTO));
+
+        // 每日营养不满足提示
+        dietRecordAnalyze.setNotQualifiedTips("摄入的蛋白质过高，您身体的基本营养不达标");
+
+        return dietRecordAnalyze;
+    }
+
     /**
      * TODO:每日营养评分
      *
@@ -191,5 +228,48 @@ public class DietRecordServiceImpl implements DietRecordService {
         dailyNutritionGrade.put("dietaryFiberGrade", 50);
 
         return dailyNutritionGrade;
+    }
+
+    /**
+     * TODO:获取往日营养评分
+     *
+     * @param reqDTO DTO
+     * @return
+     */
+    private List<DailyNutritionGradeVO> getBygoneDailyNutritionGrades(BygoneDietRecordAnalyzeReqDTO reqDTO) {
+        List<DailyNutritionGradeVO> dailyNutritionGrades = new ArrayList<>();
+        DateTime dateTime = new DateTime();
+        for (int i = 0; i < 7; i++) {
+            DailyNutritionGradeVO dailyNutritionGrade = new DailyNutritionGradeVO();
+            dailyNutritionGrade.setNutritionType("protein");
+            dailyNutritionGrade.setNutritionName("蛋白质");
+            dailyNutritionGrade.setNutritionGrade(new BigDecimal(i*10));
+            dailyNutritionGrade.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -1).toDate());
+
+            dailyNutritionGrades.add(dailyNutritionGrade);
+        }
+
+        return dailyNutritionGrades;
+    }
+
+    /**
+     * TODO:获取往日营养不满足详情
+     *
+     * @param reqDTO DTO
+     * @return
+     */
+    private List<NotQualifiedNutritionDetailVO> getBygoneNotQualifiedNutritionDetails(BygoneDietRecordAnalyzeReqDTO reqDTO) {
+        List<NotQualifiedNutritionDetailVO> notQualifiedNutritionDetails = new ArrayList<>();
+        NotQualifiedNutritionDetailVO notQualifiedNutritionDetail = new NotQualifiedNutritionDetailVO();
+        DateTime dateTime = new DateTime();
+        notQualifiedNutritionDetail.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -1).toDate());
+        notQualifiedNutritionDetail.setNutritionType("protein");
+        notQualifiedNutritionDetail.setNutritionName("蛋白质");
+        notQualifiedNutritionDetail.setNutritionContent(new BigDecimal("18.5"));
+        notQualifiedNutritionDetail.setNutritionRemark(ExcursionEnum.HIGH.getCode());
+
+        notQualifiedNutritionDetails.add(notQualifiedNutritionDetail);
+
+        return notQualifiedNutritionDetails;
     }
 }

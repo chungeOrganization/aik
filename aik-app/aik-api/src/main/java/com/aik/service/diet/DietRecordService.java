@@ -1,5 +1,7 @@
 package com.aik.service.diet;
 
+import com.aik.dto.request.user.BygoneDietRecordAnalyzeReqDTO;
+import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 import sun.java2d.pipe.AAShapePipe;
@@ -56,4 +58,13 @@ public interface DietRecordService {
      * @throws ApiServiceException Api服务异常
      */
     Map<String, Object> getDietRecordAnalyze(Integer userId, Date recordDate) throws ApiServiceException;
+
+    /**
+     * 获取用户往日饮食记录分析
+     *
+     * @param reqDTO request DTO
+     * @return response DTO
+     * @throws ApiServiceException
+     */
+    BygoneDietRecordAnalyzeRespDTO getBygoneDietRecordAnalyze(BygoneDietRecordAnalyzeReqDTO reqDTO) throws ApiServiceException;
 }

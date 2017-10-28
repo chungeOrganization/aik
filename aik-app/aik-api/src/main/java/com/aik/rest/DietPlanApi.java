@@ -2,6 +2,8 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dto.request.user.BygoneDietRecordAnalyzeReqDTO;
+import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietPlan;
 import com.aik.model.DietDailyDietRecord;
@@ -11,16 +13,14 @@ import com.aik.service.diet.DietRecordService;
 import com.aik.service.diet.FoodService;
 import com.aik.service.diet.UserCollectService;
 import com.aik.util.DateUtils;
+import org.apache.http.auth.AUTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
@@ -445,6 +445,26 @@ public class DietPlanApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get user diet record analyze error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getBygoneDietRecordAnalyze")
+    public ApiResult getBygoneDietRecordAnalyze(BygoneDietRecordAnalyzeReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            BygoneDietRecordAnalyzeRespDTO dietRecordAnalyze = dietRecordService.getBygoneDietRecordAnalyze(reqDTO);
+            result.withDataKV("dietRecordAnalyze", dietRecordAnalyze);
+        } catch (ApiServiceException e) {
+            logger.error("get bygone diet record analyze error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get bygone diet record analyze error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
