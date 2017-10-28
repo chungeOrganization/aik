@@ -144,8 +144,7 @@
     limit ${(page-1)*size}, #{size}
   </select>
   <select id="selectSickDetailBySickId" parameterType="int" resultType="java.util.Map">
-    select ds.userId, ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex,
-    ua.userType as sickUserType, ds.remark
+    select ds.userId, ds.id as sickId, ua.headImg, ua.realName, ua.sex, ua.userType, ds.remark, ds.groupId
     from aik_doctorSick ds
     inner join acc_userAccount ua on ds.userId = ua.id
     where 1=1 and ds.id = #{sickId}

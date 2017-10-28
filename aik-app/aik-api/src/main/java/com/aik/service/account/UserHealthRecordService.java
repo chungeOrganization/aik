@@ -1,6 +1,7 @@
 package com.aik.service.account;
 
 import com.aik.dto.AddHealthRecordDTO;
+import com.aik.dto.response.HealthRecordRespDTO;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserHealthRecordService {
      * @return 用户健康档案详情（最近一份）
      * @throws ApiServiceException Api服务异常
      */
-    Map<String, Object> getLastHealthRecordDetail(Integer userId) throws ApiServiceException;
+    HealthRecordRespDTO getLastHealthRecordDetail(Integer userId) throws ApiServiceException;
 
     /**
      * 获取用户健康档案列表
@@ -37,7 +38,7 @@ public interface UserHealthRecordService {
      * @return 健康档案详情
      * @throws ApiServiceException Api服务异常
      */
-    Map<String, Object> getHealthRecordDetail(Integer healthRecordId) throws ApiServiceException;
+    HealthRecordRespDTO getHealthRecordDetail(Integer healthRecordId) throws ApiServiceException;
 
     /**
      * 新增用户健康档案详情

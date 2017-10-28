@@ -5,6 +5,8 @@ import com.aik.assist.RelationTypeUtil;
 import com.aik.dao.*;
 import com.aik.dto.request.doctor.SickListReqDTO;
 import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.SickDataDetailRespDTO;
+import com.aik.dto.response.doctor.SickDetailRespDTO;
 import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.enums.QuestionOrderEnum.*;
@@ -174,28 +176,22 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     }
 
     @Override
-    public Map<String, Object> getSickDetail(Integer sickId, Integer doctorId) throws ApiServiceException {
+    public SickDataDetailRespDTO getSickDetail(Integer sickId, Integer doctorId) throws ApiServiceException {
         if (null == sickId || null == doctorId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
         // 患者基本信息
-        Map<String, Object> sickDetail = aikDoctorSickMapper.selectSickDetailBySickId(sickId);
-        if (null == sickDetail) {
+        Map<String, Object> sickDetailMap = aikDoctorSickMapper.selectSickDetailBySickId(sickId);
+        if (null == sickDetailMap) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003001);
         }
+        SickDetailRespDTO sickDetail = BeansUtils.transMap2Bean(sickDetailMap, SickDetailRespDTO.class);
 
-        // 患者性别转换
-        byte sickSex = null != sickDetail.get("sickSex") ? Byte.valueOf(sickDetail.get("sickSex").toString()) : 0;
-        sickDetail.put("sickSex", SexEnum.getDescFromCode(sickSex));
-
-        // 患者用户类型转换
-        byte sickUserType = null != sickDetail.get("sickUserType") ? Byte.valueOf(sickDetail.get("sickUserType").toString()) : 0;
-        sickDetail.put("sickUserType", UserAccountUserTypeEnum.getDescFromCode(sickUserType));
+        SickDataDetailRespDTO sickDataDetail = new SickDataDetailRespDTO();
 
         // 相互关注
-        Integer userId = Integer.valueOf(sickDetail.get("userId").toString());
-        sickDetail.remove("userId");
+        Integer userId = sickDetail.getUserId();
         // 患者是否关注医生
         AccUserAttention searchAU = new AccUserAttention();
         searchAU.setUserId(userId);
@@ -207,11 +203,14 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         searchAD.setDoctorId(doctorId);
         searchAD.setUserId(userId);
         boolean isDoctorRsick = accDoctorAttentionMapper.selectCountBySelective(searchAD) > 0;
-        sickDetail.put("relationType", RelationTypeUtil.getABRelation(isDoctorRsick, isSickRdoctor));
+        sickDetail.setRelation(RelationTypeUtil.getABRelation(isDoctorRsick, isSickRdoctor));
 
+        // 患者信息
+        sickDataDetail.setSickDetail(sickDetail);
         // 用户健康档案
-        sickDetail.put("healthRecord", userHealthRecordService.getLastHealthRecordDetail(userId));
-        return sickDetail;
+        sickDataDetail.setHealthRecord(userHealthRecordService.getLastHealthRecordDetail(userId));
+
+        return sickDataDetail;
     }
 
     @Override

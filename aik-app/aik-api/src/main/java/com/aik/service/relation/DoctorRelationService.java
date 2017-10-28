@@ -2,6 +2,7 @@ package com.aik.service.relation;
 
 import com.aik.dto.request.doctor.SickListReqDTO;
 import com.aik.dto.request.doctor.SickOrderListReqDTO;
+import com.aik.dto.response.doctor.SickDataDetailRespDTO;
 import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
@@ -68,7 +69,7 @@ public interface DoctorRelationService {
      * @return 患者详情
      * @throws ApiServiceException Api服务异常
      */
-    Map<String, Object> getSickDetail(Integer sickId, Integer doctorId) throws ApiServiceException;
+    SickDataDetailRespDTO getSickDetail(Integer sickId, Integer doctorId) throws ApiServiceException;
 
     /**
      * 获取患者分组

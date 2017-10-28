@@ -6,6 +6,7 @@ import com.aik.dto.RefuseAnswerDTO;
 import com.aik.dto.request.doctor.SickListReqDTO;
 import com.aik.dto.request.doctor.SickOrderListReqDTO;
 import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
+import com.aik.dto.response.doctor.SickDataDetailRespDTO;
 import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
@@ -129,8 +130,8 @@ public class SickManagerApi {
 
         try {
             Integer sickId = Integer.valueOf(params.get("sickId").toString());
-            Map<String, Object> rsData = doctorRelationService.getSickDetail(sickId, AuthUserDetailsThreadLocal.getCurrentUserId());
-            result.withData(rsData);
+            SickDataDetailRespDTO sickDataDetail = doctorRelationService.getSickDetail(sickId, AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("sickDataDetail", sickDataDetail);
         } catch (ApiServiceException e) {
             logger.error("get sick list error: ", e);
             result.withFailResult(e.getErrorCodeEnum());

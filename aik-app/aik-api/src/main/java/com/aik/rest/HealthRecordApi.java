@@ -3,6 +3,7 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.AddHealthRecordDTO;
+import com.aik.dto.response.HealthRecordRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.account.UserHealthRecordService;
@@ -61,7 +62,7 @@ public class HealthRecordApi {
 
         try {
             Integer healthRecordId = Integer.valueOf(params.get("healthRecordId").toString());
-            Map<String, Object> healthRecordDetail = userHealthRecordService.getHealthRecordDetail(healthRecordId);
+            HealthRecordRespDTO healthRecordDetail = userHealthRecordService.getHealthRecordDetail(healthRecordId);
             result.withDataKV("healthRecordDetail", healthRecordDetail);
         } catch (ApiServiceException e) {
             logger.error("get user health record detail error: ", e);
