@@ -5,6 +5,8 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.PayPasswordReqDTO;
+import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
 import com.aik.dto.response.doctor.DoctorInfoRespDTO;
 import com.aik.enums.DoctorPositionEnum;
@@ -329,6 +331,34 @@ public class DoctorCenterApi {
 
         return result;
     }
+
+    @POST
+    @Path("/setPayPassword")
+    public ApiResult setPayPassword(PayPasswordReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+        // TODO:设置密码
+
+        return result;
+    }
+
+    @POST
+    @Path("/validPayPassword")
+    public ApiResult validPayPassword(PayPasswordReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+        // TODO:校验密码
+
+        return result;
+    }
+
+    @POST
+    @Path("/validPayPassword")
+    public ApiResult resetPayPassword(ResetPayPasswordReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+        // TODO:校验密码
+
+        return result;
+    }
+
 
     @POST
     @Path("/addBankCard")

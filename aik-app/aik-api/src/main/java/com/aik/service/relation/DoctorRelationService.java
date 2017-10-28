@@ -103,4 +103,22 @@ public interface DoctorRelationService {
      * @throws ApiServiceException Api服务异常
      */
     void updateSickGroup(Integer sickId, Integer sickGroupId) throws ApiServiceException;
+
+    /**
+     * 关注用户
+     *
+     * @param userId
+     * @param doctorId
+     * @throws ApiServiceException
+     */
+    void attentionUser(Integer userId, Integer doctorId) throws ApiServiceException;
+
+    /**
+     * 取消关注用户
+     *
+     * @param userId
+     * @param doctorId
+     * @throws ApiServiceException
+     */
+    void cancelAttentionUser(Integer userId, Integer doctorId) throws ApiServiceException;
 }

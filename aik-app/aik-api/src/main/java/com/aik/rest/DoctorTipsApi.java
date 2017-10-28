@@ -6,13 +6,14 @@ import com.aik.exception.ApiServiceException;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.account.DoctorTipsService;
 import com.aik.service.question.QuestionService;
+import com.aik.service.relation.DoctorRelationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -32,6 +33,8 @@ public class DoctorTipsApi {
 
     private QuestionService questionService;
 
+    private DoctorRelationService doctorRelationService;
+
     @Inject
     public void setDoctorTipsService(DoctorTipsService doctorTipsService) {
         this.doctorTipsService = doctorTipsService;
@@ -40,6 +43,11 @@ public class DoctorTipsApi {
     @Inject
     public void setQuestionService(QuestionService questionService) {
         this.questionService = questionService;
+    }
+
+    @Inject
+    public void setDoctorRelationService(DoctorRelationService doctorRelationService) {
+        this.doctorRelationService = doctorRelationService;
     }
 
     @POST
@@ -86,7 +94,7 @@ public class DoctorTipsApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<Map<String, Object>> friendTipsList = doctorTipsService.checkNewFrientTips(AuthUserDetailsThreadLocal.getCurrentUserId());
+            List<Map<String, Object>> friendTipsList = doctorTipsService.checkNewFriendTips(AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("friendTipsList", friendTipsList);
         } catch (ApiServiceException e) {
             logger.error("check new friend tips error: ", e);
@@ -135,6 +143,44 @@ public class DoctorTipsApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("delete tips error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/attentionUser/{userId}")
+    public ApiResult attentionUser(@PathParam("userId") Integer userId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            doctorRelationService.attentionUser(userId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+        } catch (ApiServiceException e) {
+            logger.error("attention user error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("attention user error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/cancelAttentionUser/{userId}")
+    public ApiResult cancelAttentionUser(@PathParam("userId") Integer userId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            doctorRelationService.cancelAttentionUser(userId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+        } catch (ApiServiceException e) {
+            logger.error("cancel attention user error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("cancel attention user error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

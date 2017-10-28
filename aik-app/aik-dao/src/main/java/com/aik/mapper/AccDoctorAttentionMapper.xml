@@ -90,4 +90,10 @@
       and userId = #{userId,jdbcType=INTEGER}
     </if>
   </select>
+  <select id="selectByDoctorIdAndUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_doctorAttention
+    where doctorId = #{doctorId,jdbcType=INTEGER} and userId = #{userId,jdbcType=INTEGER} limit 1
+  </select>
 </mapper>

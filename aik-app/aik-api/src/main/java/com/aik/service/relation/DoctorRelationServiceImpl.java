@@ -264,4 +264,32 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
 
         aikDoctorSickMapper.updateByPrimaryKeySelective(aikDoctorSick);
     }
+
+    @Override
+    public void attentionUser(Integer userId, Integer doctorId) throws ApiServiceException {
+        if (null == userId || null == doctorId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAttention doctorAttention = accDoctorAttentionMapper.selectByDoctorIdAndUserId(doctorId, userId);
+        if (null == doctorAttention) {
+            doctorAttention = new AccDoctorAttention();
+            doctorAttention.setUserId(userId);
+            doctorAttention.setDoctorId(doctorId);
+            doctorAttention.setCreateDate(new Date());
+            accDoctorAttentionMapper.insertSelective(doctorAttention);
+        }
+    }
+
+    @Override
+    public void cancelAttentionUser(Integer userId, Integer doctorId) throws ApiServiceException {
+        if (null == userId || null == doctorId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAttention doctorAttention = accDoctorAttentionMapper.selectByDoctorIdAndUserId(doctorId, userId);
+        if (null != doctorAttention) {
+            accDoctorAttentionMapper.deleteByPrimaryKey(doctorAttention.getId());
+        }
+    }
 }

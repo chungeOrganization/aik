@@ -26,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -281,6 +282,17 @@ public class PublicApi {
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
+        return result;
+    }
+
+    @GET
+    @Path("/getHotSearch/{type}")
+    public ApiResult getHotSearch(@PathParam("type") Integer type) {
+        ApiResult result = new ApiResult();
+
+        List<String> hotWorlds = new ArrayList<>();
+
+        result.withDataKV("hotWorlds", hotWorlds);
         return result;
     }
 }

@@ -27,7 +27,7 @@ public interface DoctorTipsService {
      * @return 返回新的py列表
      * @throws ApiServiceException Api服务异常
      */
-    List<Map<String, Object>> checkNewFrientTips(Integer doctorId) throws ApiServiceException;
+    List<Map<String, Object>> checkNewFriendTips(Integer doctorId) throws ApiServiceException;
 
     /**
      * 查看新的问题

@@ -87,7 +87,7 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
     }
 
     @Override
-    public List<Map<String, Object>> checkNewFrientTips(Integer doctorId) throws ApiServiceException {
+    public List<Map<String, Object>> checkNewFriendTips(Integer doctorId) throws ApiServiceException {
         List<Map<String, Object>> rsList = new ArrayList<>();
 
         // 新的朋友
