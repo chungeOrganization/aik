@@ -46,4 +46,6 @@ public interface FoodService {
      * @throws ApiServiceException Api服务异常
      */
     List<Map<String, Object>> getFoods(Map<String, Object> params) throws ApiServiceException;
+
+//    List<FoodRespDTO>
 }

@@ -24,6 +24,8 @@ public class DietFood {
 
     private BigDecimal carbsRadio;
 
+    private BigDecimal naRadio;
+
     private Byte type;
 
     private String weightUnit;
@@ -112,6 +114,14 @@ public class DietFood {
 
     public void setCarbsRadio(BigDecimal carbsRadio) {
         this.carbsRadio = carbsRadio;
+    }
+
+    public BigDecimal getNaRadio() {
+        return naRadio;
+    }
+
+    public void setNaRadio(BigDecimal naRadio) {
+        this.naRadio = naRadio;
     }
 
     public Byte getType() {

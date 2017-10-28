@@ -3,25 +3,26 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.request.user.BygoneDietRecordAnalyzeReqDTO;
+import com.aik.dto.request.user.GetFoodsForDietReqDTO;
 import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietPlan;
 import com.aik.model.DietDailyDietRecord;
+import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.diet.DietPlanService;
 import com.aik.service.diet.DietRecordService;
 import com.aik.service.diet.FoodService;
 import com.aik.service.diet.UserCollectService;
 import com.aik.util.DateUtils;
-import org.apache.http.auth.AUTH;
+import com.aik.vo.FoodBasicInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class DietPlanApi {
 
     private DietRecordService dietRecordService;
 
+    private SystemResource systemResource;
+
     @Inject
     public void setUserCollectService(UserCollectService userCollectService) {
         this.userCollectService = userCollectService;
@@ -62,6 +65,11 @@ public class DietPlanApi {
     @Inject
     public void setDietRecordService(DietRecordService dietRecordService) {
         this.dietRecordService = dietRecordService;
+    }
+
+    @Inject
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
     }
 
     @POST
@@ -463,6 +471,30 @@ public class DietPlanApi {
         } catch (ApiServiceException e) {
             logger.error("get bygone diet record analyze error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get bygone diet record analyze error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getFoodsForDiet")
+    public ApiResult getFoodsForDiet(GetFoodsForDietReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            // TODO
+            List<FoodBasicInfoVO> foods = new ArrayList<>();
+            FoodBasicInfoVO foodBasicInfoVO = new FoodBasicInfoVO();
+            foodBasicInfoVO.setId(1);
+            foodBasicInfoVO.setName("苹果");
+            foodBasicInfoVO.setHeadImg(systemResource.getApiFileUri() + "test.jpg");
+            result.withDataKV("foods", foods);
+//        } catch (ApiServiceException e) {
+//            logger.error("get bygone diet record analyze error: ", e);
+//            result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get bygone diet record analyze error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);

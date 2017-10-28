@@ -12,26 +12,7 @@
     <result column="proteinRadio" jdbcType="DECIMAL" property="proteinRadio" />
     <result column="fatRadio" jdbcType="DECIMAL" property="fatRadio" />
     <result column="carbsRadio" jdbcType="DECIMAL" property="carbsRadio" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
-    <result column="weight" jdbcType="INTEGER" property="weight" />
-    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
-  </resultMap>
-  
-  
-  <resultMap id="BaseResultMapVo" type="com.aik.vo.DietFoodVo">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="category" jdbcType="INTEGER" property="category" />
-    <result column="categoryName" jdbcType="VARCHAR" property="categoryName" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="recommend" jdbcType="VARCHAR" property="recommend" />
-    <result column="brightSpot" jdbcType="TINYINT" property="brightSpot" />
-    <result column="spotRank" jdbcType="INTEGER" property="spotRank" />
-    <result column="proteinRadio" jdbcType="DECIMAL" property="proteinRadio" />
-    <result column="fatRadio" jdbcType="DECIMAL" property="fatRadio" />
-    <result column="carbsRadio" jdbcType="DECIMAL" property="carbsRadio" />
+    <result column="naRadio" jdbcType="DECIMAL" property="naRadio" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
@@ -40,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, name, category, image, recommend, brightSpot, spotRank, proteinRadio, fatRadio, 
-    carbsRadio, type, weightUnit, weight, createDate, updateDate
+    carbsRadio, naRadio, type, weightUnit, weight, createDate, updateDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -56,15 +37,15 @@
     insert into diet_food (id, name, category, 
       image, recommend, brightSpot, 
       spotRank, proteinRadio, fatRadio, 
-      carbsRadio, type, weightUnit, 
-      weight, createDate, updateDate
-      )
+      carbsRadio, naRadio, type, 
+      weightUnit, weight, createDate, 
+      updateDate)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
       #{image,jdbcType=VARCHAR}, #{recommend,jdbcType=VARCHAR}, #{brightSpot,jdbcType=TINYINT}, 
       #{spotRank,jdbcType=INTEGER}, #{proteinRadio,jdbcType=DECIMAL}, #{fatRadio,jdbcType=DECIMAL}, 
-      #{carbsRadio,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{weightUnit,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{carbsRadio,jdbcType=DECIMAL}, #{naRadio,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, 
+      #{weightUnit,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.DietFood">
     insert into diet_food
@@ -98,6 +79,9 @@
       </if>
       <if test="carbsRadio != null">
         carbsRadio,
+      </if>
+      <if test="naRadio != null">
+        naRadio,
       </if>
       <if test="type != null">
         type,
@@ -146,6 +130,9 @@
       <if test="carbsRadio != null">
         #{carbsRadio,jdbcType=DECIMAL},
       </if>
+      <if test="naRadio != null">
+        #{naRadio,jdbcType=DECIMAL},
+      </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
       </if>
@@ -193,6 +180,9 @@
       <if test="carbsRadio != null">
         carbsRadio = #{carbsRadio,jdbcType=DECIMAL},
       </if>
+      <if test="naRadio != null">
+        naRadio = #{naRadio,jdbcType=DECIMAL},
+      </if>
       <if test="type != null">
         type = #{type,jdbcType=TINYINT},
       </if>
@@ -222,6 +212,7 @@
       proteinRadio = #{proteinRadio,jdbcType=DECIMAL},
       fatRadio = #{fatRadio,jdbcType=DECIMAL},
       carbsRadio = #{carbsRadio,jdbcType=DECIMAL},
+      naRadio = #{naRadio,jdbcType=DECIMAL},
       type = #{type,jdbcType=TINYINT},
       weightUnit = #{weightUnit,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
@@ -229,6 +220,24 @@
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.DietFoodVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="categoryName" jdbcType="VARCHAR" property="categoryName" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="recommend" jdbcType="VARCHAR" property="recommend" />
+    <result column="brightSpot" jdbcType="TINYINT" property="brightSpot" />
+    <result column="spotRank" jdbcType="INTEGER" property="spotRank" />
+    <result column="proteinRadio" jdbcType="DECIMAL" property="proteinRadio" />
+    <result column="fatRadio" jdbcType="DECIMAL" property="fatRadio" />
+    <result column="carbsRadio" jdbcType="DECIMAL" property="carbsRadio" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
     select id, image, name
     from diet_food
@@ -245,7 +254,7 @@
     limit ${(page-1)*size}, #{size}
   </select>
   
-  <select id="findAll" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMap">
+  <select id="findAll" parameterType="com.aik.model.DietFood" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from diet_food
@@ -264,7 +273,7 @@
     </if>
   </select>
   
-   <select id="findByPage" parameterType="com.aik.model.DietFood"  resultMap="BaseResultMapVo">
+   <select id="findByPage" parameterType="com.aik.model.DietFood" resultMap="BaseResultMapVo">
     select
      t.id, t.name, t.category, p.name categoryName, t.image, t.recommend, t.brightSpot, t.spotRank, t.proteinRadio, t.fatRadio, 
     t.carbsRadio, t.type, t.weightUnit, t.weight, t.createDate, t.updateDate

@@ -13,7 +13,6 @@ import com.aik.model.DietDailyNutrition;
 import com.aik.vo.DailyNutritionGradeVO;
 import com.aik.vo.NotQualifiedNutritionDetailVO;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationFieldType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +95,7 @@ public class DietRecordServiceImpl implements DietRecordService {
 
 
         // 营养补充
-        params.put("dietType", DietTypeEnum.NUTRITIONAL.getCode());
+        params.put("dietType", DietTypeEnum.ADD_NUTRITION.getCode());
         List<Map<String, Object>> nutritional = dietDailyDietRecordMapper.selectUserDietRecord(params);
         userDietRecord.put("nutritional", nutritional);
         userDietRecord.put("nutritionalRemark", 200);
@@ -104,7 +103,18 @@ public class DietRecordServiceImpl implements DietRecordService {
         for (Map<String, Object> dietRecord : breakfast) {
             nutritionalTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
         }
-        userDietRecord.put("dinnerTotalWeight", nutritionalTotalWeight);
+        userDietRecord.put("addNutritionTotalWeight", nutritionalTotalWeight);
+
+        // 膳食补充
+        params.put("dietType", DietTypeEnum.ADD_FOOD.getCode());
+        List<Map<String, Object>> addFood = dietDailyDietRecordMapper.selectUserDietRecord(params);
+        userDietRecord.put("addFood", addFood);
+        userDietRecord.put("addFoodRemark", 200);
+        int addFoodTotalWeight = 0;
+        for (Map<String, Object> dietRecord : breakfast) {
+            addFoodTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+        }
+        userDietRecord.put("addFoodTotalWeight", addFoodTotalWeight);
 
         return userDietRecord;
     }
