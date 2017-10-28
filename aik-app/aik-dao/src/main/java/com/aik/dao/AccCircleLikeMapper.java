@@ -2,6 +2,7 @@ package com.aik.dao;
 
 import com.aik.model.AccCircleLike;
 import com.aik.model.AikHrBloodSugar;
+import com.aik.vo.AccCircleLikeVo;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface AccCircleLikeMapper {
      * 获取所有数据
      * @return
      */
-    List<AccCircleLike> findAll(AccCircleLike record);
+    List<AccCircleLikeVo> findAll(AccCircleLike record);
 }

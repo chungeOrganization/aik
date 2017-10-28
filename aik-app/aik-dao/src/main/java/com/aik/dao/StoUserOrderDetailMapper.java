@@ -2,6 +2,7 @@ package com.aik.dao;
 
 import com.aik.model.StoUserOrder;
 import com.aik.model.StoUserOrderDetail;
+import com.aik.vo.StoUserOrderDetailVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface StoUserOrderDetailMapper {
      * 获取所有数据
      * @return
      */
-    List<StoUserOrderDetail> findAll(StoUserOrderDetail record);
+    List<StoUserOrderDetailVo> findAll(StoUserOrderDetail record);
 
     /**
      * 分页查询数据

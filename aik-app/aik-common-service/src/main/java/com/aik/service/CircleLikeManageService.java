@@ -7,6 +7,7 @@ import com.aik.model.AikHrBloodSugar;
 import com.aik.model.AikQuestionOrder;
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleLikeVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
@@ -57,6 +58,6 @@ public interface CircleLikeManageService {
      * @return
      * @throws Exception
      */
-    List<AccCircleLike> findAll(AccCircleLike accCircleLike) throws Exception;
+    List<AccCircleLikeVo> findAll(AccCircleLike accCircleLike) throws Exception;
     
 }

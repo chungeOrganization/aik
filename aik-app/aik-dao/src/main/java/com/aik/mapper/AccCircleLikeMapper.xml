@@ -7,6 +7,15 @@
     <result column="likerId" jdbcType="INTEGER" property="likerId" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.AccCircleLikeVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="circleId" jdbcType="INTEGER" property="circleId" />
+    <result column="likerId" jdbcType="INTEGER" property="likerId" />
+    <result column="likerName" jdbcType="VARCHAR" property="likerName" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  
+  
   <sql id="Base_Column_List">
     id, circleId, likerId, createDate
   </sql>
@@ -104,19 +113,20 @@
   </select>
   
   
-  <select id="findAll" parameterType="com.aik.model.AccCircleLike"  resultMap="BaseResultMap">
+  <select id="findAll" parameterType="com.aik.model.AccCircleLike"  resultMap="BaseResultMapVo">
     select
-    <include refid="Base_Column_List" />
-    from acc_circleLike
+    t.id, t.circleId, t.likerId,p.userName likerName, t.createDate
+    from acc_circleLike t
+     left join acc_userAccount p on t.circleId = p.id
     where 1=1
       <if test="id != null">
-      and id = #{id}
+      and t.id = #{id}
       </if>
       <if test="likerId != null">
-      and likerId = #{likerId}
+      and t.likerId = #{likerId}
     </if>
     <if test="circleId != null">
-      and circleId = #{circleId}
+      and t.circleId = #{circleId}
     </if>
   </select>
 </mapper>

@@ -89,7 +89,7 @@ public class GoodsOrderManageServiceImpl implements GoodsOrderManageService {
 
 
 	@Override
-	public List<StoUserOrder> findAll(StoUserOrder stoUserOrder) throws Exception {
+	public List<StoUserOrderVo> findAll(StoUserOrder stoUserOrder) throws Exception {
 		return stoUserOrderMapper.findAll(stoUserOrder);
 	}
 }

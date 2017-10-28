@@ -60,22 +60,29 @@ public class IndexController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,AccUserAccount accUserAccount) {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,SysUser sysUser) {
     	 ModelAndView result = new ModelAndView();
     	 
-    	 String userName = accUserAccount.getUserName();
-    	 String passWord = accUserAccount.getPassword();
+    	 String userName = sysUser.getUserName();
+    	 String passWord = sysUser.getPassword();
     	//登陆成功跳转到主页   否则 返回登陆界面
     	 try {
-			SysUser user = sysUserManageService.selectByUserName(userName);
-			if(user != null && user.getPassword().equalsIgnoreCase(MD5Utils.md5(passWord))){
-				 request.getSession().setAttribute("user", user);
-				 result = new ModelAndView("redirect:/index");
-	    		 logger.info("登陆癌康之家成功-->后台");
-			}else{
-				result = new ModelAndView("login_error");
-	   		 	logger.info("登陆癌康之家失败-->后台");
-			}
+    		//参数验证
+    		if(userName == null || passWord == null){
+    			result = new ModelAndView("redirect:/");
+	   		 	logger.info("登陆癌康之家失败-->用户名密码为空");
+    		}else{
+    			SysUser user = sysUserManageService.selectByUserName(userName);
+    			if(user != null && user.getPassword().equalsIgnoreCase(MD5Utils.md5(passWord))){
+    				 request.getSession().setAttribute("user", user);
+    				 result = new ModelAndView("redirect:/index");
+    	    		 logger.info("登陆癌康之家成功-->后台");
+    			}else{
+    				result = new ModelAndView("login_error");
+    	   		 	logger.info("登陆癌康之家失败-->用户不存在");
+    			}
+    		}
+			
 		} catch (Exception e) {
 			
 			result = new ModelAndView("redirect:/");

@@ -1,8 +1,10 @@
 package com.aik.service;
 
+import com.aik.model.AccMutualCircle;
 import com.aik.model.AikHealthRecord;
 import com.aik.model.StoUserOrder;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccMutualCircleVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
@@ -46,6 +48,15 @@ public interface HealthRecordManageService {
      * @throws Exception 异常
      */
     AikHealthRecord findById(Integer id) throws  Exception;
+    
+    
+    /**
+     * 查询所有互助圈-评论
+     * @param aikQuestionOrder
+     * @return
+     * @throws Exception
+     */
+    List<AikHealthRecordVo> findAll(AikHealthRecord aikHealthRecord) throws Exception;
     
     /**
      * 健康档案分页查询

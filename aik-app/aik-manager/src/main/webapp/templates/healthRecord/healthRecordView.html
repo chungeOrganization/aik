@@ -19,13 +19,13 @@
 				<tr>
 					<td>用户Id</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="userId"  data-describedby="userIdspan" id="userId" name="userId" th:value="${healthRecord.userId}" />
+						<input type="text" class="form-control r" readOnly="true" data-required="true"  data-description="userId"  data-describedby="userIdspan" id="userId" name="userId" th:value="${healthRecord.userId}" />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="userIdspan" style="color: #000000"></span>
 					</td>
 					<td>用户名</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${healthRecord.userId}" />
+						<input type="text" class="form-control r" readOnly="true" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${healthRecord.userName}" />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
 					</td>
@@ -223,7 +223,7 @@ var healthRecordView  = {
    						if(UiUtils.check("healthRecord_vfm")){
    							//updateAdmin();
    							var url = _this.basePath + "/healthRecord/update";
-							_this.ajaxSubmit(url);
+							_this.onSubmit(url);
    						}
    					}
     			});
@@ -249,10 +249,10 @@ var healthRecordView  = {
 			jQuery("#save_ar").remove();
 		},
 		//提交数据
-   		/* onSubmit: function(){
+   		 onSubmit: function(url){
    			var _this = this;
    			Ajax.request({
-   				url:"/partnerUpdate.htm",
+   				url: url;
    				type:"post",
    				data: {partner:JSON.stringify(_this.getFormData())},
    				success: function(data){
@@ -268,7 +268,7 @@ var healthRecordView  = {
    					});
    				}
    			});
-   		}, */
+   		}, 
    		//有图片的页面提交
    		ajaxSubmit: function(url){
    			var _this = this;
@@ -319,8 +319,8 @@ var healthRecordView  = {
 				
 				description : {
 				
-					name : {
-						required : '请输入商品名称'
+					userId : {
+						required : '请输入用户'
 					}
 				}
 				

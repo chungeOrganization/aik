@@ -15,6 +15,24 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  
+  <resultMap id="BaseResultMapVo" type="com.aik.vo.DietDailyNutritionVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="recordDate" jdbcType="DATE" property="recordDate" />
+    <result column="starttime" jdbcType="VARCHAR" property="starttime" />
+    <result column="endtime" jdbcType="VARCHAR" property="endtime" />
+    <result column="protein" jdbcType="DECIMAL" property="protein" />
+    <result column="lipid" jdbcType="DECIMAL" property="lipid" />
+    <result column="carbs" jdbcType="DECIMAL" property="carbs" />
+    <result column="vitamin" jdbcType="DECIMAL" property="vitamin" />
+    <result column="minerals" jdbcType="DECIMAL" property="minerals" />
+    <result column="water" jdbcType="DECIMAL" property="water" />
+    <result column="dietaryFiber" jdbcType="DECIMAL" property="dietaryFiber" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, userId, recordDate, protein, lipid, carbs, vitamin, minerals, water, dietaryFiber, 
     createDate, updateDate
@@ -179,5 +197,44 @@
     <include refid="Base_Column_List"/>
     from diet_dailyNutrition
     where userId = #{userId} and DATE(recordDate) = DATE(#{recordDate})
+  </select>
+  
+  <select id="findAll" parameterType="com.aik.model.DietDailyNutrition"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diet_dailyNutrition
+    where 1=1
+      <if test="id != null">
+      and id = #{id}
+      </if>
+      <if test="userId != null">
+      and userId = #{userId}
+    </if>
+  </select>
+  
+   <select id="findByPage" parameterType="com.aik.vo.DietDailyNutritionVo"  resultMap="BaseResultMapVo">
+    select
+    t.`id` id ,  a.`id` userId, a.`userName` userName, t.`recordDate` recordDate ,
+     t.`protein` protein, t.`lipid` lipid, t.`carbs` carbs , t.`vitamin` vitamin
+      , t.`minerals` minerals , t.`water` water , t.`dietaryFiber` dietaryFiber
+    FROM diet_dailyNutrition t ,  acc_userAccount a
+    where a.`id` = t.`userId`
+      <if test="id != null">
+      and t.id = #{id}
+      </if>
+      <if test="userId != null">
+      and t.userId = #{userId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.name = #{userName}
+    </if>
+    <if test="starttime !=null and starttime!='' ">
+        <![CDATA[ and DATE_FORMAT(t.recordDate,'%Y-%m-%d') >= #{starttime}]]>
+	</if>
+
+	<if test="endtime !=null and endtime!='' ">
+        <![CDATA[ and DATE_FORMAT(t.recordDate,'%Y-%m-%d') <= #{endtime} ]]>
+	</if>
+    
   </select>
 </mapper>

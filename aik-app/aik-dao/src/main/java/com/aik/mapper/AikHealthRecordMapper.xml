@@ -169,6 +169,20 @@
     order by createDate desc
     limit ${(page-1)*size}, #{size}
   </select>
+  
+  
+  <select id="findAll" parameterType="com.aik.model.AikHealthRecord"  resultMap="BaseResultMapVo">
+    select
+    t.id, t.userId, p.userName,t.height, t.weight, t.medicalRecord, t.remark, t.hwRecordDate, t.mrRecordDate, t.createDate
+    from aik_healthRecord t
+     left join acc_userAccount p on t.userId = p.id
+    where 1=1
+      <if test="id != null">
+      	and t.id = #{id}
+      </if>
+  </select>
+  
+  
   <select id="findByPage" parameterType="com.aik.vo.AikHealthRecordVo"  resultMap="BaseResultMapVo">
     select
      t.id, t.userId, p.userName, t.height, t.weight, t.remark, t.hwRecordDate, t.mrRecordDate, 

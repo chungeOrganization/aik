@@ -27,6 +27,7 @@
     from acc_mutualCircle
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from acc_mutualCircle
     where id = #{id,jdbcType=INTEGER}
@@ -118,6 +119,17 @@
       </foreach>
     </if>
     limit ${(page-1)*size}, #{size}
+  </select>
+  
+   <select id="findAll" parameterType="com.aik.model.AccMutualCircle"  resultMap="BaseResultMapVo">
+    select
+     t.id, t.userId, p.userName userName, t.content, t.isChoiceness, t.createDate
+    from acc_mutualCircle t
+     left join acc_userAccount p on t.userId = p.id
+    where 1=1
+      <if test="id != null">
+      	and t.id = #{id}
+      </if>
   </select>
   
   <select id="findByPage" parameterType="com.aik.vo.AccMutualCircleVo"  resultMap="BaseResultMapVo">

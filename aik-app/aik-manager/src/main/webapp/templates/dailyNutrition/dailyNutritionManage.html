@@ -18,19 +18,42 @@
 				</div>
 				<div class="portlet-body form">
 					<!-- BEGIN FORM-->
-					<form action="" id="carousel_mg" class="form-horizontal">
+					<form action="" id="dailyNutrition_mg" class="form-horizontal">
 						<div class="form-body">
+							
 							<!--/row-->
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label col-md-3">appNo</label>
+										<label class="control-label col-md-3">记录开始时间</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" name="appNo" />
+											<input readonly class="form-control date-picker" name="starttime" id="starttime" size="16" type="text" value=""
+											 data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">记录结束时间</label>
+										<div class="col-md-9">
+											<input readonly class="form-control date-picker" name="endtime" id="endtime" size="16" type="text" value=""
+											  data-date-format="yyyy-mm-dd" data-date-viewmode="years"/>
 										</div>
 									</div>
 								</div>
 							</div>
+							<!--/row-->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-md-3">用户名称</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="userName" />
+										</div>
+									</div>
+								</div>
+							</div>
+							
 							
 							<!--/row-->
 							<!-- <div class="row">
@@ -99,11 +122,11 @@
 						</div>
 						<div class="portlet-body">
 							<div class="table-toolbar">
-								<div class="btn-group">
+								<!-- <div class="btn-group">
 									<button id="add_ar" class="btn green">
 									添加 <i class="fa fa-plus"></i>
 									</button>
-								</div>
+								</div> -->
 								<!-- <div class="btn-group pull-right">
 									<button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i class="fa fa-angle-down"></i>
 									</button>
@@ -136,9 +159,9 @@
 	</div>
 </div>
 <script>
-	window.carouselPage = null;
-    var carouselPage = {
-    		fm : jQuery("#carousel_mg"),
+	window.dailyNutritionPage = null;
+    var dailyNutritionPage = {
+    		fm : jQuery("#dailyNutrition_mg"),
     		
     		basePath : jQuery("#basePath").val(),
     		//初始化
@@ -149,68 +172,23 @@
     		//事件绑定
     		bindEvent : function(){
     			var _this = this;
-    			//绑定添加单击事件
-    			jQuery("#add_ar").bind("click", function(){
-					Ajax.load({
-	    				url: _this.basePath + "/carousel/add",
-	    				tab: "2",
-	    				data:{},
-	    				iTab: true,
-	    				tabTitle: "添加轮播图"
-	    			});
-					return false;
-    			});
+    			
     			//绑定查询单击事件
+    			
+    			jQuery("#starttime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
+    			jQuery("#endtime").datepicker({
+    				language: 'zh-CN',
+    				autoclose:true
+    			});
     			jQuery("#query_ar").bind("click", function(){
     				_this.load(1);
     				return false;
     			});
     			//绑定查看单击事件
-    			jQuery("#list-content").delegate(".view", "click", function(){
-    				var _tr = jQuery(this).closest("tr"),
-    					userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
-    				Ajax.load({
-        				url: _this.basePath +"/carousel/view/"+userId,
-        				tab: "2",
-        				data:{},
-        				iTab: true,
-        				tabTitle: "查看轮播图"
-        			});
-    				return false;
-    			}).delegate(".edit", "click", function(){//绑定编辑单击事件
-    				var _tr = jQuery(this).closest("tr"),
-						userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
-					Ajax.load({
-	    				url: _this.basePath +"/carousel/edit/"+userId,
-	    				tab: "2",
-	    				data:{},
-	    				iTab: true,
-	    				tabTitle: "编辑轮播图"
-	    			});
-					return false;
-				}).delegate(".delect", "click", function(){//绑定删除单击事件
-					var _tr = jQuery(this).closest("tr"),
-						userId = jQuery.trim(_tr.children('td').eq(0).attr('id'));
-					Dialog.confirm({
-						content:'确定要删除?',
-						onSubmitted:function(){
-						
-						Ajax.request({
-		    				url: _this.basePath +"/carousel/delete/"+userId,
-		    				type:"get",
-		    				data:{},
-		    				success: function(data){
-		    					if(!data) return;
-		    					Dialog.notice({
-		    						content: data.info
-		    					});
-		    					_this.load(1);
-		    				}
-		    			});
-						}
-					});
-					return false;
-				}).delegate("li[data-pre=pageNum]", "click", function(){//绑定页码单击事件
+    			jQuery("#list-content").delegate("li[data-pre=pageNum]", "click", function(){//绑定页码单击事件
 	                var num = jQuery(this).find('a').attr("value");
 	                if(num > 0) {
 	                   _this.load(num);
@@ -238,7 +216,7 @@
     		load: function(num){
     			var _this = this;
     			Ajax.load({
-    				url: _this.basePath + "/carousel/goto/"+num,
+    				url: _this.basePath + "/dailyNutrition/goto/"+num,
     				data: _this.fm.serializeArray(), 
     				target:"#list-content"
     			});
@@ -247,6 +225,6 @@
   </script>
 <script>
 jQuery(document).ready(function() {    
-	carouselPage.init();
+	dailyNutritionPage.init();
 });
 </script>

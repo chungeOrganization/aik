@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleCommentVo;
 import com.aik.vo.AccMutualCircleVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
@@ -85,6 +86,12 @@ public class MutualCircleManageServiceImpl implements MutualCircleManageService 
             throw new Exception("互助圈查询,根据主键查询,主键为空");
         }
 		return accMutualCircleMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<AccMutualCircleVo> findAll(AccMutualCircle accMutualCircle)
+			throws Exception {
+		return accMutualCircleMapper.findAll(accMutualCircle);
 	}
 
 

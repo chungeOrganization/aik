@@ -3,6 +3,7 @@ package com.aik.service;
 import com.aik.dao.*;
 import com.aik.model.*;
 import com.aik.util.PageUtils;
+import com.aik.vo.AccCircleCommentVo;
 import com.aik.vo.AikHealthRecordVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
@@ -79,7 +80,7 @@ public class CircleCommentManageServiceImpl implements CircleCommentManageServic
 	}
 
 	@Override
-	public List<AccCircleComment> findAll(AccCircleComment accCircleComment)
+	public List<AccCircleCommentVo> findAll(AccCircleComment accCircleComment)
 			throws Exception {
 		return accCircleCommentMapper.findAll(accCircleComment);
 	}

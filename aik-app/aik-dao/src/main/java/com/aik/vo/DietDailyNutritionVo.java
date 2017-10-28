@@ -1,8 +1,9 @@
 package com.aik.vo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class DietDailyDietPlanVo {
+public class DietDailyNutritionVo {
     private Integer id;
 
     private Integer userId;
@@ -15,13 +16,19 @@ public class DietDailyDietPlanVo {
     
     private String endtime;//记录结束时间
 
-    private Integer foodId;
-    
-    private String foodName;
+    private BigDecimal protein;
 
-    private Integer weight;
+    private BigDecimal lipid;
 
-    private Byte dietType;
+    private BigDecimal carbs;
+
+    private BigDecimal vitamin;
+
+    private BigDecimal minerals;
+
+    private BigDecimal water;
+
+    private BigDecimal dietaryFiber;
 
     private Date createDate;
 
@@ -51,28 +58,60 @@ public class DietDailyDietPlanVo {
         this.recordDate = recordDate;
     }
 
-    public Integer getFoodId() {
-        return foodId;
+    public BigDecimal getProtein() {
+        return protein;
     }
 
-    public void setFoodId(Integer foodId) {
-        this.foodId = foodId;
+    public void setProtein(BigDecimal protein) {
+        this.protein = protein;
     }
 
-    public Integer getWeight() {
-        return weight;
+    public BigDecimal getLipid() {
+        return lipid;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setLipid(BigDecimal lipid) {
+        this.lipid = lipid;
     }
 
-    public Byte getDietType() {
-        return dietType;
+    public BigDecimal getCarbs() {
+        return carbs;
     }
 
-    public void setDietType(Byte dietType) {
-        this.dietType = dietType;
+    public void setCarbs(BigDecimal carbs) {
+        this.carbs = carbs;
+    }
+
+    public BigDecimal getVitamin() {
+        return vitamin;
+    }
+
+    public void setVitamin(BigDecimal vitamin) {
+        this.vitamin = vitamin;
+    }
+
+    public BigDecimal getMinerals() {
+        return minerals;
+    }
+
+    public void setMinerals(BigDecimal minerals) {
+        this.minerals = minerals;
+    }
+
+    public BigDecimal getWater() {
+        return water;
+    }
+
+    public void setWater(BigDecimal water) {
+        this.water = water;
+    }
+
+    public BigDecimal getDietaryFiber() {
+        return dietaryFiber;
+    }
+
+    public void setDietaryFiber(BigDecimal dietaryFiber) {
+        this.dietaryFiber = dietaryFiber;
     }
 
     public Date getCreateDate() {
@@ -99,14 +138,6 @@ public class DietDailyDietPlanVo {
 		this.userName = userName;
 	}
 
-	public String getFoodName() {
-		return foodName;
-	}
-
-	public void setFoodName(String foodName) {
-		this.foodName = foodName;
-	}
-
 	public String getStarttime() {
 		return starttime;
 	}
@@ -123,5 +154,6 @@ public class DietDailyDietPlanVo {
 		this.endtime = endtime;
 	}
     
+	
     
 }

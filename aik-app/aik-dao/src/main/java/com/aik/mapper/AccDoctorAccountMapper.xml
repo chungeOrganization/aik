@@ -555,11 +555,11 @@
       and deleteStatus = #{deleteStatus,jdbcType=TINYINT}
     </if>
     <if test="starttime !=null and starttime!='' ">
-        <![CDATA[ and to_char(createDate,'YYYY-MM-DD') >= #{startTime}]]>
+        <![CDATA[ and DATE_FORMAT(createDate,'%Y-%m-%d') >= #{starttime}]]>
 	</if>
 
 	<if test="endtime !=null and endtime!='' ">
-        <![CDATA[ and to_char(createDate,'YYYY-MM-DD') <= #{endTime} ]]>
+        <![CDATA[ and DATE_FORMAT(createDate,'%Y-%m-%d') <= #{endtime} ]]>
 	</if>
     
   </select>

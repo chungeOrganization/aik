@@ -20,6 +20,7 @@ import com.aik.model.StoUserOrderDetail;
 import com.aik.service.GoodsOrderDetailManageService;
 import com.aik.service.GoodsOrderManageService;
 import com.aik.util.PageUtils;
+import com.aik.vo.StoUserOrderDetailVo;
 import com.aik.vo.StoUserOrderVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -106,10 +107,17 @@ public class GoodsOrderController {
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable Integer id) {
     	ModelAndView result = new ModelAndView("goodsOrder/goodsOrderView");
-    	StoUserOrder stoUserOrder = new StoUserOrder();
-    	List<StoUserOrderDetail> stoUserOrderDetails = new ArrayList();
+    	StoUserOrderVo stoUserOrderVo = new StoUserOrderVo();
+    	List<StoUserOrderVo> stoUserOrders = new ArrayList();
+
+    	List<StoUserOrderDetailVo> stoUserOrderDetails = new ArrayList();
  		try {
- 			stoUserOrder = goodsOrderManageService.findById(id);
+ 	    	StoUserOrder stoUserOrder = new StoUserOrder();
+ 	    	stoUserOrder.setId(id);
+ 	    	stoUserOrders = goodsOrderManageService.findAll(stoUserOrder);
+ 	    	if(stoUserOrders != null && stoUserOrders.size() > 0){
+ 	    		stoUserOrderVo = stoUserOrders.get(0);
+ 	    	}
  			StoUserOrderDetail stoUserOrderDetail = new StoUserOrderDetail();
  			stoUserOrderDetail.setOrderId(stoUserOrder.getId());
  			stoUserOrderDetails =  goodsOrderDetailManageService.findAll(stoUserOrderDetail);
@@ -118,7 +126,7 @@ public class GoodsOrderController {
  			logger.error("商品订单信息编辑查询", e.getMessage());
 		}
  		result.addObject("opt", "edit");
- 		result.addObject("stoUserOrder", stoUserOrder);
+ 		result.addObject("stoUserOrder", stoUserOrderVo);
  		result.addObject("stoUserOrderDetails", stoUserOrderDetails);
         return result;
     }
@@ -133,11 +141,17 @@ public class GoodsOrderController {
     @RequestMapping(value = "/view/{id}")
     public ModelAndView view(@PathVariable Integer id) {
         ModelAndView result = new ModelAndView("goodsOrder/goodsOrderView");
-        StoUserOrder stoUserOrder = new StoUserOrder();
-    	List<StoUserOrderDetail> stoUserOrderDetails = new ArrayList();
+        StoUserOrderVo stoUserOrderVo = new StoUserOrderVo();
+    	List<StoUserOrderVo> stoUserOrders = new ArrayList();
 
-		try {
-			stoUserOrder = goodsOrderManageService.findById(id);
+    	List<StoUserOrderDetailVo> stoUserOrderDetails = new ArrayList();
+ 		try {
+ 	    	StoUserOrder stoUserOrder = new StoUserOrder();
+ 	    	stoUserOrder.setId(id);
+ 	    	stoUserOrders = goodsOrderManageService.findAll(stoUserOrder);
+ 	    	if(stoUserOrders != null && stoUserOrders.size() > 0){
+ 	    		stoUserOrderVo = stoUserOrders.get(0);
+ 	    	}
 			StoUserOrderDetail stoUserOrderDetail = new StoUserOrderDetail();
  			stoUserOrderDetail.setOrderId(stoUserOrder.getId());
  			stoUserOrderDetails =  goodsOrderDetailManageService.findAll(stoUserOrderDetail);
@@ -146,7 +160,7 @@ public class GoodsOrderController {
  			logger.error("商品订单信息明细查询", e);
 		}
 		result.addObject("opt", "view");
-		result.addObject("stoUserOrder", stoUserOrder);
+		result.addObject("stoUserOrder", stoUserOrderVo);
  		result.addObject("stoUserOrderDetails", stoUserOrderDetails);
 
         return result;

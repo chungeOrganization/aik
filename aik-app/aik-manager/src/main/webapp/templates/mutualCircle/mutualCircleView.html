@@ -25,7 +25,7 @@
 					</td>
 					<td>用户名</td>
 					<td>
-						<input type="text" class="form-control r" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${mutualCircle.userId}" />
+						<input type="text" class="form-control r" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${mutualCircle.userName}" />
 						<span class="required">*</span>
 						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
 					</td>
@@ -58,7 +58,7 @@
 					</thead>
 					<tbody>
 					<tr class="odd gradeX"  th:each="accCircleLike,iterStat : ${accCircleLikes}"  >
-						<td th:text="${accCircleLike.userId}"></td>
+						<td th:text="${accCircleLike.likerName}"></td>
 						<td>
 							<span th:if="${accCircleLike.createDate ne null}">
 								<span th:text="${#dates.format(accCircleLike.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
@@ -90,7 +90,7 @@
 					</thead>
 					<tbody>
 					<tr class="odd gradeX"  th:each="accCircleComment,iterStat : ${accCircleComments}"  >
-						<td th:text="${accCircleComment.commenterId}"></td>
+						<td th:text="${accCircleComment.commenterName}"></td>
 						<td th:text="${accCircleComment.content}"></td>
 						<td>
 						<span th:if="${accCircleComment.createDate ne null}">
