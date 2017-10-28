@@ -370,7 +370,7 @@ public class DoctorCenterApi {
     }
 
     @POST
-    @Path("/validPayPassword")
+    @Path("/resetPayPassword")
     public ApiResult resetPayPassword(ResetPayPasswordReqDTO reqDTO) {
         ApiResult result = new ApiResult();
         try {

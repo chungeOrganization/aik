@@ -51,15 +51,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(this.tokenHeader);
 
         // 打印header
-        String contentType = "";
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while(headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            logger.debug("request header: " + name + "[" + request.getHeader(name) + "]" );
-            if (name.equals("content-type")) {
-                contentType = request.getHeader(name);
-            }
-        }
+//        String contentType = "";
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while(headerNames.hasMoreElements()) {
+//            String name = headerNames.nextElement();
+//            logger.debug("request header: " + name + "[" + request.getHeader(name) + "]" );
+//            if (name.equals("content-type")) {
+//                contentType = request.getHeader(name);
+//            }
+//        }
 
         // 获取multipart/form-data 请求正文
 //        if (contentType.contains("multipart/form-data")) {

@@ -197,4 +197,12 @@ public class AuthApi {
 
         return result;
     }
+
+    @POST
+    @Path("/auth/logout")
+    public ApiResult logout() {
+        ApiResult result = new ApiResult();
+
+        return result;
+    }
 }

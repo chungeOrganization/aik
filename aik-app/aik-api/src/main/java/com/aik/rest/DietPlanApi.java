@@ -459,7 +459,7 @@ public class DietPlanApi {
         return result;
     }
 
-    @GET
+    @POST
     @Path("/getBygoneDietRecordAnalyze")
     public ApiResult getBygoneDietRecordAnalyze(BygoneDietRecordAnalyzeReqDTO reqDTO) {
         ApiResult result = new ApiResult();
@@ -479,7 +479,7 @@ public class DietPlanApi {
         return result;
     }
 
-    @GET
+    @POST
     @Path("/getFoodsForDiet")
     public ApiResult getFoodsForDiet(GetFoodsForDietReqDTO reqDTO) {
         ApiResult result = new ApiResult();
