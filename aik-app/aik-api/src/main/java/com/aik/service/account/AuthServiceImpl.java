@@ -2,6 +2,7 @@ package com.aik.service.account;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AccDoctorAccountMapper;
+import com.aik.dao.AccDoctorWalletMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
@@ -9,6 +10,7 @@ import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
+import com.aik.model.AccDoctorWallet;
 import com.aik.model.AccUserAccount;
 import com.aik.security.JwtTokenUtil;
 import com.aik.security.JwtUser;
@@ -52,6 +54,8 @@ public class AuthServiceImpl implements AuthService {
 
     private JwtTokenUtil jwtTokenUtil;
 
+    private AccDoctorWalletMapper accDoctorWalletMapper;
+
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -94,6 +98,11 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
+    }
+
+    @Autowired
+    public void setAccDoctorWalletMapper(AccDoctorWalletMapper accDoctorWalletMapper) {
+        this.accDoctorWalletMapper = accDoctorWalletMapper;
     }
 
     @Override
@@ -144,6 +153,12 @@ public class AuthServiceImpl implements AuthService {
         if (StringUtils.isNotBlank(reqDTO.getFileUrl())) {
             doctorAccountService.uploadDoctorFile(doctorAccount.getId(), reqDTO.getFileUrl());
         }
+
+        // 医生钱包
+        AccDoctorWallet doctorWallet = new AccDoctorWallet();
+        doctorWallet.setId(doctorAccount.getId());
+        doctorWallet.setCreateTime(new Date());
+        accDoctorWalletMapper.insert(doctorWallet);
 
         return doctorAccount;
     }

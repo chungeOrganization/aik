@@ -8,6 +8,8 @@ public class ResetPayPasswordReqDTO {
 
     private Integer accountId;
 
+    private String mobileNo;
+
     private String securityCode;
 
     private String payPassword;
@@ -18,6 +20,14 @@ public class ResetPayPasswordReqDTO {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
     }
 
     public String getSecurityCode() {

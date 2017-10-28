@@ -1,7 +1,9 @@
 package com.aik.service.account;
 
 import com.aik.dto.DoctorInfoDTO;
+import com.aik.dto.request.doctor.PayPasswordReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
@@ -128,4 +130,30 @@ public interface DoctorAccountService {
      * @throws ApiServiceException
      */
     void rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) throws ApiServiceException;
+
+    /**
+     * 设置支付密码
+     *
+     * @param reqDTO DTO
+     * @throws ApiServiceException
+     */
+    void setPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 校验支付密码
+     *
+     * @param reqDTO DTO
+     * @return true false
+     * @throws ApiServiceException
+     */
+    Boolean validPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 重置支付密码
+     *
+     * @param reqDTO DTO
+     * @return true false
+     * @throws ApiServiceException
+     */
+    void resetPayPassword(ResetPayPasswordReqDTO reqDTO) throws ApiServiceException;
 }

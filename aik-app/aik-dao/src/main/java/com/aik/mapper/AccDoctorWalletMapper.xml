@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.aik.model.AccDoctorWallet">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="payPassword" jdbcType="VARCHAR" property="payPassword" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, amount, createTime, updateTime
+    id, amount, payPassword, createTime, updateTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,10 +22,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.aik.model.AccDoctorWallet">
-    insert into acc_doctorWallet (id, amount, createTime, 
-      updateTime)
-    values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into acc_doctorWallet (id, amount, payPassword, 
+      createTime, updateTime)
+    values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{payPassword,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.AccDoctorWallet">
     insert into acc_doctorWallet
@@ -34,6 +35,9 @@
       </if>
       <if test="amount != null">
         amount,
+      </if>
+      <if test="payPassword != null">
+        payPassword,
       </if>
       <if test="createTime != null">
         createTime,
@@ -49,6 +53,9 @@
       <if test="amount != null">
         #{amount,jdbcType=DECIMAL},
       </if>
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -63,6 +70,9 @@
       <if test="amount != null">
         amount = #{amount,jdbcType=DECIMAL},
       </if>
+      <if test="payPassword != null">
+        payPassword = #{payPassword,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -75,6 +85,7 @@
   <update id="updateByPrimaryKey" parameterType="com.aik.model.AccDoctorWallet">
     update acc_doctorWallet
     set amount = #{amount,jdbcType=DECIMAL},
+      payPassword = #{payPassword,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

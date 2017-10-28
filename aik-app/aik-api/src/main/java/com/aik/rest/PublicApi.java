@@ -295,4 +295,17 @@ public class PublicApi {
         result.withDataKV("hotWorlds", hotWorlds);
         return result;
     }
+
+    @GET
+    @Path("/getLatestVersion/{devType}")
+    public ApiResult getLatestVersion() {
+        ApiResult result = new ApiResult();
+        try {
+            result.withDataKV("version", "1.0.0");
+        } catch (Exception e) {
+            logger.error("get latest version error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+        return result;
+    }
 }

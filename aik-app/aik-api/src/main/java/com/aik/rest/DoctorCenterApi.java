@@ -336,7 +336,16 @@ public class DoctorCenterApi {
     @Path("/setPayPassword")
     public ApiResult setPayPassword(PayPasswordReqDTO reqDTO) {
         ApiResult result = new ApiResult();
-        // TODO:设置密码
+        try {
+            reqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            doctorAccountService.setPayPassword(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("set pay password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("set pay password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
 
         return result;
     }
@@ -345,7 +354,17 @@ public class DoctorCenterApi {
     @Path("/validPayPassword")
     public ApiResult validPayPassword(PayPasswordReqDTO reqDTO) {
         ApiResult result = new ApiResult();
-        // TODO:校验密码
+        try {
+            reqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            boolean validRs = doctorAccountService.validPayPassword(reqDTO);
+            result.withDataKV("validRs", validRs);
+        } catch (ApiServiceException e) {
+            logger.error("valid pay password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("valid pay password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
 
         return result;
     }
@@ -354,7 +373,24 @@ public class DoctorCenterApi {
     @Path("/validPayPassword")
     public ApiResult resetPayPassword(ResetPayPasswordReqDTO reqDTO) {
         ApiResult result = new ApiResult();
-        // TODO:校验密码
+        try {
+            // 校验验证码
+            boolean validRs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_RESET_PAY_PASSWORD.getType()),
+                    reqDTO.getMobileNo(), reqDTO.getSecurityCode());
+
+            if (!validRs) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001002);
+            }
+
+            reqDTO.setAccountId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            doctorAccountService.resetPayPassword(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("reset pay password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("reset pay password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
 
         return result;
     }

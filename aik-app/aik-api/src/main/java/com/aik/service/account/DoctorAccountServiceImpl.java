@@ -3,7 +3,9 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.*;
 import com.aik.dto.DoctorInfoDTO;
+import com.aik.dto.request.doctor.PayPasswordReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
+import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
@@ -289,6 +291,49 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         updateDoctorAccount.setMobileNo(rebindingMobileReqDTO.getMobileNo());
         updateDoctorAccount.setUpdateDate(new Date());
         accDoctorAccountMapper.updateByPrimaryKeySelective(updateDoctorAccount);
+    }
+
+    @Override
+    public void setPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        if (!StringValidUtils.validPayPassword(reqDTO.getPayPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        AccDoctorWallet doctorWallet = accDoctorWalletMapper.selectByPrimaryKey(reqDTO.getAccountId());
+        doctorWallet.setPayPassword(MD5Utils.md5(reqDTO.getPayPassword()));
+        doctorWallet.setUpdateTime(new Date());
+        accDoctorWalletMapper.updateByPrimaryKeySelective(doctorWallet);
+    }
+
+    @Override
+    public Boolean validPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorWallet doctorWallet = accDoctorWalletMapper.selectByPrimaryKey(reqDTO.getAccountId());
+
+        return doctorWallet.getPayPassword().equals(reqDTO.getPayPassword());
+    }
+
+    @Override
+    public void resetPayPassword(ResetPayPasswordReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        if (!StringValidUtils.validPayPassword(reqDTO.getPayPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        AccDoctorWallet doctorWallet = accDoctorWalletMapper.selectByPrimaryKey(reqDTO.getAccountId());
+        doctorWallet.setPayPassword(MD5Utils.md5(reqDTO.getPayPassword()));
+        doctorWallet.setUpdateTime(new Date());
+        accDoctorWalletMapper.updateByPrimaryKeySelective(doctorWallet);
     }
 
     /**

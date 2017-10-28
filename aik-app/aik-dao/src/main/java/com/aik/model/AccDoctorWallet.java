@@ -8,6 +8,8 @@ public class AccDoctorWallet {
 
     private BigDecimal amount;
 
+    private String payPassword;
+
     private Date createTime;
 
     private Date updateTime;
@@ -26,6 +28,14 @@ public class AccDoctorWallet {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword == null ? null : payPassword.trim();
     }
 
     public Date getCreateTime() {

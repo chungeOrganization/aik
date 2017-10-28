@@ -46,6 +46,23 @@ public class StringValidUtils {
     }
 
     /**
+     * 验证支付密码是否符合要求
+     *
+     * @param password 密码
+     * @return true：验证通过 false：验证失败
+     */
+    public static boolean validPayPassword(String password) {
+        if (StringUtils.isBlank(password)) {
+            return false;
+        }
+
+        String regExp = "^\\d{6}$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(password);
+        return m.matches();
+    }
+
+    /**
      * 验证用户名
      *
      * @param userName 用户名
