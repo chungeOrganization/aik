@@ -2,10 +2,7 @@ package com.aik.service.relation;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.assist.RelationTypeUtil;
-import com.aik.dao.AccDoctorAccountMapper;
-import com.aik.dao.AccDoctorAttentionMapper;
-import com.aik.dao.AccUserAccountMapper;
-import com.aik.dao.AccUserAttentionMapper;
+import com.aik.dao.*;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
 import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
 import com.aik.dto.response.user.GetAttentionUserRespDTO;
@@ -47,6 +44,8 @@ public class UserAttentionServiceImpl implements UserAttentionService {
 
     private DoctorTipsService doctorTipsService;
 
+    private AikDoctorSickMapper aikDoctorSickMapper;
+
     @Resource
     private SystemResource systemResource;
 
@@ -78,6 +77,11 @@ public class UserAttentionServiceImpl implements UserAttentionService {
     @Autowired
     public void setDoctorTipsService(DoctorTipsService doctorTipsService) {
         this.doctorTipsService = doctorTipsService;
+    }
+
+    @Autowired
+    public void setAikDoctorSickMapper(AikDoctorSickMapper aikDoctorSickMapper) {
+        this.aikDoctorSickMapper = aikDoctorSickMapper;
     }
 
     @Override
@@ -233,6 +237,18 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             doctorTip.setRelationId(userAttention.getId());
             doctorTip.setTipsMessage("您有新的朋友关注");
             doctorTipsService.addDoctorTips(doctorTip);
+        }
+
+        AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, userId);
+        if (null == doctorSick) {
+            doctorSick = new AikDoctorSick();
+            doctorSick.setDoctorId(doctorId);
+            doctorSick.setUserId(userId);
+            doctorSick.setCreateDate(new Date());
+
+            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userId);
+            doctorSick.setRemark(userAccount.getRealName());
+            aikDoctorSickMapper.insertSelective(doctorSick);
         }
     }
 

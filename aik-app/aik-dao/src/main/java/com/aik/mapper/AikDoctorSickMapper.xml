@@ -149,4 +149,10 @@
     inner join acc_userAccount ua on ds.userId = ua.id
     where 1=1 and ds.id = #{sickId}
   </select>
+  <select id="selectByDoctorIdAndUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_doctorSick
+    where doctorId = #{doctorId} and userId = #{userId} limit 1
+  </select>
 </mapper>

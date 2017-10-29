@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikDoctorSick;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,6 @@ public interface AikDoctorSickMapper {
     List<Map<String, Object>> selectListByParams(Map<String, Object> params);
 
     Map<String, Object> selectSickDetailBySickId(Integer sickId);
+
+    AikDoctorSick selectByDoctorIdAndUserId(@Param("doctorId") Integer doctorId, @Param("userId") Integer userId);
 }

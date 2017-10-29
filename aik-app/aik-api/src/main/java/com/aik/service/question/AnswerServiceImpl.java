@@ -72,6 +72,9 @@ public class AnswerServiceImpl implements AnswerService {
             Date birthday = null != map.get("sickBirthday") ? (Date) map.get("sickBirthday") : null;
             map.remove("sickBirthday");
             map.put("sickAge", ScrawlUtils.getAgeFromBirthday(birthday));
+
+            map.put("sickDetail", ScrawlUtils.aikStringOmit(map.get("sickDetail").toString()));
+            map.put("answerDetail", ScrawlUtils.aikStringOmit(map.get("answerDetail").toString()));
         }
         return rsList;
     }

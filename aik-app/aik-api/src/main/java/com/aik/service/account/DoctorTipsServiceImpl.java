@@ -101,6 +101,12 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
 
         // question tips
         List<Map<String, Object>> questionTipsList = aikDoctorTipsMapper.selectQuestionTipsByDoctorId(doctorId);
+        for (Map<String, Object> questionTip : questionTipsList) {
+            questionTip.put("createDate", DateUtils.aikPersonaliseDate((Date) questionTip.get("createDate")));
+            if (null != questionTip.get("headImg")) {
+                questionTip.put("headImg", systemResource.getApiFileUri() + questionTip.get("headImg").toString());
+            }
+        }
         rsList.addAll(questionTipsList);
 
         return rsList;

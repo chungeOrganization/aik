@@ -96,7 +96,7 @@
       #{evaluation,jdbcType=VARCHAR}, #{serviceAttitude,jdbcType=TINYINT}, #{answerQuality,jdbcType=TINYINT}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AikQuestionOrder">
+  <insert id="insertSelective" parameterType="com.aik.model.AikQuestionOrder" useGeneratedKeys="true" keyProperty="id">
     insert into aik_questionOrder
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

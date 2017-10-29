@@ -333,7 +333,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
                 // 获取图片信息
                 AccUserFile searchAU = new AccUserFile();
                 searchAU.setUserId(questionOrder.getUserId());
-                searchAU.setType(UserFileTypeEnum.ORDER_REFUND_FILE.getCode());
+                searchAU.setType(UserFileTypeEnum.QUESTION_FILE.getCode());
                 searchAU.setRelationId(questionOrder.getId());
                 List<String> files = accUserFileMapper.selectFilesBySelective(searchAU);
                 for (int i = 0; i < files.size(); i++) {
