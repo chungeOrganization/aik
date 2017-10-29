@@ -45,7 +45,7 @@ public class SendSmsRespDTO {
         this.result = result;
     }
 
-    class SendSmsResult {
+    public class SendSmsResult {
         private int count;
         private int fee;
         private String sid;

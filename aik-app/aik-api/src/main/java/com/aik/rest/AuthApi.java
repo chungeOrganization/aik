@@ -59,8 +59,7 @@ public class AuthApi {
         ApiResult result = new ApiResult();
 
         try {
-            AccDoctorAccount doctorAccount = authService.doctorRegister(reqDTO);
-            result.withDataKV("accountId", doctorAccount.getId());
+            authService.doctorRegister(reqDTO);
         } catch (ApiServiceException e) {
             logger.error("doctor register error: ", e);
             result.withFailResult(e.getErrorCodeEnum());

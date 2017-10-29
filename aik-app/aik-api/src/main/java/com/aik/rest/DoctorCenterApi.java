@@ -395,7 +395,6 @@ public class DoctorCenterApi {
         return result;
     }
 
-
     @POST
     @Path("/addBankCard")
     public ApiResult addBankCard(AccDoctorBankCard bankCard) {

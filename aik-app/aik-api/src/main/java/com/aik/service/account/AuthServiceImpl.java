@@ -8,6 +8,7 @@ import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
+import com.aik.enums.DoctorIsCompleteInfoEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccDoctorWallet;
@@ -28,6 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -106,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AccDoctorAccount doctorRegister(DoctorRegisterReqDTO reqDTO) throws ApiServiceException {
         if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -146,6 +149,7 @@ public class AuthServiceImpl implements AuthService {
         doctorAccount.setDepartmentPhone(reqDTO.getDepartmentPhone());
         doctorAccount.setDevType(reqDTO.getDevType());
         doctorAccount.setCreateDate(new Date());
+        doctorAccount.setIsCompleteInfo(DoctorIsCompleteInfoEnum.TRUE.getCode());
 
         accDoctorAccountMapper.insertSelective(doctorAccount);
 
@@ -158,7 +162,7 @@ public class AuthServiceImpl implements AuthService {
         AccDoctorWallet doctorWallet = new AccDoctorWallet();
         doctorWallet.setId(doctorAccount.getId());
         doctorWallet.setCreateTime(new Date());
-        accDoctorWalletMapper.insert(doctorWallet);
+        accDoctorWalletMapper.insertSelective(doctorWallet);
 
         return doctorAccount;
     }

@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -143,6 +144,7 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean validSecurityCode(String codeTypeStr, String mobileNo, String securityCode) throws ApiServiceException {
         if (StringUtils.isBlank(codeTypeStr) || StringUtils.isBlank(mobileNo) || StringUtils.isBlank(securityCode)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);

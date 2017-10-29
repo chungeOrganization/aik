@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class SendSmsUtils {
         try {
             String response = HttpClientUtils.doGet(sendSmsProperties.getApi(), params, DEFAULT_ENCODE_CHARSET);
             logger.debug("send sms response:[{}]", response);
+            response = "{" + response + "}";
             ObjectMapper objectMapper = new ObjectMapper();
             SendSmsRespDTO sendSmsResp = objectMapper.convertValue(response, SendSmsRespDTO.class);
             if (SEND_SMS_OK_CODE == sendSmsResp.getError_code()) {
@@ -74,5 +76,12 @@ public class SendSmsUtils {
         }
 
         return false;
+    }
+
+    public static void main(String[] args) throws IOException {
+        String response = "{\"reason\":\"操作成功\",\"result\":{\"sid\":\"172910525209012167\",\"fee\":1,\"count\":1},\"error_code\":0}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        SendSmsRespDTO sendSmsResp2 = objectMapper.readValue(response, SendSmsRespDTO.class);
+        System.out.println(sendSmsResp2);
     }
 }

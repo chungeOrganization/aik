@@ -13,6 +13,7 @@ import com.aik.service.account.InviteCodeService;
 import com.aik.service.account.SecurityCodeService;
 import com.aik.service.account.UserAccountService;
 import com.aik.util.AikFileUtils;
+import com.aik.vo.AreaVO;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -183,6 +184,38 @@ public class PublicApi {
             result.withDataKV("areas", areas);
         } catch (Exception e) {
             logger.error("get areas error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getFullAreas")
+    public ApiResult getFullAreas() {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<AreaVO> areas = areaService.getProvinceCityArea();
+            result.withDataKV("areas", areas);
+        } catch (Exception e) {
+            logger.error("get three lv areas error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getProvinceHospitals")
+    public ApiResult getProvinceHospitals() {
+        ApiResult result = new ApiResult();
+
+        try {
+            Map<String, List<String>> areaHospitals = areaService.getProvinceHospitals();
+            result.withDataKV("areaHospitals", areaHospitals);
+        } catch (Exception e) {
+            logger.error("get province hospitals error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
