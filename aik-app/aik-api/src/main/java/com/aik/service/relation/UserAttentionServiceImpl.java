@@ -230,7 +230,7 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             AikDoctorTips doctorTip = new AikDoctorTips();
             doctorTip.setDoctorId(doctorId);
             doctorTip.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
-            doctorTip.setRelationId(userId);
+            doctorTip.setRelationId(userAttention.getId());
             doctorTip.setTipsMessage("您有新的朋友关注");
             doctorTipsService.addDoctorTips(doctorTip);
         }

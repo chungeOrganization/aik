@@ -91,7 +91,7 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         friendTips.put("headImg", sysSettingService.getNewFriendHeadImg());
         friendTips.put("name", "新的朋友");
         friendTips.put("message", "您有新的粉丝，点击查看");
-        if (null != friendTipsList.get(0)) {
+        if (friendTipsList.size() > 0) {
             friendTips.put("createDate", DateUtils.aikPersonaliseDate(friendTipsList.get(0).getCreateDate()));
         } else {
             friendTips.put("createDate", "");
@@ -118,10 +118,14 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         List<AikDoctorTips> friendTipsList = aikDoctorTipsMapper.selectBySelective(friendSearchDT);
         for (AikDoctorTips doctorTips : friendTipsList) {
             AccUserAttention userAttention = accUserAttentionMapper.selectByPrimaryKey(doctorTips.getRelationId());
+            if (null == userAttention) {
+                continue;
+            }
+
             AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userAttention.getUserId());
 
             Map<String, Object> map = new HashMap<>();
-            map.put("headImg", userAccount.getHeadImg());
+            map.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
             map.put("realName", userAccount.getRealName());
             map.put("sex", SexEnum.getDescFromCode(userAccount.getSex()));
             map.put("userType", UserAccountUserTypeEnum.getDescFromCode(userAccount.getUserType()));

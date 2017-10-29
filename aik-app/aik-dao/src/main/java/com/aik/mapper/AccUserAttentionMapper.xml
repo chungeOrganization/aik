@@ -27,7 +27,7 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{attentionId,jdbcType=INTEGER}, 
       #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccUserAttention">
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserAttention" useGeneratedKeys="true" keyProperty="id">
     insert into acc_userAttention
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
