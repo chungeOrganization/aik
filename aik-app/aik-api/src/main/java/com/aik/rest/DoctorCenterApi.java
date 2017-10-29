@@ -68,6 +68,8 @@ public class DoctorCenterApi {
 
     private FeedbackService feedbackService;
 
+    private CommonProblemService commonProblemService;
+
     private SystemResource systemResource;
 
     private SecurityCodeService securityCodeService;
@@ -95,6 +97,11 @@ public class DoctorCenterApi {
     @Inject
     public void setFeedbackService(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
+    }
+
+    @Inject
+    public void setCommonProblemService(CommonProblemService commonProblemService) {
+        this.commonProblemService = commonProblemService;
     }
 
     @Inject
