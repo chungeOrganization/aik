@@ -4,7 +4,7 @@ package com.aik.dto.request.user;
  * Description:
  * Created by as on 2017/10/22.
  */
-public class UserResetPwdReqDTO {
+public class ResetPwdReqDTO {
 
     private String mobileNo;
 

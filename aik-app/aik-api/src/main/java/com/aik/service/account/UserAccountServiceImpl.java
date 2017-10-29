@@ -3,7 +3,7 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.UserInfoDTO;
-import com.aik.dto.request.user.UserResetPwdReqDTO;
+import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
 import com.aik.util.MD5Utils;
@@ -114,7 +114,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public void updateUserPwd(UserResetPwdReqDTO reqDTO) throws ApiServiceException {
+    public void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException {
         if (null == reqDTO || StringUtils.isBlank(reqDTO.getMobileNo()) || StringUtils.isBlank(reqDTO.getPassword())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }

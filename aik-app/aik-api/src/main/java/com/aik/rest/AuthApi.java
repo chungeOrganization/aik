@@ -5,12 +5,12 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
-import com.aik.dto.request.user.UserResetPwdReqDTO;
+import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccUserAccount;
 import com.aik.service.account.AuthService;
+import com.aik.service.account.DoctorAccountService;
 import com.aik.service.account.UserAccountService;
 import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
@@ -43,6 +43,8 @@ public class AuthApi {
 
     private UserAccountService userAccountService;
 
+    private DoctorAccountService doctorAccountService;
+
     @Inject
     public void setAuthService(AuthService authService) {
         this.authService = authService;
@@ -51,6 +53,11 @@ public class AuthApi {
     @Inject
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
+    }
+
+    @Inject
+    public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
+        this.doctorAccountService = doctorAccountService;
     }
 
     @POST
@@ -181,16 +188,34 @@ public class AuthApi {
 
     @POST
     @Path("/auth/user/resetPwd")
-    public ApiResult userResetPwd(UserResetPwdReqDTO reqDTO) {
+    public ApiResult userResetPwd(ResetPwdReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            userAccountService.updateUserPwd(reqDTO);
+            userAccountService.resetPassword(reqDTO);
         } catch (ApiServiceException e) {
             logger.error("user reset password error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("user reset password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/auth/doctor/resetPwd")
+    public ApiResult doctorResetPwd(ResetPwdReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            doctorAccountService.resetPassword(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("doctor reset password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("doctor reset password error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

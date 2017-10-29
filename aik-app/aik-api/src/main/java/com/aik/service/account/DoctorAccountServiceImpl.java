@@ -7,6 +7,7 @@ import com.aik.dto.request.doctor.PayPasswordReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
 import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
@@ -334,6 +335,28 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         doctorWallet.setPayPassword(MD5Utils.md5(reqDTO.getPayPassword()));
         doctorWallet.setUpdateTime(new Date());
         accDoctorWalletMapper.updateByPrimaryKeySelective(doctorWallet);
+    }
+
+    @Override
+    public void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || StringUtils.isBlank(reqDTO.getMobileNo()) || StringUtils.isBlank(reqDTO.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByMobileNo(reqDTO.getMobileNo());
+        if (null == doctorAccount) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001009);
+        }
+
+        if (!StringValidUtils.validPassword(reqDTO.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000004);
+        }
+
+        AccDoctorAccount updateDoctorAccount = new AccDoctorAccount();
+        updateDoctorAccount.setId(doctorAccount.getId());
+        updateDoctorAccount.setPassword(MD5Utils.md5(reqDTO.getPassword()));
+        updateDoctorAccount.setUpdateDate(new Date());
+        accDoctorAccountMapper.updateByPrimaryKeySelective(updateDoctorAccount);
     }
 
     /**

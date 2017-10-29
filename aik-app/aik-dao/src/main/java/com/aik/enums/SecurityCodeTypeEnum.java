@@ -12,7 +12,8 @@ public enum SecurityCodeTypeEnum {
     CODE_TYPE_DOCTOR_MOBILE_RELIEVE((byte) 3, "医生解绑手机号获取验证码"),
     CODE_TYPE_DOCTOR_MOBILE_BINDING((byte) 4, "医生绑定手机号获取验证码"),
     CODE_TYPE_USER_FIND_PASSWORD((byte) 5, "用户找回密码获取验证码"),
-    CODE_TYPE_DOCTOR_RESET_PAY_PASSWORD((byte) 6, "医生重置支付密码获取验证码");
+    CODE_TYPE_DOCTOR_RESET_PAY_PASSWORD((byte) 6, "医生重置支付密码获取验证码"),
+    CODE_TYPE_DOCTOR_FIND_PASSWORD((byte) 7, "医生找回密码获取验证码");
     private byte type;
     private String desc;
 

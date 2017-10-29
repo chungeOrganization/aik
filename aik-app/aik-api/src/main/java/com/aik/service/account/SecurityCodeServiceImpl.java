@@ -192,6 +192,10 @@ public class SecurityCodeServiceImpl implements SecurityCodeService {
             if (!userAccountService.validMobileNoIsUsed(mobileNo)) {
                 throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001009);
             }
+        } else if (codeTypeEnum == SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_FIND_PASSWORD) {
+            if (!doctorAccountService.validMobileNoIsUsed(mobileNo)) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001009);
+            }
         }
     }
 }

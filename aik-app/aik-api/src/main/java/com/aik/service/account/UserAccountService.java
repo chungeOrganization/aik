@@ -1,7 +1,7 @@
 package com.aik.service.account;
 
 import com.aik.dto.UserInfoDTO;
-import com.aik.dto.request.user.UserResetPwdReqDTO;
+import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
 
@@ -59,5 +59,5 @@ public interface UserAccountService {
      * @param reqDTO DTO
      * @throws ApiServiceException
      */
-    void updateUserPwd(UserResetPwdReqDTO reqDTO) throws ApiServiceException;
+    void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException;
 }

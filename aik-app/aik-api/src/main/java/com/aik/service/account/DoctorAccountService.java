@@ -5,6 +5,7 @@ import com.aik.dto.request.doctor.PayPasswordReqDTO;
 import com.aik.dto.request.doctor.RebindingMobileReqDTO;
 import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
 import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 
@@ -156,4 +157,12 @@ public interface DoctorAccountService {
      * @throws ApiServiceException
      */
     void resetPayPassword(ResetPayPasswordReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 重置密码
+     *
+     * @param reqDTO DTO
+     * @throws ApiServiceException
+     */
+    void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException;
 }
