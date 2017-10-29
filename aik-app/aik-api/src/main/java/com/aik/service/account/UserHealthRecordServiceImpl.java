@@ -197,6 +197,8 @@ public class UserHealthRecordServiceImpl implements UserHealthRecordService {
                 elem.setElemContent(content);
                 elem.setElemRemark(ExcursionEnum.NORMAL.getCode());
                 elem.setElemUnit(elemEnum.getUnit());
+
+                hrElements.add(elem);
             }
         } catch (Exception e) {
             // ignore
@@ -230,6 +232,8 @@ public class UserHealthRecordServiceImpl implements UserHealthRecordService {
                 elem.setElemContent(content);
                 elem.setElemRemark(ExcursionEnum.NORMAL.getCode());
                 elem.setElemUnit(elemEnum.getUnit());
+
+                hrElements.add(elem);
             }
         } catch (Exception e) {
             // ignore
@@ -263,6 +267,8 @@ public class UserHealthRecordServiceImpl implements UserHealthRecordService {
                 elem.setElemContent(content);
                 elem.setElemRemark(ExcursionEnum.NORMAL.getCode());
                 elem.setElemUnit(elemEnum.getUnit());
+
+                hrElements.add(elem);
             }
         } catch (Exception e) {
             // ignore

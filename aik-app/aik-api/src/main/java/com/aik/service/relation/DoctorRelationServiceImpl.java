@@ -203,7 +203,7 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         searchAD.setDoctorId(doctorId);
         searchAD.setUserId(userId);
         boolean isDoctorRsick = accDoctorAttentionMapper.selectCountBySelective(searchAD) > 0;
-        sickDetail.setRelation(RelationTypeUtil.getABRelation(isDoctorRsick, isSickRdoctor));
+        sickDetail.setRelation(Integer.valueOf(RelationTypeUtil.getABRelation(isDoctorRsick, isSickRdoctor)));
 
         // 患者信息
         sickDataDetail.setSickDetail(sickDetail);

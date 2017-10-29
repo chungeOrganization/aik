@@ -14,15 +14,15 @@ public class SickDetailRespDTO {
 
     private String headImg;
 
-    private Byte userType;
+    private Integer userType;
 
-    private Byte sex;
+    private Integer sex;
 
     private String remark;
 
     private Integer groupId;
 
-    private Byte relation;
+    private Integer relation;
 
     public Integer getSickId() {
         return sickId;
@@ -56,19 +56,19 @@ public class SickDetailRespDTO {
         this.headImg = headImg;
     }
 
-    public Byte getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(Byte userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 
-    public Byte getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Byte sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -88,11 +88,11 @@ public class SickDetailRespDTO {
         this.groupId = groupId;
     }
 
-    public Byte getRelation() {
+    public Integer getRelation() {
         return relation;
     }
 
-    public void setRelation(Byte relation) {
+    public void setRelation(Integer relation) {
         this.relation = relation;
     }
 }
