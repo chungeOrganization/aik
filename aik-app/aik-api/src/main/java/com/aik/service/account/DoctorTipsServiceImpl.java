@@ -15,6 +15,10 @@ import com.aik.model.AccDoctorAttention;
 import com.aik.model.AccUserAccount;
 import com.aik.model.AccUserAttention;
 import com.aik.model.AikDoctorTips;
+import com.aik.resource.SystemResource;
+import com.aik.service.SysSettingService;
+import com.aik.util.DateUtils;
+import com.aik.util.ScrawlUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +44,10 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
 
     private AccDoctorAttentionMapper accDoctorAttentionMapper;
 
+    private SystemResource systemResource;
+
+    private SysSettingService sysSettingService;
+
     @Autowired
     public void setAikDoctorTipsMapper(AikDoctorTipsMapper aikDoctorTipsMapper) {
         this.aikDoctorTipsMapper = aikDoctorTipsMapper;
@@ -60,6 +68,16 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         this.accDoctorAttentionMapper = accDoctorAttentionMapper;
     }
 
+    @Autowired
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
+    }
+
+    @Autowired
+    public void setSysSettingService(SysSettingService sysSettingService) {
+        this.sysSettingService = sysSettingService;
+    }
+
     @Override
     public List<Map<String, Object>> getDoctorTipsList(Integer doctorId) throws ApiServiceException {
         List<Map<String, Object>> rsList = new ArrayList<>();
@@ -69,15 +87,17 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         friendSearchDT.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
         friendSearchDT.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
         List<AikDoctorTips> friendTipsList = aikDoctorTipsMapper.selectBySelective(friendSearchDT);
-        if (friendTipsList.size() > 0) {
-            Map<String, Object> friendTips = new HashMap<>();
-            friendTips.put("headImg", "morenxxx.jpb");
-            friendTips.put("name", "新的朋友");
-            friendTips.put("message", "您有新的粉丝，点击查看");
-            friendTips.put("createDate", friendTipsList.get(0).getCreateDate());
-            friendTips.put("redNum", friendTipsList.size());
-            rsList.add(friendTips);
+        Map<String, Object> friendTips = new HashMap<>();
+        friendTips.put("headImg", sysSettingService.getNewFriendHeadImg());
+        friendTips.put("name", "新的朋友");
+        friendTips.put("message", "您有新的粉丝，点击查看");
+        if (null != friendTipsList.get(0)) {
+            friendTips.put("createDate", DateUtils.aikPersonaliseDate(friendTipsList.get(0).getCreateDate()));
+        } else {
+            friendTips.put("createDate", "");
         }
+        friendTips.put("redNum", friendTipsList.size());
+        rsList.add(friendTips);
 
         // question tips
         List<Map<String, Object>> questionTipsList = aikDoctorTipsMapper.selectQuestionTipsByDoctorId(doctorId);
@@ -169,5 +189,11 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         params.put("isCheck", DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
 
         return aikDoctorTipsMapper.selectCountByParams(params);
+    }
+
+    @Override
+    public void addDoctorTips(AikDoctorTips doctorTip) throws ApiServiceException {
+        doctorTip.setCreateDate(new Date());
+        aikDoctorTipsMapper.insertSelective(doctorTip);
     }
 }

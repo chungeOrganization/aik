@@ -65,9 +65,8 @@ public class SendSmsUtils {
         try {
             String response = HttpClientUtils.doGet(sendSmsProperties.getApi(), params, DEFAULT_ENCODE_CHARSET);
             logger.debug("send sms response:[{}]", response);
-            response = "{" + response + "}";
             ObjectMapper objectMapper = new ObjectMapper();
-            SendSmsRespDTO sendSmsResp = objectMapper.convertValue(response, SendSmsRespDTO.class);
+            SendSmsRespDTO sendSmsResp = objectMapper.readValue(response, SendSmsRespDTO.class);
             if (SEND_SMS_OK_CODE == sendSmsResp.getError_code()) {
                 return true;
             }

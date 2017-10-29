@@ -1,6 +1,8 @@
 package com.aik.service.account;
 
+import com.aik.enums.DoctorTipsTypeEnum;
 import com.aik.exception.ApiServiceException;
+import com.aik.model.AikDoctorTips;
 
 import java.util.List;
 import java.util.Map;
@@ -62,4 +64,10 @@ public interface DoctorTipsService {
      * @throws ApiServiceException Api服务异常
      */
     Integer getDoctorTipsCount(Integer doctorId) throws ApiServiceException;
+
+    /**
+     * 添加医聊
+     * @throws ApiServiceException
+     */
+    void addDoctorTips(AikDoctorTips doctorTip) throws ApiServiceException;
 }

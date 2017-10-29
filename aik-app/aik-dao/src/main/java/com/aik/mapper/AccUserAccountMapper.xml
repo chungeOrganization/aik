@@ -52,7 +52,7 @@
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount">
+  <insert id="insertSelective" parameterType="com.aik.model.AccUserAccount" useGeneratedKeys="true" keyProperty="id">
     insert into acc_userAccount
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

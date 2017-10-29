@@ -1,5 +1,7 @@
 package com.aik.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -24,6 +26,7 @@ public class UserInfoDTO {
 
     private String areaCity;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private Byte isElseIllness;

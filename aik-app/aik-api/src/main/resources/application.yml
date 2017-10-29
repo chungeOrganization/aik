@@ -79,5 +79,8 @@ juhe:
   voice:
     api: "http://op.juhe.cn/yuntongxun/voice"
     appKey: "5125ad3ae26b2385cf7f39a84d390c41"
+tencent:
+  appId: "101433215"
+  appKey: "c9017dbdad4c4f83243de786d2d23e4a"
 
 

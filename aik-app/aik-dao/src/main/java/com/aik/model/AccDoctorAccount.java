@@ -58,6 +58,8 @@ public class AccDoctorAccount {
 
     private Byte isCompleteInfo;
 
+    private Date lastLoginTime;
+
     public Integer getId() {
         return id;
     }
@@ -272,5 +274,13 @@ public class AccDoctorAccount {
 
     public void setIsCompleteInfo(Byte isCompleteInfo) {
         this.isCompleteInfo = isCompleteInfo;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }

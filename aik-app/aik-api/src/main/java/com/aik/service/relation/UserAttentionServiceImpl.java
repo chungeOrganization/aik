@@ -10,13 +10,12 @@ import com.aik.dto.request.user.GetAttentionListReqDTO;
 import com.aik.dto.response.user.GetAttentionDoctorRespDTO;
 import com.aik.dto.response.user.GetAttentionUserRespDTO;
 import com.aik.enums.DoctorPositionEnum;
+import com.aik.enums.DoctorTipsTypeEnum;
 import com.aik.enums.UserAttentionTypeEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.AccDoctorAccount;
-import com.aik.model.AccDoctorAttention;
-import com.aik.model.AccUserAccount;
-import com.aik.model.AccUserAttention;
+import com.aik.model.*;
 import com.aik.resource.SystemResource;
+import com.aik.service.account.DoctorTipsService;
 import com.aik.service.question.AnswerService;
 import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
@@ -46,6 +45,8 @@ public class UserAttentionServiceImpl implements UserAttentionService {
 
     private AnswerService answerService;
 
+    private DoctorTipsService doctorTipsService;
+
     @Resource
     private SystemResource systemResource;
 
@@ -72,6 +73,11 @@ public class UserAttentionServiceImpl implements UserAttentionService {
     @Autowired
     public void setAnswerService(AnswerService answerService) {
         this.answerService = answerService;
+    }
+
+    @Autowired
+    public void setDoctorTipsService(DoctorTipsService doctorTipsService) {
+        this.doctorTipsService = doctorTipsService;
     }
 
     @Override
@@ -219,6 +225,14 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             userAttention.setCreateTime(new Date());
 
             accUserAttentionMapper.insertSelective(userAttention);
+
+            // 医聊提示
+            AikDoctorTips doctorTip = new AikDoctorTips();
+            doctorTip.setDoctorId(doctorId);
+            doctorTip.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
+            doctorTip.setRelationId(userId);
+            doctorTip.setTipsMessage("您有新的朋友关注");
+            doctorTipsService.addDoctorTips(doctorTip);
         }
     }
 

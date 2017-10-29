@@ -12,4 +12,10 @@ public interface SysSettingService {
      * @return 返回图片
      */
     String getDoctorHomeImg();
+
+    /**
+     * 医聊-新的朋友 默认图片
+     * @return
+     */
+    String getNewFriendHeadImg();
 }

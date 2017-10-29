@@ -161,6 +161,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         AccDoctorAccount doctorAccount = new AccDoctorAccount();
 
         doctorAccount.setId(AuthUserDetailsThreadLocal.getCurrentUserId());
+        doctorAccount.setHeadImg(doctorInfoDTO.getHeadImg());
         doctorAccount.setRealName(doctorInfoDTO.getRealName());
         doctorAccount.setSex(doctorInfoDTO.getSex());
         doctorAccount.setAreaProvince(doctorInfoDTO.getAreaProvince());
