@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.AccDoctorWithdrawMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.AccDoctorWithdraw">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctorId" jdbcType="INTEGER" property="doctorId" />
+    <result column="channel" jdbcType="TINYINT" property="channel" />
+    <result column="channelAccount" jdbcType="VARCHAR" property="channelAccount" />
+    <result column="bankId" jdbcType="INTEGER" property="bankId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="charge" jdbcType="DECIMAL" property="charge" />
+    <result column="expectAccountTime" jdbcType="TIMESTAMP" property="expectAccountTime" />
+    <result column="accountTime" jdbcType="TIMESTAMP" property="accountTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="auditUser" jdbcType="INTEGER" property="auditUser" />
+    <result column="auditTime" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctorId, channel, channelAccount, bankId, amount, charge, expectAccountTime, 
+    accountTime, status, auditUser, auditTime, createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from acc_doctorWithdraw
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from acc_doctorWithdraw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.AccDoctorWithdraw">
+    insert into acc_doctorWithdraw (id, doctorId, channel, 
+      channelAccount, bankId, amount, 
+      charge, expectAccountTime, accountTime, 
+      status, auditUser, auditTime, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{channel,jdbcType=TINYINT}, 
+      #{channelAccount,jdbcType=VARCHAR}, #{bankId,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
+      #{charge,jdbcType=DECIMAL}, #{expectAccountTime,jdbcType=TIMESTAMP}, #{accountTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{auditUser,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorWithdraw">
+    insert into acc_doctorWithdraw
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctorId,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="channelAccount != null">
+        channelAccount,
+      </if>
+      <if test="bankId != null">
+        bankId,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="charge != null">
+        charge,
+      </if>
+      <if test="expectAccountTime != null">
+        expectAccountTime,
+      </if>
+      <if test="accountTime != null">
+        accountTime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="auditUser != null">
+        auditUser,
+      </if>
+      <if test="auditTime != null">
+        auditTime,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=TINYINT},
+      </if>
+      <if test="channelAccount != null">
+        #{channelAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null">
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="charge != null">
+        #{charge,jdbcType=DECIMAL},
+      </if>
+      <if test="expectAccountTime != null">
+        #{expectAccountTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountTime != null">
+        #{accountTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="auditUser != null">
+        #{auditUser,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.AccDoctorWithdraw">
+    update acc_doctorWithdraw
+    <set>
+      <if test="doctorId != null">
+        doctorId = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=TINYINT},
+      </if>
+      <if test="channelAccount != null">
+        channelAccount = #{channelAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null">
+        bankId = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="charge != null">
+        charge = #{charge,jdbcType=DECIMAL},
+      </if>
+      <if test="expectAccountTime != null">
+        expectAccountTime = #{expectAccountTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountTime != null">
+        accountTime = #{accountTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="auditUser != null">
+        auditUser = #{auditUser,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        auditTime = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.AccDoctorWithdraw">
+    update acc_doctorWithdraw
+    set doctorId = #{doctorId,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=TINYINT},
+      channelAccount = #{channelAccount,jdbcType=VARCHAR},
+      bankId = #{bankId,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      charge = #{charge,jdbcType=DECIMAL},
+      expectAccountTime = #{expectAccountTime,jdbcType=TIMESTAMP},
+      accountTime = #{accountTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      auditUser = #{auditUser,jdbcType=INTEGER},
+      auditTime = #{auditTime,jdbcType=TIMESTAMP},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

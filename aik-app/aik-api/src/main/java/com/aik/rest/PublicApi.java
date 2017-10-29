@@ -4,9 +4,11 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.UserInfoDTO;
 import com.aik.exception.ApiServiceException;
+import com.aik.model.AikCommonProblem;
 import com.aik.model.SysBank;
 import com.aik.resource.SystemResource;
 import com.aik.service.AreaService;
+import com.aik.service.CommonProblemService;
 import com.aik.service.HospitalService;
 import com.aik.service.SysBankService;
 import com.aik.service.account.InviteCodeService;
@@ -60,6 +62,8 @@ public class PublicApi {
 
     private SystemResource systemResource;
 
+    private CommonProblemService commonProblemService;
+
     @Inject
     public void setSecurityCodeService(SecurityCodeService securityCodeService) {
         this.securityCodeService = securityCodeService;
@@ -93,6 +97,11 @@ public class PublicApi {
     @Inject
     public void setSystemResource(SystemResource systemResource) {
         this.systemResource = systemResource;
+    }
+
+    @Inject
+    public void setCommonProblemService(CommonProblemService commonProblemService) {
+        this.commonProblemService = commonProblemService;
     }
 
     @GET
@@ -341,6 +350,38 @@ public class PublicApi {
             logger.error("get latest version error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
+        return result;
+    }
+
+    @POST
+    @Path("/getCommonProblems")
+    public ApiResult getCommonProblems(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<Map<String, Object>> commonProblems = commonProblemService.getCommonProblems(params);
+            result.withDataKV("commonProblemList", commonProblems);
+        } catch (Exception e) {
+            logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getCommonProblemDetail/{problemId}")
+    public ApiResult getCommonProblemDetail(@PathParam("problemId") Integer problemId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            AikCommonProblem commonProblem = commonProblemService.getCommonProblemDetail(problemId);
+            result.withDataKV("commonProblem", commonProblem);
+        } catch (Exception e) {
+            logger.error("get common problem detail error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
         return result;
     }
 }

@@ -2,7 +2,6 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
-import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
@@ -660,7 +659,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            AikCommonProblem commonProblem = commonProblemService.getCommonProblemDetial(problemId);
+            AikCommonProblem commonProblem = commonProblemService.getCommonProblemDetail(problemId);
             result.withDataKV("commonProblem", commonProblem);
         } catch (Exception e) {
             logger.error("get common problem detail error: ", e);

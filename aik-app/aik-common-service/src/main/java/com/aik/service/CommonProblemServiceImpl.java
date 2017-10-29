@@ -32,7 +32,7 @@ public class CommonProblemServiceImpl implements CommonProblemService {
     }
 
     @Override
-    public AikCommonProblem getCommonProblemDetial(Integer problemId) {
+    public AikCommonProblem getCommonProblemDetail(Integer problemId) {
         return aikCommonProblemMapper.selectByPrimaryKey(problemId);
     }
 }

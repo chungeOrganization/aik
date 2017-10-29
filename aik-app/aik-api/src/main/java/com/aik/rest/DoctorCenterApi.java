@@ -15,6 +15,7 @@ import com.aik.enums.SecurityCodeTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccDoctorBankCard;
+import com.aik.model.AikCommonProblem;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
@@ -33,9 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
@@ -69,8 +68,6 @@ public class DoctorCenterApi {
 
     private FeedbackService feedbackService;
 
-    private CommonProblemService commonProblemService;
-
     private SystemResource systemResource;
 
     private SecurityCodeService securityCodeService;
@@ -98,11 +95,6 @@ public class DoctorCenterApi {
     @Inject
     public void setFeedbackService(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
-    }
-
-    @Inject
-    public void setCommonProblemService(CommonProblemService commonProblemService) {
-        this.commonProblemService = commonProblemService;
     }
 
     @Inject
@@ -514,22 +506,6 @@ public class DoctorCenterApi {
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001008);
         } catch (Exception e) {
             logger.error("upload doctor file error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("/getCommonProblems")
-    public ApiResult getCommonProblems(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            List<Map<String, Object>> commonProblems = commonProblemService.getCommonProblems(params);
-            result.withDataKV("commonProblemList", commonProblems);
-        } catch (Exception e) {
-            logger.error("get common problems error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

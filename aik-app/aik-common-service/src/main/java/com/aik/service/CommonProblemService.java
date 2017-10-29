@@ -25,5 +25,5 @@ public interface CommonProblemService {
      * @param problemId 问题id
      * @return 问题详情
      */
-    AikCommonProblem getCommonProblemDetial(Integer problemId);
+    AikCommonProblem getCommonProblemDetail(Integer problemId);
 }
