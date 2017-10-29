@@ -5,6 +5,7 @@ package com.aik.enums;
  * Created by as on 2017/9/7.
  */
 public enum ExcursionEnum {
+    // -1：偏低 0：正常 1：偏高
     LOW((byte) -1, "偏低"),
     NORMAL((byte) 0, "正常"),
     HIGH((byte) 1, "偏高");

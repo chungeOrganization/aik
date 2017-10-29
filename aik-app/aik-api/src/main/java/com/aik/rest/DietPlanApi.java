@@ -491,6 +491,8 @@ public class DietPlanApi {
             foodBasicInfoVO.setId(1);
             foodBasicInfoVO.setName("苹果");
             foodBasicInfoVO.setHeadImg(systemResource.getApiFileUri() + "test.jpg");
+
+            foods.add(foodBasicInfoVO);
             result.withDataKV("foods", foods);
 //        } catch (ApiServiceException e) {
 //            logger.error("get bygone diet record analyze error: ", e);

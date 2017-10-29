@@ -1,5 +1,7 @@
 package com.aik.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -9,6 +11,7 @@ import java.util.Date;
  */
 public class DailyNutritionGradeVO {
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date recordDate;
 
     private String nutritionType;

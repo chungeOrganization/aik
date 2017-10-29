@@ -520,4 +520,20 @@ public class DoctorCenterApi {
 
         return result;
     }
+
+    @POST
+    @Path("/getCommonProblems")
+    public ApiResult getCommonProblems(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<Map<String, Object>> commonProblems = commonProblemService.getCommonProblems(params);
+            result.withDataKV("commonProblemList", commonProblems);
+        } catch (Exception e) {
+            logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
 }

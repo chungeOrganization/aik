@@ -254,7 +254,7 @@ public class DietRecordServiceImpl implements DietRecordService {
             dailyNutritionGrade.setNutritionType("protein");
             dailyNutritionGrade.setNutritionName("蛋白质");
             dailyNutritionGrade.setNutritionGrade(new BigDecimal(i*10));
-            dailyNutritionGrade.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -1).toDate());
+            dailyNutritionGrade.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -i).toDate());
 
             dailyNutritionGrades.add(dailyNutritionGrade);
         }

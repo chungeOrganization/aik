@@ -8,7 +8,7 @@ public class BygoneDietRecordAnalyzeReqDTO {
 
     private Integer userId;
 
-    private Byte dateSetp;
+    private Byte dateStep;
 
     private String nutritionType;
 
@@ -20,12 +20,12 @@ public class BygoneDietRecordAnalyzeReqDTO {
         this.userId = userId;
     }
 
-    public Byte getDateSetp() {
-        return dateSetp;
+    public Byte getDateStep() {
+        return dateStep;
     }
 
-    public void setDateSetp(Byte dateSetp) {
-        this.dateSetp = dateSetp;
+    public void setDateStep(Byte dateStep) {
+        this.dateStep = dateStep;
     }
 
     public String getNutritionType() {

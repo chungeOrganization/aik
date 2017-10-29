@@ -291,6 +291,7 @@ public class PublicApi {
         ApiResult result = new ApiResult();
 
         List<String> hotWorlds = new ArrayList<>();
+        hotWorlds.add("测试");
 
         result.withDataKV("hotWorlds", hotWorlds);
         return result;
@@ -298,9 +299,10 @@ public class PublicApi {
 
     @GET
     @Path("/getLatestVersion/{devType}")
-    public ApiResult getLatestVersion() {
+    public ApiResult getLatestVersion(@PathParam("devType") String type) {
         ApiResult result = new ApiResult();
         try {
+            // TODO:
             result.withDataKV("version", "1.0.0");
         } catch (Exception e) {
             logger.error("get latest version error: ", e);
