@@ -228,4 +228,22 @@ public class AuthApi {
         ApiResult result = new ApiResult();
         return result;
     }
+
+    @POST
+    @Path("/auth/doctorValidUserNameAndPwd")
+    public ApiResult doctorValidUserNameAndPwd(RegisterDTO registerDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            authService.doctorValidUserNameAndPwd(registerDTO);
+        } catch (ApiServiceException e) {
+            logger.error("doctor valid userName and password error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("doctor valid userName and password error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
 }

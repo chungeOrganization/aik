@@ -65,4 +65,12 @@ public interface AuthService {
      * @throws ApiServiceException Api服务异常
      */
     String userRefreshToken(String oldToken) throws ApiServiceException;
+
+    /**
+     * 医生端校验用户名与密码
+     *
+     * @param registerDTO 登录参数
+     * @throws ApiServiceException Api服务异常
+     */
+    void doctorValidUserNameAndPwd(RegisterDTO registerDTO) throws ApiServiceException;
 }
