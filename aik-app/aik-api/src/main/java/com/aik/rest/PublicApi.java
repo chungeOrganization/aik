@@ -7,10 +7,7 @@ import com.aik.exception.ApiServiceException;
 import com.aik.model.AikCommonProblem;
 import com.aik.model.SysBank;
 import com.aik.resource.SystemResource;
-import com.aik.service.AreaService;
-import com.aik.service.CommonProblemService;
-import com.aik.service.HospitalService;
-import com.aik.service.SysBankService;
+import com.aik.service.*;
 import com.aik.service.account.InviteCodeService;
 import com.aik.service.account.SecurityCodeService;
 import com.aik.service.account.UserAccountService;
@@ -64,6 +61,8 @@ public class PublicApi {
 
     private CommonProblemService commonProblemService;
 
+    private SysSettingService sysSettingService;
+
     @Inject
     public void setSecurityCodeService(SecurityCodeService securityCodeService) {
         this.securityCodeService = securityCodeService;
@@ -102,6 +101,11 @@ public class PublicApi {
     @Inject
     public void setCommonProblemService(CommonProblemService commonProblemService) {
         this.commonProblemService = commonProblemService;
+    }
+
+    @Inject
+    public void setSysSettingService(SysSettingService sysSettingService) {
+        this.sysSettingService = sysSettingService;
     }
 
     @GET
@@ -379,6 +383,21 @@ public class PublicApi {
             result.withDataKV("commonProblem", commonProblem);
         } catch (Exception e) {
             logger.error("get common problem detail error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getServicePhone")
+    public ApiResult getServicePhone() {
+        ApiResult result = new ApiResult();
+
+        try {
+            result.withDataKV("servicePhone", sysSettingService.getServicePhone());
+        } catch (Exception e) {
+            logger.error("get service phone error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

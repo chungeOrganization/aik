@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * Description:
+ * Description: TODO:获取配置信息
  * Created by as on 2017/8/17.
  */
 @Service
@@ -29,5 +29,10 @@ public class SysSettingServiceImpl implements SysSettingService {
     @Override
     public String getNewFriendHeadImg() {
         return systemResource.getApiFileUri() + "doctor\\new-friend.png";
+    }
+
+    @Override
+    public String getServicePhone() {
+        return "0755-12345678";
     }
 }

@@ -18,4 +18,11 @@ public interface SysSettingService {
      * @return
      */
     String getNewFriendHeadImg();
+
+    /**
+     * 获取客服电话
+     *
+     * @return 客服电话
+     */
+    String getServicePhone();
 }
