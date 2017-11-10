@@ -2,6 +2,7 @@ package com.aik.service.account;
 
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.request.ExternalLoginReqDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.exception.ApiServiceException;
@@ -65,4 +66,20 @@ public interface AuthService {
      * @throws ApiServiceException Api服务异常
      */
     String userRefreshToken(String oldToken) throws ApiServiceException;
+
+    /**
+     * 医生端第三方登录
+     * @param reqDTO 请求
+     * @return token
+     * @throws ApiServiceException Api服务异常
+     */
+    LoginRespDTO doctorExternalLogin(ExternalLoginReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 用户端第三方登录
+     * @param reqDTO 请求
+     * @return token
+     * @throws ApiServiceException Api服务异常
+     */
+    String userExternalLogin(ExternalLoginReqDTO reqDTO) throws ApiServiceException;
 }

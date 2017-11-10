@@ -4,6 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.request.ExternalLoginReqDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
@@ -226,6 +227,38 @@ public class AuthApi {
     @Path("/auth/logout")
     public ApiResult logout() {
         ApiResult result = new ApiResult();
+        return result;
+    }
+
+    @POST
+    @Path("/auth/doctor/externalLogin")
+    public ApiResult doctorExternalLogin(ExternalLoginReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            LoginRespDTO respDTO = authService.doctorExternalLogin(reqDTO);
+            result.withData(BeansUtils.transBean2Map(respDTO));
+        } catch (Exception e) {
+            logger.error("doctor external login error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/auth/doctor/externalLogin")
+    public ApiResult userExternalLogin(ExternalLoginReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            String token = authService.userExternalLogin(reqDTO);
+            result.withDataKV("token", token);
+        } catch (Exception e) {
+            logger.error("user external login error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
         return result;
     }
 }

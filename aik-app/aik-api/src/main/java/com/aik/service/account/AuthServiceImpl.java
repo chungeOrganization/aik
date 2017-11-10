@@ -3,15 +3,18 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccDoctorWalletMapper;
+import com.aik.dao.AccExternalUserBindingMapper;
 import com.aik.dao.AccUserAccountMapper;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
+import com.aik.dto.request.ExternalLoginReqDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.enums.DoctorIsCompleteInfoEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccDoctorWallet;
+import com.aik.model.AccExternalUserBinding;
 import com.aik.model.AccUserAccount;
 import com.aik.security.JwtTokenUtil;
 import com.aik.security.JwtUser;
@@ -57,6 +60,8 @@ public class AuthServiceImpl implements AuthService {
     private JwtTokenUtil jwtTokenUtil;
 
     private AccDoctorWalletMapper accDoctorWalletMapper;
+
+    private AccExternalUserBindingMapper accExternalUserBindingMapper;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -105,6 +110,11 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     public void setAccDoctorWalletMapper(AccDoctorWalletMapper accDoctorWalletMapper) {
         this.accDoctorWalletMapper = accDoctorWalletMapper;
+    }
+
+    @Autowired
+    public void setAccExternalUserBindingMapper(AccExternalUserBindingMapper accExternalUserBindingMapper) {
+        this.accExternalUserBindingMapper = accExternalUserBindingMapper;
     }
 
     @Override
@@ -284,6 +294,54 @@ public class AuthServiceImpl implements AuthService {
             return jwtTokenUtil.refreshToken(token);
         }
         return null;
+    }
+
+    @Override
+    public LoginRespDTO doctorExternalLogin(ExternalLoginReqDTO reqDTO) throws ApiServiceException {
+        throw new ApiServiceException("暂时不支持第三方登录");
+//        return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String userExternalLogin(ExternalLoginReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || StringUtils.isEmpty(reqDTO.getPlatform()) || StringUtils.isEmpty(reqDTO.getAccessToken()) ||
+                StringUtils.isEmpty(reqDTO.getOpenId())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        // 判断openid对应用户是否存在
+        AccExternalUserBinding externalUser = accExternalUserBindingMapper.selectByPlatformAndOpenId(reqDTO.getPlatform(),
+                reqDTO.getOpenId());
+
+        // 如果该platform下的openid已存在，直接登录获取token
+        final String token;
+        if (null != externalUser) {
+            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(externalUser.getUserId());
+            if (null == userAccount) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001010);
+            }
+
+            // 登录
+            UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(userAccount.getUserName() + jwtUserSign,
+                    userAccount.getPassword());
+            // Perform the security
+            final Authentication authentication = authenticationManager.authenticate(upToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Reload password post-security so we can generate token
+            final UserDetails userDetails = userDetailService.loadUserByUsername(userAccount.getUserName() + jwtUserSign);
+            token = jwtTokenUtil.generateToken(userDetails, jwtUserSign);
+        }
+        // 否则通过platform提供的openapi获取用户信息，在平台注册用户，添加userBinding记录，登录返回token
+        else {
+            // 根据accessToken和openId获取用户信息
+
+
+            token = "";
+        }
+
+        return token;
     }
 
     /**

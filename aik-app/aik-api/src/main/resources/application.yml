@@ -80,7 +80,12 @@ juhe:
     api: "http://op.juhe.cn/yuntongxun/voice"
     appKey: "5125ad3ae26b2385cf7f39a84d390c41"
 tencent:
-  appId: "101433215"
-  appKey: "c9017dbdad4c4f83243de786d2d23e4a"
+  userInfoApi: "https://graph.qq.com/user/get_user_info"
+  appId: "1106333845"
+  appKey: "jLaGQuiMhC8nnGNr"
+wechat:
+  userInfoApi: "https://api.weixin.qq.com/sns/userinfo"
+  appId: "wx01a226153351b6e3"
+  appSecret: "db3f4541e9483a69c700208b5214e9f5"
 
 
