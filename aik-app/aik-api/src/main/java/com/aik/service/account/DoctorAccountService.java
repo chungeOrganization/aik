@@ -1,11 +1,9 @@
 package com.aik.service.account;
 
 import com.aik.dto.DoctorInfoDTO;
-import com.aik.dto.request.doctor.PayPasswordReqDTO;
-import com.aik.dto.request.doctor.RebindingMobileReqDTO;
-import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
-import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.request.doctor.*;
 import com.aik.dto.request.user.ResetPwdReqDTO;
+import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 
@@ -165,4 +163,13 @@ public interface DoctorAccountService {
      * @throws ApiServiceException
      */
     void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 医生发起提现
+     *
+     * @param reqDTO 参数
+     * @return
+     * @throws ApiServiceException Api服务异常
+     */
+    ApplyWithdrawRespDTO applyWithdraw(ApplyWithdrawReqDTO reqDTO) throws ApiServiceException;
 }

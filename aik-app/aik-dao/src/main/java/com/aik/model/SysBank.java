@@ -1,7 +1,6 @@
 package com.aik.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SysBank {
@@ -15,7 +14,8 @@ public class SysBank {
 
     private String bankType;
 
-    @JsonIgnore
+    private BigDecimal chargeFee;
+
     private Date createDate;
 
     public Integer getId() {
@@ -56,6 +56,14 @@ public class SysBank {
 
     public void setBankType(String bankType) {
         this.bankType = bankType == null ? null : bankType.trim();
+    }
+
+    public BigDecimal getChargeFee() {
+        return chargeFee;
+    }
+
+    public void setChargeFee(BigDecimal chargeFee) {
+        this.chargeFee = chargeFee;
     }
 
     public Date getCreateDate() {

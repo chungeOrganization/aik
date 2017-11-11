@@ -3,11 +3,11 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.*;
 import com.aik.dto.DoctorInfoDTO;
-import com.aik.dto.request.doctor.PayPasswordReqDTO;
-import com.aik.dto.request.doctor.RebindingMobileReqDTO;
-import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
-import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.request.doctor.*;
 import com.aik.dto.request.user.ResetPwdReqDTO;
+import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
+import com.aik.enums.DoctorDealTypeEnum;
+import com.aik.enums.DoctorWithdrawChannelEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -45,6 +46,12 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     @Resource
     private SystemResource systemResource;
 
+    private AccDoctorWithdrawMapper accDoctorWithdrawMapper;
+
+    private AccDoctorDealDetailMapper accDoctorDealDetailMapper;
+
+    private SysBankMapper sysBankMapper;
+
     @Autowired
     public void setAccDoctorAccountMapper(AccDoctorAccountMapper accDoctorAccountMapper) {
         this.accDoctorAccountMapper = accDoctorAccountMapper;
@@ -63,6 +70,21 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     @Autowired
     public void setAccDoctorBankCardMapper(AccDoctorBankCardMapper accDoctorBankCardMapper) {
         this.accDoctorBankCardMapper = accDoctorBankCardMapper;
+    }
+
+    @Autowired
+    public void setAccDoctorWithdrawMapper(AccDoctorWithdrawMapper accDoctorWithdrawMapper) {
+        this.accDoctorWithdrawMapper = accDoctorWithdrawMapper;
+    }
+
+    @Autowired
+    public void setAccDoctorDealDetailMapper(AccDoctorDealDetailMapper accDoctorDealDetailMapper) {
+        this.accDoctorDealDetailMapper = accDoctorDealDetailMapper;
+    }
+
+    @Autowired
+    public void setSysBankMapper(SysBankMapper sysBankMapper) {
+        this.sysBankMapper = sysBankMapper;
     }
 
     @Override
@@ -358,6 +380,86 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         updateDoctorAccount.setPassword(MD5Utils.md5(reqDTO.getPassword()));
         updateDoctorAccount.setUpdateDate(new Date());
         accDoctorAccountMapper.updateByPrimaryKeySelective(updateDoctorAccount);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ApplyWithdrawRespDTO applyWithdraw(ApplyWithdrawReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        if (null == reqDTO.getAmount() || reqDTO.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003012);
+        }
+
+        // 判断余额是否足够 TODO：手续费怎么办
+        AccDoctorWallet wallet = accDoctorWalletMapper.selectByPrimaryKeyForUpdate(reqDTO.getDoctorId());
+        if (wallet.getAmount().subtract(reqDTO.getAmount()).compareTo(BigDecimal.ZERO) < 0) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003012);
+        }
+
+        DoctorWithdrawChannelEnum channelEnum = DoctorWithdrawChannelEnum.getChannelEnum(reqDTO.getChannel());
+        if (null == channelEnum) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003010);
+        }
+
+        BigDecimal charge = BigDecimal.ZERO;
+
+        // 校验银行卡是否存在
+        if (channelEnum.equals(DoctorWithdrawChannelEnum.BANK) && null == reqDTO.getBankId()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003011);
+        } else if (channelEnum.equals(DoctorWithdrawChannelEnum.BANK) && null != reqDTO.getBankId()) {
+            AccDoctorBankCard doctorBank = accDoctorBankCardMapper.selectByPrimaryKey(reqDTO.getBankId());
+            if (null == doctorBank) {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003011);
+            }
+
+            SysBank bank = sysBankMapper.selectByPrimaryKey(doctorBank.getBankId());
+            charge = bank.getChargeFee().multiply(reqDTO.getAmount()).
+                    divide(new BigDecimal("100"),2, BigDecimal.ROUND_HALF_DOWN);
+        }
+
+        AccDoctorWithdraw doctorWithdraw = new AccDoctorWithdraw();
+        doctorWithdraw.setDoctorId(reqDTO.getDoctorId());
+        doctorWithdraw.setChannel(reqDTO.getChannel());
+        doctorWithdraw.setChannelAccount(reqDTO.getChannelAccount());
+        doctorWithdraw.setBankId(reqDTO.getBankId());
+        doctorWithdraw.setAmount(reqDTO.getAmount());
+        // TODO:手续费处理怎么算
+        doctorWithdraw.setCharge(charge);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, 2);
+        doctorWithdraw.setExpectAccountTime(calendar.getTime());
+        doctorWithdraw.setCreateDate(new Date());
+
+        accDoctorWithdrawMapper.insertSelective(doctorWithdraw);
+
+        // 插入流水
+        AccDoctorDealDetail doctorDealDetail = new AccDoctorDealDetail();
+        doctorDealDetail.setDoctorId(reqDTO.getDoctorId());
+        doctorDealDetail.setPayAmount(reqDTO.getAmount());
+        doctorDealDetail.setDealType(DoctorDealTypeEnum.WITHDRAW.getCode());
+        // TODO:描述怎么处理？
+        doctorDealDetail.setDecription("佣金提现");
+        doctorDealDetail.setRelationId(doctorWithdraw.getId());
+        doctorDealDetail.setCreateTime(new Date());
+
+        accDoctorDealDetailMapper.insertSelective(doctorDealDetail);
+
+        // 钱包金额减少
+        AccDoctorWallet updateWallet = new AccDoctorWallet();
+        updateWallet.setId(reqDTO.getDoctorId());
+        updateWallet.setAmount(wallet.getAmount().subtract(reqDTO.getAmount()));
+        updateWallet.setUpdateTime(new Date());
+        accDoctorWalletMapper.updateByPrimaryKeySelective(updateWallet);
+
+        ApplyWithdrawRespDTO respDTO = new ApplyWithdrawRespDTO();
+        respDTO.setCharge(doctorWithdraw.getCharge());
+        respDTO.setCreateDate(doctorWithdraw.getCreateDate());
+        respDTO.setExpectAccountTime(doctorWithdraw.getExpectAccountTime());
+
+        return respDTO;
     }
 
     /**

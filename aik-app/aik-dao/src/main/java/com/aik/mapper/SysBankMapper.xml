@@ -7,10 +7,11 @@
     <result column="bankIcon" jdbcType="VARCHAR" property="bankIcon" />
     <result column="bankColor" jdbcType="VARCHAR" property="bankColor" />
     <result column="bankType" jdbcType="VARCHAR" property="bankType" />
+    <result column="chargeFee" jdbcType="DECIMAL" property="chargeFee" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, bankName, bankIcon, bankColor, bankType, createDate
+    id, bankName, bankIcon, bankColor, bankType, chargeFee, createDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.aik.model.SysBank">
     insert into sys_bank (id, bankName, bankIcon, 
-      bankColor, bankType, createDate
-      )
+      bankColor, bankType, chargeFee, 
+      createDate)
     values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankIcon,jdbcType=VARCHAR}, 
-      #{bankColor,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
-      )
+      #{bankColor,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, #{chargeFee,jdbcType=DECIMAL}, 
+      #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.SysBank">
     insert into sys_bank
@@ -47,6 +48,9 @@
       </if>
       <if test="bankType != null">
         bankType,
+      </if>
+      <if test="chargeFee != null">
+        chargeFee,
       </if>
       <if test="createDate != null">
         createDate,
@@ -68,6 +72,9 @@
       <if test="bankType != null">
         #{bankType,jdbcType=VARCHAR},
       </if>
+      <if test="chargeFee != null">
+        #{chargeFee,jdbcType=DECIMAL},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -88,6 +95,9 @@
       <if test="bankType != null">
         bankType = #{bankType,jdbcType=VARCHAR},
       </if>
+      <if test="chargeFee != null">
+        chargeFee = #{chargeFee,jdbcType=DECIMAL},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -100,6 +110,7 @@
       bankIcon = #{bankIcon,jdbcType=VARCHAR},
       bankColor = #{bankColor,jdbcType=VARCHAR},
       bankType = #{bankType,jdbcType=VARCHAR},
+      chargeFee = #{chargeFee,jdbcType=DECIMAL},
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
