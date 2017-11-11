@@ -5,7 +5,11 @@ import java.util.Date;
 public class AikCommonProblem {
     private Integer id;
 
+    private Byte type;
+
     private String question;
+
+    private String keyword;
 
     private String answer;
 
@@ -23,12 +27,28 @@ public class AikCommonProblem {
         this.id = id;
     }
 
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
     public String getQuestion() {
         return question;
     }
 
     public void setQuestion(String question) {
         this.question = question == null ? null : question.trim();
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword == null ? null : keyword.trim();
     }
 
     public String getAnswer() {

@@ -43,10 +43,22 @@ public class ScrawlUtils {
         return content.substring(0, 10) + AIK_STRING_OMIT_SIGN;
     }
 
+    public static String bankCardShowHandle(String cardCode) {
+        if (StringUtils.isBlank(cardCode)) {
+            return "";
+        }
+
+        String hidStr = cardCode.substring(0, cardCode.length() - 4);
+        hidStr = hidStr.replaceAll("[0-9]", "*");
+        String showStr = cardCode.substring(cardCode.length() - 4, cardCode.length());
+
+        return hidStr + showStr;
+    }
+
     public static void main(String[] args) {
 //        DateTime dateTime = new DateTime("2016-08-13");
 //        Date birthday = dateTime.toDate();
 //        System.out.println(getAgeFromBirthday(birthday));
-        System.out.println(aikStringOmit("12345678911"));
+        System.out.println(bankCardShowHandle("12345678911"));
     }
 }

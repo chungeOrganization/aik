@@ -13,6 +13,10 @@ public class AccDoctorBankCard {
 
     private String cardCode;
 
+    private String holderName;
+
+    private String mobileNo;
+
     private Byte status;
 
     private Date createTime;
@@ -57,6 +61,22 @@ public class AccDoctorBankCard {
 
     public void setCardCode(String cardCode) {
         this.cardCode = cardCode == null ? null : cardCode.trim();
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public void setHolderName(String holderName) {
+        this.holderName = holderName == null ? null : holderName.trim();
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo == null ? null : mobileNo.trim();
     }
 
     public Byte getStatus() {

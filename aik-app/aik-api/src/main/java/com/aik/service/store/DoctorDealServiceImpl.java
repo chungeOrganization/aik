@@ -83,10 +83,33 @@ public class DoctorDealServiceImpl implements DoctorDealService{
             params.remove("dealType");
         }
 
+        // 查询时间处理
+        if (null == params.get("yearMonth") || StringUtils.isBlank(params.get("yearMonth").toString())) {
+            params.put("yearMonth", DateUtils.showDate(new Date(), "yyyy-MM"));
+        }
+
         Map<String, Object> rsData = new HashMap<>();
         BigDecimal sumAmount = accDoctorDealDetailMapper.selectSumAmountByParams(params);
         rsData.put("sumIncome", sumAmount);
-        rsData.put("orderList", accDoctorDealDetailMapper.selectDetailsByParams(params));
+
+        List<Map<String, Object>> orderList = accDoctorDealDetailMapper.selectDetailsByParams(params);
+        for (Map<String, Object> map : orderList) {
+            if (null != map.get("userHeadImg")) {
+                map.put("userHeadImg", systemResource.getApiFileUri() + map.get("userHeadImg").toString());
+            }
+
+            if(DoctorDealTypeEnum.WITHDRAW.getCode() == Byte.valueOf(map.get("dealType").toString())) {
+                // TODO:这里需要处理,包括提现状态
+                map.put("userHeadImg", systemResource.getApiFileUri() + "system/withdraw-headImg.png");
+
+            }
+        }
+        rsData.put("orderList", orderList);
+
+        // yearMonth
+        String yearMonth = params.get("yearMonth").toString();
+        rsData.put("yearMonth", DateUtils.showDate(DateUtils.parseDate(yearMonth, "yyyy-MM"), "yyyy年MM月"));
+
         return rsData;
     }
 }

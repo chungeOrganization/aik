@@ -14,6 +14,7 @@ import com.aik.model.*;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.util.MD5Utils;
+import com.aik.util.ScrawlUtils;
 import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -233,7 +234,20 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
     @Override
     public List<Map<String, Object>> getBankCards(Integer doctorId) throws ApiServiceException {
-        return accDoctorBankCardMapper.selectDoctorBankCards(doctorId);
+        List<Map<String, Object>> bankCards = accDoctorBankCardMapper.selectDoctorBankCards(doctorId);
+
+        for (Map<String, Object> map : bankCards) {
+            if (null != map.get("cardCode")) {
+                String cardCode = map.get("cardCode").toString();
+                map.put("cardCode", ScrawlUtils.bankCardShowHandle(cardCode));
+            }
+
+            if (null != map.get("bankBackImg")) {
+                map.put("bankBackImg", systemResource.getApiFileUri() + map.get("bankBackImg").toString());
+            }
+        }
+
+        return bankCards;
     }
 
     @Override
@@ -525,11 +539,13 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         }
 
         if (null == bankCard.getDoctorId() || null == bankCard.getBankId() ||
-                StringUtils.isBlank(bankCard.getBankName()) || StringUtils.isBlank(bankCard.getCardCode())) {
+                StringUtils.isBlank(bankCard.getBankName()) || StringUtils.isBlank(bankCard.getCardCode()) ||
+                StringUtils.isBlank(bankCard.getHolderName()) || StringUtils.isBlank(bankCard.getMobileNo())) {
             return false;
         }
 
-        // TODO:银行卡校验
+        // TODO:银行卡校验，三要素校验等
+        // TODO:校验银行卡是否重复绑定
 
         return true;
     }
