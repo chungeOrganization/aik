@@ -4,13 +4,16 @@ import com.aik.dao.AccDoctorDealDetailMapper;
 import com.aik.enums.DoctorDealTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorDealDetail;
+import com.aik.resource.SystemResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +26,9 @@ public class DoctorDealServiceImpl implements DoctorDealService{
     private static final Logger logger = LoggerFactory.getLogger(DoctorDealServiceImpl.class);
 
     private AccDoctorDealDetailMapper accDoctorDealDetailMapper;
+
+    @Resource
+    private SystemResource systemResource;
 
     @Autowired
     public void setAccDoctorDealDetailMapper(AccDoctorDealDetailMapper accDoctorDealDetailMapper) {
@@ -46,7 +52,14 @@ public class DoctorDealServiceImpl implements DoctorDealService{
         params.put("dealType", dealType);
         BigDecimal sumAmount = accDoctorDealDetailMapper.selectSumAmountByParams(params);
         rsData.put("sumIncome", sumAmount);
-        rsData.put("orderList", accDoctorDealDetailMapper.selectDetailsByParams(params));
+
+        List<Map<String, Object>> orderList = accDoctorDealDetailMapper.selectDetailsByParams(params);
+        for (Map<String, Object> map : orderList) {
+            if (null != map.get("userHeadImg")) {
+                map.put("userHeadImg", systemResource.getApiFileUri() + map.get("userHeadImg").toString());
+            }
+        }
+        rsData.put("orderList", orderList);
         return rsData;
     }
 

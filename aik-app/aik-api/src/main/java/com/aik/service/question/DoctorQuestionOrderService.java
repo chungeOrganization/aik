@@ -107,8 +107,9 @@ public interface DoctorQuestionOrderService {
      * 患者管理-订单详情
      *
      * @param orderId 订单id
+     * @param doctorId 医生id
      * @return response DTO
      * @throws ApiServiceException
      */
-    QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException;
+    QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId, Integer doctorId) throws ApiServiceException;
 }

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,8 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public List<Map<String, Object>> getAnswerList(Map<String, Object> params) throws ApiServiceException {
         params.put("type", AnswerTypeEnum.INITIAL.getCode());
+        Integer doctorId = Integer.valueOf(params.get("doctorId").toString());
+
         List<Map<String, Object>> rsList = aikAnswerMapper.selectMyAnswerPage(params);
         for (Map<String, Object> map : rsList) {
             byte sex = null != map.get("sickSex") ? Byte.valueOf(map.get("sickSex").toString()) : (byte) 0;
@@ -75,6 +78,12 @@ public class AnswerServiceImpl implements AnswerService {
 
             map.put("sickDetail", ScrawlUtils.aikStringOmit(map.get("sickDetail").toString()));
             map.put("answerDetail", ScrawlUtils.aikStringOmit(map.get("answerDetail").toString()));
+
+            // 判断医生id是否为当前医生id
+            if (null == map.get("doctorId") || !doctorId.equals(Integer.valueOf(map.get("doctorId").toString()))) {
+                map.put("answerAmount", new BigDecimal(0));
+            }
+            map.remove("doctorId");
         }
         return rsList;
     }

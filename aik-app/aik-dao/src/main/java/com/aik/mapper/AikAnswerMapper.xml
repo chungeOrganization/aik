@@ -139,7 +139,8 @@
   </select>
   <select id="selectMyAnswerPage" parameterType="java.util.Map" resultType="java.util.Map">
     select aw.id as answerId, aw.createDate as answerDate, ua.realName as sickRealName, ua.sex as sickSex, ua.birthday as sickBirthday,
-    qo.illName as illName, qo.description as sickDetail, aw.answer as answerDetail, qo.amount as answerAmount
+    qo.illName as illName, qo.description as sickDetail, aw.answer as answerDetail, qo.amount as answerAmount, qo.doctorId as doctorId,
+    qo.id as orderId
     from aik_answer aw
     inner join aik_questionOrder qo on aw.orderId = qo.id
     inner join acc_userAccount ua on qo.userId = ua.id

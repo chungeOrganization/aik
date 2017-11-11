@@ -7,10 +7,12 @@ import com.aik.dto.RegisterDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
+import com.aik.enums.SecurityCodeTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
 import com.aik.service.account.AuthService;
 import com.aik.service.account.DoctorAccountService;
+import com.aik.service.account.SecurityCodeService;
 import com.aik.service.account.UserAccountService;
 import com.aik.util.BeansUtils;
 import org.slf4j.Logger;
@@ -45,6 +47,8 @@ public class AuthApi {
 
     private DoctorAccountService doctorAccountService;
 
+    private SecurityCodeService securityCodeService;
+
     @Inject
     public void setAuthService(AuthService authService) {
         this.authService = authService;
@@ -58,6 +62,11 @@ public class AuthApi {
     @Inject
     public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
         this.doctorAccountService = doctorAccountService;
+    }
+
+    @Inject
+    public void setTokenHeader(String tokenHeader) {
+        this.tokenHeader = tokenHeader;
     }
 
     @POST
@@ -192,6 +201,13 @@ public class AuthApi {
         ApiResult result = new ApiResult();
 
         try {
+            // 校验验证码
+            boolean rs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_USER_FIND_PASSWORD.getType()),
+                    reqDTO.getMobileNo(), reqDTO.getSecurityCode());
+            if (!rs) {
+                return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
+            }
+
             userAccountService.resetPassword(reqDTO);
         } catch (ApiServiceException e) {
             logger.error("user reset password error: ", e);
@@ -210,6 +226,13 @@ public class AuthApi {
         ApiResult result = new ApiResult();
 
         try {
+            // 校验验证码
+            boolean rs = securityCodeService.validSecurityCode(String.valueOf(SecurityCodeTypeEnum.CODE_TYPE_DOCTOR_FIND_PASSWORD.getType()),
+                    reqDTO.getMobileNo(), reqDTO.getSecurityCode());
+            if (!rs) {
+                return result.withFailResult(ErrorCodeEnum.ERROR_CODE_1001002);
+            }
+
             doctorAccountService.resetPassword(reqDTO);
         } catch (ApiServiceException e) {
             logger.error("doctor reset password error: ", e);

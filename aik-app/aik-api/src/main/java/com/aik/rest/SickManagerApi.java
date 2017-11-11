@@ -230,7 +230,8 @@ public class SickManagerApi {
         ApiResult result = new ApiResult();
 
         try {
-            QuestionOrderDetailRespDTO questionOrderDetail = doctorQuestionOrderService.getQuestionOrderDetail(orderId);
+            QuestionOrderDetailRespDTO questionOrderDetail = doctorQuestionOrderService.getQuestionOrderDetail(orderId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("questionOrderDetail", questionOrderDetail);
         } catch (ApiServiceException e) {
             logger.error("get question order detail error: ", e);
