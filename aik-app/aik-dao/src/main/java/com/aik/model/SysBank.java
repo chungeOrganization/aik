@@ -8,9 +8,7 @@ public class SysBank {
 
     private String bankName;
 
-    private String bankIcon;
-
-    private String bankColor;
+    private String bankBackImg;
 
     private String bankType;
 
@@ -34,20 +32,12 @@ public class SysBank {
         this.bankName = bankName == null ? null : bankName.trim();
     }
 
-    public String getBankIcon() {
-        return bankIcon;
+    public String getBankBackImg() {
+        return bankBackImg;
     }
 
-    public void setBankIcon(String bankIcon) {
-        this.bankIcon = bankIcon == null ? null : bankIcon.trim();
-    }
-
-    public String getBankColor() {
-        return bankColor;
-    }
-
-    public void setBankColor(String bankColor) {
-        this.bankColor = bankColor == null ? null : bankColor.trim();
+    public void setBankBackImg(String bankBackImg) {
+        this.bankBackImg = bankBackImg == null ? null : bankBackImg.trim();
     }
 
     public String getBankType() {

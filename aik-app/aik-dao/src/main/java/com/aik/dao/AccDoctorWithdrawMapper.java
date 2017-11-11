@@ -14,4 +14,6 @@ public interface AccDoctorWithdrawMapper {
     int updateByPrimaryKeySelective(AccDoctorWithdraw record);
 
     int updateByPrimaryKey(AccDoctorWithdraw record);
+
+    AccDoctorWithdraw selectLastBankWithdraw(Integer doctorId);
 }

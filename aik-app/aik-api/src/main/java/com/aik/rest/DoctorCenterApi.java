@@ -7,6 +7,7 @@ import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.doctor.*;
 import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
 import com.aik.dto.response.doctor.DoctorInfoRespDTO;
+import com.aik.dto.response.doctor.ShowBankWithdrawRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SecurityCodeTypeEnum;
@@ -308,6 +309,25 @@ public class DoctorCenterApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("doctor apply withdraw error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/showBankWithdraw")
+    public ApiResult showBankWithdraw() {
+        ApiResult result = new ApiResult();
+
+        try {
+            ShowBankWithdrawRespDTO respDTO = doctorAccountService.showBankWithdraw(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("withdrawInfo", respDTO);
+        } catch (ApiServiceException e) {
+            logger.error("show doctor bank withdraw error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("show doctor bank withdraw error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

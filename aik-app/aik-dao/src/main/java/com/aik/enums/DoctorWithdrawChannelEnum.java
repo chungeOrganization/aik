@@ -5,6 +5,7 @@ package com.aik.enums;
  * Created by as on 2017/11/11.
  */
 public enum DoctorWithdrawChannelEnum {
+    // 1：银行卡提现 2：微信提现 3：支付宝提现
     BANK((byte) 1, "银行卡提现"),
     WECHAT((byte) 2, "微信提现"),
     ALIPAY((byte) 3, "支付宝提现");

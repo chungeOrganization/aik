@@ -6,6 +6,7 @@ import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.request.doctor.*;
 import com.aik.dto.request.user.ResetPwdReqDTO;
 import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
+import com.aik.dto.response.doctor.ShowBankWithdrawRespDTO;
 import com.aik.enums.DoctorDealTypeEnum;
 import com.aik.enums.DoctorWithdrawChannelEnum;
 import com.aik.exception.ApiServiceException;
@@ -420,6 +421,11 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
                     divide(new BigDecimal("100"),2, BigDecimal.ROUND_HALF_DOWN);
         }
 
+        // 校验提现账户
+        if (!channelEnum.equals(DoctorWithdrawChannelEnum.BANK) && StringUtils.isBlank(reqDTO.getChannelAccount())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003013);
+        }
+
         AccDoctorWithdraw doctorWithdraw = new AccDoctorWithdraw();
         doctorWithdraw.setDoctorId(reqDTO.getDoctorId());
         doctorWithdraw.setChannel(reqDTO.getChannel());
@@ -429,7 +435,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         // TODO:手续费处理怎么算
         doctorWithdraw.setCharge(charge);
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, 2);
+        calendar.add(Calendar.DAY_OF_YEAR, 3);
         doctorWithdraw.setExpectAccountTime(calendar.getTime());
         doctorWithdraw.setCreateDate(new Date());
 
@@ -457,8 +463,27 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         ApplyWithdrawRespDTO respDTO = new ApplyWithdrawRespDTO();
         respDTO.setCharge(doctorWithdraw.getCharge());
         respDTO.setCreateDate(doctorWithdraw.getCreateDate());
-        respDTO.setExpectAccountTime(doctorWithdraw.getExpectAccountTime());
+        respDTO.setExpectAccountTime("预计3-5个工作日内到账");
 
+        return respDTO;
+    }
+
+    @Override
+    public ShowBankWithdrawRespDTO showBankWithdraw(Integer doctorId) throws ApiServiceException {
+        ShowBankWithdrawRespDTO respDTO = new ShowBankWithdrawRespDTO();
+
+        AccDoctorWithdraw doctorWithdraw = accDoctorWithdrawMapper.selectLastBankWithdraw(doctorId);
+        if (null != doctorWithdraw) {
+            AccDoctorBankCard bankCard = accDoctorBankCardMapper.selectByPrimaryKey(doctorWithdraw.getBankId());
+            SysBank sysBank = sysBankMapper.selectByPrimaryKey(bankCard.getBankId());
+
+            respDTO.setBankId(bankCard.getId());
+            respDTO.setBankName(sysBank.getBankName());
+            respDTO.setBankType(sysBank.getBankType());
+            respDTO.setChargeFee(sysBank.getChargeFee());
+        }
+
+        respDTO.setBalance(accDoctorWalletMapper.selectByPrimaryKey(doctorId).getAmount());
         return respDTO;
     }
 

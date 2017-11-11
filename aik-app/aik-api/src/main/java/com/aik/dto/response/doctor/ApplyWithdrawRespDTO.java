@@ -13,7 +13,7 @@ public class ApplyWithdrawRespDTO {
 
     private Date createDate;
 
-    private Date expectAccountTime;
+    private String expectAccountTime;
 
     public BigDecimal getCharge() {
         return charge;
@@ -31,11 +31,11 @@ public class ApplyWithdrawRespDTO {
         this.createDate = createDate;
     }
 
-    public Date getExpectAccountTime() {
+    public String getExpectAccountTime() {
         return expectAccountTime;
     }
 
-    public void setExpectAccountTime(Date expectAccountTime) {
+    public void setExpectAccountTime(String expectAccountTime) {
         this.expectAccountTime = expectAccountTime;
     }
 }
