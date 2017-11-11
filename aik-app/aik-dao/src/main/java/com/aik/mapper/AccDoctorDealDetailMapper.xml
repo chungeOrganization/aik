@@ -176,9 +176,9 @@
     </if>
   </select>
   <select id="selectDetailsByParams" parameterType="java.util.Map" resultType="java.util.Map">
-    select ua.headImg as userHeadImg, dd.decription, dd.createTime, (inAmount - payAmount) as amount
+    select ua.headImg as userHeadImg, dd.decription, dd.createTime, (inAmount - payAmount) as amount, dd.dealType
     from acc_doctorDealDetail dd
-    inner join acc_userAccount ua on dd.userId = ua.id
+    left join acc_userAccount ua on dd.userId = ua.id
     where 1=1
     <if test="doctorId != null">
       and dd.doctorId = #{doctorId,jdbcType=INTEGER}

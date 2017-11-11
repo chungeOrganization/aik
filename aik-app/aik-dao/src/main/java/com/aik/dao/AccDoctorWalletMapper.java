@@ -11,6 +11,8 @@ public interface AccDoctorWalletMapper {
 
     AccDoctorWallet selectByPrimaryKey(Integer id);
 
+    AccDoctorWallet selectByPrimaryKeyForUpdate(Integer id);
+
     int updateByPrimaryKeySelective(AccDoctorWallet record);
 
     int updateByPrimaryKey(AccDoctorWallet record);

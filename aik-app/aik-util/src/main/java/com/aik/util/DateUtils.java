@@ -59,9 +59,26 @@ public class DateUtils {
         return sdf.format(date);
     }
 
-    public static Date parseDate(String dateStr, String pattern) throws ParseException {
+    public static String showDate(Date date, String pattern) {
+        if (null == date) {
+            return "";
+        }
+
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        return sdf.parse(dateStr);
+
+        return sdf.format(date);
+    }
+
+    public static Date parseDate(String dateStr, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        Date date = null;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            // ignore
+        }
+        return date;
     }
 
     public static void main(String[] args) {

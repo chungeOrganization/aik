@@ -344,6 +344,24 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
+    @Override
+    public void doctorValidUserNameAndPwd(RegisterDTO registerDTO) throws ApiServiceException {
+        if (null == registerDTO || StringUtils.isEmpty(registerDTO.getUserName()) ||
+                StringUtils.isEmpty(registerDTO.getPassword())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        if (!StringValidUtils.validPassword(registerDTO.getPassword()) ||
+                !StringValidUtils.validUserName(registerDTO.getUserName())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
+        }
+
+        // 验证用户名是否已被使用
+        if (doctorAccountService.validUserNameIsUsed(registerDTO.getUserName())) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001005);
+        }
+    }
+
     /**
      * 校验医生注册
      *

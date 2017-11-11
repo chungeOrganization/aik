@@ -43,7 +43,7 @@
       #{status,jdbcType=TINYINT}, #{auditUser,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorWithdraw">
+  <insert id="insertSelective" parameterType="com.aik.model.AccDoctorWithdraw" useGeneratedKeys="true" keyProperty="id">
     insert into acc_doctorWithdraw
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -196,4 +196,10 @@
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectLastBankWithdraw" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_doctorWithdraw
+    where doctorId = #{doctorId} and bankId is not null order by id desc limit 1
+  </select>
 </mapper>

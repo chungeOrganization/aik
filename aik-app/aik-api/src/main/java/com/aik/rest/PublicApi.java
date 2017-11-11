@@ -380,7 +380,11 @@ public class PublicApi {
 
         try {
             AikCommonProblem commonProblem = commonProblemService.getCommonProblemDetail(problemId);
-            result.withDataKV("commonProblem", commonProblem);
+            if (null != commonProblem) {
+                result.withDataKV("answerImg", systemResource.getApiFileUri() + commonProblem.getFileUrl());
+            } else {
+                result.withDataKV("answerImg", "");
+            }
         } catch (Exception e) {
             logger.error("get common problem detail error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);

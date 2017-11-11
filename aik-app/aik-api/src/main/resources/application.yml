@@ -37,6 +37,9 @@ spring:
       enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  devtools:
+    restart:
+      enabled: true   #热部署生效
 # mybatis
 mybatis:
   type-aliases-package: com.aik.model

@@ -1,7 +1,6 @@
 package com.aik.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SysBank {
@@ -9,13 +8,12 @@ public class SysBank {
 
     private String bankName;
 
-    private String bankIcon;
-
-    private String bankColor;
+    private String bankBackImg;
 
     private String bankType;
 
-    @JsonIgnore
+    private BigDecimal chargeFee;
+
     private Date createDate;
 
     public Integer getId() {
@@ -34,20 +32,12 @@ public class SysBank {
         this.bankName = bankName == null ? null : bankName.trim();
     }
 
-    public String getBankIcon() {
-        return bankIcon;
+    public String getBankBackImg() {
+        return bankBackImg;
     }
 
-    public void setBankIcon(String bankIcon) {
-        this.bankIcon = bankIcon == null ? null : bankIcon.trim();
-    }
-
-    public String getBankColor() {
-        return bankColor;
-    }
-
-    public void setBankColor(String bankColor) {
-        this.bankColor = bankColor == null ? null : bankColor.trim();
+    public void setBankBackImg(String bankBackImg) {
+        this.bankBackImg = bankBackImg == null ? null : bankBackImg.trim();
     }
 
     public String getBankType() {
@@ -56,6 +46,14 @@ public class SysBank {
 
     public void setBankType(String bankType) {
         this.bankType = bankType == null ? null : bankType.trim();
+    }
+
+    public BigDecimal getChargeFee() {
+        return chargeFee;
+    }
+
+    public void setChargeFee(BigDecimal chargeFee) {
+        this.chargeFee = chargeFee;
     }
 
     public Date getCreateDate() {

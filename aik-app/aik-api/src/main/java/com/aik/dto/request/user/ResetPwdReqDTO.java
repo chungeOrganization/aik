@@ -8,6 +8,8 @@ public class ResetPwdReqDTO {
 
     private String mobileNo;
 
+    private String securityCode;
+
     private String password;
 
     public String getMobileNo() {
@@ -16,6 +18,14 @@ public class ResetPwdReqDTO {
 
     public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public String getPassword() {

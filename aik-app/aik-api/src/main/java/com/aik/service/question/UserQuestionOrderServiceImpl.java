@@ -678,6 +678,10 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
 
         for (AikQuestion aikQuestion : questionsList) {
+            if (aikQuestion.getType() == QuestionTypeEnum.GRADE.getCode()) {
+                continue;
+            }
+
             QuestionAnswerRespDTO questionAnswer = new QuestionAnswerRespDTO();
 
             // 提问

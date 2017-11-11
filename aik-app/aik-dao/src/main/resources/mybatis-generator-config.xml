@@ -6,7 +6,7 @@
 
     <!-- !!!! Driver Class Path !!!! -->
     <classPathEntry
-            location="C:\Users\as\.m2\repository\mysql\mysql-connector-java\5.1.43\mysql-connector-java-5.1.43.jar"/>
+            location="C:\Users\DELL\.m2\repository\mysql\mysql-connector-java\5.1.43\mysql-connector-java-5.1.43.jar\"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="sto_userCollectionGoods" domainObjectName="StoUserCollectionGoods" enableCountByExample="false"
+        <table tableName="acc_externalUserBinding" domainObjectName="AccExternalUserBinding" enableCountByExample="false"
                        enableDeleteByExample="false"
                        enableSelectByExample="false" enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>

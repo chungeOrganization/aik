@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.aik.model.SysBank">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="bankName" jdbcType="VARCHAR" property="bankName" />
-    <result column="bankIcon" jdbcType="VARCHAR" property="bankIcon" />
-    <result column="bankColor" jdbcType="VARCHAR" property="bankColor" />
+    <result column="bankBackImg" jdbcType="VARCHAR" property="bankBackImg" />
     <result column="bankType" jdbcType="VARCHAR" property="bankType" />
+    <result column="chargeFee" jdbcType="DECIMAL" property="chargeFee" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, bankName, bankIcon, bankColor, bankType, createDate
+    id, bankName, bankBackImg, bankType, chargeFee, createDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,11 +23,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.aik.model.SysBank">
-    insert into sys_bank (id, bankName, bankIcon, 
-      bankColor, bankType, createDate
+    insert into sys_bank (id, bankName, bankBackImg, 
+      bankType, chargeFee, createDate
       )
-    values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankIcon,jdbcType=VARCHAR}, 
-      #{bankColor,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankBackImg,jdbcType=VARCHAR}, 
+      #{bankType,jdbcType=VARCHAR}, #{chargeFee,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.SysBank">
@@ -39,14 +39,14 @@
       <if test="bankName != null">
         bankName,
       </if>
-      <if test="bankIcon != null">
-        bankIcon,
-      </if>
-      <if test="bankColor != null">
-        bankColor,
+      <if test="bankBackImg != null">
+        bankBackImg,
       </if>
       <if test="bankType != null">
         bankType,
+      </if>
+      <if test="chargeFee != null">
+        chargeFee,
       </if>
       <if test="createDate != null">
         createDate,
@@ -59,14 +59,14 @@
       <if test="bankName != null">
         #{bankName,jdbcType=VARCHAR},
       </if>
-      <if test="bankIcon != null">
-        #{bankIcon,jdbcType=VARCHAR},
-      </if>
-      <if test="bankColor != null">
-        #{bankColor,jdbcType=VARCHAR},
+      <if test="bankBackImg != null">
+        #{bankBackImg,jdbcType=VARCHAR},
       </if>
       <if test="bankType != null">
         #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeFee != null">
+        #{chargeFee,jdbcType=DECIMAL},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -79,14 +79,14 @@
       <if test="bankName != null">
         bankName = #{bankName,jdbcType=VARCHAR},
       </if>
-      <if test="bankIcon != null">
-        bankIcon = #{bankIcon,jdbcType=VARCHAR},
-      </if>
-      <if test="bankColor != null">
-        bankColor = #{bankColor,jdbcType=VARCHAR},
+      <if test="bankBackImg != null">
+        bankBackImg = #{bankBackImg,jdbcType=VARCHAR},
       </if>
       <if test="bankType != null">
         bankType = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeFee != null">
+        chargeFee = #{chargeFee,jdbcType=DECIMAL},
       </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
@@ -97,9 +97,9 @@
   <update id="updateByPrimaryKey" parameterType="com.aik.model.SysBank">
     update sys_bank
     set bankName = #{bankName,jdbcType=VARCHAR},
-      bankIcon = #{bankIcon,jdbcType=VARCHAR},
-      bankColor = #{bankColor,jdbcType=VARCHAR},
+      bankBackImg = #{bankBackImg,jdbcType=VARCHAR},
       bankType = #{bankType,jdbcType=VARCHAR},
+      chargeFee = #{chargeFee,jdbcType=DECIMAL},
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

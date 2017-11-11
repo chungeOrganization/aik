@@ -265,7 +265,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     }
 
     @Override
-    public QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId) throws ApiServiceException {
+    public QuestionOrderDetailRespDTO getQuestionOrderDetail(Integer orderId, Integer doctorId) throws ApiServiceException {
         if (null == orderId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -297,12 +297,12 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(questionOrder.getUserId());
         questionOrderDetail.setUserHeaderImg(systemResource.getApiFileUri() + userAccount.getHeadImg());
 
-        // 医生头像
-        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(questionOrder.getDoctorId());
-        questionOrderDetail.setUserHeaderImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+        // 医生头像（）
+        AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(doctorId);
+        questionOrderDetail.setDoctorHeaderImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
 
         // 问答列表
-        List<QuestionAnswerRespDTO> questionAnswerList = getQuestionAnswerList(questionOrder);
+        List<QuestionAnswerRespDTO> questionAnswerList = getQuestionAnswerList(questionOrder, doctorId);
         questionOrderDetail.setQuestionAnswerList(questionAnswerList);
 
         return questionOrderDetail;
@@ -312,9 +312,10 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
      * 获取问答列表
      *
      * @param questionOrder 咨询订单
+     * @param doctorId 医生id
      * @return 问答列表
      */
-    private List<QuestionAnswerRespDTO> getQuestionAnswerList(AikQuestionOrder questionOrder) {
+    private List<QuestionAnswerRespDTO> getQuestionAnswerList(AikQuestionOrder questionOrder, Integer doctorId) {
         List<QuestionAnswerRespDTO> questionAnswerList = new ArrayList<>();
 
         AikQuestion searchAQ = new AikQuestion();
@@ -322,6 +323,19 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
 
         for (AikQuestion aikQuestion : questionsList) {
+            // 评分类型过滤
+            if (aikQuestion.getType() == QuestionTypeEnum.GRADE.getCode()) {
+                continue;
+            }
+
+            // 其他用户回答过滤（公开问题）
+            if (null != aikQuestion.getFromAnswerId()) {
+                AikAnswer fromAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getFromAnswerId());
+                if (null != fromAnswer && !fromAnswer.getDoctorId().equals(doctorId)) {
+                    continue;
+                }
+            }
+
             QuestionAnswerRespDTO questionAnswer = new QuestionAnswerRespDTO();
 
             // 提问

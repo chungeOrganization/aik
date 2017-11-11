@@ -4,11 +4,10 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.request.FeedbackReqDTO;
-import com.aik.dto.request.doctor.RebindingMobileReqDTO;
-import com.aik.dto.request.doctor.PayPasswordReqDTO;
-import com.aik.dto.request.doctor.ResetPayPasswordReqDTO;
-import com.aik.dto.request.doctor.UpdatePwdReqDTO;
+import com.aik.dto.request.doctor.*;
+import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
 import com.aik.dto.response.doctor.DoctorInfoRespDTO;
+import com.aik.dto.response.doctor.ShowBankWithdrawRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.enums.FeedbackEnum;
 import com.aik.enums.SecurityCodeTypeEnum;
@@ -26,6 +25,7 @@ import com.aik.service.relation.DoctorRelationService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.service.store.DoctorDealService;
 import com.aik.util.AikFileUtils;
+import org.apache.http.auth.AUTH;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -286,6 +286,48 @@ public class DoctorCenterApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get doctor wallet error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    /**
+     * 医生提现申请
+     */
+    @POST
+    @Path("/applyWithdraw")
+    public ApiResult applyWithdraw(ApplyWithdrawReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setDoctorId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            ApplyWithdrawRespDTO respDTO = doctorAccountService.applyWithdraw(reqDTO);
+            result.withDataKV("withdrawInfo", respDTO);
+        } catch (ApiServiceException e) {
+            logger.error("doctor apply withdraw error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("doctor apply withdraw error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/showBankWithdraw")
+    public ApiResult showBankWithdraw() {
+        ApiResult result = new ApiResult();
+
+        try {
+            ShowBankWithdrawRespDTO respDTO = doctorAccountService.showBankWithdraw(AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("withdrawInfo", respDTO);
+        } catch (ApiServiceException e) {
+            logger.error("show doctor bank withdraw error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("show doctor bank withdraw error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
