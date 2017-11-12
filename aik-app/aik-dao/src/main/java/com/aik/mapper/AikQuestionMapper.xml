@@ -156,4 +156,22 @@
       and orderId = #{orderId}
     </if>
   	</select>
+  <select id="selectSickLastQuestionByDoctorId" resultMap="BaseResultMap">
+    select
+      q.*
+    FROM
+      aik_question q
+    INNER JOIN aik_questionOrder qo ON qo.id = q.`orderId`
+    WHERE qo.`userId` = #{userId} AND qo.doctorId = #{doctorId}
+    and qo.type = 0 AND qo.`status` IN(2,3,4,5,6) AND qo.`auditStatus` = 1
+    ORDER BY q.id DESC LIMIT 1
+  </select>
+  <select id="selectLastQuestionByDoctorId" resultMap="BaseResultMap">
+    SELECT q.*
+    FROM aik_question q
+    INNER JOIN aik_questionOrder qo ON q.`orderId` = qo.`id`
+    LEFT JOIN aik_answer a ON a.`orderId` = q.`orderId` AND a.`id` = q.`fromAnswerId`
+    WHERE (q.`type` = 0 OR (q.`type` = 1 AND a.`doctorId` = #{doctorId}))
+    AND q.`orderId` = #{orderId} ORDER BY q.id DESC limit 1
+  </select>
 </mapper>

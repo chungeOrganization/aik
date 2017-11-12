@@ -107,28 +107,28 @@ public class DoctorTipsApi {
         return result;
     }
 
-    @POST
-    @Path("/checkQuestionTips")
-    public ApiResult checkQuestionTips(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> rsData = questionService.getProcessingQODetail(orderId);
-            result.withData(rsData);
-
-            Integer tipsId = Integer.valueOf(params.get("tipsId").toString());
-            doctorTipsService.checkQuestionTips(tipsId);
-        } catch (ApiServiceException e) {
-            logger.error("check question tips error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("check question tips error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
+//    @POST
+//    @Path("/checkQuestionTips")
+//    public ApiResult checkQuestionTips(Map<String, Object> params) {
+//        ApiResult result = new ApiResult();
+//
+//        try {
+//            Integer orderId = Integer.valueOf(params.get("orderId").toString());
+//            Map<String, Object> rsData = questionService.getProcessingQODetail(orderId);
+//            result.withData(rsData);
+//
+//            Integer tipsId = Integer.valueOf(params.get("tipsId").toString());
+//            doctorTipsService.checkQuestionTips(tipsId);
+//        } catch (ApiServiceException e) {
+//            logger.error("check question tips error: ", e);
+//            result.withFailResult(e.getErrorCodeEnum());
+//        } catch (Exception e) {
+//            logger.error("check question tips error: ", e);
+//            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+//        }
+//
+//        return result;
+//    }
 
     @POST
     @Path("/deleteTips")

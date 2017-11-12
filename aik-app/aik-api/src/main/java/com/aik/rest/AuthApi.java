@@ -270,7 +270,7 @@ public class AuthApi {
     }
 
     @POST
-    @Path("/auth/doctor/externalLogin")
+    @Path("/auth/user/externalLogin")
     public ApiResult userExternalLogin(ExternalLoginReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 

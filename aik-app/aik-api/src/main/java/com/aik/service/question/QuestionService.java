@@ -14,15 +14,6 @@ import java.util.Map;
 public interface QuestionService {
 
     /**
-     * 获取待处理问题订单详情
-     *
-     * @param questionOrderId 问题订单id
-     * @return 订单详情
-     * @throws ApiServiceException Api服务异常
-     */
-    Map<String, Object> getProcessingQODetail(Integer questionOrderId) throws ApiServiceException;
-
-    /**
      * 获取原始问题
      *
      * @param questionOrderId 问题订单id
@@ -32,13 +23,15 @@ public interface QuestionService {
     AikQuestion getOriginalQuestion(Integer questionOrderId) throws ApiServiceException;
 
     /**
-     * 获取已完成问题订单详情
-     *
-     * @param questionOrderId 问题订单id
-     * @return 订单详情
-     * @throws ApiServiceException Api服务异常
+     * 获取订单最近提问
+     * 匹配医生：获取最新提问
+     * 公开订单：最新关联医生追问或原始问题
+     * @param orderId
+     * @param doctorId
+     * @return
+     * @throws ApiServiceException
      */
-    Map<String, Object> getCompletedQODetail(Integer questionOrderId) throws ApiServiceException;
+    AikQuestion getOrderLastQuestion(Integer orderId, Integer doctorId) throws ApiServiceException;
 
     /**
      * 获取首页公开问题

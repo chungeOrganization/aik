@@ -155,4 +155,7 @@
     from aik_doctorSick
     where doctorId = #{doctorId} and userId = #{userId} limit 1
   </select>
+  <update id="clearDoctorSickGroup">
+    update aik_doctorSick set groupId = 0 where doctorId = #{doctorId} and groupId = #{groupId}
+  </update>
 </mapper>

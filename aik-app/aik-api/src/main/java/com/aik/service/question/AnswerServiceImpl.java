@@ -7,6 +7,7 @@ import com.aik.dao.AikQuestionOrderMapper;
 import com.aik.dto.RefuseAnswerDTO;
 import com.aik.enums.AnswerTypeEnum;
 import com.aik.enums.QuestionOrderEnum.*;
+import com.aik.enums.QuestionTypeEnum;
 import com.aik.enums.SexEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikAnswer;
@@ -100,29 +101,47 @@ public class AnswerServiceImpl implements AnswerService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
         }
 
-        if (questionOrder.getStatus() != QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+        if (questionOrder.getStatus() != QuestionOrderStatusEnum.ON_HANDLE.getCode() &&
+                questionOrder.getStatus() != QuestionOrderStatusEnum.ON_EVALUATION.getCode()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003007);
         }
 
-        AikQuestion originalQuestion = questionService.getOriginalQuestion(aikAnswer.getOrderId());
-        if (null == originalQuestion) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003005);
+        // 获取咨询订单最近提问
+        AikQuestion lastQuestion = questionService.getOrderLastQuestion(aikAnswer.getOrderId(), aikAnswer.getDoctorId());
+
+        if (null == lastQuestion) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003014);
         }
-        aikAnswer.setFromQuestionId(originalQuestion.getId());
+        aikAnswer.setFromQuestionId(lastQuestion.getId());
 
         // 判断是否回答过该问题
         if (aikAnswerMapper.selectCountBySelective(aikAnswer) > 0) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003006);
         }
 
-        aikAnswer.setType(AnswerTypeEnum.INITIAL.getCode());
-        aikAnswer.setCreateDate(new Date());
+        // 初始提问回答
+        if (lastQuestion.getType() == QuestionTypeEnum.INITIAL.getCode()) {
+            aikAnswer.setType(AnswerTypeEnum.INITIAL.getCode());
+            aikAnswer.setCreateDate(new Date());
+            aikAnswerMapper.insertSelective(aikAnswer);
 
-        aikAnswerMapper.insertSelective(aikAnswer);
+            // 公开问题不需要修改状态
+            if (questionOrder.getType() == QuestionOrderTypeEnum.MATCH_DOCTOR.getCode()) {
+                questionOrder.setStatus(QuestionOrderStatusEnum.ON_EVALUATION.getCode());
+            }
+            questionOrder.setUpdateDate(new Date());
+            aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
+        }
+        // 追问回答
+        else if(lastQuestion.getType() == QuestionTypeEnum.ADDTION.getCode()) {
+            aikAnswer.setType(AnswerTypeEnum.ADDITION.getCode());
+            aikAnswer.setCreateDate(new Date());
+            aikAnswerMapper.insertSelective(aikAnswer);
 
-        questionOrder.setStatus(QuestionOrderStatusEnum.ON_EVALUATION.getCode());
-        questionOrder.setUpdateDate(new Date());
-        aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
+            questionOrder.setUpdateDate(new Date());
+            aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
+        }
+
     }
 
     @Override
@@ -138,14 +157,32 @@ public class AnswerServiceImpl implements AnswerService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
         }
 
+        if (questionOrder.getType() != QuestionOrderTypeEnum.MATCH_DOCTOR.getCode()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003015);
+        }
+
         if (questionOrder.getStatus() != QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003007);
         }
 
         questionOrder.setStatus(QuestionOrderStatusEnum.FAIL_END.getCode());
         questionOrder.setFailType(QuestionOrderFailTypeEnum.DOCTOR_REFUSE.getCode());
+        questionOrder.setRefuseReason(refuseAnswerDTO.getRefuseReason());
         questionOrder.setUpdateDate(new Date());
         aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
+
+        // 添加拒绝answer
+        AikQuestion question = questionService.getOriginalQuestion(questionOrder.getId());
+
+        AikAnswer answer = new AikAnswer();
+        answer.setOrderId(questionOrder.getId());
+        answer.setType(AnswerTypeEnum.REFUSE.getCode());
+        answer.setDoctorId(questionOrder.getDoctorId());
+        answer.setFromQuestionId(question.getId());
+        answer.setAnswer("您拒绝了他");
+        answer.setCreateDate(new Date());
+
+        aikAnswerMapper.insertSelective(answer);
 
         // TODO:返还用户金额
     }

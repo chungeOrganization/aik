@@ -245,46 +245,6 @@ public class SickManagerApi {
     }
 
     @POST
-    @Path("/processingQuestionOrder")
-    public ApiResult processingQuestionOrder(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer questionOrderId = Integer.valueOf(params.get("questionOrderId").toString());
-            Map<String, Object> rsData = questionService.getProcessingQODetail(questionOrderId);
-            result.withData(rsData);
-        } catch (ApiServiceException e) {
-            logger.error("get processing question order detail error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get processing question order detail error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
-    @Path("/completedQuestionOrder")
-    public ApiResult completedQuestionOrder(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer questionOrderId = Integer.valueOf(params.get("questionOrderId").toString());
-            Map<String, Object> rsData = questionService.getCompletedQODetail(questionOrderId);
-            result.withData(rsData);
-        } catch (ApiServiceException e) {
-            logger.error("get completed question order detail error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get completed question order detail error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
     @Path("/answerQuestion")
     public ApiResult answerQuestion(AikAnswer aikAnswer) {
         ApiResult result = new ApiResult();

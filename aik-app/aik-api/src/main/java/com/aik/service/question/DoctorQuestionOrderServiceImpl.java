@@ -489,7 +489,8 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
      */
     private byte getDoctorOrderStatus(AikQuestionOrder questionOrder) {
         byte doctorOrderStatus;
-        if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
+        if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode() ||
+                questionOrder.getStatus() == QuestionOrderStatusEnum.FAIL_END.getCode()) {
             doctorOrderStatus = 2;
         } else {
             if (questionOrder.getIsPayDoctor() == QuestionOrderIsPayDoctorEnum.IS_PAY.getCode()) {

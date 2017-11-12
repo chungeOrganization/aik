@@ -19,10 +19,12 @@ import com.aik.resource.SystemResource;
 import com.aik.service.account.UserHealthRecordService;
 import com.aik.util.BeansUtils;
 import com.aik.util.ScrawlUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,8 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     private UserHealthRecordService userHealthRecordService;
 
     private SystemResource systemResource;
+
+    private AikQuestionMapper aikQuestionMapper;
 
     @Autowired
     public void setAccUserAttentionMapper(AccUserAttentionMapper accUserAttentionMapper) {
@@ -84,6 +88,11 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     @Autowired
     public void setSystemResource(SystemResource systemResource) {
         this.systemResource = systemResource;
+    }
+
+    @Autowired
+    public void setAikQuestionMapper(AikQuestionMapper aikQuestionMapper) {
+        this.aikQuestionMapper = aikQuestionMapper;
     }
 
     @Override
@@ -123,32 +132,21 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     public List<SickListRespDTO> getSickList(SickListReqDTO sickListReqDTO) throws ApiServiceException {
         Map<String, Object> params = BeansUtils.transBean2Map(sickListReqDTO);
         List<Map<String, Object>> sickListMap = aikDoctorSickMapper.selectListByParams(params);
-
         List<SickListRespDTO> sickList = BeansUtils.transListMap2ListBean(sickListMap, SickListRespDTO.class);
-//        for (Map<String, Object> map : sickList) {
-//            byte sickSex = null != map.get("sickSex") ? Byte.valueOf(map.get("sickSex").toString()) : 0;
-//            map.put("sickSex", SexEnum.getDescFromCode(sickSex));
-//
-//            // 获取该用户提问订单id
-//            Integer questionOrderId = Integer.valueOf(map.get("questionOrderId").toString());
-//            AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(questionOrderId);
-//
-//            // 描述
-//            if (questionOrder.getStatus() == QuestionOrderStatusEnum.NORMAL_END.getCode() &&
-//                    questionOrder.getServiceAttitude() == 5 && questionOrder.getAnswerQuality() == 5) {
-//                map.put("description", "给您评了五星");
-//            } else {
-//                map.put("description", questionOrder.getDescription());
-//            }
-//
-//            // 订单状态
-//            if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
-//                map.put("questionStatus", "待回答");
-//            } else {
-//                map.put("questionStatus", "完成");
-//            }
-//        }
+        sickList.forEach(sick -> {
+            // 头像增加prefix地址
+            if (StringUtils.isNotEmpty(sick.getUserHeadImg())) {
+                sick.setUserHeadImg(systemResource.getApiFileUri() + sick.getUserHeadImg());
+            }
 
+            // 获取患者咨询医生订单最新提问或评价
+            AikQuestion question = aikQuestionMapper.selectSickLastQuestionByDoctorId(sick.getUserId(),
+                    sickListReqDTO.getDoctorId());
+
+            if (null != question) {
+                sick.setSickQuestion(ScrawlUtils.aikStringOmit(question.getDescription()));
+            }
+        });
         return sickList;
     }
 
@@ -190,6 +188,8 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
 
         SickDataDetailRespDTO sickDataDetail = new SickDataDetailRespDTO();
 
+        // 用户头像
+        sickDetail.setHeadImg(systemResource.getApiFileUri() + sickDetail.getHeadImg());
         // 相互关注
         Integer userId = sickDetail.getUserId();
         // 患者是否关注医生
@@ -239,11 +239,18 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteSickGroup(Integer sickGroupId) throws ApiServiceException {
-        if (null == aikDoctorSickGroupMapper.selectByPrimaryKey(sickGroupId)) {
+        AikDoctorSickGroup sickGroup = aikDoctorSickGroupMapper.selectByPrimaryKey(sickGroupId);
+
+        if (null == sickGroup) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003003);
         }
 
+        // 患者列表中有该分组用户分组重置为未分组
+        aikDoctorSickMapper.clearDoctorSickGroup(sickGroup.getDoctorId(), sickGroupId);
+
+        // 删除分组
         aikDoctorSickGroupMapper.deleteByPrimaryKey(sickGroupId);
     }
 

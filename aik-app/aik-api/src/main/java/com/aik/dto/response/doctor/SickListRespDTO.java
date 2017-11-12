@@ -1,28 +1,19 @@
 package com.aik.dto.response.doctor;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * Description:
+ * Description: 患者列表
  * Created by as on 2017/10/20.
  */
+@Setter
+@Getter
 public class SickListRespDTO extends UserInfoRespDTO {
 
     private Integer sickId;
 
     private String sickNickName;
 
-    public Integer getSickId() {
-        return sickId;
-    }
-
-    public void setSickId(Integer sickId) {
-        this.sickId = sickId;
-    }
-
-    public String getSickNickName() {
-        return sickNickName;
-    }
-
-    public void setSickNickName(String sickNickName) {
-        this.sickNickName = sickNickName;
-    }
+    private String sickQuestion;
 }

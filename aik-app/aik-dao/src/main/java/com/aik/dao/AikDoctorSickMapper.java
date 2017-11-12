@@ -24,4 +24,6 @@ public interface AikDoctorSickMapper {
     Map<String, Object> selectSickDetailBySickId(Integer sickId);
 
     AikDoctorSick selectByDoctorIdAndUserId(@Param("doctorId") Integer doctorId, @Param("userId") Integer userId);
+
+    int clearDoctorSickGroup(@Param("doctorId") Integer doctorId, @Param("groupId") Integer groupId);
 }
