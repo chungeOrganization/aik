@@ -6,6 +6,7 @@ import com.aik.dto.response.doctor.SickDataDetailRespDTO;
 import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
+import com.aik.model.AikDoctorSick;
 import com.aik.model.AikDoctorSickGroup;
 
 import java.util.List;
@@ -122,4 +123,22 @@ public interface DoctorRelationService {
      * @throws ApiServiceException
      */
     void cancelAttentionUser(Integer userId, Integer doctorId) throws ApiServiceException;
+
+    /**
+     * 获取医生患者信息
+     *
+     * @param sickId 患者id
+     * @return 患者信息
+     * @throws ApiServiceException
+     */
+    AikDoctorSick getDoctorSick(Integer sickId) throws ApiServiceException;
+
+    /**
+     * 修改患者备注
+     *
+     * @param sickId 患者id
+     * @param remark 备注信息
+     * @throws ApiServiceException
+     */
+    void updateSickRemark(Integer sickId, String remark) throws ApiServiceException;
 }

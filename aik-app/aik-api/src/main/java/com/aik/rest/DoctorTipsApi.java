@@ -2,9 +2,12 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.account.DoctorTipsService;
+import com.aik.service.question.DoctorQuestionOrderService;
 import com.aik.service.question.QuestionService;
 import com.aik.service.relation.DoctorRelationService;
 import org.slf4j.Logger;
@@ -31,7 +34,7 @@ public class DoctorTipsApi {
 
     private DoctorTipsService doctorTipsService;
 
-    private QuestionService questionService;
+    private DoctorQuestionOrderService doctorQuestionOrderService;
 
     private DoctorRelationService doctorRelationService;
 
@@ -41,8 +44,8 @@ public class DoctorTipsApi {
     }
 
     @Inject
-    public void setQuestionService(QuestionService questionService) {
-        this.questionService = questionService;
+    public void setDoctorQuestionOrderService(DoctorQuestionOrderService doctorQuestionOrderService) {
+        this.doctorQuestionOrderService = doctorQuestionOrderService;
     }
 
     @Inject
@@ -75,7 +78,7 @@ public class DoctorTipsApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<Map<String, Object>> tipsList = doctorTipsService.getDoctorTipsList(AuthUserDetailsThreadLocal.getCurrentUserId());
+            DoctorTipsListRespDTO tipsList = doctorTipsService.getDoctorTipsList(AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("tipsList", tipsList);
         } catch (ApiServiceException e) {
             logger.error("get doctor tips list error: ", e);
@@ -107,28 +110,30 @@ public class DoctorTipsApi {
         return result;
     }
 
-//    @POST
-//    @Path("/checkQuestionTips")
-//    public ApiResult checkQuestionTips(Map<String, Object> params) {
-//        ApiResult result = new ApiResult();
-//
-//        try {
-//            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-//            Map<String, Object> rsData = questionService.getProcessingQODetail(orderId);
-//            result.withData(rsData);
-//
-//            Integer tipsId = Integer.valueOf(params.get("tipsId").toString());
-//            doctorTipsService.checkQuestionTips(tipsId);
-//        } catch (ApiServiceException e) {
-//            logger.error("check question tips error: ", e);
-//            result.withFailResult(e.getErrorCodeEnum());
-//        } catch (Exception e) {
-//            logger.error("check question tips error: ", e);
-//            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-//        }
-//
-//        return result;
-//    }
+    @POST
+    @Path("/checkQuestionTips")
+    public ApiResult checkQuestionTips(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            Integer orderId = Integer.valueOf(params.get("orderId").toString());
+            QuestionOrderDetailRespDTO questionOrderDetail = doctorQuestionOrderService.getQuestionOrderDetail(orderId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+
+            Integer tipsId = Integer.valueOf(params.get("tipsId").toString());
+            doctorTipsService.checkQuestionTips(tipsId);
+
+            result.withDataKV("questionOrderDetail", questionOrderDetail);
+        } catch (ApiServiceException e) {
+            logger.error("check question tips error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("check question tips error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
 
     @POST
     @Path("/deleteTips")

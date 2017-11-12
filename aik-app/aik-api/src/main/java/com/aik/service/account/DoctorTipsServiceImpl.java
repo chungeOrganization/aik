@@ -2,21 +2,19 @@ package com.aik.service.account;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.assist.RelationTypeUtil;
-import com.aik.dao.AccDoctorAttentionMapper;
-import com.aik.dao.AccUserAccountMapper;
-import com.aik.dao.AccUserAttentionMapper;
-import com.aik.dao.AikDoctorTipsMapper;
+import com.aik.dao.*;
+import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
+import com.aik.dto.response.doctor.FriendTipsRespDTO;
+import com.aik.dto.response.doctor.QuestionTipsRespDTO;
 import com.aik.enums.DoctorTipsCheckStatusEnum;
 import com.aik.enums.DoctorTipsTypeEnum;
 import com.aik.enums.SexEnum;
 import com.aik.enums.UserAccountUserTypeEnum;
 import com.aik.exception.ApiServiceException;
-import com.aik.model.AccDoctorAttention;
-import com.aik.model.AccUserAccount;
-import com.aik.model.AccUserAttention;
-import com.aik.model.AikDoctorTips;
+import com.aik.model.*;
 import com.aik.resource.SystemResource;
 import com.aik.service.SysSettingService;
+import com.aik.util.BeansUtils;
 import com.aik.util.DateUtils;
 import com.aik.util.ScrawlUtils;
 import org.joda.time.DateTime;
@@ -25,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Beans;
 import java.util.*;
 
 /**
@@ -47,6 +46,8 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
     private SystemResource systemResource;
 
     private SysSettingService sysSettingService;
+
+    private AikDoctorSickMapper aikDoctorSickMapper;
 
     @Autowired
     public void setAikDoctorTipsMapper(AikDoctorTipsMapper aikDoctorTipsMapper) {
@@ -78,38 +79,48 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         this.sysSettingService = sysSettingService;
     }
 
+    @Autowired
+    public void setAikDoctorSickMapper(AikDoctorSickMapper aikDoctorSickMapper) {
+        this.aikDoctorSickMapper = aikDoctorSickMapper;
+    }
+
     @Override
-    public List<Map<String, Object>> getDoctorTipsList(Integer doctorId) throws ApiServiceException {
-        List<Map<String, Object>> rsList = new ArrayList<>();
+    public DoctorTipsListRespDTO getDoctorTipsList(Integer doctorId) throws ApiServiceException {
+        DoctorTipsListRespDTO respDTO = new DoctorTipsListRespDTO();
+
         // 新的朋友
         AikDoctorTips friendSearchDT = new AikDoctorTips();
         friendSearchDT.setDoctorId(doctorId);
         friendSearchDT.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
         friendSearchDT.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
         List<AikDoctorTips> friendTipsList = aikDoctorTipsMapper.selectBySelective(friendSearchDT);
-        Map<String, Object> friendTips = new HashMap<>();
-        friendTips.put("headImg", sysSettingService.getNewFriendHeadImg());
-        friendTips.put("name", "新的朋友");
-        friendTips.put("message", "您有新的粉丝，点击查看");
-        if (friendTipsList.size() > 0) {
-            friendTips.put("createDate", DateUtils.aikPersonaliseDate(friendTipsList.get(0).getCreateDate()));
-        } else {
-            friendTips.put("createDate", "");
-        }
-        friendTips.put("redNum", friendTipsList.size());
-        rsList.add(friendTips);
 
-        // question tips
+        FriendTipsRespDTO friendTips = new FriendTipsRespDTO();
+        friendTips.setHeadImg(sysSettingService.getNewFriendHeadImg());
+        friendTips.setRedNum(friendTipsList.size());
+        friendTips.setMessage(friendTipsList.size() > 0 ? "您有新的粉丝，点击查看" : "");
+        if (friendTipsList.size() > 0) {
+            friendTips.setTipsTime(DateUtils.aikPersonaliseDate(friendTipsList.get(0).getCreateDate()));
+        } else {
+            friendTips.setTipsTime("");
+        }
+        respDTO.setFriendTips(friendTips);
+
+        // question tips list
         List<Map<String, Object>> questionTipsList = aikDoctorTipsMapper.selectQuestionTipsByDoctorId(doctorId);
-        for (Map<String, Object> questionTip : questionTipsList) {
-            questionTip.put("createDate", DateUtils.aikPersonaliseDate((Date) questionTip.get("createDate")));
-            if (null != questionTip.get("headImg")) {
-                questionTip.put("headImg", systemResource.getApiFileUri() + questionTip.get("headImg").toString());
+        for (Map<String, Object> questionTips : questionTipsList) {
+            questionTips.put("createDate", DateUtils.aikPersonaliseDate((Date) questionTips.get("createDate")));
+            if (null != questionTips.get("headImg")) {
+                questionTips.put("headImg", systemResource.getApiFileUri() + questionTips.get("headImg").toString());
+            }
+            if (null != questionTips.get("message")) {
+                questionTips.put("message", ScrawlUtils.aikStringOmit(questionTips.get("message").toString()));
             }
         }
-        rsList.addAll(questionTipsList);
+        List<QuestionTipsRespDTO> questionTipsResp = BeansUtils.transListMap2ListBean(questionTipsList, QuestionTipsRespDTO.class);
+        respDTO.setQuestionTipsList(questionTipsResp);
 
-        return rsList;
+        return respDTO;
     }
 
     @Override
@@ -129,6 +140,7 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
             }
 
             AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userAttention.getUserId());
+            AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, userAttention.getUserId());
 
             Map<String, Object> map = new HashMap<>();
             map.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
@@ -136,6 +148,7 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
             map.put("sex", SexEnum.getDescFromCode(userAccount.getSex()));
             map.put("userType", UserAccountUserTypeEnum.getDescFromCode(userAccount.getUserType()));
             map.put("userId", userAccount.getId());
+            map.put("sickId", doctorSick.getId());
 
             // 医生是否关注患者
             AccDoctorAttention searchAD = new AccDoctorAttention();
@@ -172,7 +185,11 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
-        aikDoctorTipsMapper.deleteByPrimaryKey(tipsId);
+        AikDoctorTips updateTips = new AikDoctorTips();
+        updateTips.setId(tipsId);
+        updateTips.setIsCheck(DoctorTipsCheckStatusEnum.IS_CHECKED.getCode());
+        updateTips.setUpdateDate(new Date());
+        aikDoctorTipsMapper.updateByPrimaryKeySelective(updateTips);
     }
 
     @Override

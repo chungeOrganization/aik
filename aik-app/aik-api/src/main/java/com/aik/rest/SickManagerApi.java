@@ -11,6 +11,7 @@ import com.aik.dto.response.doctor.SickListRespDTO;
 import com.aik.dto.response.doctor.SickOrderListRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikAnswer;
+import com.aik.model.AikDoctorSick;
 import com.aik.model.AikDoctorSickGroup;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.question.AnswerService;
@@ -72,6 +73,7 @@ public class SickManagerApi {
         try {
             List<AikDoctorSickGroup> sickGroups = doctorRelationService.getDoctorSickGroups(
                     AuthUserDetailsThreadLocal.getCurrentUserId());
+            sickGroups.add(0, new AikDoctorSickGroup(-1, AuthUserDetailsThreadLocal.getCurrentUserId(), "全部患者"));
             result.withDataKV("sickGroups", sickGroups);
         } catch (ApiServiceException e) {
             logger.error("get sick groups error: ", e);
@@ -275,6 +277,43 @@ public class SickManagerApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("refuse answer question error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @GET
+    @Path("/getSickRemark/{sickId}")
+    public ApiResult getSickRemark(@PathParam("sickId") Integer sickId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            AikDoctorSick doctorSick = doctorRelationService.getDoctorSick(sickId);
+            result.withDataKV("remark", doctorSick.getRemark());
+        } catch (ApiServiceException e) {
+            logger.error("get doctor sick error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get doctor sick error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/updateSickRemark")
+    public ApiResult updateSickRemark(AikDoctorSick doctorSick) {
+        ApiResult result = new ApiResult();
+
+        try {
+            doctorRelationService.updateSickRemark(doctorSick.getId(), doctorSick.getRemark());
+        } catch (ApiServiceException e) {
+            logger.error("update sick remark error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("update sick remark error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

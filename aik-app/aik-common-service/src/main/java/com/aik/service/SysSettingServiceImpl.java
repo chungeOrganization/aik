@@ -23,12 +23,12 @@ public class SysSettingServiceImpl implements SysSettingService {
     @Override
     public String getDoctorHomeImg() {
         // TODO：获取配置图片
-        return systemResource.getApiFileUri() + "doctor\\doctor-homepage.png";
+        return systemResource.getApiFileUri() + "system\\doctor-homepage.png";
     }
 
     @Override
     public String getNewFriendHeadImg() {
-        return systemResource.getApiFileUri() + "doctor\\new-friend.png";
+        return systemResource.getApiFileUri() + "system\\new-friend.png";
     }
 
     @Override

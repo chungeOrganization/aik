@@ -1,5 +1,6 @@
 package com.aik.service.account;
 
+import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
 import com.aik.enums.DoctorTipsTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikDoctorTips;
@@ -20,7 +21,7 @@ public interface DoctorTipsService {
      * @return data
      * @throws ApiServiceException Api服务异常
      */
-    List<Map<String, Object>> getDoctorTipsList(Integer doctorId) throws ApiServiceException;
+    DoctorTipsListRespDTO getDoctorTipsList(Integer doctorId) throws ApiServiceException;
 
     /**
      * 查看新的朋友

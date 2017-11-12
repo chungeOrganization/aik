@@ -19,6 +19,7 @@ import com.aik.resource.SystemResource;
 import com.aik.service.account.UserHealthRecordService;
 import com.aik.util.BeansUtils;
 import com.aik.util.ScrawlUtils;
+import com.github.pagehelper.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,7 +124,6 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     @Override
     public List<AikDoctorSickGroup> getDoctorSickGroups(Integer doctorId) throws ApiServiceException {
         List<AikDoctorSickGroup> sickGroups = aikDoctorSickGroupMapper.selectByDoctorId(doctorId);
-        sickGroups.add(0, new AikDoctorSickGroup(-1, doctorId, "全部患者"));
         sickGroups.add(new AikDoctorSickGroup(0, doctorId, "待分组"));
         return sickGroups;
     }
@@ -297,5 +297,27 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         if (null != doctorAttention) {
             accDoctorAttentionMapper.deleteByPrimaryKey(doctorAttention.getId());
         }
+    }
+
+    @Override
+    public AikDoctorSick getDoctorSick(Integer sickId) throws ApiServiceException {
+        if (null == sickId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        return aikDoctorSickMapper.selectByPrimaryKey(sickId);
+    }
+
+    @Override
+    public void updateSickRemark(Integer sickId, String remark) throws ApiServiceException {
+        if (null == sickId || StringUtils.isEmpty(remark)) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikDoctorSick updateSick = new AikDoctorSick();
+        updateSick.setId(sickId);
+        updateSick.setRemark(remark);
+        updateSick.setUpdateDate(new Date());
+        aikDoctorSickMapper.updateByPrimaryKeySelective(updateSick);
     }
 }
