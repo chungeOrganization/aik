@@ -40,15 +40,6 @@ public interface DoctorQuestionOrderService {
     List<Map<String, Object>> getDiagnosedOrders(Map<String, Object> params) throws ApiServiceException;
 
     /**
-     * 获取医生已诊订单详情
-     *
-     * @param orderId 订单id
-     * @return 医生已诊订单详情
-     * @throws ApiServiceException Api服务异常
-     */
-    Map<String, Object> getDiagnosedOrderDetail(Integer orderId) throws ApiServiceException;
-
-    /**
      * 获取医生已诊订单
      *
      * @param params 参数
@@ -58,15 +49,6 @@ public interface DoctorQuestionOrderService {
     List<Map<String, Object>> getInHandleOrders(Map<String, Object> params) throws ApiServiceException;
 
     /**
-     * 获取医生待诊订单详情
-     *
-     * @param orderId 订单id
-     * @return 医生待诊订单详情
-     * @throws ApiServiceException Api服务异常
-     */
-    Map<String, Object> getInHandleOrderDetail(Integer orderId) throws ApiServiceException;
-
-    /**
      * 获取医生订单
      *
      * @param params 参数
@@ -74,15 +56,6 @@ public interface DoctorQuestionOrderService {
      * @throws ApiServiceException Api服务异常
      */
     List<Map<String, Object>> getMyOrders(Map<String, Object> params) throws ApiServiceException;
-
-    /**
-     * 获取医生订单详情
-     *
-     * @param orderId 订单id
-     * @return 医生订单详情
-     * @throws ApiServiceException Api服务异常
-     */
-    Map<String, Object> getMyOrderDetail(Integer orderId) throws ApiServiceException;
 
     /**
      * 获取公开问题列表

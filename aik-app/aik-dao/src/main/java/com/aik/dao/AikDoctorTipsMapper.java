@@ -24,5 +24,7 @@ public interface AikDoctorTipsMapper {
 
     List<Map<String, Object>> selectHomeDoctorTips(Integer doctorId);
 
-    int selectCountByParams(Map<String, Object> params);
+    int selectCountBySelective(AikDoctorTips record);
+
+    int clearOrderTips(Integer orderId);
 }

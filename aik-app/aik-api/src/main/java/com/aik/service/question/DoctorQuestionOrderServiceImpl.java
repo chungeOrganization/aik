@@ -1,17 +1,13 @@
 package com.aik.service.question;
 
 import com.aik.assist.ErrorCodeEnum;
-import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dao.*;
 import com.aik.dto.response.doctor.AnswerRespDTO;
 import com.aik.dto.response.doctor.QuestionAnswerRespDTO;
 import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.dto.response.doctor.QuestionRespDTO;
-import com.aik.enums.AnswerTypeEnum;
+import com.aik.enums.*;
 import com.aik.enums.QuestionOrderEnum.*;
-import com.aik.enums.QuestionTypeEnum;
-import com.aik.enums.SexEnum;
-import com.aik.enums.UserFileTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
@@ -46,6 +42,8 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     private AccUserFileMapper accUserFileMapper;
 
     private SystemResource systemResource;
+
+    private AikDoctorTipsMapper aikDoctorTipsMapper;
 
     @Autowired
     public void setAikQuestionOrderMapper(AikQuestionOrderMapper aikQuestionOrderMapper) {
@@ -82,6 +80,11 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         this.systemResource = systemResource;
     }
 
+    @Autowired
+    public void setAikDoctorTipsMapper(AikDoctorTipsMapper aikDoctorTipsMapper) {
+        this.aikDoctorTipsMapper = aikDoctorTipsMapper;
+    }
+
     @Override
     public Integer getDoctorDiagnosedOrderCount(Integer doctorId) throws ApiServiceException {
         if (null == doctorId) {
@@ -94,7 +97,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatusWithRefuse());
         params.put("failTypeArray", new byte[]{QuestionOrderFailTypeEnum.NOT_FAIL.getCode(), QuestionOrderFailTypeEnum.DOCTOR_REFUSE.getCode()});
 
-        return aikQuestionOrderMapper.selectCountByParams(params);
+        return aikQuestionOrderMapper.selectSickCountByParams(params);
     }
 
     @Override
@@ -108,71 +111,48 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         params.put("type", QuestionOrderTypeEnum.MATCH_DOCTOR.getCode());
         params.put("statusArray", new byte[]{QuestionOrderStatusEnum.ON_HANDLE.getCode()});
 
-        return aikQuestionOrderMapper.selectCountByParams(params);
+        return aikQuestionOrderMapper.selectSickCountByParams(params);
     }
 
     @Override
     public List<Map<String, Object>> getDiagnosedOrders(Map<String, Object> params) throws ApiServiceException {
         params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatusWithRefuse());
 
-        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorDiagnosedOrders(params);
+        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorOrders(params);
 
-        // TODO: 回答显示处理
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));
             map.put("replyDate", DateUtils.aikPersonaliseDate((Date) map.get("replyDate")));
-            map.put("replyContent", ScrawlUtils.aikStringOmit(map.get("replayContent").toString()));
+            map.put("replyContent", ScrawlUtils.aikStringOmit(map.get("replyContent").toString()));
+            map.put("sickHeadImg", systemResource.getApiFileUri() + map.get("sickHeadImg").toString());
         }
 
         return rsList;
-    }
-
-    @Override
-    public Map<String, Object> getDiagnosedOrderDetail(Integer orderId) throws ApiServiceException {
-        if (null == orderId) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
-        }
-
-        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
-        if (null == questionOrder) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
-        }
-
-        Map<String, Object> rsData = new HashMap<>();
-        fillOrderDetail(questionOrder, rsData);
-
-        return rsData;
     }
 
     @Override
     public List<Map<String, Object>> getInHandleOrders(Map<String, Object> params) throws ApiServiceException {
         params.put("statusArray", new byte[]{QuestionOrderStatusEnum.ON_HANDLE.getCode()});
-        params.put("typesArray", new byte[]{QuestionTypeEnum.INITIAL.getCode()});
-        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorInHandOrders(params);
+        List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectDoctorOrders(params);
 
+        Integer doctorId = Integer.valueOf(params.get("doctorId").toString());
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));
             map.put("createDate", DateUtils.aikPersonaliseDate((Date) map.get("createDate")));
+            map.put("replyContent", ScrawlUtils.aikStringOmit(map.get("replyContent").toString()));
+            map.put("sickHeadImg", systemResource.getApiFileUri() + map.get("sickHeadImg").toString());
+
+            // 红点提示
+            AikDoctorTips tipsParams = new AikDoctorTips();
+            tipsParams.setDoctorId(doctorId);
+            tipsParams.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
+            tipsParams.setTipsType(DoctorTipsTypeEnum.NEW_QUESTION.getCode());
+            tipsParams.setRelationId(Integer.valueOf(map.get("orderId").toString()));
+            int redNum = aikDoctorTipsMapper.selectCountBySelective(tipsParams);
+            map.put("redNum", redNum);
         }
 
         return rsList;
-    }
-
-    @Override
-    public Map<String, Object> getInHandleOrderDetail(Integer orderId) throws ApiServiceException {
-        if (null == orderId) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
-        }
-
-        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
-        if (null == questionOrder) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
-        }
-
-        Map<String, Object> rsData = new HashMap<>();
-        fillOrderDetail(questionOrder, rsData);
-
-        return rsData;
     }
 
     @Override
@@ -183,7 +163,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         } else if(orderStatus == 0) {
             params.put("statusArray", new byte[]{QuestionOrderStatusEnum.ON_HANDLE.getCode()});
         } else if(orderStatus == 1) {
-            params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatus());
+            params.put("statusArray", QuestionOrderStatusEnum.getDoctorProcessedStatusWithRefuse());
         } else {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
         }
@@ -195,6 +175,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
             Date birthday = null != map.get("sickBirthday") ? (Date) map.get("sickBirthday") : null;
             map.remove("sickBirthday");
             map.put("sickAge", ScrawlUtils.getAgeFromBirthday(birthday));
+            map.put("sickDetail", ScrawlUtils.aikStringOmit(map.get("sickDetail").toString()));
 
             byte status = Byte.valueOf(map.get("status").toString());
             // answerStatus
@@ -209,31 +190,6 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
     }
 
     @Override
-    public Map<String, Object> getMyOrderDetail(Integer orderId) throws ApiServiceException {
-        if (null == orderId) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
-        }
-
-        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
-        if (null == questionOrder) {
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1003004);
-        }
-
-        Map<String, Object> rsData = new HashMap<>();
-        // 订单状态
-        byte doctorOrderStatus = getDoctorOrderStatus(questionOrder);
-        rsData.put("doctorOrderStatus", doctorOrderStatus);
-        if (questionOrder.getServiceAttitude() > 0 && questionOrder.getAnswerQuality() > 0) {
-            rsData.put("serviceAttitude", questionOrder.getServiceAttitude());
-            rsData.put("answerQuality", questionOrder.getAnswerQuality());
-        }
-
-        fillOrderDetail(questionOrder, rsData);
-
-        return rsData;
-    }
-
-    @Override
     public List<Map<String, Object>> getOpenQuestionOrders(Map<String, Object> params) throws ApiServiceException {
         List<Map<String, Object>> rsList = aikQuestionOrderMapper.selectOpenQuestionOrders(params);
 
@@ -242,6 +198,10 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
             Date birthday = null != map.get("sickBirthday") ? (Date) map.get("sickBirthday") : null;
             map.remove("sickBirthday");
             map.put("sickAge", ScrawlUtils.getAgeFromBirthday(birthday));
+            map.put("sickDetail", ScrawlUtils.aikStringOmit(map.get("sickDetail").toString()));
+
+            // TODO:回答数量
+            map.put("answerCount", 0);
         }
 
         return rsList;
@@ -330,7 +290,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
 
             // 其他用户回答过滤（公开问题）
             if (null != aikQuestion.getFromAnswerId()) {
-                AikAnswer fromAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getFromAnswerId());
+                AikAnswer fromAnswer = aikAnswerMapper.selectByPrimaryKey(aikQuestion.getFromAnswerId());
                 if (null != fromAnswer && !fromAnswer.getDoctorId().equals(doctorId)) {
                     continue;
                 }
@@ -371,67 +331,6 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         }
 
         return questionAnswerList;
-    }
-
-    private void fillOrderDetail(AikQuestionOrder questionOrder, Map<String, Object> rsData) {
-        // 用户头像
-        String sickHeadImg = accUserAccountMapper.selectByPrimaryKey(questionOrder.getUserId()).getHeadImg();
-
-        // 医生头像
-        String doctorHeadImg = accDoctorAccountMapper.selectByPrimaryKey(questionOrder.getDoctorId()).getHeadImg();
-
-        AikQuestion searchAQ = new AikQuestion();
-        searchAQ.setOrderId(questionOrder.getId());
-        List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
-
-        List<Map<String, Object>> questionAnswerList = new ArrayList<>();
-        for (AikQuestion aikQuestion : questionsList) {
-            Map<String, Object> questionAnswerMap = new HashMap<>();
-
-            Map<String, Object> question = new HashMap<>();
-            question.put("sickHeadImg", sickHeadImg);
-            question.put("description", aikQuestion.getDescription());
-            question.put("questionDate", aikQuestion.getCreateDate());
-
-            if (aikQuestion.getType() == QuestionTypeEnum.INITIAL.getCode()) {
-                // 获取图片信息
-                AccUserFile searchAU = new AccUserFile();
-                searchAU.setUserId(questionOrder.getUserId());
-                searchAU.setType(UserFileTypeEnum.ORDER_REFUND_FILE.getCode());
-                searchAU.setRelationId(questionOrder.getId());
-                List<String> userFiles = accUserFileMapper.selectFilesBySelective(searchAU);
-                question.put("questionFiles", userFiles);
-
-                // answerStatus
-                if (Arrays.binarySearch(QuestionOrderStatusEnum.getDoctorProcessedStatus(), questionOrder.getStatus()) != -1) {
-                    question.put("answerStatus", "已回答");
-                } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.FAIL_END.getCode()){
-                    question.put("answerStatus", "已拒绝");
-                } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_HANDLE.getCode()) {
-                    question.put("answerStatus", "待回答");
-                }
-
-                // 疾病名称
-                question.put("illName", questionOrder.getIllName());
-                // 疾病图片
-                question.put("illImg", "xxxx.jpg");
-            }
-
-            Map<String, Object> answer = new HashMap<>();
-            AikAnswer aikAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getId());
-            if (null != aikAnswer) {
-                answer.put("doctorHeadImg", doctorHeadImg);
-                answer.put("answer", aikAnswer.getAnswer());
-                answer.put("answerDate", aikAnswer.getCreateDate());
-
-                questionAnswerMap.put("answer", answer);
-            }
-
-            questionAnswerMap.put("question", question);
-
-            questionAnswerList.add(questionAnswerMap);
-        }
-        rsData.put("questionAnswerList", questionAnswerList);
     }
 
     private void fillOpenOrderDetail(AikQuestionOrder questionOrder, Map<String, Object> rsData) {

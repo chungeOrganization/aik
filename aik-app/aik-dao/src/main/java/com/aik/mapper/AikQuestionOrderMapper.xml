@@ -386,6 +386,15 @@
     select count(*)
     from aik_questionOrder
     where 1=1
+    <include refid="Count_Params"/>
+  </select>
+  <select id="selectSickCountByParams" parameterType="java.util.Map" resultType="int">
+    select count(distinct userId)
+    from aik_questionOrder
+    where 1=1
+    <include refid="Count_Params"/>
+  </select>
+  <sql id="Count_Params">
     <if test="userId != null">
       and userId = #{userId,jdbcType=INTEGER}
     </if>
@@ -416,19 +425,20 @@
         #{tp}
       </foreach>
     </if>
-  </select>
+  </sql>
   <select id="selectHomeOpenQuestion" parameterType="int" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from aik_questionOrder
-    where type = 1 and status = 2 order by id desc limit 1
+    where type = 1 and status = 2 order by id desc limit 3
   </select>
-  <select id="selectDoctorDiagnosedOrders" parameterType="java.util.Map" resultType="java.util.Map">
-    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
-    qoa.latelyReplyContent as replayContent, qoa.latelyReplyDate replyDate, qo.id as orderId
+  <select id="selectDoctorOrders" parameterType="java.util.Map" resultType="java.util.Map">
+    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ds.id as sickId,
+    qoa.latelyReplyContent as replyContent, qoa.latelyReplyDate replyDate, qo.id as orderId
     from aik_questionOrder qo
     inner join aik_questionOrderAssist qoa on qo.id = qoa.orderId
     inner join acc_userAccount ua on qo.userId = ua.id
+    inner join aik_doctorSick ds on qo.doctorId = ds.doctorId and qo.userId = ds.userId
     where 1=1 and qo.type = 0
     <if test="doctorId != null">
       and qo.doctorId = #{doctorId}
@@ -440,31 +450,6 @@
       </foreach>
     </if>
     order by qoa.latelyReplyDate desc
-    limit ${(page-1)*size}, #{size}
-  </select>
-  <select id="selectDoctorInHandOrders" parameterType="java.util.Map" resultType="java.util.Map">
-    select ua.headImg as sickHeadImg, ua.realName as sickRealName, ua.sex as sickSex, ua.id as sickId,
-    aq.description, aq.createDate, qo.id as orderId
-    from aik_questionOrder qo
-    inner join aik_question aq on qo.id = aq.orderId
-    inner join acc_userAccount ua on qo.userId = ua.id
-    where 1=1 and qo.type = 0
-    <if test="doctorId != null">
-      and qo.doctorId = #{doctorId}
-    </if>
-    <if test="statusArray != null">
-      and qo.status in
-      <foreach close=")" collection="statusArray" item="stu" open="(" separator=",">
-        #{stu}
-      </foreach>
-    </if>
-    <if test="typesArray != null">
-      and aq.type in
-      <foreach close=")" collection="typesArray" item="tp" open="(" separator=",">
-        #{tp}
-      </foreach>
-    </if>
-    order by aq.createDate desc
     limit ${(page-1)*size}, #{size}
   </select>
   <select id="selectDoctorMyOrders" parameterType="java.util.Map" resultType="java.util.Map">
@@ -493,7 +478,7 @@
     qo.illName as illName, qo.description as sickDetail, qo.amount as answerAmount, qo.createDate, qo.status
     from aik_questionOrder qo
     inner join acc_userAccount ua on qo.userId = ua.id
-    where 1=1 and qo.type = 0 and qo.status = 2
+    where 1=1 and qo.type = 1 and qo.status = 2
     <if test="illName != null">
       and qo.illName = #{illName}
     </if>

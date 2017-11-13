@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.beans.Beans;
 import java.util.*;
 
 /**
@@ -204,6 +203,17 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
                 Date date = (Date) map.get("createDate");
                 map.put("createDate", new DateTime(date.getTime()).toString("yyyy-MM-dd"));
             }
+
+            if (Byte.valueOf(map.get("tipsType").toString()) == DoctorTipsTypeEnum.NEW_FRIEND.getCode()) {
+                map.put("tipsMessage", "有一位新朋友关注了您，请去查看");
+            } else if (Byte.valueOf(map.get("tipsType").toString()) == DoctorTipsTypeEnum.NEW_QUESTION.getCode()) {
+                AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId,
+                        Integer.valueOf(map.get("userId").toString()));
+
+                map.put("tipsMessage", String.format("%s给您留言，请去查看", doctorSick.getRemark()));
+            }
+
+            map.remove("userId");
         }
 
         return doctorTips;
@@ -211,16 +221,21 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
 
     @Override
     public Integer getDoctorTipsCount(Integer doctorId) throws ApiServiceException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", doctorId);
-        params.put("isCheck", DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
+        AikDoctorTips params = new AikDoctorTips();
+        params.setDoctorId(doctorId);
+        params.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
 
-        return aikDoctorTipsMapper.selectCountByParams(params);
+        return aikDoctorTipsMapper.selectCountBySelective(params);
     }
 
     @Override
     public void addDoctorTips(AikDoctorTips doctorTip) throws ApiServiceException {
         doctorTip.setCreateDate(new Date());
         aikDoctorTipsMapper.insertSelective(doctorTip);
+    }
+
+    @Override
+    public void clearOrderTips(Integer orderId) throws ApiServiceException {
+        aikDoctorTipsMapper.clearOrderTips(orderId);
     }
 }

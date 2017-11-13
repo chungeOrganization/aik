@@ -2,11 +2,13 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.dto.response.doctor.SimpleInfoRespDTO;
 import com.aik.enums.DoctorPositionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AikAnswer;
+import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.SysSettingService;
 import com.aik.service.account.DoctorAccountService;
@@ -47,6 +49,8 @@ public class DoctorHomeApi {
 
     private AnswerService answerService;
 
+    private SystemResource systemResource;
+
     @Inject
     public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
         this.doctorAccountService = doctorAccountService;
@@ -77,6 +81,11 @@ public class DoctorHomeApi {
         this.answerService = answerService;
     }
 
+    @Inject
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
+    }
+
     @POST
     @Path("/pageInfo")
     public ApiResult getPageInfo() {
@@ -88,7 +97,7 @@ public class DoctorHomeApi {
             // 医生信息
             AccDoctorAccount doctorAccount = doctorAccountService.getDoctorAccount(doctorId);
             SimpleInfoRespDTO doctorInfo = new SimpleInfoRespDTO();
-            doctorInfo.setHeadImg(doctorAccount.getHeadImg());
+            doctorInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
             doctorInfo.setRealName(doctorAccount.getRealName());
             doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
             doctorInfo.setHosName(doctorAccount.getHosName());
@@ -146,26 +155,6 @@ public class DoctorHomeApi {
     }
 
     @POST
-    @Path("/getDiagnosedOrderDetail")
-    public ApiResult getDiagnosedOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = doctorQuestionOrderService.getDiagnosedOrderDetail(orderId);
-            result.withDataKV("orderDetail", orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get diagnosed order detail error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get diagnosed order detail error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
-
-    @POST
     @Path("/getInHandleOrders")
     public ApiResult getInHandleOrders(Map<String, Object> params) {
         ApiResult result = new ApiResult();
@@ -192,8 +181,13 @@ public class DoctorHomeApi {
 
         try {
             Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = doctorQuestionOrderService.getInHandleOrderDetail(orderId);
-            result.withDataKV("orderDetail", orderDetail);
+            QuestionOrderDetailRespDTO questionOrderDetail = doctorQuestionOrderService.getQuestionOrderDetail(orderId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+
+            // 处理医生订单tips
+            doctorTipsService.clearOrderTips(orderId);
+
+            result.withDataKV("questionOrderDetail", questionOrderDetail);
         } catch (ApiServiceException e) {
             logger.error("get in handle order detail error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
@@ -225,25 +219,25 @@ public class DoctorHomeApi {
         return result;
     }
 
-    @POST
-    @Path("/getMyOrderDetail")
-    public ApiResult getMyOrderDetail(Map<String, Object> params) {
-        ApiResult result = new ApiResult();
-
-        try {
-            Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            Map<String, Object> orderDetail = doctorQuestionOrderService.getMyOrderDetail(orderId);
-            result.withDataKV("orderDetail", orderDetail);
-        } catch (ApiServiceException e) {
-            logger.error("get my order detail error: ", e);
-            result.withFailResult(e.getErrorCodeEnum());
-        } catch (Exception e) {
-            logger.error("get my order detail error: ", e);
-            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
-        }
-
-        return result;
-    }
+//    @POST
+//    @Path("/getMyOrderDetail")
+//    public ApiResult getMyOrderDetail(Map<String, Object> params) {
+//        ApiResult result = new ApiResult();
+//
+//        try {
+//            Integer orderId = Integer.valueOf(params.get("orderId").toString());
+//            Map<String, Object> orderDetail = doctorQuestionOrderService.getMyOrderDetail(orderId);
+//            result.withDataKV("orderDetail", orderDetail);
+//        } catch (ApiServiceException e) {
+//            logger.error("get my order detail error: ", e);
+//            result.withFailResult(e.getErrorCodeEnum());
+//        } catch (Exception e) {
+//            logger.error("get my order detail error: ", e);
+//            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+//        }
+//
+//        return result;
+//    }
 
     @POST
     @Path("/getOpenQuestionOrders")

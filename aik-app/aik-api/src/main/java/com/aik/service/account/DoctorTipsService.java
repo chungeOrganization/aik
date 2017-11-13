@@ -71,4 +71,12 @@ public interface DoctorTipsService {
      * @throws ApiServiceException
      */
     void addDoctorTips(AikDoctorTips doctorTip) throws ApiServiceException;
+
+    /**
+     * 清楚订单医聊提示
+     *
+     * @param orderId 订单id
+     * @throws ApiServiceException
+     */
+    void clearOrderTips(Integer orderId) throws ApiServiceException;
 }

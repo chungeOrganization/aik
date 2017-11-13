@@ -7,6 +7,8 @@ public class AikDoctorTips {
 
     private Integer doctorId;
 
+    private Integer userId;
+
     private Byte tipsType;
 
     private Integer relationId;
@@ -33,6 +35,14 @@ public class AikDoctorTips {
 
     public void setDoctorId(Integer doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Byte getTipsType() {

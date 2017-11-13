@@ -279,12 +279,13 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         AccDoctorAccount doctorAccount = getDoctorAccount(doctorId);
 
         Map<String, Object> rsMap = new HashMap<>();
-        rsMap.put("headImg", doctorAccount.getHeadImg());
+        rsMap.put("headImg", systemResource.getApiFileUri() + doctorAccount.getHeadImg());
         rsMap.put("realName", doctorAccount.getRealName());
         rsMap.put("hosDepartment", doctorAccount.getHosDepartment());
         rsMap.put("position", doctorAccount.getPosition());
         rsMap.put("hosName", doctorAccount.getHosName());
-        rsMap.put("qrCode", "xxxxx.jpg");
+        // TODO
+        rsMap.put("qrCode", systemResource.getApiFileUri() + "doctor/doctor-qrcode-1.png");
 
         return rsMap;
     }

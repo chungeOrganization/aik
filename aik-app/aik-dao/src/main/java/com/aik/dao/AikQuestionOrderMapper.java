@@ -27,11 +27,11 @@ public interface AikQuestionOrderMapper {
 
     int selectCountByParams(Map<String, Object> params);
 
+    int selectSickCountByParams(Map<String, Object> params);
+
     AikQuestionOrder selectHomeOpenQuestion(Integer doctorId);
 
-    List<Map<String, Object>> selectDoctorDiagnosedOrders(Map<String, Object> params);
-
-    List<Map<String, Object>> selectDoctorInHandOrders(Map<String, Object> params);
+    List<Map<String, Object>> selectDoctorOrders(Map<String, Object> params);
 
     List<Map<String, Object>> selectDoctorMyOrders(Map<String, Object> params);
 

@@ -53,7 +53,7 @@ public class QuestionOrderEnum {
         }
 
         public static byte[] getDoctorValidStatus() {
-            return new byte[]{ON_HANDLE.getCode(), ON_EVALUATION.getCode(), ON_REFUND.getCode(), FAIL_END.getCode()};
+            return new byte[]{ON_HANDLE.getCode(), ON_EVALUATION.getCode(), ON_REFUND.getCode(), NORMAL_END.getCode(), FAIL_END.getCode()};
         }
 
         public static byte[] getDoctorProcessedStatus() {
