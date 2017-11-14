@@ -138,7 +138,7 @@ public class DoctorQuestionOrderServiceImpl implements DoctorQuestionOrderServic
         Integer doctorId = Integer.valueOf(params.get("doctorId").toString());
         for (Map<String, Object> map : rsList) {
             map.put("sickSex", SexEnum.getDescFromCode(Byte.valueOf(map.get("sickSex").toString())));
-            map.put("createDate", DateUtils.aikPersonaliseDate((Date) map.get("createDate")));
+            map.put("replyDate", DateUtils.aikPersonaliseDate((Date) map.get("replyDate")));
             map.put("replyContent", ScrawlUtils.aikStringOmit(map.get("replyContent").toString()));
             map.put("sickHeadImg", systemResource.getApiFileUri() + map.get("sickHeadImg").toString());
 
