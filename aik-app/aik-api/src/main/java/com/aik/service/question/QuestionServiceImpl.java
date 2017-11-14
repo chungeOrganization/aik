@@ -66,10 +66,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Map<String, Object>> getHomeOpenQuestion(Integer doctorId) throws ApiServiceException {
-        // TODO：获取首页公开问题待确定
-        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectHomeOpenQuestion(doctorId);
+        // 获取首页公开问题待确定
+        List<AikQuestionOrder> questionOrders = aikQuestionOrderMapper.selectHomeOpenQuestion(doctorId);
         List<Map<String, Object>> rsList = new ArrayList<>();
-        if (null != questionOrder) {
+        for (AikQuestionOrder questionOrder : questionOrders) {
             Map<String, Object> map = new HashMap<>();
             map.put("description", "有一位患者公开问题，请您去围观");
             map.put("createDate", new DateTime(questionOrder.getCreateDate().getTime()).toString("yyyy-MM-dd"));
