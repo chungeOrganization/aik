@@ -66,8 +66,8 @@ public class AuthApi {
     }
 
     @Inject
-    public void setTokenHeader(String tokenHeader) {
-        this.tokenHeader = tokenHeader;
+    public void setSecurityCodeService(SecurityCodeService securityCodeService) {
+        this.securityCodeService = securityCodeService;
     }
 
     @POST

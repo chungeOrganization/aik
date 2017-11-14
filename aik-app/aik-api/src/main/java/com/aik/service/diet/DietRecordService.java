@@ -4,7 +4,6 @@ import com.aik.dto.request.user.BygoneDietRecordAnalyzeReqDTO;
 import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
-import sun.java2d.pipe.AAShapePipe;
 
 import java.util.Date;
 import java.util.Map;

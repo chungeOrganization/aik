@@ -133,7 +133,7 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         Map<String, Object> params = BeansUtils.transBean2Map(sickListReqDTO);
         List<Map<String, Object>> sickListMap = aikDoctorSickMapper.selectListByParams(params);
         List<SickListRespDTO> sickList = BeansUtils.transListMap2ListBean(sickListMap, SickListRespDTO.class);
-        sickList.forEach(sick -> {
+        for (SickListRespDTO sick: sickList) {
             // 头像增加prefix地址
             if (StringUtils.isNotEmpty(sick.getUserHeadImg())) {
                 sick.setUserHeadImg(systemResource.getApiFileUri() + sick.getUserHeadImg());
@@ -146,7 +146,7 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
             if (null != question) {
                 sick.setSickQuestion(ScrawlUtils.aikStringOmit(question.getDescription()));
             }
-        });
+        }
         return sickList;
     }
 

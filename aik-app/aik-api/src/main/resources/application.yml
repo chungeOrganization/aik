@@ -61,13 +61,16 @@ jwt:
 # file
 file:
 # windows
-  upload-root-uri: "C:/Users/as/Pictures/"
+#  upload-root-uri: "C:/Users/as/Pictures/"
 # linux
-#  upload-root-uri: "/usr/soft/file/"
+  upload-root-uri: "/usr/soft/file/"
   mapping-root-uri: "/file"
 # system
 system:
-  api-uri: "http://localhost/aik"
+# windows
+#  api-uri: "http://localhost/aik"
+# linux
+  api-uri: "http://104.224.159.254/aik"
 # logger
 logging:
   level:
