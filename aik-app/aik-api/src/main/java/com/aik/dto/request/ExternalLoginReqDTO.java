@@ -17,7 +17,7 @@ public class ExternalLoginReqDTO {
     // 第三方用户openId（APP唯一）
     private String openId;
 
-    // 第三方平台（QQ、WeiXin）
+    // 第三方平台（QQ、WeChat）
     private String platform;
 
     // 设备类型（IOS、Android）

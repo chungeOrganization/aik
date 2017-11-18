@@ -5,6 +5,8 @@ import com.aik.dao.AccDoctorAccountMapper;
 import com.aik.dao.AccDoctorWalletMapper;
 import com.aik.dao.AccExternalUserBindingMapper;
 import com.aik.dao.AccUserAccountMapper;
+import com.aik.dto.ExternalUserInfoReqDTO;
+import com.aik.dto.ExternalUserInfoRespDTO;
 import com.aik.dto.LoginDTO;
 import com.aik.dto.RegisterDTO;
 import com.aik.dto.request.ExternalLoginReqDTO;
@@ -18,6 +20,7 @@ import com.aik.model.AccExternalUserBinding;
 import com.aik.model.AccUserAccount;
 import com.aik.security.JwtTokenUtil;
 import com.aik.security.JwtUser;
+import com.aik.util.ExternalUtils;
 import com.aik.util.MD5Utils;
 import com.aik.util.StringValidUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +65,8 @@ public class AuthServiceImpl implements AuthService {
     private AccDoctorWalletMapper accDoctorWalletMapper;
 
     private AccExternalUserBindingMapper accExternalUserBindingMapper;
+
+    private ExternalUtils externalUtils;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -115,6 +120,11 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     public void setAccExternalUserBindingMapper(AccExternalUserBindingMapper accExternalUserBindingMapper) {
         this.accExternalUserBindingMapper = accExternalUserBindingMapper;
+    }
+
+    @Autowired
+    public void setExternalUtils(ExternalUtils externalUtils) {
+        this.externalUtils = externalUtils;
     }
 
     @Override
@@ -336,9 +346,14 @@ public class AuthServiceImpl implements AuthService {
         // 否则通过platform提供的openapi获取用户信息，在平台注册用户，添加userBinding记录，登录返回token
         else {
             // 根据accessToken和openId获取用户信息
-
-
-            token = "";
+            ExternalUserInfoReqDTO externalUserInfoReq = new ExternalUserInfoReqDTO();
+            externalUserInfoReq.setAccessToken(reqDTO.getAccessToken());
+            externalUserInfoReq.setOpenId(reqDTO.getOpenId());
+            externalUserInfoReq.setPlatformType(reqDTO.getPlatform());
+            ExternalUserInfoRespDTO externalUserInfo = externalUtils.getExternalUserInfo(externalUserInfoReq);
+            // TODO:
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001011);
+//            token = "";
         }
 
         return token;

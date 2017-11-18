@@ -277,6 +277,9 @@ public class AuthApi {
         try {
             String token = authService.userExternalLogin(reqDTO);
             result.withDataKV("token", token);
+        } catch (ApiServiceException e) {
+            logger.error("user external login error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("user external login error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);

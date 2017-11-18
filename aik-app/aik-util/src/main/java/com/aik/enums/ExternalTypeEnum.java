@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * Create by as on 2017/11/10
  */
 public enum ExternalTypeEnum {
-    TENCENT("tencent", "腾讯开放平台"),
+    TENCENT("qq", "腾讯开放平台"),
     WECHAT("wechat", "微信开放平台"),;
     private String type;
 
