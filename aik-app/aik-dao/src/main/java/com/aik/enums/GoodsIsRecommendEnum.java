@@ -7,7 +7,8 @@ package com.aik.enums;
 public enum GoodsIsRecommendEnum {
     // 0：未推荐 1：推荐
     NOT_RECOMMEND((byte) 0, "未推荐"),
-    RECOMMEND((byte) 1, "推荐"),;
+    NEW_RECOMMEND((byte) 1, "新品推荐"),
+    MANAGER_RECOMMEND((byte) 2, "掌柜推荐");
 
     private byte code;
 

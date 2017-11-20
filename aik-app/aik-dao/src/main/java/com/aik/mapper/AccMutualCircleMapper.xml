@@ -145,5 +145,11 @@
       and p.userName = #{userName}
     </if>
   	</select>
-  
+
+  <select id="selectUserLastCircle" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from acc_mutualCircle
+    where userId = #{userId} order by id desc limit 1
+  </select>
 </mapper>

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -45,6 +46,8 @@ public class UserOrderServiceImpl implements UserOrderService {
     private AccUserFileMapper accUserFileMapper;
 
     private StoGoodsMapper stoGoodsMapper;
+
+    private StoShoppingCartMapper stoShoppingCartMapper;
 
     @Resource
     private SystemResource systemResource;
@@ -89,6 +92,11 @@ public class UserOrderServiceImpl implements UserOrderService {
         this.stoGoodsMapper = stoGoodsMapper;
     }
 
+    @Autowired
+    public void setStoShoppingCartMapper(StoShoppingCartMapper stoShoppingCartMapper) {
+        this.stoShoppingCartMapper = stoShoppingCartMapper;
+    }
+
     @Override
     public List<Map<String, Object>> getUserOrderList(Map<String, Object> params) throws ApiServiceException {
         List<Map<String, Object>> orderList = new ArrayList<>();
@@ -118,6 +126,47 @@ public class UserOrderServiceImpl implements UserOrderService {
     }
 
     @Override
+    @Transactional
+    public Map<String, Object> shoppingCartSettle(Integer userId, List<Integer> scIds) throws ApiServiceException {
+        if (null == scIds || scIds.size() == 0) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        BigDecimal amount = BigDecimal.ZERO;
+        List<StoUserOrderDetail> orderDetails = new ArrayList<>();
+        for (Integer scId : scIds) {
+            StoShoppingCart shoppingCart = stoShoppingCartMapper.selectByPrimaryKey(scId);
+            StoGoods goods = stoGoodsMapper.selectByPrimaryKey(shoppingCart.getGoodsId());
+            amount = amount.add(goods.getPrice().multiply(BigDecimal.valueOf(shoppingCart.getNumber())));
+
+            StoUserOrderDetail orderDetail = new StoUserOrderDetail();
+            orderDetail.setUserId(userId);
+            orderDetail.setGoodsId(goods.getId());
+            orderDetail.setNumber(shoppingCart.getNumber());
+            orderDetail.setAmount(goods.getPrice().multiply(BigDecimal.valueOf(shoppingCart.getNumber())));
+            orderDetail.setCreateDate(new Date());
+            orderDetails.add(orderDetail);
+        }
+
+        StoUserOrder userOrder = new StoUserOrder();
+        userOrder.setOrderNum(System.currentTimeMillis() + "");
+        userOrder.setUserId(userId);
+        userOrder.setAmount(amount);
+        userOrder.setCreateDate(new Date());
+
+        stoUserOrderMapper.insertSelective(userOrder);
+
+        for(StoUserOrderDetail userOrderDetail : orderDetails) {
+            userOrderDetail.setOrderId(userOrder.getId());
+
+            stoUserOrderDetailMapper.insertSelective(userOrderDetail);
+        }
+
+        return getConfirmOrderDetail(userOrder.getId());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> getConfirmOrderDetail(Integer orderId) throws ApiServiceException {
         if (null == orderId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -133,6 +182,8 @@ public class UserOrderServiceImpl implements UserOrderService {
         }
 
         Map<String, Object> orderDetail = new HashMap<>();
+        orderDetail.put("orderId", orderId);
+
         // 收货地址
         Integer acceptAddressId = userOrder.getAcceptAddressId();
         StoAcceptAddress acceptAddress;
@@ -175,10 +226,14 @@ public class UserOrderServiceImpl implements UserOrderService {
         int goodsCount = stoUserOrderDetailMapper.selectGoodsCountBySelective(searchUO);
         orderDetail.put("goodsCount", goodsCount);
 
+        // 订单总价
+        orderDetail.put("goodsAmount", userOrder.getAmount());
+
         return orderDetail;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void payOrderSuccess(PayStoOrderDTO payStoOrderDTO) throws ApiServiceException {
         if (null == payStoOrderDTO || null == payStoOrderDTO.getOrderId() ||
                 null == payStoOrderDTO.getAcceptAddressId()) {
@@ -354,8 +409,7 @@ public class UserOrderServiceImpl implements UserOrderService {
         BigDecimal amount = goods.getPrice().multiply(new BigDecimal(reqDTO.getGoodsNumber()));
 
         StoUserOrder userOrder = new StoUserOrder();
-        // TODO:生成订单号
-        userOrder.setOrderNum("xxxxxxx0001");
+        userOrder.setOrderNum(System.currentTimeMillis() + "");
         userOrder.setUserId(reqDTO.getUserId());
         userOrder.setAmount(amount);
         userOrder.setCreateDate(new Date());

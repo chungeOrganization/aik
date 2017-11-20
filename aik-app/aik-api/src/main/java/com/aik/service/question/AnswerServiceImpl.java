@@ -3,6 +3,7 @@ package com.aik.service.question;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AikAnswerMapper;
+import com.aik.dao.AikQuestionOrderAssistMapper;
 import com.aik.dao.AikQuestionOrderMapper;
 import com.aik.dto.RefuseAnswerDTO;
 import com.aik.enums.AnswerTypeEnum;
@@ -13,6 +14,7 @@ import com.aik.exception.ApiServiceException;
 import com.aik.model.AikAnswer;
 import com.aik.model.AikQuestion;
 import com.aik.model.AikQuestionOrder;
+import com.aik.model.AikQuestionOrderAssist;
 import com.aik.util.ScrawlUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -41,6 +43,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     private AikQuestionOrderMapper aikQuestionOrderMapper;
 
+    private QuestionOrderAssistService questionOrderAssistService;
+
     @Autowired
     public void setAikAnswerMapper(AikAnswerMapper aikAnswerMapper) {
         this.aikAnswerMapper = aikAnswerMapper;
@@ -54,6 +58,11 @@ public class AnswerServiceImpl implements AnswerService {
     @Autowired
     public void setAikQuestionOrderMapper(AikQuestionOrderMapper aikQuestionOrderMapper) {
         this.aikQuestionOrderMapper = aikQuestionOrderMapper;
+    }
+
+    @Autowired
+    public void setQuestionOrderAssistService(QuestionOrderAssistService questionOrderAssistService) {
+        this.questionOrderAssistService = questionOrderAssistService;
     }
 
     @Override
@@ -142,6 +151,8 @@ public class AnswerServiceImpl implements AnswerService {
             aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
         }
 
+        // 添加问题订单辅助信息
+        questionOrderAssistService.addQuestionOrderAssist(questionOrder.getId(), aikAnswer.getAnswer());
     }
 
     @Override
@@ -183,6 +194,9 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setCreateDate(new Date());
 
         aikAnswerMapper.insertSelective(answer);
+
+        // 添加问题订单辅助信息
+        questionOrderAssistService.addQuestionOrderAssist(questionOrder.getId(), answer.getAnswer());
 
         // TODO:返还用户金额
     }

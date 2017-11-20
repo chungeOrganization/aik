@@ -242,7 +242,7 @@
     select id, image, name
     from diet_food
     where 1=1
-    <if test="name != null">
+    <if test="name != null and name != ''">
       and name = #{name}
     </if>
     <if test="category != null">

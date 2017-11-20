@@ -9,6 +9,7 @@ import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
 import com.aik.dto.response.doctor.ShowBankWithdrawRespDTO;
 import com.aik.enums.DoctorDealTypeEnum;
 import com.aik.enums.DoctorWithdrawChannelEnum;
+import com.aik.enums.QuestionOrderEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.resource.SystemResource;
@@ -54,6 +55,8 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
     private SysBankMapper sysBankMapper;
 
+    private AikQuestionOrderMapper aikQuestionOrderMapper;
+
     @Autowired
     public void setAccDoctorAccountMapper(AccDoctorAccountMapper accDoctorAccountMapper) {
         this.accDoctorAccountMapper = accDoctorAccountMapper;
@@ -87,6 +90,11 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     @Autowired
     public void setSysBankMapper(SysBankMapper sysBankMapper) {
         this.sysBankMapper = sysBankMapper;
+    }
+
+    @Autowired
+    public void setAikQuestionOrderMapper(AikQuestionOrderMapper aikQuestionOrderMapper) {
+        this.aikQuestionOrderMapper = aikQuestionOrderMapper;
     }
 
     @Override
@@ -500,6 +508,52 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
         respDTO.setBalance(accDoctorWalletMapper.selectByPrimaryKey(doctorId).getAmount());
         return respDTO;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void payDoctorOrderAmount(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(orderId);
+        if (null == questionOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004001);
+        }
+
+        if (questionOrder.getStatus() != QuestionOrderEnum.QuestionOrderStatusEnum.NORMAL_END.getCode()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004002);
+        }
+
+        if (questionOrder.getDoctorId() == null || questionOrder.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            return;
+        }
+
+        // TODO：医生收入抽成
+        BigDecimal rakeAmount = BigDecimal.ZERO;
+
+        // 医生收入
+        BigDecimal inAmount = questionOrder.getAmount().subtract(rakeAmount);
+
+        // 增加流水
+        AccDoctorDealDetail doctorDealDetail = new AccDoctorDealDetail();
+        doctorDealDetail.setDoctorId(questionOrder.getDoctorId());
+        doctorDealDetail.setUserId(questionOrder.getUserId());
+        doctorDealDetail.setInAmount(inAmount);
+        doctorDealDetail.setDealType(DoctorDealTypeEnum.ANSWER_QUESTION.getCode());
+        doctorDealDetail.setDecription("回答问题");
+        doctorDealDetail.setRelationId(orderId);
+        doctorDealDetail.setCreateTime(new Date());
+
+        accDoctorDealDetailMapper.insertSelective(doctorDealDetail);
+
+        // 医生金额
+        AccDoctorWallet doctorWallet = accDoctorWalletMapper.selectByPrimaryKeyForUpdate(questionOrder.getDoctorId());
+        doctorWallet.setAmount(doctorWallet.getAmount().add(inAmount));
+        doctorWallet.setUpdateTime(new Date());
+
+        accDoctorWalletMapper.updateByPrimaryKeySelective(doctorWallet);
     }
 
     /**

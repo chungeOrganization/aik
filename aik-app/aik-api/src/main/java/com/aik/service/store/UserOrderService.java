@@ -25,6 +25,16 @@ public interface UserOrderService {
     List<Map<String, Object>> getUserOrderList(Map<String, Object> params) throws ApiServiceException;
 
     /**
+     * 购物车结算
+     *
+     * @param userId
+     * @param scIds
+     * @return
+     * @throws ApiServiceException
+     */
+    Map<String, Object> shoppingCartSettle(Integer userId, List<Integer> scIds) throws ApiServiceException;
+
+    /**
      * 获取结算订单详情
      *
      * @param orderId 订单id

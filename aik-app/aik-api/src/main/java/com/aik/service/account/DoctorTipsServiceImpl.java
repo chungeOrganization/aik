@@ -36,8 +36,6 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
 
     private AikDoctorTipsMapper aikDoctorTipsMapper;
 
-    private AccUserAttentionMapper accUserAttentionMapper;
-
     private AccUserAccountMapper accUserAccountMapper;
 
     private AccDoctorAttentionMapper accDoctorAttentionMapper;
@@ -51,11 +49,6 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
     @Autowired
     public void setAikDoctorTipsMapper(AikDoctorTipsMapper aikDoctorTipsMapper) {
         this.aikDoctorTipsMapper = aikDoctorTipsMapper;
-    }
-
-    @Autowired
-    public void setAccUserAttentionMapper(AccUserAttentionMapper accUserAttentionMapper) {
-        this.accUserAttentionMapper = accUserAttentionMapper;
     }
 
     @Autowired
@@ -133,13 +126,8 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         friendSearchDT.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
         List<AikDoctorTips> friendTipsList = aikDoctorTipsMapper.selectBySelective(friendSearchDT);
         for (AikDoctorTips doctorTips : friendTipsList) {
-            AccUserAttention userAttention = accUserAttentionMapper.selectByPrimaryKey(doctorTips.getRelationId());
-            if (null == userAttention) {
-                continue;
-            }
-
-            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userAttention.getUserId());
-            AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, userAttention.getUserId());
+            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(doctorTips.getUserId());
+            AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, doctorTips.getUserId());
 
             Map<String, Object> map = new HashMap<>();
             map.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());

@@ -1,8 +1,6 @@
 package com.aik.dto.response.user;
 
 import com.aik.dto.response.doctor.QuestionAnswerRespDTO;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class QuestionOrderDetailRespDTO {
 
     private BigDecimal orderPrice;
 
-    private String auditTips;
+    private String orderTips;
 
     private String illName;
 
@@ -54,12 +52,12 @@ public class QuestionOrderDetailRespDTO {
         this.orderPrice = orderPrice;
     }
 
-    public String getAuditTips() {
-        return auditTips;
+    public String getOrderTips() {
+        return orderTips;
     }
 
-    public void setAuditTips(String auditTips) {
-        this.auditTips = auditTips;
+    public void setOrderTips(String orderTips) {
+        this.orderTips = orderTips;
     }
 
     public String getIllName() {

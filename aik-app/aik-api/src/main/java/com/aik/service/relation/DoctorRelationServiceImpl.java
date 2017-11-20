@@ -56,6 +56,8 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
 
     private AikQuestionMapper aikQuestionMapper;
 
+    private AccUserAccountMapper accUserAccountMapper;
+
     @Autowired
     public void setAccUserAttentionMapper(AccUserAttentionMapper accUserAttentionMapper) {
         this.accUserAttentionMapper = accUserAttentionMapper;
@@ -94,6 +96,11 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     @Autowired
     public void setAikQuestionMapper(AikQuestionMapper aikQuestionMapper) {
         this.aikQuestionMapper = aikQuestionMapper;
+    }
+
+    @Autowired
+    public void setAccUserAccountMapper(AccUserAccountMapper accUserAccountMapper) {
+        this.accUserAccountMapper = accUserAccountMapper;
     }
 
     @Override
@@ -319,5 +326,24 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
         updateSick.setRemark(remark);
         updateSick.setUpdateDate(new Date());
         aikDoctorSickMapper.updateByPrimaryKeySelective(updateSick);
+    }
+
+    @Override
+    public void addDoctorSick(Integer userId, Integer doctorId) throws ApiServiceException {
+        if (null == doctorId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, userId);
+        if (null == doctorSick) {
+            doctorSick = new AikDoctorSick();
+            doctorSick.setDoctorId(doctorId);
+            doctorSick.setUserId(userId);
+            doctorSick.setCreateDate(new Date());
+
+            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userId);
+            doctorSick.setRemark(userAccount.getRealName());
+            aikDoctorSickMapper.insertSelective(doctorSick);
+        }
     }
 }

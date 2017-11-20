@@ -197,6 +197,10 @@ public class CircleServiceImpl implements CircleService {
         List<CirclesRespDTO> circles = BeansUtils.transListMap2ListBean(circleMaps, CirclesRespDTO.class);
 
         for (CirclesRespDTO circle : circles) {
+            if (StringUtils.isNotBlank(circle.getHeadImg())) {
+                circle.setHeadImg(systemResource.getApiFileUri() + circle.getHeadImg());
+            }
+
             // 关注状态
             AccUserAttention searchAU = new AccUserAttention();
             searchAU.setUserId(circle.getUserId());

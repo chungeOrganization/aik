@@ -14,4 +14,6 @@ public interface AikQuestionOrderAssistMapper {
     int updateByPrimaryKeySelective(AikQuestionOrderAssist record);
 
     int updateByPrimaryKey(AikQuestionOrderAssist record);
+
+    AikQuestionOrderAssist selectByOrderId(Integer orderId);
 }

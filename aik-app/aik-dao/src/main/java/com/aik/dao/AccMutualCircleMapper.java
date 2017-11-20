@@ -24,8 +24,7 @@ public interface AccMutualCircleMapper {
     int updateByPrimaryKey(AccMutualCircle record);
 
     List<Map<String, Object>> selectByParams(Map<String, Object> params);
-    
-    
+
     /**
      * 获取所有数据
      * @return
@@ -37,4 +36,6 @@ public interface AccMutualCircleMapper {
      * @return
      */
     Page<AccMutualCircleVo> findByPage(AccMutualCircleVo record);
+
+    AccMutualCircle selectUserLastCircle(Integer userId);
 }

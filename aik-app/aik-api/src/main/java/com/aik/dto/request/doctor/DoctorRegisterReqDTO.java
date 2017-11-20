@@ -18,8 +18,6 @@ public class DoctorRegisterReqDTO {
 
     private Integer accountId;
 
-    private String headImg;
-
     private String realName;
 
     private Byte sex;
@@ -77,14 +75,6 @@ public class DoctorRegisterReqDTO {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
-    }
-
-    public String getHeadImg() {
-        return headImg;
-    }
-
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
     }
 
     public String getRealName() {

@@ -182,4 +182,12 @@ public interface DoctorAccountService {
      * @throws ApiServiceException Api服务异常
      */
     ShowBankWithdrawRespDTO showBankWithdraw(Integer doctorId) throws ApiServiceException;
+
+    /**
+     * 支付医生咨询订单金额
+     *
+     * @param orderId 订单id
+     * @throws ApiServiceException
+     */
+    void payDoctorOrderAmount(Integer orderId) throws ApiServiceException;
 }

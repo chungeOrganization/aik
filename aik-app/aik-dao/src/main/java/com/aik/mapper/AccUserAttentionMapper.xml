@@ -137,7 +137,7 @@
     <if test="userId != null">
       and userId = #{userId}
     </if>
-    <if test="type">
+    <if test="type != null">
       and type = #{type}
     </if>
     order by createTime desc

@@ -29,7 +29,7 @@ public class SmartDeviceServiceImpl implements SmartDeviceService {
 
         UserSmartDeviceDTO userSmartDeviceDTO = new UserSmartDeviceDTO();
 
-        userSmartDeviceDTO.setImage(systemResource.getApiFileUri() + "smartDevice.img");
+        userSmartDeviceDTO.setImage(systemResource.getApiFileUri() + "system/smartDevice.png");
         userSmartDeviceDTO.setName("智能体脂秤");
         userSmartDeviceDTO.setStatus((byte) 0);// 0：未绑定 1：已绑定
 

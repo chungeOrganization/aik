@@ -15,6 +15,7 @@ import com.aik.resource.SystemResource;
 import com.aik.service.account.DoctorTipsService;
 import com.aik.service.question.AnswerService;
 import com.aik.util.BeansUtils;
+import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,9 @@ public class UserAttentionServiceImpl implements UserAttentionService {
 
     private DoctorTipsService doctorTipsService;
 
-    private AikDoctorSickMapper aikDoctorSickMapper;
+    private DoctorRelationService doctorRelationService;
+
+    private AccMutualCircleMapper accMutualCircleMapper;
 
     @Resource
     private SystemResource systemResource;
@@ -80,8 +83,13 @@ public class UserAttentionServiceImpl implements UserAttentionService {
     }
 
     @Autowired
-    public void setAikDoctorSickMapper(AikDoctorSickMapper aikDoctorSickMapper) {
-        this.aikDoctorSickMapper = aikDoctorSickMapper;
+    public void setDoctorRelationService(DoctorRelationService doctorRelationService) {
+        this.doctorRelationService = doctorRelationService;
+    }
+
+    @Autowired
+    public void setAccMutualCircleMapper(AccMutualCircleMapper accMutualCircleMapper) {
+        this.accMutualCircleMapper = accMutualCircleMapper;
     }
 
     @Override
@@ -156,6 +164,11 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             boolean isUserAttention = accUserAttentionMapper.selectCountBySelective(searchAU) > 0;
 
             attentionInfo.setRelation(RelationTypeUtil.getABRelation(true, isUserAttention));
+
+            // 关注用户最新互助圈
+            AccMutualCircle mutualCircle = accMutualCircleMapper.selectUserLastCircle(userAccount.getId());
+            attentionInfo.setContent(null == mutualCircle ? "" : ScrawlUtils.aikStringOmit(mutualCircle.getContent()));
+
             rsList.add(attentionInfo);
         }
 
@@ -177,6 +190,8 @@ public class UserAttentionServiceImpl implements UserAttentionService {
         introduction.put("department", doctorAccount.getHosDepartment());
         introduction.put("position", DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
         introduction.put("hospital", doctorAccount.getHosName());
+        introduction.put("starLevel", doctorAccount.getStarLevel());
+        introduction.put("price", doctorAccount.getPrice());
         introduction.put("answersCount", answerService.getDoctorAnswersCount(doctorId));
 
         AccDoctorAttention searchAD = new AccDoctorAttention();
@@ -233,23 +248,15 @@ public class UserAttentionServiceImpl implements UserAttentionService {
             // 医聊提示
             AikDoctorTips doctorTip = new AikDoctorTips();
             doctorTip.setDoctorId(doctorId);
+            doctorTip.setUserId(userId);
             doctorTip.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
             doctorTip.setRelationId(userAttention.getId());
             doctorTip.setTipsMessage("您有新的朋友关注");
             doctorTipsService.addDoctorTips(doctorTip);
         }
 
-        AikDoctorSick doctorSick = aikDoctorSickMapper.selectByDoctorIdAndUserId(doctorId, userId);
-        if (null == doctorSick) {
-            doctorSick = new AikDoctorSick();
-            doctorSick.setDoctorId(doctorId);
-            doctorSick.setUserId(userId);
-            doctorSick.setCreateDate(new Date());
-
-            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(userId);
-            doctorSick.setRemark(userAccount.getRealName());
-            aikDoctorSickMapper.insertSelective(doctorSick);
-        }
+        // 成为该医生患者
+        doctorRelationService.addDoctorSick(userId, doctorId);
     }
 
     @Override

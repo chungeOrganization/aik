@@ -209,6 +209,27 @@ public class StoreApi {
     }
 
     @POST
+    @Path("/shoppingCartSettle")
+    public ApiResult shoppingCartSettle(Map<String, Object> params) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<Integer> scIds = (List<Integer>) params.get("scIds");
+            Map<String, Object> orderDetail = userOrderService.shoppingCartSettle(AuthUserDetailsThreadLocal.getCurrentUserId(),
+                    scIds);
+            result.withDataKV("orderDetail", orderDetail);
+        } catch (ApiServiceException e) {
+            logger.error("shopping cart settle error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("shopping cart settle error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
     @Path("/getConfirmOrderDetail")
     public ApiResult getConfirmOrderDetail(Map<String, Object> params) {
         ApiResult result = new ApiResult();
@@ -411,9 +432,9 @@ public class StoreApi {
 
         try {
             // TODO:商店头部图片
-            result.withDataKV("headImage", systemResource.getApiFileUri() + "/headImage.jpg");
+            result.withDataKV("headImage", systemResource.getApiFileUri() + "system/goods-header.png");
             // TODO:商店底部图片
-            result.withDataKV("bottomImage", systemResource.getApiFileUri() + "/bottomImage.jpg");
+            result.withDataKV("bottomImage", systemResource.getApiFileUri() + "system/goods-bottom.png");
 
             result.withDataKV("recommendGoods", goodsService.getRecommendGoods());
         } catch (ApiServiceException e) {

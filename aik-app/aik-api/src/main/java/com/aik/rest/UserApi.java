@@ -24,6 +24,7 @@ import com.aik.service.question.UserQuestionOrderService;
 import com.aik.service.relation.UserAttentionService;
 import com.aik.service.setting.FeedbackService;
 import com.aik.util.AikFileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
@@ -138,7 +139,11 @@ public class UserApi {
             AccUserAccount userAccount = userAccountService.getUserAccount(userId);
             Map<String, Object> userAccountMap = new HashMap<>();
             userAccountMap.put("nickName", userAccount.getNickName());
-            userAccountMap.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
+            if (!StringUtils.isEmpty(userAccount.getHeadImg())) {
+                userAccountMap.put("headImg", systemResource.getApiFileUri() + userAccount.getHeadImg());
+            } else {
+                userAccountMap.put("headImg", "");
+            }
             result.withDataKV("userAccount", userAccountMap);
             result.withDataKV("attentionCount", userAttentionService.getUserAttentionCount(userId));
             result.withDataKV("questionOrderCount", userQuestionOrderService.getQuestionOrderCount(userId));

@@ -141,4 +141,13 @@ public interface DoctorRelationService {
      * @throws ApiServiceException
      */
     void updateSickRemark(Integer sickId, String remark) throws ApiServiceException;
+
+    /**
+     * 新增患者
+     *
+     * @param userId 用户id
+     * @param doctorId 医生id
+     * @throws ApiServiceException
+     */
+    void addDoctorSick(Integer userId, Integer doctorId) throws ApiServiceException;
 }

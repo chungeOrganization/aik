@@ -17,14 +17,18 @@ import com.aik.request.IssueQORequest;
 import com.aik.request.MatchDoctorsRequest;
 import com.aik.resource.SystemResource;
 import com.aik.response.MatchDoctorsResponse;
+import com.aik.service.account.DoctorAccountService;
+import com.aik.service.relation.DoctorRelationService;
 import com.aik.util.BeansUtils;
 import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -51,6 +55,12 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     private AccUserFileMapper accUserFileMapper;
 
     private AikQuestionMapper aikQuestionMapper;
+
+    private DoctorRelationService doctorRelationService;
+
+    private QuestionOrderAssistService questionOrderAssistService;
+
+    private DoctorAccountService doctorAccountService;
 
     @Resource
     private SystemResource systemResource;
@@ -83,6 +93,21 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     @Autowired
     public void setAikQuestionMapper(AikQuestionMapper aikQuestionMapper) {
         this.aikQuestionMapper = aikQuestionMapper;
+    }
+
+    @Autowired
+    public void setDoctorRelationService(DoctorRelationService doctorRelationService) {
+        this.doctorRelationService = doctorRelationService;
+    }
+
+    @Autowired
+    public void setQuestionOrderAssistService(QuestionOrderAssistService questionOrderAssistService) {
+        this.questionOrderAssistService = questionOrderAssistService;
+    }
+
+    @Autowired
+    public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
+        this.doctorAccountService = doctorAccountService;
     }
 
     @Override
@@ -135,26 +160,31 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         OrderDoctorInfoRespDTO doctorInfo = new OrderDoctorInfoRespDTO();
 
         AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(questionOrder.getDoctorId());
-        doctorInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
-        doctorInfo.setRealName(doctorAccount.getRealName());
-        doctorInfo.setHosName(doctorAccount.getHosName());
-        doctorInfo.setHosDepartment(doctorAccount.getHosDepartment());
-        doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
-        doctorInfo.setAnswerCount(answerService.getDoctorAnswersCount(questionOrder.getDoctorId()));
-        doctorInfo.setStartLevel(doctorAccount.getStarLevel());
+        if (null != doctorAccount) {
+            doctorInfo.setHeadImg(systemResource.getApiFileUri() + doctorAccount.getHeadImg());
+            doctorInfo.setRealName(doctorAccount.getRealName());
+            doctorInfo.setHosName(doctorAccount.getHosName());
+            doctorInfo.setHosDepartment(doctorAccount.getHosDepartment());
+            doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
+            doctorInfo.setAnswerCount(answerService.getDoctorAnswersCount(questionOrder.getDoctorId()));
+            doctorInfo.setStartLevel(doctorAccount.getStarLevel());
+        }
         questionOrderDetail.setDoctorInfo(doctorInfo);
 
         // 订单价格
         questionOrderDetail.setOrderPrice(questionOrder.getAmount());
 
-        // 审核提示（待审核、审核通过（待付款）、审核不通过）
+        // 审核提示（待审核、审核通过（待付款）、审核不通过、拒绝）
         if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_AUDIT.getCode()) {
-            questionOrderDetail.setAuditTips(WAIT_AUDIT_TIPS);
+            questionOrderDetail.setOrderTips(WAIT_AUDIT_TIPS);
         } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.ON_PAY.getCode()) {
-            questionOrderDetail.setAuditTips(WAIT_PAY_TIPS);
+            questionOrderDetail.setOrderTips(WAIT_PAY_TIPS);
         } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.FAIL_END.getCode() &&
                 questionOrder.getFailType() == QuestionOrderFailTypeEnum.AUDIT_FAIL.getCode()) {
-            questionOrderDetail.setAuditTips(AUDIT_FAIL_TIPS);
+            questionOrderDetail.setOrderTips(AUDIT_FAIL_TIPS);
+        } else if (questionOrder.getStatus() == QuestionOrderStatusEnum.FAIL_END.getCode() &&
+                questionOrder.getFailType() == QuestionOrderFailTypeEnum.DOCTOR_REFUSE.getCode()) {
+            questionOrderDetail.setOrderTips(questionOrder.getRefuseReason());
         }
 
         // 疾病名称
@@ -212,6 +242,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     }
 
     @Override
+    @Transactional
     public void editNotPassAuditOrder(EditQuestionOrderDTO questionOrderDTO) throws ApiServiceException {
         if (null == questionOrderDTO || null == questionOrderDTO.getOrderId()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -222,7 +253,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004001);
         }
 
-        if (originalOrder.getStatus() != QuestionOrderStatusEnum.FAIL_END.getCode() &&
+        if (originalOrder.getStatus() != QuestionOrderStatusEnum.FAIL_END.getCode() ||
                 originalOrder.getFailType() != QuestionOrderFailTypeEnum.AUDIT_FAIL.getCode()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004002);
         }
@@ -232,6 +263,14 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         originalOrder.setIllName(questionOrderDTO.getIllName());
         originalOrder.setType(questionOrderDTO.getType());
         originalOrder.setDoctorId(questionOrderDTO.getDoctorId());
+
+        if (null != questionOrderDTO.getDoctorId()) {
+            AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByPrimaryKey(questionOrderDTO.getDoctorId());
+            originalOrder.setAmount(doctorAccount.getPrice());
+        } else {
+            originalOrder.setAmount(BigDecimal.ZERO);
+        }
+
         originalOrder.setStatus(QuestionOrderStatusEnum.ON_AUDIT.getCode());
         originalOrder.setFailType(QuestionOrderFailTypeEnum.NOT_FAIL.getCode());
         originalOrder.setAuditStatus(QuestionOrderAuditStatusEnum.NOT_AUDIT.getCode());
@@ -241,6 +280,23 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         originalOrder.setUpdateDate(new Date());
 
         aikQuestionOrderMapper.updateByPrimaryKey(originalOrder);
+
+        // 问题图片处理
+        accUserFileMapper.deleteOrderFiles(originalOrder.getId());
+
+        List<String> questionFiles = questionOrderDTO.getOrderFiles();
+        if (null != questionFiles && questionFiles.size() > 0) {
+            for (String fileUrl : questionFiles) {
+                AccUserFile userFile = new AccUserFile();
+                userFile.setUserId(originalOrder.getUserId());
+                userFile.setFileUrl(fileUrl);
+                userFile.setType(UserFileTypeEnum.QUESTION_FILE.getCode());
+                userFile.setRelationId(originalOrder.getId());
+                userFile.setCreateDate(new Date());
+
+                accUserFileMapper.insertSelective(userFile);
+            }
+        }
     }
 
     @Override
@@ -384,6 +440,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void applicationOrderRefund(OrderRefundDTO orderRefundDTO) throws ApiServiceException {
         if (null == orderRefundDTO || null == orderRefundDTO.getOrderId()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -420,6 +477,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void evaluateOrder(EvaluateOrderDTO evaluateOrderDTO) throws ApiServiceException {
         if (null == evaluateOrderDTO || null == evaluateOrderDTO.getOrderId()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -441,6 +499,9 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         questionOrder.setUpdateDate(new Date());
 
         aikQuestionOrderMapper.updateByPrimaryKeySelective(questionOrder);
+
+        // 支付给医生
+        doctorAccountService.payDoctorOrderAmount(questionOrder.getId());
     }
 
     @Override
@@ -485,6 +546,7 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void orderUpdateDoctor(OrderUpdateDoctorDTO orderUpdateDoctorDTO) throws ApiServiceException {
         if (null == orderUpdateDoctorDTO || null == orderUpdateDoctorDTO.getOrderId() ||
                 null == orderUpdateDoctorDTO.getDoctorId()) {
@@ -640,6 +702,14 @@ public class UserQuestionOrderServiceImpl implements UserQuestionOrderService {
         question.setDescription(questionOrder.getDescription());
         question.setCreateDate(new Date());
         aikQuestionMapper.insertSelective(question);
+
+        // 成为该医生的患者
+        if (null != request.getDoctorId()) {
+            doctorRelationService.addDoctorSick(userId, request.getDoctorId());
+        }
+
+        // 添加问题订单辅助信息
+        questionOrderAssistService.addQuestionOrderAssist(questionOrder.getId(), question.getDescription());
     }
 
     /**

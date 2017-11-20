@@ -58,7 +58,7 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Map<String, Object>> getRecommendGoods() throws ApiServiceException {
         StoGoods searchSG = new StoGoods();
         searchSG.setStatus(GoodsStatusEnum.NOT_SOLD_OUT.getStatus());
-        searchSG.setIsRecommend(GoodsIsRecommendEnum.RECOMMEND.getCode());
+        searchSG.setIsRecommend(GoodsIsRecommendEnum.NEW_RECOMMEND.getCode());
         List<Map<String, Object>> recommendGoods = stoGoodsMapper.selectGoodsBySelective(searchSG);
         for (Map<String, Object> goods : recommendGoods) {
             goods.put("image", systemResource.getApiFileUri() + goods.get("image"));

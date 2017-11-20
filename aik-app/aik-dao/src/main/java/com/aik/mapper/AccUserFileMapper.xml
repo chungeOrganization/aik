@@ -128,4 +128,9 @@
       and relationId = #{relationId,jdbcType=INTEGER}
     </if>
   </select>
+  <update id="deleteOrderFiles" parameterType="int">
+    update acc_userFile
+    set delFlag = 1
+    where relationId = #{deleteOrderFiles} and type = 0
+  </update>
 </mapper>
