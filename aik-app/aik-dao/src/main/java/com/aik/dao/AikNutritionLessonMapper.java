@@ -32,4 +32,6 @@ public interface AikNutritionLessonMapper {
     * @return
     */
    Page<AikNutritionLesson> findByPage(AikNutritionLesson record);
+
+   List<AikNutritionLesson> selectUserCollect(Map<String, Object> params);
 }

@@ -1,5 +1,7 @@
 package com.aik.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,6 +24,7 @@ public class AikHrTumorMarkers {
 
     private BigDecimal scc;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date recordDate;
 
     private Date createDate;

@@ -3,6 +3,7 @@ package com.aik.service.nutritionLesson;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.AikNutritionLessonMapper;
 import com.aik.dao.AikNutritionLessonViewMapper;
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikNutritionLesson;
 import com.aik.model.AikNutritionLessonView;
@@ -87,5 +88,15 @@ public class NutritionLessonServiceImpl implements NutritionLessonService{
         }
 
         return nutritionLesson;
+    }
+
+    @Override
+    public List<AikNutritionLesson> getNutritionLessonCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", reqDTO.getPage());
+        params.put("size", reqDTO.getSize());
+        params.put("userId", userId);
+
+        return aikNutritionLessonMapper.selectUserCollect(params);
     }
 }

@@ -136,7 +136,12 @@
     </if>
   	</select>
   
-  
-  
-  
+  <select id="selectUserCollect" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_nutritionLesson nl
+    inner join aik_nutritionLessonCollect nc on nl.id = nc.lessonId
+    where nc.userId = #{userId}
+    limit ${(page-1)*size}, #{size}
+  </select>
 </mapper>

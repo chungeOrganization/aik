@@ -1,5 +1,7 @@
 package com.aik.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -32,6 +34,7 @@ public class AikHrRoutineBlood {
 
     private BigDecimal mnc;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date recordDate;
 
     private Date createDate;

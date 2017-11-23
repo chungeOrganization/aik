@@ -4,6 +4,7 @@ import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
+import com.aik.dto.request.PageReqDTO;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
 import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
 import com.aik.dto.response.user.*;
@@ -12,12 +13,16 @@ import com.aik.enums.SexEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccUserAccount;
 import com.aik.model.AikCommonProblem;
+import com.aik.model.AikExpertsAnswer;
+import com.aik.model.AikNutritionLesson;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.CommonProblemService;
 import com.aik.service.account.CircleService;
 import com.aik.service.account.SmartDeviceService;
 import com.aik.service.account.UserAccountService;
+import com.aik.service.expertsAnswer.ExpertsAnswerService;
+import com.aik.service.nutritionLesson.NutritionLessonService;
 import com.aik.service.question.QuestionService;
 import com.aik.service.question.QuestionViewService;
 import com.aik.service.question.UserQuestionOrderService;
@@ -77,6 +82,10 @@ public class UserApi {
 
     private CircleService circleService;
 
+    private ExpertsAnswerService expertsAnswerService;
+
+    private NutritionLessonService nutritionLessonService;
+
     @Inject
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
@@ -125,6 +134,16 @@ public class UserApi {
     @Inject
     public void setCircleService(CircleService circleService) {
         this.circleService = circleService;
+    }
+
+    @Inject
+    public void setExpertsAnswerService(ExpertsAnswerService expertsAnswerService) {
+        this.expertsAnswerService = expertsAnswerService;
+    }
+
+    @Inject
+    public void setNutritionLessonService(NutritionLessonService nutritionLessonService) {
+        this.nutritionLessonService = nutritionLessonService;
     }
 
     @POST
@@ -675,7 +694,7 @@ public class UserApi {
     }
 
     @POST
-    @Path("getUserSmartDevice")
+    @Path("/getUserSmartDevice")
     public ApiResult getUserSmartDevice(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
@@ -684,6 +703,46 @@ public class UserApi {
             result.withDataKV("userSmartDevice", userSmartDeviceDTO);
         } catch (Exception e) {
             logger.error("get common problems error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getExpertsAnswerCollect")
+    public ApiResult getExpertsAnswerCollect(PageReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<AikExpertsAnswer> expertsAnswers= expertsAnswerService.getExpertsAnswerCollect(reqDTO,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("expertsAnswers", expertsAnswers);
+        } catch (ApiServiceException e) {
+            logger.error("get experts answer collect error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get experts answer collect error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getNutritionLessonCollect")
+    public ApiResult getNutritionLessonCollect(PageReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<AikNutritionLesson> nutritionLessons= nutritionLessonService.getNutritionLessonCollect(reqDTO,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("nutritionLessons", nutritionLessons);
+        } catch (ApiServiceException e) {
+            logger.error("get nutrition lesson collect error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get nutrition lesson collect error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

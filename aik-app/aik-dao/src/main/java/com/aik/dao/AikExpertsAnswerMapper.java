@@ -19,4 +19,6 @@ public interface AikExpertsAnswerMapper {
     int updateByPrimaryKey(AikExpertsAnswer record);
 
     List<AikExpertsAnswer> selectByParams(Map<String, Object> params);
+
+    List<AikExpertsAnswer> selectUserCollect(Map<String, Object> params);
 }

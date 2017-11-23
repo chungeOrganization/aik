@@ -131,4 +131,13 @@
     from aik_expertsAnswer
     limit ${(page-1)*size}, #{size}
   </select>
+
+  <select id="selectUserCollect" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_expertsAnswer ea
+    inner join aik_expertsAnswerCollect ec on ea.id = ec.expertsAnswerId
+    where ec.userId = #{userId}
+    limit ${(page-1)*size}, #{size}
+  </select>
 </mapper>

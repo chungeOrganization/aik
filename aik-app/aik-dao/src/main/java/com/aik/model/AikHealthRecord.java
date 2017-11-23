@@ -1,5 +1,7 @@
 package com.aik.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -16,8 +18,10 @@ public class AikHealthRecord {
 
     private String remark;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date hwRecordDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date mrRecordDate;
 
     private Date createDate;

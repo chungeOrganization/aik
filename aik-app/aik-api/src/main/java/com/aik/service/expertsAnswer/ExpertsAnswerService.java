@@ -1,5 +1,6 @@
 package com.aik.service.expertsAnswer;
 
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikExpertsAnswer;
 
@@ -38,4 +39,30 @@ public interface ExpertsAnswerService {
      * @throws ApiServiceException Api服务异常
      */
     AikExpertsAnswer getExpertsAnswerDetail(Integer expertsAnswerId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 获取专家答收藏
+     *
+     * @param reqDTO request
+     * @param userId 用户id
+     * @return 专家答收藏列表
+     * @throws ApiServiceException Api服务异常
+     */
+    List<AikExpertsAnswer> getExpertsAnswerCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException;
+
+    /**
+     * 收藏专家答
+     *
+     * @param userId
+     * @throws ApiServiceException
+     */
+    void collectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 取消收藏专家答
+     *
+     * @param userId
+     * @throws ApiServiceException
+     */
+    void cancelCollectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException;
 }

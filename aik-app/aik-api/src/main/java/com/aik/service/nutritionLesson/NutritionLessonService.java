@@ -1,5 +1,6 @@
 package com.aik.service.nutritionLesson;
 
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikNutritionLesson;
 
@@ -30,4 +31,14 @@ public interface NutritionLessonService {
      * @throws ApiServiceException Api服务异常
      */
     AikNutritionLesson getNutritionLessonDetail(Integer nutritionLessonId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 获取营养课堂收藏
+     *
+     * @param reqDTO request
+     * @param userId 用户id
+     * @return 营养课堂收藏列表
+     * @throws ApiServiceException Api服务异常
+     */
+    List<AikNutritionLesson> getNutritionLessonCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException;
 }

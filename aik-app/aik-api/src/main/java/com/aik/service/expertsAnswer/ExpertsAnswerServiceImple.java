@@ -1,8 +1,10 @@
 package com.aik.service.expertsAnswer;
 
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dao.AikExpertsAnswerCollectMapper;
 import com.aik.dao.AikExpertsAnswerMapper;
 import com.aik.dao.AikExpertsAnswerViewMapper;
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikExpertsAnswer;
 import com.aik.model.AikExpertsAnswerView;
@@ -26,6 +28,8 @@ public class ExpertsAnswerServiceImple implements ExpertsAnswerService {
     private AikExpertsAnswerMapper aikExpertsAnswerMapper;
 
     private AikExpertsAnswerViewMapper aikExpertsAnswerViewMapper;
+
+    private AikExpertsAnswerCollectMapper aikExpertsAnswerCollectMapper;
 
     @Autowired
     public void setAikExpertsAnswerMapper(AikExpertsAnswerMapper aikExpertsAnswerMapper) {
@@ -104,5 +108,25 @@ public class ExpertsAnswerServiceImple implements ExpertsAnswerService {
         }
 
         return expertsAnswer;
+    }
+
+    @Override
+    public List<AikExpertsAnswer> getExpertsAnswerCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", reqDTO.getPage());
+        params.put("size", reqDTO.getSize());
+        params.put("userId", userId);
+
+        return aikExpertsAnswerMapper.selectUserCollect(params);
+    }
+
+    @Override
+    public void collectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException {
+
+    }
+
+    @Override
+    public void cancelCollectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException {
+
     }
 }
