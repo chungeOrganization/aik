@@ -291,6 +291,8 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
             doctorAttention.setDoctorId(doctorId);
             doctorAttention.setCreateDate(new Date());
             accDoctorAttentionMapper.insertSelective(doctorAttention);
+        } else {
+            accDoctorAttentionMapper.deleteByPrimaryKey(doctorAttention.getId());
         }
     }
 

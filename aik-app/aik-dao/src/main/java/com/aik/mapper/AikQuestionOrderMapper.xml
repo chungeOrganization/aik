@@ -479,7 +479,7 @@
     from aik_questionOrder qo
     inner join acc_userAccount ua on qo.userId = ua.id
     where 1=1 and qo.type = 1 and qo.status = 2
-    <if test="illName != null">
+    <if test="illName != null and illName != ''">
       and qo.illName = #{illName}
     </if>
     order by qo.createDate desc

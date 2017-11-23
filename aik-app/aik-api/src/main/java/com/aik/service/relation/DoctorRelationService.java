@@ -107,7 +107,7 @@ public interface DoctorRelationService {
     void updateSickGroup(Integer sickId, Integer sickGroupId) throws ApiServiceException;
 
     /**
-     * 关注用户
+     * 关注|取消关注用户
      *
      * @param userId
      * @param doctorId
