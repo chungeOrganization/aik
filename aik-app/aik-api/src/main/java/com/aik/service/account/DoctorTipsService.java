@@ -1,5 +1,6 @@
 package com.aik.service.account;
 
+import com.aik.dto.request.doctor.DoctorTipsListReqDTO;
 import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
 import com.aik.enums.DoctorTipsTypeEnum;
 import com.aik.exception.ApiServiceException;
@@ -17,11 +18,11 @@ public interface DoctorTipsService {
     /**
      * 获取医聊列表
      *
-     * @param doctorId 医生id
+     * @param reqDTO request
      * @return data
      * @throws ApiServiceException Api服务异常
      */
-    DoctorTipsListRespDTO getDoctorTipsList(Integer doctorId) throws ApiServiceException;
+    DoctorTipsListRespDTO getDoctorTipsList(DoctorTipsListReqDTO reqDTO) throws ApiServiceException;
 
     /**
      * 查看新的朋友

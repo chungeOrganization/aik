@@ -2,6 +2,7 @@ package com.aik.rest;
 
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dto.request.doctor.DoctorTipsListReqDTO;
 import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
 import com.aik.dto.response.doctor.QuestionOrderDetailRespDTO;
 import com.aik.exception.ApiServiceException;
@@ -74,11 +75,12 @@ public class DoctorTipsApi {
 
     @POST
     @Path("/getDoctorTipsList")
-    public ApiResult getDoctorTipsList() {
+    public ApiResult getDoctorTipsList(DoctorTipsListReqDTO reqDTO) {
         ApiResult result = new ApiResult();
 
         try {
-            DoctorTipsListRespDTO tipsList = doctorTipsService.getDoctorTipsList(AuthUserDetailsThreadLocal.getCurrentUserId());
+            reqDTO.setDoctorId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            DoctorTipsListRespDTO tipsList = doctorTipsService.getDoctorTipsList(reqDTO);
             result.withDataKV("tipsList", tipsList);
         } catch (ApiServiceException e) {
             logger.error("get doctor tips list error: ", e);

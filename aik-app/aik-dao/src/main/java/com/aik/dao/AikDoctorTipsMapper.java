@@ -20,7 +20,7 @@ public interface AikDoctorTipsMapper {
 
     List<AikDoctorTips> selectBySelective(AikDoctorTips record);
 
-    List<Map<String, Object>> selectQuestionTipsByDoctorId(Integer doctorId);
+    List<Map<String, Object>> selectQuestionTipsByDoctorId(Map<String, Object> params);
 
     List<Map<String, Object>> selectHomeDoctorTips(Integer doctorId);
 

@@ -3,6 +3,7 @@ package com.aik.service.account;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.assist.RelationTypeUtil;
 import com.aik.dao.*;
+import com.aik.dto.request.doctor.DoctorTipsListReqDTO;
 import com.aik.dto.response.doctor.DoctorTipsListRespDTO;
 import com.aik.dto.response.doctor.FriendTipsRespDTO;
 import com.aik.dto.response.doctor.QuestionTipsRespDTO;
@@ -77,12 +78,12 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
     }
 
     @Override
-    public DoctorTipsListRespDTO getDoctorTipsList(Integer doctorId) throws ApiServiceException {
+    public DoctorTipsListRespDTO getDoctorTipsList(DoctorTipsListReqDTO reqDTO) throws ApiServiceException {
         DoctorTipsListRespDTO respDTO = new DoctorTipsListRespDTO();
 
         // 新的朋友
         AikDoctorTips friendSearchDT = new AikDoctorTips();
-        friendSearchDT.setDoctorId(doctorId);
+        friendSearchDT.setDoctorId(reqDTO.getDoctorId());
         friendSearchDT.setTipsType(DoctorTipsTypeEnum.NEW_FRIEND.getCode());
         friendSearchDT.setIsCheck(DoctorTipsCheckStatusEnum.NOT_CHECK.getCode());
         List<AikDoctorTips> friendTipsList = aikDoctorTipsMapper.selectBySelective(friendSearchDT);
@@ -99,7 +100,7 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
         respDTO.setFriendTips(friendTips);
 
         // question tips list
-        List<Map<String, Object>> questionTipsList = aikDoctorTipsMapper.selectQuestionTipsByDoctorId(doctorId);
+        List<Map<String, Object>> questionTipsList = aikDoctorTipsMapper.selectQuestionTipsByDoctorId(BeansUtils.transBean2Map(reqDTO));
         for (Map<String, Object> questionTips : questionTipsList) {
             questionTips.put("createDate", DateUtils.aikPersonaliseDate((Date) questionTips.get("createDate")));
             if (null != questionTips.get("headImg")) {
@@ -172,11 +173,12 @@ public class DoctorTipsServiceImpl implements DoctorTipsService {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
-        AikDoctorTips updateTips = new AikDoctorTips();
-        updateTips.setId(tipsId);
-        updateTips.setIsCheck(DoctorTipsCheckStatusEnum.IS_CHECKED.getCode());
-        updateTips.setUpdateDate(new Date());
-        aikDoctorTipsMapper.updateByPrimaryKeySelective(updateTips);
+//        AikDoctorTips updateTips = new AikDoctorTips();
+//        updateTips.setId(tipsId);
+//        updateTips.setIsCheck(DoctorTipsCheckStatusEnum.IS_CHECKED.getCode());
+//        updateTips.setUpdateDate(new Date());
+//        aikDoctorTipsMapper.updateByPrimaryKeySelective(updateTips);
+        aikDoctorTipsMapper.deleteByPrimaryKey(tipsId);
     }
 
     @Override

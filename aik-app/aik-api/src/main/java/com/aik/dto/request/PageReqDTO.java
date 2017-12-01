@@ -6,9 +6,9 @@ package com.aik.dto.request;
  */
 public class PageReqDTO {
 
-    private Integer page;
+    private Integer page = 1;
 
-    private Integer size;
+    private Integer size = 10;
 
     public Integer getPage() {
         return page;

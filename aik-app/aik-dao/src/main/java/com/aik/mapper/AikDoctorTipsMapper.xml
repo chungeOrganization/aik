@@ -157,14 +157,15 @@
     </if>
     order by createDate desc
   </select>
-  <select id="selectQuestionTipsByDoctorId" parameterType="int" resultType="java.util.Map">
+  <select id="selectQuestionTipsByDoctorId" parameterType="java.util.Map" resultType="java.util.Map">
     select ua.headImg, ua.realName as name, if(ua.sex = 0, '男', '女') as sex, qo.description as message, dt.createDate,
-    1 as redNum, ds.id as sickId, qo.id as orderId, dt.id as tipsId
+    if(dt.isCheck = 0, 1, 0) as redNum, ds.id as sickId, qo.id as orderId, dt.id as tipsId
     from aik_doctorTips dt
     inner join aik_questionOrder qo on dt.relationId = qo.id and dt.doctorId = qo.doctorId
     inner join acc_userAccount ua on qo.userId = ua.id
     inner join aik_doctorSick ds on qo.userId = ds.userId and qo.doctorId = ds.doctorId
-    where dt.doctorId = #{doctorId} and dt.tipsType = 1 and dt.isCheck = 0 order by dt.createDate desc
+    where dt.doctorId = #{doctorId} and dt.tipsType = 1 order by dt.createDate desc
+    limit ${(page-1)*size}, #{size}
   </select>
   <select id="selectHomeDoctorTips" parameterType="int" resultType="java.util.Map">
     select id, tipsType, tipsMessage, createDate, userId
