@@ -24,6 +24,8 @@ public class DoctorInfo {
 
     private BigDecimal price;
 
+    private Integer answerCount;
+
     public Integer getId() {
         return id;
     }
@@ -86,5 +88,13 @@ public class DoctorInfo {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(Integer answerCount) {
+        this.answerCount = answerCount;
     }
 }

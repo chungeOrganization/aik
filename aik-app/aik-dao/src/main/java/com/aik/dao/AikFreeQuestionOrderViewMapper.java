@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikFreeQuestionOrderView;
+import org.apache.ibatis.annotations.Param;
 
 public interface AikFreeQuestionOrderViewMapper {
     int deleteByPrimaryKey(Integer id);

@@ -5,7 +5,9 @@ import com.aik.bean.userside.AnswerWithQuestion;
 import com.aik.bean.userside.DoctorInfo;
 import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dao.*;
+import com.aik.enums.AnswerTypeEnum;
 import com.aik.enums.DoctorPositionEnum;
+import com.aik.enums.UserFileTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
 import com.aik.request.PageRequest;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,8 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
     private AikAnswerMapper aikAnswerMapper;
 
     private AikQuestionMapper aikQuestionMapper;
+
+    private AccUserFileMapper accUserFileMapper;
 
     @Resource
     private SystemResource systemResource;
@@ -75,6 +80,11 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
     @Autowired
     public void setAikQuestionMapper(AikQuestionMapper aikQuestionMapper) {
         this.aikQuestionMapper = aikQuestionMapper;
+    }
+
+    @Autowired
+    public void setAccUserFileMapper(AccUserFileMapper accUserFileMapper) {
+        this.accUserFileMapper = accUserFileMapper;
     }
 
     @Override
@@ -126,6 +136,17 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         questionOrderDetail.setIllName(questionOrder.getIllName());
         questionOrderDetail.setQuestionDescription(questionOrder.getDescription());
         questionOrderDetail.setQuestionDate(questionOrder.getCreateDate());
+        // 获取图片信息
+        AccUserFile searchAU = new AccUserFile();
+        searchAU.setUserId(questionOrder.getUserId());
+        searchAU.setType(UserFileTypeEnum.QUESTION_FILE.getCode());
+        searchAU.setRelationId(questionOrder.getId());
+        List<String> questionFiles = accUserFileMapper.selectFilesBySelective(searchAU);
+        for (int i = 0; i < questionFiles.size(); i++) {
+            questionFiles.set(i, systemResource.getApiFileUri() + questionFiles.get(i));
+        }
+        questionOrderDetail.setQuestionFiles(questionFiles);
+
         response.setQuestionOrderDetail(questionOrderDetail);
 
         // 医生信息
@@ -142,6 +163,13 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         doctorInfo.setPosition(DoctorPositionEnum.getDescFromCode(doctorAccount.getPosition()));
         doctorInfo.setStarLevel(doctorAccount.getStarLevel());
         doctorInfo.setPrice(doctorAccount.getPrice());
+        // 回答数量
+        AikAnswer searchAA = new AikAnswer();
+        searchAA.setDoctorId(doctorAccount.getId());
+        searchAA.setType(AnswerTypeEnum.INITIAL.getCode());
+        int answerCount = aikAnswerMapper.selectCountBySelective(searchAA);
+        doctorInfo.setAnswerCount(answerCount);
+
         response.setDoctorInfo(doctorInfo);
 
         // 问题查看量
@@ -154,7 +182,7 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         if (isShare) {
             List<AnswerWithQuestion> answerWithQuestionList = new ArrayList<>();
 
-            AikAnswer searchAA = new AikAnswer();
+            searchAA = new AikAnswer();
             searchAA.setOrderId(questionOrder.getId());
             List<AikAnswer> answers = aikAnswerMapper.selectBySelective(searchAA);
 
@@ -177,5 +205,26 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         }
 
         return response;
+    }
+
+    @Override
+    public void sharedFreeQuestionOrder(Integer freeOrderId, Integer userId) throws ApiServiceException {
+        if (null == freeOrderId || null == userId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+        AikFreeQuestionOrderView searchFQ = new AikFreeQuestionOrderView();
+        searchFQ.setFreeOrderId(freeOrderId);
+        searchFQ.setUserId(userId);
+        boolean isShare = aikFreeQuestionOrderViewMapper.selectCountBySelective(searchFQ) > 0;
+        if (isShare) {
+            return;
+        }
+
+        AikFreeQuestionOrderView addFQ = new AikFreeQuestionOrderView();
+        addFQ.setFreeOrderId(freeOrderId);
+        addFQ.setUserId(userId);
+        addFQ.setCreateDate(new Date());
+
+        aikFreeQuestionOrderViewMapper.insertSelective(addFQ);
     }
 }

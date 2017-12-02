@@ -31,4 +31,12 @@ public interface FreeQuestionOrderService {
      * @throws ApiServiceException Api服务异常
      */
     FreeQODetailResponse getFreeQuestionOrderDetail(Integer freeOrderId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 已分享免费订单
+     * @param freeOrderId
+     * @param userId
+     * @throws ApiServiceException
+     */
+    void sharedFreeQuestionOrder(Integer freeOrderId, Integer userId) throws ApiServiceException;
 }

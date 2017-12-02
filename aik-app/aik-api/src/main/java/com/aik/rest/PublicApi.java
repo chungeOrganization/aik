@@ -11,6 +11,7 @@ import com.aik.service.*;
 import com.aik.service.account.InviteCodeService;
 import com.aik.service.account.SecurityCodeService;
 import com.aik.service.account.UserAccountService;
+import com.aik.service.question.IllTypeService;
 import com.aik.util.AikFileUtils;
 import com.aik.vo.AreaVO;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -63,6 +64,8 @@ public class PublicApi {
 
     private SysSettingService sysSettingService;
 
+    private IllTypeService illTypeService;
+
     @Inject
     public void setSecurityCodeService(SecurityCodeService securityCodeService) {
         this.securityCodeService = securityCodeService;
@@ -106,6 +109,11 @@ public class PublicApi {
     @Inject
     public void setSysSettingService(SysSettingService sysSettingService) {
         this.sysSettingService = sysSettingService;
+    }
+
+    @Inject
+    public void setIllTypeService(IllTypeService illTypeService) {
+        this.illTypeService = illTypeService;
     }
 
     @GET
@@ -402,6 +410,25 @@ public class PublicApi {
             result.withDataKV("servicePhone", sysSettingService.getServicePhone());
         } catch (Exception e) {
             logger.error("get service phone error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getIllTypeTree")
+    public ApiResult getIllTypeTree() {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<Map<String, Object>> illTypeTree = illTypeService.getIllTypeTree();
+            result.withDataKV("illTypeTree", illTypeTree);
+        } catch (ApiServiceException e) {
+            logger.error("get ill type tree error ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get ill type tree error ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

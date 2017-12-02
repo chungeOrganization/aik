@@ -2,6 +2,7 @@ package com.aik.bean.userside;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Description:
@@ -14,6 +15,8 @@ public class QuestionOrderDetail {
     private String illName;
 
     private Date questionDate;
+
+    private List<String> questionFiles;
 
     public String getQuestionDescription() {
         return questionDescription;
@@ -37,5 +40,13 @@ public class QuestionOrderDetail {
 
     public void setQuestionDate(Date questionDate) {
         this.questionDate = questionDate;
+    }
+
+    public List<String> getQuestionFiles() {
+        return questionFiles;
+    }
+
+    public void setQuestionFiles(List<String> questionFiles) {
+        this.questionFiles = questionFiles;
     }
 }

@@ -442,10 +442,10 @@
     <include refid="Base_Column_List" />
     from acc_doctorAccount
     where 1=1
-    <if test="hosName != null">
+    <if test="hosName != null and hosName != ''">
       and hosName = #{hosName}
     </if>
-    <if test="sort != null">
+    <if test="sort != null and sort != ''">
       order by ${sort}
     </if>
     limit ${(page-1)*size}, #{size}

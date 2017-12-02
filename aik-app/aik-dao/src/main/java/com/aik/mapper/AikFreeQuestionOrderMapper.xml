@@ -80,7 +80,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOrdersByParams" parameterType="java.util.Map" resultType="java.util.Map">
-    select da.id as doctorId, da.headImg as doctorHeadImg, ua.nickName as sickName,fq.id as freeOrderId,
+    select da.id as doctorId, da.realName as doctorName, da.headImg as doctorHeadImg, ua.nickName as sickName,fq.id as freeOrderId,
       qo.description as questionDescription, qo.amount as questionAmount
     from aik_freeQuestionOrder fq
     inner join aik_questionOrder qo on fq.orderId = qo.id

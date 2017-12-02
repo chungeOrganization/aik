@@ -1,6 +1,5 @@
 package com.aik.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,18 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -49,7 +43,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeader);
-
+        System.out.println(request.getServletPath());
+        System.out.println(request.getPathInfo());
+        logger.debug(request.getServletPath());
+        logger.debug(request.getPathInfo());
+        logger.debug("中文会乱码？");
         // 打印header
 //        String contentType = "";
 //        Enumeration<String> headerNames = request.getHeaderNames();
@@ -110,7 +108,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     logger.info("authenticated user " + username + ", setting security context");
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                    AuthUserDetailsThreadLocal.setCurrentUser((JwtUser)userDetails);
+                    AuthUserDetailsThreadLocal.setCurrentUser((JwtUser) userDetails);
                 }
             }
         }

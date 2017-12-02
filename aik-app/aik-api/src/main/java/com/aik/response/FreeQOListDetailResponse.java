@@ -1,7 +1,5 @@
 package com.aik.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.math.BigDecimal;
 
 /**
@@ -13,6 +11,8 @@ public class FreeQOListDetailResponse {
     private Integer doctorId;
 
     private String doctorHeadImg;
+
+    private String doctorName;
 
     private String sickName;
 
@@ -38,6 +38,14 @@ public class FreeQOListDetailResponse {
 
     public void setDoctorHeadImg(String doctorHeadImg) {
         this.doctorHeadImg = doctorHeadImg;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
     public String getSickName() {

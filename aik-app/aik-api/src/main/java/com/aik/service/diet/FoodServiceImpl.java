@@ -114,49 +114,67 @@ public class FoodServiceImpl implements FoodService {
         foodDetail.put("foodInfo", foodInfo);
 
         // 血糖相关
-        Map<String, Object> foodBloodSugarMap = new HashMap<>();
+        List<Map<String, Object>> foodBloodSugarMapList = new ArrayList<>();
         DietFoodBloodSugar foodBloodSugar = dietFoodBloodSugarMapper.selectByFoodId(foodId);
         if (null != foodBloodSugar) {
-            foodBloodSugarMap.put("gi", foodBloodSugar.getGi());
-            // TODO:对比设定值
-            foodBloodSugarMap.put("giExcursion", ExcursionEnum.NORMAL.getDesc());
-            foodBloodSugarMap.put("gl", foodBloodSugar.getGl());
-            // TODO:对比设定值
-            foodBloodSugarMap.put("glExcursion", ExcursionEnum.NORMAL.getDesc());
+            Map<String, Object> giMap = new HashMap<>();
+            giMap.put("nutrientElem", "GI值");
+            giMap.put("content", foodBloodSugar.getGi() + "g");
+            giMap.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodBloodSugarMapList.add(giMap);
+
+            Map<String, Object> glMap = new HashMap<>();
+            glMap.put("nutrientElem", "GL值");
+            glMap.put("content", foodBloodSugar.getGl() + "g");
+            glMap.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodBloodSugarMapList.add(glMap);
         }
 
-        foodDetail.put("foodBloodSugar", foodBloodSugarMap);
+        foodDetail.put("foodBloodSugar", foodBloodSugarMapList);
 
         // 蛋白质
-        Map<String, Object> foodProteinMap = new HashMap<>();
+        List<Map<String, Object>> foodProteinMapList = new ArrayList<>();
         DietFoodProtein foodProtein = dietFoodProteinMapper.selectByFoodId(foodId);
         if (null != foodProtein) {
-            foodProteinMap.put("aminoAcid1", foodProtein.getAminoAcid1());
-            // TODO:对比设定值
-            foodProteinMap.put("aminoAcid1Excursion", ExcursionEnum.NORMAL.getDesc());
-            foodProteinMap.put("aminoAcid2", foodProtein.getAminoAcid2());
-            // TODO:对比设定值
-            foodProteinMap.put("aminoAcid2Excursion", ExcursionEnum.NORMAL.getDesc());
-            foodProteinMap.put("aminoAcid3", foodProtein.getAminoAcid3());
-            // TODO:对比设定值
-            foodProteinMap.put("aminoAcid3Excursion", ExcursionEnum.NORMAL.getDesc());
+            Map<String, Object> aminoAcid1Map = new HashMap<>();
+            aminoAcid1Map.put("nutrientElem", "氨基酸1");
+            aminoAcid1Map.put("content", foodProtein.getAminoAcid1() + "g");
+            aminoAcid1Map.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodProteinMapList.add(aminoAcid1Map);
+
+            Map<String, Object> aminoAcid2Map = new HashMap<>();
+            aminoAcid2Map.put("nutrientElem", "氨基酸2");
+            aminoAcid2Map.put("content", foodProtein.getAminoAcid2() + "g");
+            aminoAcid2Map.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodProteinMapList.add(aminoAcid2Map);
+
+            Map<String, Object> aminoAcid3Map = new HashMap<>();
+            aminoAcid3Map.put("nutrientElem", "氨基酸3");
+            aminoAcid3Map.put("content", foodProtein.getAminoAcid3() + "g");
+            aminoAcid3Map.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodProteinMapList.add(aminoAcid3Map);
         }
 
-        foodDetail.put("foodProtein", foodProteinMap);
+        foodDetail.put("foodProtein", foodProteinMapList);
 
         // 脂肪
-        Map<String, Object> foodFatMap = new HashMap<>();
+        List<Map<String, Object>> foodFatMapList = new ArrayList<>();
         DietFoodFat foodFat = dietFoodFatMapper.selectByFoodId(foodId);
         if (null != foodFat) {
-            foodFatMap.put("saturatedFattyAcid", foodFat.getSaturatedFattyAcid());
-            // TODO:对比设定值
-            foodFatMap.put("saturatedFattyAcidExcursion", ExcursionEnum.NORMAL.getDesc());
-            foodFatMap.put("unsaturatedFattyAcid", foodFat.getUnsaturatedFattyAcid());
-            // TODO:对比设定值
-            foodFatMap.put("unsaturatedFattyAcidExcursion", ExcursionEnum.NORMAL.getDesc());
+            Map<String, Object> saturatedFattyAcidMap = new HashMap<>();
+            saturatedFattyAcidMap.put("nutrientElem", "饱和脂肪酸");
+            saturatedFattyAcidMap.put("content", foodFat.getSaturatedFattyAcid() + "g");
+            saturatedFattyAcidMap.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodFatMapList.add(saturatedFattyAcidMap);
+
+            Map<String, Object> unsaturatedFattyAcidMap = new HashMap<>();
+            unsaturatedFattyAcidMap.put("nutrientElem", "不饱和脂肪酸");
+            unsaturatedFattyAcidMap.put("content", foodFat.getUnsaturatedFattyAcid() + "g");
+            unsaturatedFattyAcidMap.put("remark", ExcursionEnum.NORMAL.getDesc());
+            foodFatMapList.add(unsaturatedFattyAcidMap);
         }
 
-        foodDetail.put("foodFat", foodFatMap);
+        foodDetail.put("foodFat", foodFatMapList);
 
         return foodDetail;
     }

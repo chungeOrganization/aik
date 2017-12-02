@@ -14,12 +14,11 @@ import com.aik.response.FreeQODetailResponse;
 import com.aik.response.FreeQOListDetailResponse;
 import com.aik.response.MatchDoctorsResponse;
 import com.aik.security.AuthUserDetailsThreadLocal;
-import com.aik.service.expertsAnswer.ExpertsAnswerService;
-import com.aik.service.nutritionLesson.NutritionLessonService;
 import com.aik.service.account.NutritionalIndexService;
 import com.aik.service.diet.DietPlanService;
+import com.aik.service.expertsAnswer.ExpertsAnswerService;
+import com.aik.service.nutritionLesson.NutritionLessonService;
 import com.aik.service.question.FreeQuestionOrderService;
-import com.aik.service.question.IllTypeService;
 import com.aik.service.question.UserQuestionOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +50,6 @@ public class UserHomeApi {
 
     private NutritionalIndexService nutritionalIndexService;
 
-    private IllTypeService illTypeService;
-
     private FreeQuestionOrderService freeQuestionOrderService;
 
     private UserQuestionOrderService userQuestionOrderService;
@@ -77,11 +74,6 @@ public class UserHomeApi {
     @Inject
     public void setNutritionalIndexService(NutritionalIndexService nutritionalIndexService) {
         this.nutritionalIndexService = nutritionalIndexService;
-    }
-
-    @Inject
-    public void setIllTypeService(IllTypeService illTypeService) {
-        this.illTypeService = illTypeService;
     }
 
     @Inject
@@ -292,18 +284,19 @@ public class UserHomeApi {
     }
 
     @POST
-    @Path("/getIllTypeTree")
-    public ApiResult getIllTypeTree() {
+    @Path("/sharedFreeQuestionOrder")
+    public ApiResult sharedFreeQuestionOrder(Map<String, Object> params) {
         ApiResult result = new ApiResult();
 
         try {
-            List<Map<String, Object>> illTypeTree = illTypeService.getIllTypeTree();
-            result.withDataKV("illTypeTree", illTypeTree);
+            Integer freeOrderId = Integer.valueOf(params.get("freeOrderId").toString());
+            freeQuestionOrderService.sharedFreeQuestionOrder(freeOrderId,
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
         } catch (ApiServiceException e) {
-            logger.error("get ill type tree error ", e);
+            logger.error("shared free question order error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
-            logger.error("get ill type tree error ", e);
+            logger.error("shared free question order error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
