@@ -10,6 +10,7 @@ import com.aik.enums.ExcursionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
+import com.aik.resource.SystemResource;
 import com.aik.vo.DailyNutritionGradeVO;
 import com.aik.vo.NotQualifiedNutritionDetailVO;
 import org.joda.time.DateTime;
@@ -35,6 +36,8 @@ public class DietRecordServiceImpl implements DietRecordService {
 
     private DietDailyNutritionMapper dietDailyNutritionMapper;
 
+    private SystemResource systemResource;
+
     @Autowired
     public void setDietDailyDietRecordMapper(DietDailyDietRecordMapper dietDailyDietRecordMapper) {
         this.dietDailyDietRecordMapper = dietDailyDietRecordMapper;
@@ -43,6 +46,11 @@ public class DietRecordServiceImpl implements DietRecordService {
     @Autowired
     public void setDietDailyNutritionMapper(DietDailyNutritionMapper dietDailyNutritionMapper) {
         this.dietDailyNutritionMapper = dietDailyNutritionMapper;
+    }
+
+    @Autowired
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
     }
 
     @Override
@@ -68,6 +76,10 @@ public class DietRecordServiceImpl implements DietRecordService {
         int breakfastTotalWeight = 0;
         for (Map<String, Object> dietRecord : breakfast) {
             breakfastTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+
+            if (null != dietRecord.get("image")) {
+                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
+            }
         }
         userDietRecord.put("breakfastTotalWeight", breakfastTotalWeight);
 
@@ -77,8 +89,12 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("lunch", lunch);
         userDietRecord.put("lunchRemark", 200);
         int lunchTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : lunch) {
             lunchTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+
+            if (null != dietRecord.get("image")) {
+                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
+            }
         }
         userDietRecord.put("lunchTotalWeight", lunchTotalWeight);
 
@@ -88,8 +104,12 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("dinner", dinner);
         userDietRecord.put("dinnerRemark", 200);
         int dinnerTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : dinner) {
             dinnerTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+
+            if (null != dietRecord.get("image")) {
+                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
+            }
         }
         userDietRecord.put("dinnerTotalWeight", dinnerTotalWeight);
 
@@ -253,7 +273,7 @@ public class DietRecordServiceImpl implements DietRecordService {
             DailyNutritionGradeVO dailyNutritionGrade = new DailyNutritionGradeVO();
             dailyNutritionGrade.setNutritionType("protein");
             dailyNutritionGrade.setNutritionName("蛋白质");
-            dailyNutritionGrade.setNutritionGrade(new BigDecimal(i*10));
+            dailyNutritionGrade.setNutritionGrade(new BigDecimal(i * 10));
             dailyNutritionGrade.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -i).toDate());
 
             dailyNutritionGrades.add(dailyNutritionGrade);
