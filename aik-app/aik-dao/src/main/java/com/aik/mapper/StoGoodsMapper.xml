@@ -181,6 +181,24 @@
       and isRecommend = #{isRecommend,jdbcType=TINYINT}
     </if>
   </select>
+  <select id="selectRecommendGoods" parameterType="com.aik.model.StoGoods" resultType="java.util.Map">
+    select id, image, name, description, price
+    from sto_goods
+    where 1=1
+    <if test="name != null">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+    <if test="isRecommend != null">
+      and isRecommend = #{isRecommend,jdbcType=TINYINT}
+    </if>
+    limit 3
+  </select>
   <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
     select id, image, name, description, price
     from sto_goods

@@ -79,4 +79,10 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByAnswerIdAndUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aik_expertsAnswerCollect
+    where userId = #{userId} and expertsAnswerId = #{answerId}
+  </select>
 </mapper>

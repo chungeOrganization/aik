@@ -1,6 +1,7 @@
 package com.aik.service.store;
 
 import com.aik.dto.response.user.GoodsDetailRespDTO;
+import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.exception.ApiServiceException;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface GoodsService {
      * @return 推荐商品列表
      * @throws ApiServiceException Api服务异常
      */
-    List<Map<String, Object>> getRecommendGoods() throws ApiServiceException;
+    List<Map<String, Object>> getRecommendGoods(GoodsIsRecommendEnum recommendEnum) throws ApiServiceException;
 
     /**
      * 根据商品类型获取商品

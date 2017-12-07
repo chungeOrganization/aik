@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikNutritionLessonCollect;
+import org.apache.ibatis.annotations.Param;
 
 public interface AikNutritionLessonCollectMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,6 @@ public interface AikNutritionLessonCollectMapper {
     int updateByPrimaryKeySelective(AikNutritionLessonCollect record);
 
     int updateByPrimaryKey(AikNutritionLessonCollect record);
+
+    AikNutritionLessonCollect selectByLessonIdAndUserId(@Param("userId") Integer userId, @Param("lessonId") Integer lessonId);
 }

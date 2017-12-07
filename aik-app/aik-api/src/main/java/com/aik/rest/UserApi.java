@@ -5,6 +5,8 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.*;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.PageReqDTO;
+import com.aik.dto.request.user.CollectExpertsAnswerReqDTO;
+import com.aik.dto.request.user.CollectNutritionLessonReqDTO;
 import com.aik.dto.request.user.GetAttentionListReqDTO;
 import com.aik.dto.request.user.GetAttentionUserCirclesReqDTO;
 import com.aik.dto.response.user.*;
@@ -222,8 +224,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            String imageName = Calendar.getInstance().getTimeInMillis() + "-"
-                    + new String(disposition.getFileName().getBytes("ISO-8859-1"), "utf-8");
+            String imageName = Calendar.getInstance().getTimeInMillis() + "-user";
 
             String fileUri = "user" + File.separator + imageName;
             String fileUrl = systemResource.getApiFileUri() + fileUri;
@@ -715,7 +716,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<AikExpertsAnswer> expertsAnswers= expertsAnswerService.getExpertsAnswerCollect(reqDTO,
+            List<Map<String, Object>> expertsAnswers= expertsAnswerService.getExpertsAnswerCollect(reqDTO,
                     AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("expertsAnswers", expertsAnswers);
         } catch (ApiServiceException e) {
@@ -735,7 +736,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<AikNutritionLesson> nutritionLessons= nutritionLessonService.getNutritionLessonCollect(reqDTO,
+            List<Map<String, Object>> nutritionLessons= nutritionLessonService.getNutritionLessonCollect(reqDTO,
                     AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("nutritionLessons", nutritionLessons);
         } catch (ApiServiceException e) {
@@ -743,6 +744,44 @@ public class UserApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get nutrition lesson collect error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/collectExpertsAnswer")
+    public ApiResult collectExpertsAnswer(CollectExpertsAnswerReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            expertsAnswerService.collectExpertsAnswer(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("collect experts answer error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("collect experts answer error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/collectNutritionLesson")
+    public ApiResult collectNutritionLesson(CollectNutritionLessonReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqDTO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            nutritionLessonService.collectNutritionLesson(reqDTO);
+        } catch (ApiServiceException e) {
+            logger.error("collect nutrition lesson error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("collect nutrition lesson error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

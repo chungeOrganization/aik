@@ -1,11 +1,14 @@
 package com.aik.service.nutritionLesson;
 
 import com.aik.assist.ErrorCodeEnum;
+import com.aik.dao.AikNutritionLessonCollectMapper;
 import com.aik.dao.AikNutritionLessonMapper;
 import com.aik.dao.AikNutritionLessonViewMapper;
 import com.aik.dto.request.PageReqDTO;
+import com.aik.dto.request.user.CollectNutritionLessonReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikNutritionLesson;
+import com.aik.model.AikNutritionLessonCollect;
 import com.aik.model.AikNutritionLessonView;
 import com.aik.resource.SystemResource;
 import org.slf4j.Logger;
@@ -21,13 +24,15 @@ import java.util.*;
  * Created by as on 2017/9/8.
  */
 @Service
-public class NutritionLessonServiceImpl implements NutritionLessonService{
+public class NutritionLessonServiceImpl implements NutritionLessonService {
 
     private static final Logger logger = LoggerFactory.getLogger(NutritionLessonServiceImpl.class);
 
     private AikNutritionLessonMapper aikNutritionLessonMapper;
 
     private AikNutritionLessonViewMapper aikNutritionLessonViewMapper;
+
+    private AikNutritionLessonCollectMapper aikNutritionLessonCollectMapper;
 
     @Autowired
     public void setAikNutritionLessonMapper(AikNutritionLessonMapper aikNutritionLessonMapper) {
@@ -37,6 +42,11 @@ public class NutritionLessonServiceImpl implements NutritionLessonService{
     @Autowired
     public void setAikNutritionLessonViewMapper(AikNutritionLessonViewMapper aikNutritionLessonViewMapper) {
         this.aikNutritionLessonViewMapper = aikNutritionLessonViewMapper;
+    }
+
+    @Autowired
+    public void setAikNutritionLessonCollectMapper(AikNutritionLessonCollectMapper aikNutritionLessonCollectMapper) {
+        this.aikNutritionLessonCollectMapper = aikNutritionLessonCollectMapper;
     }
 
     @Resource
@@ -73,6 +83,7 @@ public class NutritionLessonServiceImpl implements NutritionLessonService{
         if (null == nutritionLesson) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004008);
         }
+        nutritionLesson.setImage(systemResource.getApiFileUri() + nutritionLesson.getImage());
 
         AikNutritionLessonView searchNL = new AikNutritionLessonView();
         searchNL.setUserId(userId);
@@ -91,12 +102,60 @@ public class NutritionLessonServiceImpl implements NutritionLessonService{
     }
 
     @Override
-    public List<AikNutritionLesson> getNutritionLessonCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
+    public List<Map<String, Object>> getNutritionLessonCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
         Map<String, Object> params = new HashMap<>();
         params.put("page", reqDTO.getPage());
         params.put("size", reqDTO.getSize());
         params.put("userId", userId);
 
-        return aikNutritionLessonMapper.selectUserCollect(params);
+        List<AikNutritionLesson> nutritionLessons = aikNutritionLessonMapper.selectUserCollect(params);
+
+        List<Map<String, Object>> nutritionLessonList = new ArrayList<>();
+        for (AikNutritionLesson nutritionLesson : nutritionLessons) {
+            Map<String, Object> nutritionLessonMap = new HashMap<>();
+            nutritionLessonMap.put("id", nutritionLesson.getId());
+            nutritionLessonMap.put("image", systemResource.getApiFileUri() + nutritionLesson.getImage());
+            nutritionLessonMap.put("title", nutritionLesson.getTitle());
+            nutritionLessonMap.put("issueDate", nutritionLesson.getIssueDate());
+
+            AikNutritionLessonView searchNL = new AikNutritionLessonView();
+            searchNL.setLessonId(nutritionLesson.getId());
+            nutritionLessonMap.put("viewCount", aikNutritionLessonViewMapper.selectCountBySelective(searchNL));
+
+            nutritionLessonList.add(nutritionLessonMap);
+        }
+
+        return nutritionLessonList;
+    }
+
+    @Override
+    public void collectNutritionLesson(CollectNutritionLessonReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || null == reqDTO.getId() || null == reqDTO.getCollect() || null == reqDTO.getUserId()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AikNutritionLessonCollect entity = aikNutritionLessonCollectMapper.selectByLessonIdAndUserId(reqDTO.getUserId(), reqDTO.getId());
+
+        // 收藏
+        if (reqDTO.getCollect()) {
+            if (entity != null) {
+                return;
+            }
+
+            AikNutritionLessonCollect addEntity = new AikNutritionLessonCollect();
+            addEntity.setUserId(reqDTO.getUserId());
+            addEntity.setLessonId(reqDTO.getId());
+            addEntity.setCreateDate(new Date());
+
+            aikNutritionLessonCollectMapper.insertSelective(addEntity);
+        }
+        // 取消收藏
+        else {
+            if (entity == null) {
+                return;
+            }
+
+            aikNutritionLessonCollectMapper.deleteByPrimaryKey(entity.getId());
+        }
     }
 }

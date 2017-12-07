@@ -5,8 +5,10 @@ import com.aik.dao.AikExpertsAnswerCollectMapper;
 import com.aik.dao.AikExpertsAnswerMapper;
 import com.aik.dao.AikExpertsAnswerViewMapper;
 import com.aik.dto.request.PageReqDTO;
+import com.aik.dto.request.user.CollectExpertsAnswerReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AikExpertsAnswer;
+import com.aik.model.AikExpertsAnswerCollect;
 import com.aik.model.AikExpertsAnswerView;
 import com.aik.util.ScrawlUtils;
 import org.slf4j.Logger;
@@ -39,6 +41,11 @@ public class ExpertsAnswerServiceImple implements ExpertsAnswerService {
     @Autowired
     public void setAikExpertsAnswerViewMapper(AikExpertsAnswerViewMapper aikExpertsAnswerViewMapper) {
         this.aikExpertsAnswerViewMapper = aikExpertsAnswerViewMapper;
+    }
+
+    @Autowired
+    public void setAikExpertsAnswerCollectMapper(AikExpertsAnswerCollectMapper aikExpertsAnswerCollectMapper) {
+        this.aikExpertsAnswerCollectMapper = aikExpertsAnswerCollectMapper;
     }
 
     @Override
@@ -111,22 +118,53 @@ public class ExpertsAnswerServiceImple implements ExpertsAnswerService {
     }
 
     @Override
-    public List<AikExpertsAnswer> getExpertsAnswerCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
+    public List<Map<String, Object>> getExpertsAnswerCollect(PageReqDTO reqDTO, Integer userId) throws ApiServiceException {
         Map<String, Object> params = new HashMap<>();
         params.put("page", reqDTO.getPage());
         params.put("size", reqDTO.getSize());
         params.put("userId", userId);
 
-        return aikExpertsAnswerMapper.selectUserCollect(params);
+        List<AikExpertsAnswer> expertsAnswers = aikExpertsAnswerMapper.selectUserCollect(params);
+        List<Map<String, Object>> rs = new ArrayList<>();
+        for (AikExpertsAnswer answer : expertsAnswers) {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", answer.getId());
+            m.put("question", answer.getQuestion());
+
+            rs.add(m);
+        }
+
+        return rs;
     }
 
     @Override
-    public void collectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException {
+    public void collectExpertsAnswer(CollectExpertsAnswerReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || null == reqDTO.getId() || null == reqDTO.getCollect() || null == reqDTO.getUserId()) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
 
-    }
+        AikExpertsAnswerCollect entity = aikExpertsAnswerCollectMapper.selectByAnswerIdAndUserId(reqDTO.getUserId(), reqDTO.getId());
 
-    @Override
-    public void cancelCollectExpertsAnswer(Integer expertsAnswerId, Integer userId) throws ApiServiceException {
+        // 收藏
+        if (reqDTO.getCollect()) {
+            if (entity != null) {
+                return;
+            }
 
+            AikExpertsAnswerCollect addEntity = new AikExpertsAnswerCollect();
+            addEntity.setUserId(reqDTO.getUserId());
+            addEntity.setExpertsAnswerId(reqDTO.getId());
+            addEntity.setCreateDate(new Date());
+
+            aikExpertsAnswerCollectMapper.insertSelective(addEntity);
+        }
+        // 取消收藏
+        else {
+            if (entity == null) {
+                return;
+            }
+
+            aikExpertsAnswerCollectMapper.deleteByPrimaryKey(entity.getId());
+        }
     }
 }

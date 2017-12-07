@@ -9,6 +9,7 @@ import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
 import com.aik.dto.request.user.ShoppingCartAddGoodsReqDTO;
 import com.aik.dto.response.user.GoodsDetailRespDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
+import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.enums.GoodsTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.StoAcceptAddress;
@@ -432,11 +433,14 @@ public class StoreApi {
 
         try {
             // TODO:商店头部图片
-            result.withDataKV("headImage", systemResource.getApiFileUri() + "system/goods-header.png");
+            result.withDataKV("newRecommendImage", systemResource.getApiFileUri() + "system/goods-header.png");
+            result.withDataKV("newRecommendGoodsId", 1);
             // TODO:商店底部图片
-            result.withDataKV("bottomImage", systemResource.getApiFileUri() + "system/goods-bottom.png");
+            result.withDataKV("managerRecommendImage", systemResource.getApiFileUri() + "system/goods-bottom.png");
+            result.withDataKV("managerRecommendGoodsId", 5);
 
-            result.withDataKV("recommendGoods", goodsService.getRecommendGoods());
+            result.withDataKV("newRecommendGoods", goodsService.getRecommendGoods(GoodsIsRecommendEnum.NEW_RECOMMEND));
+            result.withDataKV("managerRecommendGoods", goodsService.getRecommendGoods(GoodsIsRecommendEnum.MANAGER_RECOMMEND));
         } catch (ApiServiceException e) {
             logger.error("get store recommend page error:", e);
             result.withFailResult(e.getErrorCodeEnum());
