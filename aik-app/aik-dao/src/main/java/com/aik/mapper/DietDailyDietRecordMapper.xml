@@ -202,4 +202,9 @@
         <![CDATA[ and DATE_FORMAT(t.recordDate,'%Y-%m-%d') <= #{endtime} ]]>
 	</if>
   	</select>
+  <select id="selectUserRecordDate" resultType="java.util.Date">
+    select distinct recordDate
+    from diet_dailyDietRecord
+    where userId = #{userId} and DATE_FORMAT(recordDate,'%Y-%m') = DATE_FORMAT(#{date},'%Y-%m')
+  </select>
 </mapper>

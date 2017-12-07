@@ -10,6 +10,7 @@ import com.aik.enums.ExcursionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
+import com.aik.util.DateUtils;
 import com.aik.vo.DailyNutritionGradeVO;
 import com.aik.vo.NotQualifiedNutritionDetailVO;
 import org.joda.time.DateTime;
@@ -216,6 +217,21 @@ public class DietRecordServiceImpl implements DietRecordService {
         return dietRecordAnalyze;
     }
 
+    @Override
+    public List<String> getDietRecordDates(Date date, Integer userId) throws ApiServiceException {
+        if (null == userId || null == date) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        List<Date> recordDates = dietDailyDietRecordMapper.selectUserRecordDate(userId, date);
+        List<String> rs = new ArrayList<>();
+        for (Date d : recordDates) {
+            rs.add(DateUtils.showDate(d));
+        }
+
+        return rs;
+    }
+
     /**
      * TODO:每日营养评分
      *
@@ -253,7 +269,7 @@ public class DietRecordServiceImpl implements DietRecordService {
             DailyNutritionGradeVO dailyNutritionGrade = new DailyNutritionGradeVO();
             dailyNutritionGrade.setNutritionType("protein");
             dailyNutritionGrade.setNutritionName("蛋白质");
-            dailyNutritionGrade.setNutritionGrade(new BigDecimal(i*10));
+            dailyNutritionGrade.setNutritionGrade(new BigDecimal(i * 10));
             dailyNutritionGrade.setRecordDate(dateTime.withFieldAdded(DurationFieldType.days(), -i).toDate());
 
             dailyNutritionGrades.add(dailyNutritionGrade);

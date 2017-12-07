@@ -504,4 +504,24 @@ public class DietPlanApi {
 
         return result;
     }
+
+    @POST
+    @Path("/getDietRecordDates")
+    public ApiResult getDietRecordDates() {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<String> recordDates = dietRecordService.getDietRecordDates(new Date(),
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("recordDates", recordDates);
+        } catch (ApiServiceException e) {
+            logger.error("get diet record date error ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get diet record date error ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
 }
