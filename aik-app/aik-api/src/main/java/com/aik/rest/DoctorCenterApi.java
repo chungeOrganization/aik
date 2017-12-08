@@ -539,7 +539,9 @@ public class DoctorCenterApi {
         ApiResult result = new ApiResult();
 
         try {
-            String imageName = Calendar.getInstance().getTimeInMillis() + "-doctor";
+            String fileName = disposition.getFileName();
+            String fileType = fileName.substring(fileName.lastIndexOf("."));
+            String imageName = Calendar.getInstance().getTimeInMillis() + "-doctor" + fileType;
 
             String fileUri = "doctor" + File.separator + imageName;
             String fileUrl = systemResource.getApiFileUri() + fileUri;

@@ -224,7 +224,9 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            String imageName = Calendar.getInstance().getTimeInMillis() + "-user";
+            String fileName = disposition.getFileName();
+            String fileType = fileName.substring(fileName.lastIndexOf("."));
+            String imageName = Calendar.getInstance().getTimeInMillis() + "-user" + fileType;
 
             String fileUri = "user" + File.separator + imageName;
             String fileUrl = systemResource.getApiFileUri() + fileUri;

@@ -10,6 +10,7 @@ import com.aik.enums.ExcursionEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
+import com.aik.resource.SystemResource;
 import com.aik.util.DateUtils;
 import com.aik.vo.DailyNutritionGradeVO;
 import com.aik.vo.NotQualifiedNutritionDetailVO;
@@ -36,6 +37,8 @@ public class DietRecordServiceImpl implements DietRecordService {
 
     private DietDailyNutritionMapper dietDailyNutritionMapper;
 
+    private SystemResource systemResource;
+
     @Autowired
     public void setDietDailyDietRecordMapper(DietDailyDietRecordMapper dietDailyDietRecordMapper) {
         this.dietDailyDietRecordMapper = dietDailyDietRecordMapper;
@@ -44,6 +47,11 @@ public class DietRecordServiceImpl implements DietRecordService {
     @Autowired
     public void setDietDailyNutritionMapper(DietDailyNutritionMapper dietDailyNutritionMapper) {
         this.dietDailyNutritionMapper = dietDailyNutritionMapper;
+    }
+
+    @Autowired
+    public void setSystemResource(SystemResource systemResource) {
+        this.systemResource = systemResource;
     }
 
     @Override
@@ -69,6 +77,7 @@ public class DietRecordServiceImpl implements DietRecordService {
         int breakfastTotalWeight = 0;
         for (Map<String, Object> dietRecord : breakfast) {
             breakfastTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("breakfastTotalWeight", breakfastTotalWeight);
 
@@ -78,8 +87,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("lunch", lunch);
         userDietRecord.put("lunchRemark", 200);
         int lunchTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : lunch) {
             lunchTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("lunchTotalWeight", lunchTotalWeight);
 
@@ -89,11 +99,11 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("dinner", dinner);
         userDietRecord.put("dinnerRemark", 200);
         int dinnerTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : dinner) {
             dinnerTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("dinnerTotalWeight", dinnerTotalWeight);
-
 
         // 营养补充
         params.put("dietType", DietTypeEnum.ADD_NUTRITION.getCode());
@@ -101,8 +111,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("nutritional", nutritional);
         userDietRecord.put("nutritionalRemark", 200);
         int nutritionalTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : nutritional) {
             nutritionalTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("addNutritionTotalWeight", nutritionalTotalWeight);
 
@@ -112,8 +123,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("addFood", addFood);
         userDietRecord.put("addFoodRemark", 200);
         int addFoodTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : addFood) {
             addFoodTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("addFoodTotalWeight", addFoodTotalWeight);
 

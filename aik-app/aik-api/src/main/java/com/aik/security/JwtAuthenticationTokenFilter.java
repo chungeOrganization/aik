@@ -43,11 +43,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeader);
-        System.out.println(request.getServletPath());
-        System.out.println(request.getPathInfo());
-        logger.debug(request.getServletPath());
-        logger.debug(request.getPathInfo());
-        logger.debug("中文会乱码？");
         // 打印header
 //        String contentType = "";
 //        Enumeration<String> headerNames = request.getHeaderNames();
