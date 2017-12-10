@@ -435,4 +435,43 @@ public class PublicApi {
 
         return result;
     }
+
+    @GET
+    @Path("/getPageImage/{type}")
+    public ApiResult getPageImage(@PathParam("type") Integer type) {
+        ApiResult result = new ApiResult();
+
+        try {
+            if (PageImageTypeEnum.USER_DIET_PLAN_HEADER.type.equals(type)) {
+                result.withDataKV("image", systemResource.getApiFileUri() + "system/dietplan-header.png");
+            } else if(PageImageTypeEnum.USER_FOOD_STORE.type.equals(type)) {
+                result.withDataKV("image", systemResource.getApiFileUri() + "system/foods-header.png");
+            }
+        } catch (Exception e) {
+            logger.error("get ill type tree error ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    enum PageImageTypeEnum {
+        USER_DIET_PLAN_HEADER(1, "用户首页-饮食计划"),
+        USER_FOOD_STORE(2, "用户首页-饮食计划-食物库");
+        private Integer type;
+        private String desc;
+
+        PageImageTypeEnum(Integer type, String desc) {
+            this.type = type;
+            this.desc = desc;
+        }
+
+        public Integer getType() {
+            return type;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
 }
