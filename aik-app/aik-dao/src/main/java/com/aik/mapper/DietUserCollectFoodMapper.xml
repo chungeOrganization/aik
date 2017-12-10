@@ -95,6 +95,12 @@
     inner join diet_food df on uc.foodId = df.id
     where uc.userId = #{userId}
   </select>
+  <select id="selectUserCollectFoodsPage" parameterType="java.util.Map" resultType="java.util.Map">
+    select uc.id, uc.foodId, df.image, df.name
+    from diet_userCollectFood uc
+    inner join diet_food df on uc.foodId = df.id
+    where uc.userId = #{userId} limit ${(page-1)*size}, #{size}
+  </select>
   <select id="selectCountBySelective" parameterType="com.aik.model.DietUserCollectFood" resultType="int">
     select count(*)
     from diet_userCollectFood
