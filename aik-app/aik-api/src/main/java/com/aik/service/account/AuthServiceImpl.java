@@ -13,6 +13,7 @@ import com.aik.dto.request.ExternalLoginReqDTO;
 import com.aik.dto.request.doctor.DoctorRegisterReqDTO;
 import com.aik.dto.response.doctor.LoginRespDTO;
 import com.aik.enums.DoctorIsCompleteInfoEnum;
+import com.aik.enums.UserAccountUserTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.AccDoctorAccount;
 import com.aik.model.AccDoctorWallet;
@@ -20,6 +21,7 @@ import com.aik.model.AccExternalUserBinding;
 import com.aik.model.AccUserAccount;
 import com.aik.security.JwtTokenUtil;
 import com.aik.security.JwtUser;
+import com.aik.util.AikFileUtils;
 import com.aik.util.ExternalUtils;
 import com.aik.util.MD5Utils;
 import com.aik.util.StringValidUtils;
@@ -37,6 +39,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -76,6 +81,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Value("${jwt.user-sign}")
     private String jwtUserSign;
+
+    @Value("${file.upload-root-uri}")
+    private String uploadRootUri;
 
     @Autowired
     public void setAccDoctorAccountMapper(AccDoctorAccountMapper accDoctorAccountMapper) {
@@ -325,38 +333,71 @@ public class AuthServiceImpl implements AuthService {
                 reqDTO.getOpenId());
 
         // 如果该platform下的openid已存在，直接登录获取token
-        final String token;
-        if (null != externalUser) {
-            AccUserAccount userAccount = accUserAccountMapper.selectByPrimaryKey(externalUser.getUserId());
-            if (null == userAccount) {
-                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001010);
-            }
-
-            // 登录
-            UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(userAccount.getUserName() + jwtUserSign,
-                    userAccount.getPassword());
-            // Perform the security
-            final Authentication authentication = authenticationManager.authenticate(upToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // Reload password post-security so we can generate token
-            final UserDetails userDetails = userDetailService.loadUserByUsername(userAccount.getUserName() + jwtUserSign);
-            token = jwtTokenUtil.generateToken(userDetails, jwtUserSign);
-        }
+        AccUserAccount userAccount;
         // 否则通过platform提供的openapi获取用户信息，在平台注册用户，添加userBinding记录，登录返回token
-        else {
+        if (null == externalUser) {
             // 根据accessToken和openId获取用户信息
             ExternalUserInfoReqDTO externalUserInfoReq = new ExternalUserInfoReqDTO();
             externalUserInfoReq.setAccessToken(reqDTO.getAccessToken());
             externalUserInfoReq.setOpenId(reqDTO.getOpenId());
             externalUserInfoReq.setPlatformType(reqDTO.getPlatform());
             ExternalUserInfoRespDTO externalUserInfo = externalUtils.getExternalUserInfo(externalUserInfoReq);
-            // TODO:
-            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1001011);
-//            token = "";
+            userAccount = userExternalRegister(externalUserInfo);
+        } else {
+            userAccount = accUserAccountMapper.selectByPrimaryKey(externalUser.getUserId());
         }
 
-        return token;
+        // 登录
+        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(userAccount.getUserName() + jwtUserSign,
+                userAccount.getPassword());
+        // Perform the security
+        final Authentication authentication = authenticationManager.authenticate(upToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Reload password post-security so we can generate token
+        final UserDetails userDetails = userDetailService.loadUserByUsername(userAccount.getUserName() + jwtUserSign);
+
+        return jwtTokenUtil.generateToken(userDetails, jwtUserSign);
+    }
+
+    private AccUserAccount userExternalRegister(ExternalUserInfoRespDTO userInfoRespDTO) {
+        AccUserAccount addEntity = new AccUserAccount();
+        addEntity.setUserName(userInfoRespDTO.getPlatform() + System.currentTimeMillis());
+        addEntity.setPassword(MD5Utils.md5("test123"));
+        addEntity.setUserType(UserAccountUserTypeEnum.HEALTHY_CONSULTANT.getCode());
+        addEntity.setSex(userInfoRespDTO.getSex());
+        addEntity.setHeadImg(generateExternalHeadImg(userInfoRespDTO.getHeadImg()));
+        addEntity.setCreateDate(new Date());
+
+        accUserAccountMapper.insertSelective(addEntity);
+
+        AccExternalUserBinding addExternalUser = new AccExternalUserBinding();
+        addExternalUser.setUserId(addEntity.getId());
+        addExternalUser.setPlatform(userInfoRespDTO.getPlatform());
+        addExternalUser.setOpenId(userInfoRespDTO.getOpenId());
+        addExternalUser.setNickName(userInfoRespDTO.getNickName());
+        addExternalUser.setHeadImage(userInfoRespDTO.getHeadImg());
+        addExternalUser.setCreateTime(new Date());
+
+        accExternalUserBindingMapper.insertSelective(addExternalUser);
+
+        return addEntity;
+    }
+
+    private String generateExternalHeadImg(String fileUrl) {
+        String fileUri = "";
+        try {
+            URL url = new URL(fileUrl);
+            String imageName = Calendar.getInstance().getTimeInMillis() + "-user.jpg";
+
+            fileUri = "user" + File.separator + imageName;
+            String uploadUrl = uploadRootUri + fileUri;
+
+            AikFileUtils.uploadImg(url.openStream(), uploadUrl);
+        } catch (Exception e) {
+            logger.error("获取第三方头像异常", e);
+        }
+        return fileUri;
     }
 
     @Override
