@@ -6,6 +6,7 @@ import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,4 +67,13 @@ public interface DietRecordService {
      * @throws ApiServiceException
      */
     BygoneDietRecordAnalyzeRespDTO getBygoneDietRecordAnalyze(BygoneDietRecordAnalyzeReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 获取当月有饮食记录日期
+     *
+     * @param userId 用户id
+     * @return 饮食记录日期
+     * @throws ApiServiceException
+     */
+    List<String> getDietRecordDates(Date date, Integer userId) throws ApiServiceException;
 }

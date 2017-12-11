@@ -99,7 +99,7 @@ public class UserHomeApi {
         try {
 
             // TODO:头部图片（多张）
-            result.withDataKV("headImage", new String[]{systemResource.getApiFileUri() + "/headImage.jpg", systemResource.getApiFileUri() + "/headImage2.jpg"});
+            result.withDataKV("headImage", new String[]{systemResource.getApiFileUri() + "system/home-header.png"});
 
             // 今日营养
             result.withDataKV("userTodayNutrition", dietPlanService.getUserTodayNutrition(

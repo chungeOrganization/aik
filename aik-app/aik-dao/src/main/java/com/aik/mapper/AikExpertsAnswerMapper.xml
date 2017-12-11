@@ -129,6 +129,7 @@
     select
     <include refid="Base_Column_List"/>
     from aik_expertsAnswer
+    order by id desc
     limit ${(page-1)*size}, #{size}
   </select>
 
@@ -138,6 +139,7 @@
     from aik_expertsAnswer ea
     inner join aik_expertsAnswerCollect ec on ea.id = ec.expertsAnswerId
     where ec.userId = #{userId}
+    order by ec.id desc
     limit ${(page-1)*size}, #{size}
   </select>
 </mapper>

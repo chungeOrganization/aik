@@ -22,6 +22,8 @@ public interface StoGoodsMapper {
 
     List<Map<String, Object>> selectGoodsBySelective(StoGoods record);
 
+    List<Map<String, Object>> selectRecommendGoods(StoGoods record);
+
     List<Map<String, Object>> selectByParams(Map<String, Object> params);
     
     /**

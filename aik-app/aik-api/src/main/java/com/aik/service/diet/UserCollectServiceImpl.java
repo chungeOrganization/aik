@@ -2,9 +2,11 @@ package com.aik.service.diet;
 
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.DietUserCollectFoodMapper;
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietUserCollectFood;
 import com.aik.resource.SystemResource;
+import com.aik.vo.FoodBasicInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +98,23 @@ public class UserCollectServiceImpl implements UserCollectService {
                 dietUserCollectFoodMapper.deleteByPrimaryKey(userCollectFood.getId());
             }
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> getUserCollectFoodsPage(Integer userId, PageReqDTO reqDTO) throws ApiServiceException {
+        if (null == userId || null == reqDTO) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("page", reqDTO.getPage());
+        params.put("size", reqDTO.getSize());
+        List<Map<String, Object>> collectFoods = dietUserCollectFoodMapper.selectUserCollectFoodsPage(params);
+        for (Map<String, Object> collectFood : collectFoods) {
+            collectFood.put("image", systemResource.getApiFileUri() + collectFood.get("image"));
+        }
+
+        return collectFoods;
     }
 }

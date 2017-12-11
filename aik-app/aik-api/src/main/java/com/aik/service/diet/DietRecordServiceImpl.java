@@ -11,6 +11,7 @@ import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
 import com.aik.resource.SystemResource;
+import com.aik.util.DateUtils;
 import com.aik.vo.DailyNutritionGradeVO;
 import com.aik.vo.NotQualifiedNutritionDetailVO;
 import org.joda.time.DateTime;
@@ -76,10 +77,7 @@ public class DietRecordServiceImpl implements DietRecordService {
         int breakfastTotalWeight = 0;
         for (Map<String, Object> dietRecord : breakfast) {
             breakfastTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
-
-            if (null != dietRecord.get("image")) {
-                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
-            }
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("breakfastTotalWeight", breakfastTotalWeight);
 
@@ -91,10 +89,7 @@ public class DietRecordServiceImpl implements DietRecordService {
         int lunchTotalWeight = 0;
         for (Map<String, Object> dietRecord : lunch) {
             lunchTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
-
-            if (null != dietRecord.get("image")) {
-                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
-            }
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("lunchTotalWeight", lunchTotalWeight);
 
@@ -106,13 +101,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         int dinnerTotalWeight = 0;
         for (Map<String, Object> dietRecord : dinner) {
             dinnerTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
-
-            if (null != dietRecord.get("image")) {
-                dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image").toString());
-            }
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("dinnerTotalWeight", dinnerTotalWeight);
-
 
         // 营养补充
         params.put("dietType", DietTypeEnum.ADD_NUTRITION.getCode());
@@ -120,8 +111,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("nutritional", nutritional);
         userDietRecord.put("nutritionalRemark", 200);
         int nutritionalTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : nutritional) {
             nutritionalTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("addNutritionTotalWeight", nutritionalTotalWeight);
 
@@ -131,8 +123,9 @@ public class DietRecordServiceImpl implements DietRecordService {
         userDietRecord.put("addFood", addFood);
         userDietRecord.put("addFoodRemark", 200);
         int addFoodTotalWeight = 0;
-        for (Map<String, Object> dietRecord : breakfast) {
+        for (Map<String, Object> dietRecord : addFood) {
             addFoodTotalWeight += Integer.valueOf(dietRecord.get("weight").toString());
+            dietRecord.put("image", systemResource.getApiFileUri() + dietRecord.get("image"));
         }
         userDietRecord.put("addFoodTotalWeight", addFoodTotalWeight);
 
@@ -234,6 +227,21 @@ public class DietRecordServiceImpl implements DietRecordService {
         dietRecordAnalyze.setNotQualifiedTips("摄入的蛋白质过高，您身体的基本营养不达标");
 
         return dietRecordAnalyze;
+    }
+
+    @Override
+    public List<String> getDietRecordDates(Date date, Integer userId) throws ApiServiceException {
+        if (null == userId || null == date) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        List<Date> recordDates = dietDailyDietRecordMapper.selectUserRecordDate(userId, date);
+        List<String> rs = new ArrayList<>();
+        for (Date d : recordDates) {
+            rs.add(DateUtils.showDate(d));
+        }
+
+        return rs;
     }
 
     /**

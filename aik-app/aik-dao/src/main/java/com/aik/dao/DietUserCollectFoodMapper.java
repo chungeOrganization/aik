@@ -22,6 +22,8 @@ public interface DietUserCollectFoodMapper {
 
     List<Map<String, Object>> selectUserCollectFoods(Integer userId);
 
+    List<Map<String, Object>> selectUserCollectFoodsPage(Map<String, Object> params);
+
     int selectCountBySelective(DietUserCollectFood record);
 
     List<DietUserCollectFood> selectBySelective(DietUserCollectFood record);

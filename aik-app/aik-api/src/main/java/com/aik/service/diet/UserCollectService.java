@@ -1,6 +1,8 @@
 package com.aik.service.diet;
 
+import com.aik.dto.request.PageReqDTO;
 import com.aik.exception.ApiServiceException;
+import com.aik.vo.FoodBasicInfoVO;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +47,14 @@ public interface UserCollectService {
      * @throws ApiServiceException Api服务异常
      */
     void userCancelCollectFood(Integer foodId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 获取用户收藏食物分页
+     *
+     * @param userId 用户id
+     * @param reqDTO 分页信息
+     * @return 收藏食物
+     * @throws ApiServiceException
+     */
+    List<Map<String, Object>> getUserCollectFoodsPage(Integer userId, PageReqDTO reqDTO) throws ApiServiceException;
 }

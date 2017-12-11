@@ -4,16 +4,19 @@ import com.aik.assist.ErrorCodeEnum;
 import com.aik.dao.DietDailyDietPlanMapper;
 import com.aik.dao.DietDailyDietRecordMapper;
 import com.aik.dao.DietDailyNutritionMapper;
+import com.aik.dao.DietPlanTemplateMapper;
 import com.aik.enums.DietTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietPlan;
 import com.aik.model.DietDailyDietRecord;
 import com.aik.model.DietDailyNutrition;
+import com.aik.model.DietPlanTemplate;
 import com.aik.resource.SystemResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -33,6 +36,8 @@ public class DietPlanServiceImpl implements DietPlanService {
 
     private DietDailyDietRecordMapper dietDailyDietRecordMapper;
 
+    private DietPlanTemplateMapper dietPlanTemplateMapper;
+
     @Resource
     private SystemResource systemResource;
 
@@ -49,6 +54,11 @@ public class DietPlanServiceImpl implements DietPlanService {
     @Autowired
     public void setDietDailyDietRecordMapper(DietDailyDietRecordMapper dietDailyDietRecordMapper) {
         this.dietDailyDietRecordMapper = dietDailyDietRecordMapper;
+    }
+
+    @Autowired
+    public void setDietPlanTemplateMapper(DietPlanTemplateMapper dietPlanTemplateMapper) {
+        this.dietPlanTemplateMapper = dietPlanTemplateMapper;
     }
 
     @Override
@@ -140,12 +150,37 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void refreshUserDietPlan(Integer userId, Date recordDate) throws ApiServiceException {
         if (null == userId || null == recordDate) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
-        // TODO:换一批用户今日饮食计划
+        // 删除今日饮食计划
+        dietDailyDietPlanMapper.deleteUserDietPlan(userId, recordDate);
+
+        // 随机获取饮食计划模板
+        List<Integer> templateIds = dietPlanTemplateMapper.getTemplateIds();
+        if (templateIds.size() == 0) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1004012);
+        }
+
+        Random random = new Random();
+        int idx = random.nextInt(templateIds.size());
+        int templateId = templateIds.get(idx);
+        List<DietPlanTemplate> templateList = dietPlanTemplateMapper.selectByTemplateId(templateId);
+        Date now = new Date();
+        for (DietPlanTemplate dietPlanTemplate : templateList) {
+            DietDailyDietPlan dailyDietPlan = new DietDailyDietPlan();
+            dailyDietPlan.setUserId(userId);
+            dailyDietPlan.setRecordDate(recordDate);
+            dailyDietPlan.setFoodId(dietPlanTemplate.getFoodId());
+            dailyDietPlan.setDietType(dietPlanTemplate.getDietType());
+            dailyDietPlan.setWeight(dietPlanTemplate.getWeight());
+            dailyDietPlan.setCreateDate(now);
+
+            dietDailyDietPlanMapper.insertSelective(dailyDietPlan);
+        }
     }
 
     @Override
@@ -170,6 +205,8 @@ public class DietPlanServiceImpl implements DietPlanService {
 
             dietDailyDietRecordMapper.insertSelective(dailyDietRecord);
         }
+
+        // TODO:每日营养计算
     }
 
     @Override

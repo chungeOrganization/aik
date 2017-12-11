@@ -8,7 +8,7 @@ public class FoodBasicInfoVO {
 
     private Integer id;
 
-    private String headImg;
+    private String image;
 
     private String name;
 
@@ -20,12 +20,12 @@ public class FoodBasicInfoVO {
         this.id = id;
     }
 
-    public String getHeadImg() {
-        return headImg;
+    public String getImage() {
+        return image;
     }
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

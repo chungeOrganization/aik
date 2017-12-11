@@ -14,18 +14,19 @@ import com.aik.service.diet.DietPlanService;
 import com.aik.service.diet.DietRecordService;
 import com.aik.service.diet.FoodService;
 import com.aik.service.diet.UserCollectService;
+import com.aik.util.BeansUtils;
 import com.aik.util.DateUtils;
 import com.aik.vo.FoodBasicInfoVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description:
@@ -485,20 +486,63 @@ public class DietPlanApi {
         ApiResult result = new ApiResult();
 
         try {
-            // TODO
             List<FoodBasicInfoVO> foods = new ArrayList<>();
-            FoodBasicInfoVO foodBasicInfoVO = new FoodBasicInfoVO();
-            foodBasicInfoVO.setId(1);
-            foodBasicInfoVO.setName("苹果");
-            foodBasicInfoVO.setHeadImg(systemResource.getApiFileUri() + "test.jpg");
+            // 查询收藏食物分页
+            if (StringUtils.isNotBlank(reqDTO.getFoodName())) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("name", reqDTO.getFoodName());
+                params.put("page", reqDTO.getPage());
+                params.put("size", reqDTO.getSize());
+                List<Map<String, Object>> foodList = foodService.getFoods(params);
+                foods = BeansUtils.transListMap2ListBean(foodList, FoodBasicInfoVO.class);
+            } else if (null != reqDTO.getFindType()) {
+                // TODO:推荐
+                if (reqDTO.getFindType() == 1) {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("page", reqDTO.getPage());
+                    params.put("size", reqDTO.getSize());
+                    List<Map<String, Object>> foodList = foodService.getFoods(params);
+                    foods = BeansUtils.transListMap2ListBean(foodList, FoodBasicInfoVO.class);
+                }
+                // 收藏
+                else if ((reqDTO.getFindType() == 2)){
+                    List<Map<String, Object>> foodList =  userCollectService.getUserCollectFoodsPage(
+                            AuthUserDetailsThreadLocal.getCurrentUserId(), reqDTO);
+                    foods = BeansUtils.transListMap2ListBean(foodList, FoodBasicInfoVO.class);
+                } else {
+                    throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+                }
+            } else {
+                throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+            }
 
-            foods.add(foodBasicInfoVO);
             result.withDataKV("foods", foods);
-//        } catch (ApiServiceException e) {
-//            logger.error("get bygone diet record analyze error: ", e);
-//            result.withFailResult(e.getErrorCodeEnum());
+        } catch (ApiServiceException e) {
+            logger.error("get foods for diet error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
-            logger.error("get bygone diet record analyze error: ", e);
+            logger.error("get foods for diet error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+
+        return result;
+    }
+
+    @POST
+    @Path("/getDietRecordDates")
+    public ApiResult getDietRecordDates() {
+        ApiResult result = new ApiResult();
+
+        try {
+            List<String> recordDates = dietRecordService.getDietRecordDates(new Date(),
+                    AuthUserDetailsThreadLocal.getCurrentUserId());
+            result.withDataKV("recordDates", recordDates);
+        } catch (ApiServiceException e) {
+            logger.error("get diet record date error ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("get diet record date error ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

@@ -243,7 +243,7 @@
     from diet_food
     where 1=1
     <if test="name != null and name != ''">
-      and name = #{name}
+      and locate(#{name}, name) > 0
     </if>
     <if test="category != null">
       and category = #{category}

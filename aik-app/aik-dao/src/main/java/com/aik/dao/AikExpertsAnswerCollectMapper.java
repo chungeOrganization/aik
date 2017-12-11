@@ -1,6 +1,7 @@
 package com.aik.dao;
 
 import com.aik.model.AikExpertsAnswerCollect;
+import org.apache.ibatis.annotations.Param;
 
 public interface AikExpertsAnswerCollectMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,6 @@ public interface AikExpertsAnswerCollectMapper {
     int updateByPrimaryKeySelective(AikExpertsAnswerCollect record);
 
     int updateByPrimaryKey(AikExpertsAnswerCollect record);
+
+    AikExpertsAnswerCollect selectByAnswerIdAndUserId(@Param("userId") Integer userId, @Param("answerId") Integer answerId);
 }

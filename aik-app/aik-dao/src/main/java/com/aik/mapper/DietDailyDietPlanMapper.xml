@@ -170,6 +170,10 @@
       and dietType = #{dietType}
     </if>
   </select>
+  <delete id="deleteUserDietPlan">
+    delete from diet_dailyDietPlan
+    where userId = #{userId} and recordDate = #{recordDate}
+  </delete>
   <select id="findAll" parameterType="com.aik.model.DietDailyDietPlan"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
