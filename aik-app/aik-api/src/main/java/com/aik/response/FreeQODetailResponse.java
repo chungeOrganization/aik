@@ -4,6 +4,7 @@ import com.aik.bean.userside.AnswerWithQuestion;
 import com.aik.bean.userside.DoctorInfo;
 import com.aik.bean.userside.QuestionOrderDetail;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +15,9 @@ public class FreeQODetailResponse {
 
     // 是否已分享
     private Boolean isShare;
+
+    // 免费结束时间
+    private Date freeEndTime;
 
     // 医生信息
     private DoctorInfo doctorInfo;
@@ -33,6 +37,14 @@ public class FreeQODetailResponse {
 
     public void setShare(Boolean share) {
         isShare = share;
+    }
+
+    public Date getFreeEndTime() {
+        return freeEndTime;
+    }
+
+    public void setFreeEndTime(Date freeEndTime) {
+        this.freeEndTime = freeEndTime;
     }
 
     public DoctorInfo getDoctorInfo() {

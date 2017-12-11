@@ -7,6 +7,7 @@ import com.aik.bean.userside.QuestionOrderDetail;
 import com.aik.dao.*;
 import com.aik.enums.AnswerTypeEnum;
 import com.aik.enums.DoctorPositionEnum;
+import com.aik.enums.QuestionTypeEnum;
 import com.aik.enums.UserFileTypeEnum;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.*;
@@ -123,9 +124,10 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         AikFreeQuestionOrderView searchFQ = new AikFreeQuestionOrderView();
         searchFQ.setFreeOrderId(freeOrderId);
         searchFQ.setUserId(userId);
-        // TODO:目前直接通过是否已经查看过问题判断是否已经分享，分享后直接置位已查看
+        // 目前直接通过是否已经查看过问题判断是否已经分享，分享后直接置为已查看
         boolean isShare = aikFreeQuestionOrderViewMapper.selectCountBySelective(searchFQ) > 0;
         response.setShare(isShare);
+        response.setFreeEndTime(freeQuestionOrder.getFreeEndTime());
 
         // 问题订单详情
         AikQuestionOrder questionOrder = aikQuestionOrderMapper.selectByPrimaryKey(freeQuestionOrder.getOrderId());
@@ -182,20 +184,24 @@ public class FreeQuestionOrderServiceImpl implements FreeQuestionOrderService {
         if (isShare) {
             List<AnswerWithQuestion> answerWithQuestionList = new ArrayList<>();
 
-            searchAA = new AikAnswer();
-            searchAA.setOrderId(questionOrder.getId());
-            List<AikAnswer> answers = aikAnswerMapper.selectBySelective(searchAA);
+            AikQuestion searchAQ = new AikQuestion();
+            searchAQ.setOrderId(questionOrder.getId());
+            List<AikQuestion> questionsList = aikQuestionMapper.selectBySelective(searchAQ);
 
-            for (AikAnswer answer : answers) {
+            for (AikQuestion aikQuestion : questionsList) {
+                // 评分类型过滤
+                if (aikQuestion.getType() == QuestionTypeEnum.GRADE.getCode()) {
+                    continue;
+                }
+
                 AnswerWithQuestion answerWithQuestion = new AnswerWithQuestion();
-                answerWithQuestion.setAnswer(answer.getAnswer());
-                answerWithQuestion.setAnswerTime(answer.getCreateDate());
+                answerWithQuestion.setQuestion(aikQuestion.getDescription());
+                answerWithQuestion.setQuestionTime(aikQuestion.getCreateDate());
 
-                // 获取追问信息
-                AikQuestion question = aikQuestionMapper.selectByAnswerId(answer.getId());
-                if (null != question) {
-                    answerWithQuestion.setQuestion(question.getDescription());
-                    answerWithQuestion.setQuestionTime(question.getCreateDate());
+                AikAnswer aikAnswer = aikAnswerMapper.selectByQuestionId(aikQuestion.getId());
+                if (null != aikAnswer) {
+                    answerWithQuestion.setAnswer(aikAnswer.getAnswer());
+                    answerWithQuestion.setAnswerTime(aikAnswer.getCreateDate());
                 }
 
                 answerWithQuestionList.add(answerWithQuestion);
