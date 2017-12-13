@@ -47,7 +47,7 @@ public interface DietRecordService {
      * @param dailyDietRecord 饮食记录
      * @throws ApiServiceException Api服务异常
      */
-    void addUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException;
+    Integer addUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException;
 
     /**
      * 获取用户饮食记录分析

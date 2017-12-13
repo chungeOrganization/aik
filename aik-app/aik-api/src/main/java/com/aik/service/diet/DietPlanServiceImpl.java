@@ -139,7 +139,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public void addUserDietPlan(DietDailyDietPlan dailyDietPlan) throws ApiServiceException {
+    public Integer addUserDietPlan(DietDailyDietPlan dailyDietPlan) throws ApiServiceException {
         if (null == dailyDietPlan) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -147,6 +147,8 @@ public class DietPlanServiceImpl implements DietPlanService {
         dailyDietPlan.setCreateDate(new Date());
 
         dietDailyDietPlanMapper.insertSelective(dailyDietPlan);
+
+        return dailyDietPlan.getId();
     }
 
     @Override

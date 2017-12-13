@@ -44,7 +44,7 @@
       #{foodId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{dietType,jdbcType=TINYINT}, 
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.DietDailyDietRecord">
+  <insert id="insertSelective" parameterType="com.aik.model.DietDailyDietRecord" useGeneratedKeys="true" keyProperty="id">
     insert into diet_dailyDietRecord
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

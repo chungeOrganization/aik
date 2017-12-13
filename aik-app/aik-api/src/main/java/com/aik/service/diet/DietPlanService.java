@@ -53,7 +53,7 @@ public interface DietPlanService {
      * @param dailyDietPlan 饮食计划
      * @throws ApiServiceException Api服务异常
      */
-    void addUserDietPlan(DietDailyDietPlan dailyDietPlan) throws ApiServiceException;
+    Integer addUserDietPlan(DietDailyDietPlan dailyDietPlan) throws ApiServiceException;
 
     /**
      * 刷新用户今日饮食计划

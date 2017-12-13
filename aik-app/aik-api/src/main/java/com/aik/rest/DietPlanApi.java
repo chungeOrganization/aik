@@ -292,7 +292,9 @@ public class DietPlanApi {
 
         try {
             dailyDietPlan.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
-            dietPlanService.addUserDietPlan(dailyDietPlan);
+            Integer id = dietPlanService.addUserDietPlan(dailyDietPlan);
+
+            result.withDataKV("id", id);
         } catch (ApiServiceException e) {
             logger.error("add user diet plan error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
@@ -427,7 +429,9 @@ public class DietPlanApi {
 
         try {
             dailyDietRecord.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
-            dietRecordService.addUserDietRecord(dailyDietRecord);
+            Integer id = dietRecordService.addUserDietRecord(dailyDietRecord);
+
+            result.withDataKV("id", id);
         } catch (ApiServiceException e) {
             logger.error("add user diet record error: ", e);
             result.withFailResult(e.getErrorCodeEnum());

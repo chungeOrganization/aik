@@ -151,13 +151,15 @@ public class DietRecordServiceImpl implements DietRecordService {
     }
 
     @Override
-    public void addUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException {
+    public Integer addUserDietRecord(DietDailyDietRecord dailyDietRecord) throws ApiServiceException {
         if (null == dailyDietRecord) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
         dailyDietRecord.setCreateDate(new Date());
         dietDailyDietRecordMapper.insertSelective(dailyDietRecord);
+
+        return dailyDietRecord.getId();
     }
 
     @Override
