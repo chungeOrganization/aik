@@ -2,6 +2,7 @@ package com.aik.external;
 
 import com.aik.dto.ExternalUserInfoReqDTO;
 import com.aik.dto.ExternalUserInfoRespDTO;
+import com.aik.dto.TencentUserInfoDTO;
 import com.aik.properties.TencentProperties;
 import com.aik.util.HttpClientUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -90,53 +91,5 @@ public class TencentService {
         }
 
         return respDTO;
-    }
-
-    public static class TencentUserInfoDTO {
-        private Integer ret;
-        private String msg;
-        private String nickname;
-        private String figureurl_qq_1;
-        private String gender;
-
-        public Integer getRet() {
-            return ret;
-        }
-
-        public void setRet(Integer ret) {
-            this.ret = ret;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public String getFigureurl_qq_1() {
-            return figureurl_qq_1;
-        }
-
-        public void setFigureurl_qq_1(String figureurl_qq_1) {
-            this.figureurl_qq_1 = figureurl_qq_1;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
     }
 }

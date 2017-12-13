@@ -3,7 +3,10 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.IssueCircleDTO;
+import com.aik.dto.WeatherDetailRespDTO;
+import com.aik.dto.WeatherQueryReqDTO;
 import com.aik.exception.ApiServiceException;
+import com.aik.external.WeatherService;
 import com.aik.model.AccCircleComment;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.account.CircleService;
@@ -30,9 +33,16 @@ public class CircleApi {
 
     private CircleService circleService;
 
+    private WeatherService weatherService;
+
     @Inject
     public void setCircleService(CircleService circleService) {
         this.circleService = circleService;
+    }
+
+    @Inject
+    public void setWeatherService(WeatherService weatherService) {
+        this.weatherService = weatherService;
     }
 
     @POST
@@ -145,6 +155,22 @@ public class CircleApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("user comment circle error:  ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/getWeather")
+    public ApiResult getWeather(WeatherQueryReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            WeatherDetailRespDTO respDTO = weatherService.getWeatherInfo(reqDTO);
+            result.withDataKV("weatherInfo", respDTO);
+        } catch (Exception e) {
+            logger.error("get weather error:  ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 

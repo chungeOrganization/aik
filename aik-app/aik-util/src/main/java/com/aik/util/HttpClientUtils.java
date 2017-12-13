@@ -1,10 +1,11 @@
 package com.aik.util;
 
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import com.aik.dto.WeChatUserInfoDTO;
+import com.aik.dto.WeatherInfoRespDTO;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -12,6 +13,7 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -51,9 +53,13 @@ public class HttpClientUtils {
         return httpBuilder.build();
     }
 
-    public static HttpUriRequest getRequestMethod(Map<String, Object> map, String url, String method) {
+    public static HttpUriRequest getRequestMethod(Map<String, Object> paramsMap, String url, String method) {
+        return getRequestMethod(paramsMap, url, method, null);
+    }
+
+    public static HttpUriRequest getRequestMethod(Map<String, Object> paramsMap, String url, String method, Map<String, Object> headersMap) {
         List<NameValuePair> params = new ArrayList<>();
-        Set<Map.Entry<String, Object>> entrySet = map.entrySet();
+        Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
         for (Map.Entry<String, Object> e : entrySet) {
             String name = e.getKey();
             Object value = e.getValue();
@@ -61,15 +67,30 @@ public class HttpClientUtils {
             params.add(pair);
         }
 
+        List<Header> headerList = new ArrayList<>();
+        if (null != headersMap) {
+            Set<Map.Entry<String, Object>> headersSet = headersMap.entrySet();
+
+            for (Map.Entry<String, Object> e : headersSet) {
+                headerList.add(new BasicHeader(e.getKey(), e.getValue().toString()));
+            }
+        }
+        Header[] headers = new Header[headerList.size()];
+        headers = headerList.toArray(headers);
+
         HttpUriRequest reqMethod = null;
         if ("post".equals(method)) {
             reqMethod = RequestBuilder.post().setUri(url)
                     .addParameters(params.toArray(new NameValuePair[params.size()]))
                     .setConfig(requestConfig).build();
+
+            reqMethod.setHeaders(headers);
         } else if ("get".equals(method)) {
             reqMethod = RequestBuilder.get().setUri(url)
                     .addParameters(params.toArray(new NameValuePair[params.size()]))
                     .setConfig(requestConfig).build();
+
+            reqMethod.setHeaders(headers);
         }
 
         return reqMethod;
@@ -78,6 +99,17 @@ public class HttpClientUtils {
     public static String doGet(String url, Map<String, Object> params, String defaultCharset) throws Exception {
         HttpClient client = getConnection();
         HttpUriRequest post = getRequestMethod(params, url, "get");
+        HttpResponse response = client.execute(post);
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            return EntityUtils.toString(response.getEntity(), defaultCharset);
+        } else {
+            throw new Exception("do get request exception!");
+        }
+    }
+
+    public static String doGet(String url, Map<String, Object> params, String defaultCharset, Map<String, Object> headers) throws Exception {
+        HttpClient client = getConnection();
+        HttpUriRequest post = getRequestMethod(params, url, "get", headers);
         HttpResponse response = client.execute(post);
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             return EntityUtils.toString(response.getEntity(), defaultCharset);
@@ -101,15 +133,18 @@ public class HttpClientUtils {
         // http://v.juhe.cn/sms/send?mobile=手机号码&tpl_id=短信模板ID&tpl_value=%23code%23%3D654654&key=
         // http://op.juhe.cn/yuntongxun/voice?key=您申请的KEY&valicode=12345678&to=18912312312&playtimes=3
         try {
-            String url = "http://op.juhe.cn/yuntongxun/voice";
+            String url = "http://jisutqybmf.market.alicloudapi.com/weather/query";
 
             Map<String, Object> map = new HashMap<>();
-            map.put("valicode", "123456");
-            map.put("to", "15707351117");
-            map.put("key", "5125ad3ae26b2385cf7f39a84d390c41");
-            map.put("playtimes", 2);
+            map.put("location", "39.90143,116.408293");
+            Map<String, Object> headers = new HashMap<>();
+            headers.put("Authorization", "APPCODE baa9bd7b24084523a73d276164c4ec11");
 
-            String response = doGet(url, map, "UTF-8");
+            String response = doGet(url, map, "UTF-8", headers);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+            WeatherInfoRespDTO weatherInfoRespDTO = objectMapper.readValue(response, WeatherInfoRespDTO.class);
+
             System.out.println(response);
         } catch (Exception e) {
             e.printStackTrace();

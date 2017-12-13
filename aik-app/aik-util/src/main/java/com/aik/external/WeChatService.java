@@ -2,6 +2,7 @@ package com.aik.external;
 
 import com.aik.dto.ExternalUserInfoReqDTO;
 import com.aik.dto.ExternalUserInfoRespDTO;
+import com.aik.dto.WeChatUserInfoDTO;
 import com.aik.properties.WeChatProperties;
 import com.aik.util.HttpClientUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -69,64 +70,6 @@ public class WeChatService {
 
 
         return respDTO;
-    }
-
-    public static class WeChatUserInfoDTO {
-        private String errcode;
-        private String errmsg;
-
-        private String openid;
-        private String nickname;
-        private String headimgurl;
-        private Integer sex;
-
-        public String getErrcode() {
-            return errcode;
-        }
-
-        public void setErrcode(String errcode) {
-            this.errcode = errcode;
-        }
-
-        public String getErrmsg() {
-            return errmsg;
-        }
-
-        public void setErrmsg(String errmsg) {
-            this.errmsg = errmsg;
-        }
-
-        public String getOpenid() {
-            return openid;
-        }
-
-        public void setOpenid(String openid) {
-            this.openid = openid;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public String getHeadimgurl() {
-            return headimgurl;
-        }
-
-        public void setHeadimgurl(String headimgurl) {
-            this.headimgurl = headimgurl;
-        }
-
-        public Integer getSex() {
-            return sex;
-        }
-
-        public void setSex(Integer sex) {
-            this.sex = sex;
-        }
     }
 
     public static void main(String[] args) {
