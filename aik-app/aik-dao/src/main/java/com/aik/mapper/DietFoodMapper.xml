@@ -16,12 +16,13 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="weightUnit" jdbcType="VARCHAR" property="weightUnit" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="descrption" jdbcType="VARCHAR" property="descrption" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name, category, image, recommend, brightSpot, spotRank, proteinRadio, fatRadio, 
-    carbsRadio, naRadio, type, weightUnit, weight, createDate, updateDate
+    carbsRadio, naRadio, type, weightUnit, weight, descrption, createDate, updateDate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -38,14 +39,14 @@
       image, recommend, brightSpot, 
       spotRank, proteinRadio, fatRadio, 
       carbsRadio, naRadio, type, 
-      weightUnit, weight, createDate, 
-      updateDate)
+      weightUnit, weight, descrption, 
+      createDate, updateDate)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
       #{image,jdbcType=VARCHAR}, #{recommend,jdbcType=VARCHAR}, #{brightSpot,jdbcType=TINYINT}, 
       #{spotRank,jdbcType=INTEGER}, #{proteinRadio,jdbcType=DECIMAL}, #{fatRadio,jdbcType=DECIMAL}, 
       #{carbsRadio,jdbcType=DECIMAL}, #{naRadio,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, 
-      #{weightUnit,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{weightUnit,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{descrption,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.DietFood">
     insert into diet_food
@@ -91,6 +92,9 @@
       </if>
       <if test="weight != null">
         weight,
+      </if>
+      <if test="descrption != null">
+        descrption,
       </if>
       <if test="createDate != null">
         createDate,
@@ -142,6 +146,9 @@
       <if test="weight != null">
         #{weight,jdbcType=INTEGER},
       </if>
+      <if test="descrption != null">
+        #{descrption,jdbcType=VARCHAR},
+      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -192,6 +199,9 @@
       <if test="weight != null">
         weight = #{weight,jdbcType=INTEGER},
       </if>
+      <if test="descrption != null">
+        descrption = #{descrption,jdbcType=VARCHAR},
+      </if>
       <if test="createDate != null">
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -216,6 +226,7 @@
       type = #{type,jdbcType=TINYINT},
       weightUnit = #{weightUnit,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
+      descrption = #{descrption,jdbcType=VARCHAR},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       updateDate = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
@@ -243,7 +254,7 @@
     from diet_food
     where 1=1
     <if test="name != null and name != ''">
-      and locate(#{name}, name) > 0
+      and locate(#{name}, name) &gt; 0
     </if>
     <if test="category != null">
       and category = #{category}

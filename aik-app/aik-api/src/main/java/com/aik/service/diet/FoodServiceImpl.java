@@ -110,6 +110,7 @@ public class FoodServiceImpl implements FoodService {
         foodInfo.put("fatRadio", food.getFatRadio());
         foodInfo.put("carbsRadio", food.getCarbsRadio());
         foodInfo.put("naRadio", food.getNaRadio());
+        foodInfo.put("description", food.getDescrption());
 
         foodDetail.put("foodInfo", foodInfo);
 

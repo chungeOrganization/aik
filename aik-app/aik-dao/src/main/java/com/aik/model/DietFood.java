@@ -32,6 +32,8 @@ public class DietFood {
 
     private Integer weight;
 
+    private String descrption;
+
     private Date createDate;
 
     private Date updateDate;
@@ -146,6 +148,14 @@ public class DietFood {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getDescrption() {
+        return descrption;
+    }
+
+    public void setDescrption(String descrption) {
+        this.descrption = descrption == null ? null : descrption.trim();
     }
 
     public Date getCreateDate() {
