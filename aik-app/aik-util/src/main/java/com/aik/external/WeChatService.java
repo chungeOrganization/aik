@@ -1,8 +1,8 @@
 package com.aik.external;
 
-import com.aik.dto.ExternalUserInfoReqDTO;
-import com.aik.dto.ExternalUserInfoRespDTO;
-import com.aik.dto.WeChatUserInfoDTO;
+import com.aik.dto.request.ExternalUserInfoReqDTO;
+import com.aik.dto.response.ExternalUserInfoRespDTO;
+import com.aik.dto.response.WeChatUserInfoRespDTO;
 import com.aik.properties.WeChatProperties;
 import com.aik.util.HttpClientUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -24,6 +24,12 @@ public class WeChatService {
     @Autowired
     private WeChatProperties weChatProperties;
 
+    /**
+     * 获取微信登录信息
+     *
+     * @param reqDTO request
+     * @return 第三方登录信息
+     */
     public ExternalUserInfoRespDTO getWeChatUserInfo(ExternalUserInfoReqDTO reqDTO) {
         if (StringUtils.isEmpty(reqDTO.getAccessToken()) || StringUtils.isEmpty(reqDTO.getOpenId())) {
             throw new RuntimeException("获取微信用户信息accessToken与openId不能为空");
@@ -37,8 +43,8 @@ public class WeChatService {
             params.put("openid", reqDTO.getOpenId());
             String response = HttpClientUtils.doGet(weChatProperties.getUserInfoApi(), params, "utf-8");
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-            WeChatUserInfoDTO userInfoDTO = objectMapper.readValue(response, WeChatUserInfoDTO.class);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            WeChatUserInfoRespDTO userInfoDTO = objectMapper.readValue(response, WeChatUserInfoRespDTO.class);
             if (StringUtils.isNotEmpty(userInfoDTO.getErrcode())) {
                 throw new RuntimeException("调用微信获取用户信息接口异常：" + userInfoDTO.getErrcode() + " " + userInfoDTO.getErrmsg());
             } else {
@@ -48,28 +54,40 @@ public class WeChatService {
                 respDTO.setNickName(userInfoDTO.getNickname());
                 respDTO.setSex((byte) (userInfoDTO.getSex() - 1));
             }
-//            {
-//                "openid":"OPENID",
-//                    "nickname":"NICKNAME",
-//                    "sex":1,
-//                    "province":"PROVINCE",
-//                    "city":"CITY",
-//                    "country":"COUNTRY",
-//                    "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-//                    "privilege":[
-//                "PRIVILEGE1",
-//                        "PRIVILEGE2"
-//],
-//                "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
-//
-//            }
-
         } catch (Exception e) {
             throw new RuntimeException("调用微信获取用户信息接口异常：" + e.getMessage());
         }
 
 
         return respDTO;
+    }
+
+    /**
+     * 创建支付订单
+     */
+    public void createPayOrder() {
+
+    }
+
+    /**
+     * 支付回调
+     */
+    public void payCallback() {
+
+    }
+
+    /**
+     * 告知已成功接收处理
+     */
+    public void sendPayAck() {
+
+    }
+
+    /**
+     * 查询支付结果
+     */
+    public void checkPayResult() {
+
     }
 
     public static void main(String[] args) {

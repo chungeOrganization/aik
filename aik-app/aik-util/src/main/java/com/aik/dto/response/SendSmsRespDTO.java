@@ -1,4 +1,4 @@
-package com.aik.dto;
+package com.aik.dto.response;
 
 /**
  * Description:

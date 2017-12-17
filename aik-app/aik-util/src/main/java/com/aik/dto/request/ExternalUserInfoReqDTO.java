@@ -1,4 +1,4 @@
-package com.aik.dto;
+package com.aik.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

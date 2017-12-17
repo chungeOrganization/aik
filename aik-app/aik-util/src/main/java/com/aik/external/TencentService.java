@@ -1,8 +1,8 @@
 package com.aik.external;
 
-import com.aik.dto.ExternalUserInfoReqDTO;
-import com.aik.dto.ExternalUserInfoRespDTO;
-import com.aik.dto.TencentUserInfoDTO;
+import com.aik.dto.request.ExternalUserInfoReqDTO;
+import com.aik.dto.response.ExternalUserInfoRespDTO;
+import com.aik.dto.response.TencentUserInfoRespDTO;
 import com.aik.properties.TencentProperties;
 import com.aik.util.HttpClientUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -52,7 +52,7 @@ public class TencentService {
             String response = HttpClientUtils.doGet(tencentProperties.getUserInfoApi(), params, "utf-8");
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-            TencentUserInfoDTO userInfoDTO = objectMapper.readValue(response, TencentUserInfoDTO.class);
+            TencentUserInfoRespDTO userInfoDTO = objectMapper.readValue(response, TencentUserInfoRespDTO.class);
             if (userInfoDTO.getRet() != 0) {
                 throw new RuntimeException("调用腾讯获取用户信息接口异常：" + userInfoDTO.getRet() + " " + userInfoDTO.getMsg());
             } else {

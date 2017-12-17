@@ -1,7 +1,7 @@
 package com.aik.util;
 
-import com.aik.dto.ExternalUserInfoReqDTO;
-import com.aik.dto.ExternalUserInfoRespDTO;
+import com.aik.dto.request.ExternalUserInfoReqDTO;
+import com.aik.dto.response.ExternalUserInfoRespDTO;
 import com.aik.enums.ExternalTypeEnum;
 import com.aik.external.TencentService;
 import com.aik.external.WeChatService;

@@ -564,4 +564,17 @@ public class StoreApi {
 
         return result;
     }
+
+    /**
+     * 创建支付订单
+     * param 商品信息
+     * @return
+     */
+    @POST
+    @Path("/createPayOrder")
+    public ApiResult createPayOrder() {
+
+
+        return null;
+    }
 }

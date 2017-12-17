@@ -1,4 +1,4 @@
-package com.aik.dto;
+package com.aik.dto.request;
 
 /**
  * Desc: 天气查询请求DTO

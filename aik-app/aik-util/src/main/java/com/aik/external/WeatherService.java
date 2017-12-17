@@ -1,9 +1,8 @@
 package com.aik.external;
 
-import com.aik.dto.WeChatUserInfoDTO;
-import com.aik.dto.WeatherDetailRespDTO;
-import com.aik.dto.WeatherInfoRespDTO;
-import com.aik.dto.WeatherQueryReqDTO;
+import com.aik.dto.response.WeatherDetailRespDTO;
+import com.aik.dto.response.WeatherInfoRespDTO;
+import com.aik.dto.request.WeatherQueryReqDTO;
 import com.aik.properties.WeatherProperties;
 import com.aik.util.HttpClientUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;

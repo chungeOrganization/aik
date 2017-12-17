@@ -1,6 +1,6 @@
 package com.aik.util;
 
-import com.aik.dto.SendSmsRespDTO;
+import com.aik.dto.response.SendSmsRespDTO;
 import com.aik.properties.SendSmsProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

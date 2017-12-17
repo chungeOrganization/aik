@@ -1,8 +1,7 @@
 package com.aik.util;
 
 
-import com.aik.dto.WeChatUserInfoDTO;
-import com.aik.dto.WeatherInfoRespDTO;
+import com.aik.dto.response.WeatherInfoRespDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.*;
@@ -17,8 +16,6 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**

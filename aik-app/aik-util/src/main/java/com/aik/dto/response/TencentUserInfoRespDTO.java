@@ -1,10 +1,10 @@
-package com.aik.dto;
+package com.aik.dto.response;
 
 /**
  * Desc:
  * Create by as on 2017/12/13
  */
-public class TencentUserInfoDTO {
+public class TencentUserInfoRespDTO {
     private Integer ret;
     private String msg;
     private String nickname;
