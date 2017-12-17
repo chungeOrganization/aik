@@ -1,9 +1,11 @@
 spring:
   # datasource
   datasource:
-    url: jdbc:mysql://104.224.159.254:3306/aikang?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root
-    password: As_123456
+    url: jdbc:mysql://localhost:3306/aikang?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: aikang
+    password: aikang
+#    username: root
+#    password: As_123456
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     # 初始化大小，最小，最大
@@ -58,16 +60,18 @@ server:
 
 file:
 # windows
-  upload-root-uri: "H:/Users/as/Pictures/"
+#  upload-root-uri: "C:/Users/as/Pictures/"
 # linux
-#  upload-root-uri: "/usr/soft/file/"
+  upload-root-uri: "/usr/java/file/"
   mapping-root-uri: "/file"
 # system
 system:
-  api-uri: "http://localhost/aik-manager"
-  #manager-uri: "http://localhost/aik-manager"
+# windows
+#  api-uri: "http://localhost/aik"
+# linux
+  api-uri: "http://119.23.230.88:8081/aik"
 # logger
 logging:
   level:
-    com.aik: debug
+    com.aik: DEBUG
 
