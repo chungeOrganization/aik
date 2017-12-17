@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Description:
@@ -53,6 +54,28 @@ public class ScrawlUtils {
         String showStr = cardCode.substring(cardCode.length() - 4, cardCode.length());
 
         return hidStr + showStr;
+    }
+
+    /**
+     * 生成随机字符串
+     *
+     * @param size 长度
+     * @return 随机字符串
+     */
+    public static String generateNonceStr(Integer size) {
+        if (null == size || size <= 0) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        String toolStr = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        Integer toolStrLength = toolStr.length();
+        Random random = new Random();
+        for (int i = 0; i < size; i++) {
+            sb.append(toolStr.charAt(random.nextInt(toolStrLength)));
+        }
+
+        return sb.toString();
     }
 
     public static void main(String[] args) {

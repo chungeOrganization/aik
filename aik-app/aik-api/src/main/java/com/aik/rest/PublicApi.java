@@ -455,6 +455,14 @@ public class PublicApi {
         return result;
     }
 
+    @POST
+    @Path("/wechatPayCallback")
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    public ApiResult wechatPayCallback() {
+        return null;
+    }
+
     enum PageImageTypeEnum {
         USER_DIET_PLAN_HEADER(1, "用户首页-饮食计划"),
         USER_FOOD_STORE(2, "用户首页-饮食计划-食物库");

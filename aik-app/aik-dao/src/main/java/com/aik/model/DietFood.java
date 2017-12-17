@@ -32,7 +32,7 @@ public class DietFood {
 
     private Integer weight;
 
-    private String descrption;
+    private String remark;
 
     private Date createDate;
 
@@ -150,12 +150,12 @@ public class DietFood {
         this.weight = weight;
     }
 
-    public String getDescrption() {
-        return descrption;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setDescrption(String descrption) {
-        this.descrption = descrption == null ? null : descrption.trim();
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Date getCreateDate() {

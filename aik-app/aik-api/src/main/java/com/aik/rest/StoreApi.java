@@ -6,12 +6,14 @@ import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.UpdateShoppingCartDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
+import com.aik.dto.request.user.CreatePayOrderReqDTO;
 import com.aik.dto.request.user.ShoppingCartAddGoodsReqDTO;
 import com.aik.dto.response.user.GoodsDetailRespDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.enums.GoodsTypeEnum;
 import com.aik.exception.ApiServiceException;
+import com.aik.external.WeChatService;
 import com.aik.model.StoAcceptAddress;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
@@ -50,6 +52,8 @@ public class StoreApi {
 
     private SystemResource systemResource;
 
+    private WeChatService weChatService;
+
     @Inject
     public void setUserOrderService(UserOrderService userOrderService) {
         this.userOrderService = userOrderService;
@@ -80,6 +84,14 @@ public class StoreApi {
         this.systemResource = systemResource;
     }
 
+    @Inject
+    public void setWeChatService(WeChatService weChatService) {
+        this.weChatService = weChatService;
+    }
+
+    /**
+     * 获取用户订单
+     */
     @POST
     @Path("/getMyOrder")
     public ApiResult getMyOrder(Map<String, Object> params) {
@@ -100,6 +112,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 取消订单
+     */
     @POST
     @Path("/cancelUserOrder/{orderId}")
     public ApiResult cancelUserOrder(@PathParam("orderId") Integer orderId) {
@@ -118,6 +133,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 获取订单物流信息
+     */
     @GET
     @Path("/getOrderLogisticsInfo/{orderId}")
     public ApiResult getOrderLogisticsInfo(@PathParam("orderId") Integer orderId) {
@@ -137,6 +155,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 确认收货
+     */
     @POST
     @Path("/confirmReceipt/{orderId}")
     public ApiResult confirmReceipt(@PathParam("orderId") Integer orderId) {
@@ -155,6 +176,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 退货
+     */
     @POST
     @Path("/returnOrder/{orderId}")
     public ApiResult returnOrder(@PathParam("orderId") Integer orderId) {
@@ -173,6 +197,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 再来一单
+     */
     @POST
     @Path("/againOrder/{orderId}")
     public ApiResult againOrder(@PathParam("orderId") Integer orderId) {
@@ -191,6 +218,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 评价订单
+     */
     @POST
     @Path("/appraiseOrder")
     public ApiResult appraiseOrder(AppraiseOrderReqDTO reqDTO) {
@@ -209,6 +239,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 购物车结算
+     */
     @POST
     @Path("/shoppingCartSettle")
     public ApiResult shoppingCartSettle(Map<String, Object> params) {
@@ -230,6 +263,9 @@ public class StoreApi {
         return result;
     }
 
+    /**
+     * 获取结算订单详情
+     */
     @POST
     @Path("/getConfirmOrderDetail")
     public ApiResult getConfirmOrderDetail(Map<String, Object> params) {
@@ -244,6 +280,48 @@ public class StoreApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get confirm order detail error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    /**
+     * 创建支付订单
+     */
+    @POST
+    @Path("/createPayOrder")
+    public ApiResult createPayOrder(CreatePayOrderReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005005);
+        } catch (ApiServiceException e) {
+            logger.error("create pay order error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("create pay order error:", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    /**
+     * 查询支付结果
+     */
+    @POST
+    @Path("/checkPayResult/{orderId}")
+    public ApiResult checkPayResult(@PathParam("orderId") Integer orderId) {
+        ApiResult result = new ApiResult();
+
+        try {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005006);
+        } catch (ApiServiceException e) {
+            logger.error("check pay result error:", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("check pay result error:", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
@@ -563,18 +641,5 @@ public class StoreApi {
         }
 
         return result;
-    }
-
-    /**
-     * 创建支付订单
-     * param 商品信息
-     * @return
-     */
-    @POST
-    @Path("/createPayOrder")
-    public ApiResult createPayOrder() {
-
-
-        return null;
     }
 }

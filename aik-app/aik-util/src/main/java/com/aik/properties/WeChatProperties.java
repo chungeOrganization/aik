@@ -1,5 +1,7 @@
 package com.aik.properties;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Component;
  * Desc: 微信开放平台配置
  * Create by as on 2017/11/10
  */
+@Setter
+@Getter
 @Component
 @ConfigurationProperties(prefix = "wechat")
 public class WeChatProperties {
@@ -17,27 +21,10 @@ public class WeChatProperties {
 
     private String appKey;
 
-    public String getUserInfoApi() {
-        return userInfoApi;
-    }
+    private String merchantId;
 
-    public void setUserInfoApi(String userInfoApi) {
-        this.userInfoApi = userInfoApi;
-    }
+    private String merchantKey;
 
-    public String getAppId() {
-        return appId;
-    }
+    private String unifiedOrderApi;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getAppKey() {
-        return appKey;
-    }
-
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
-    }
 }

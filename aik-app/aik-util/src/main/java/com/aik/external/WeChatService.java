@@ -1,6 +1,10 @@
 package com.aik.external;
 
 import com.aik.dto.request.ExternalUserInfoReqDTO;
+import com.aik.dto.request.WeChatCreatePayOrderReqDTO;
+import com.aik.dto.response.WeChatCreatePayOrderRespDTO;
+import com.aik.util.ScrawlUtils;
+import com.aik.xml.request.WeChatCreatePayOrderReqXml;
 import com.aik.dto.response.ExternalUserInfoRespDTO;
 import com.aik.dto.response.WeChatUserInfoRespDTO;
 import com.aik.properties.WeChatProperties;
@@ -65,21 +69,19 @@ public class WeChatService {
     /**
      * 创建支付订单
      */
-    public void createPayOrder() {
-
+    public WeChatCreatePayOrderRespDTO createPayOrder(WeChatCreatePayOrderReqDTO reqDTO) {
+        WeChatCreatePayOrderReqXml reqXml = new WeChatCreatePayOrderReqXml();
+        reqXml.setAppid(weChatProperties.getAppId());
+        reqXml.setMchId(weChatProperties.getMerchantId());
+        reqXml.setNonceStr(ScrawlUtils.generateNonceStr(32));
+//        reqXml.setSign();
+        throw new RuntimeException("创建支付订单异常");
     }
 
     /**
      * 支付回调
      */
     public void payCallback() {
-
-    }
-
-    /**
-     * 告知已成功接收处理
-     */
-    public void sendPayAck() {
 
     }
 
