@@ -229,6 +229,9 @@ public class UserOrderServiceImpl implements UserOrderService {
         // 订单总价
         orderDetail.put("goodsAmount", userOrder.getAmount());
 
+        // 仓库名称
+        orderDetail.put("storageName", "华纳自营仓库");
+
         return orderDetail;
     }
 

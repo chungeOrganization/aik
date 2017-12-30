@@ -300,7 +300,7 @@ public class DoctorHomeApi {
 
     @POST
     @Path("/getMyQRCode")
-    public ApiResult getMyQRCode(AikAnswer aikAnswer) {
+    public ApiResult getMyQRCode() {
         ApiResult result = new ApiResult();
 
         try {

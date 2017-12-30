@@ -5,6 +5,7 @@ import com.aik.dao.StoGoodsMapper;
 import com.aik.dao.StoShoppingCartMapper;
 import com.aik.dao.StoUserCollectionGoodsMapper;
 import com.aik.dto.response.user.GoodsDetailRespDTO;
+import com.aik.dto.response.user.MerchantInfoRespDTO;
 import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.enums.GoodsStatusEnum;
 import com.aik.exception.ApiServiceException;
@@ -98,12 +99,25 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDetail.setGoodsStock(goods.getStock());
 
         boolean isCollection = null != stoUserCollectionGoodsMapper.selectByUserIdAndGoodsID(userId, goodsId);
-        goodsDetail.setCollection(isCollection);
+        goodsDetail.setIsCollection(isCollection);
 
         int cartGoodsCount = stoShoppingCartMapper.selectUserShoppingCartCount(userId);
         goodsDetail.setCartGoodsCount(cartGoodsCount);
 
+        goodsDetail.setMerchantInfo(getMerchantInfo(goodsId));
+
         return goodsDetail;
+    }
+
+    @Override
+    public MerchantInfoRespDTO getMerchantInfo(Integer goodsId) throws ApiServiceException {
+        // TODO:获取商户信息
+        MerchantInfoRespDTO merchantInfo = new MerchantInfoRespDTO();
+        merchantInfo.setMerchantName("华纳健康");
+        merchantInfo.setGoodsNum(12);
+        merchantInfo.setMerchantImg(systemResource.getApiFileUri() + "goods/merchant-hn.png");
+
+        return merchantInfo;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.aik.service.store;
 
 import com.aik.dto.response.user.GoodsDetailRespDTO;
+import com.aik.dto.response.user.MerchantInfoRespDTO;
 import com.aik.enums.GoodsIsRecommendEnum;
 import com.aik.exception.ApiServiceException;
 
@@ -39,6 +40,15 @@ public interface GoodsService {
      * @throws ApiServiceException
      */
     GoodsDetailRespDTO getGoodsDetail(Integer goodsId, Integer userId) throws ApiServiceException;
+
+    /**
+     * 获取商户信息
+     *
+     * @param goodsId 商品id
+     * @return 商户信息
+     * @throws ApiServiceException
+     */
+    MerchantInfoRespDTO getMerchantInfo(Integer goodsId) throws ApiServiceException;
 
     /**
      * 收藏商品

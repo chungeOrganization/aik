@@ -6,6 +6,7 @@ import com.aik.dto.DoctorInfoDTO;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.doctor.*;
 import com.aik.dto.response.doctor.ApplyWithdrawRespDTO;
+import com.aik.dto.response.doctor.BankCardDiscernRespDTO;
 import com.aik.dto.response.doctor.DoctorInfoRespDTO;
 import com.aik.dto.response.doctor.ShowBankWithdrawRespDTO;
 import com.aik.enums.DoctorPositionEnum;
@@ -433,6 +434,22 @@ public class DoctorCenterApi {
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
+        return result;
+    }
+
+    @POST
+    @Path("/bankCardDiscern")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public ApiResult bankCardDiscern(@FormDataParam("file") InputStream fileInputStream,
+                                     @FormDataParam("file") FormDataContentDisposition disposition) {
+        ApiResult result = new ApiResult();
+        try {
+            BankCardDiscernRespDTO respDTO = new BankCardDiscernRespDTO();
+            throw new Exception("识别图片异常");
+        } catch (Exception e) {
+            logger.error("discern bank card error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
         return result;
     }
 

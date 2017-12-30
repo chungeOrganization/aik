@@ -75,10 +75,11 @@ public class DoctorTipsApi {
 
     @POST
     @Path("/getDoctorTipsList")
-    public ApiResult getDoctorTipsList(DoctorTipsListReqDTO reqDTO) {
+    public ApiResult getDoctorTipsList() {
         ApiResult result = new ApiResult();
 
         try {
+            DoctorTipsListReqDTO reqDTO = new DoctorTipsListReqDTO();
             reqDTO.setDoctorId(AuthUserDetailsThreadLocal.getCurrentUserId());
             DoctorTipsListRespDTO tipsList = doctorTipsService.getDoctorTipsList(reqDTO);
             result.withDataKV("tipsList", tipsList);
