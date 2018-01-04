@@ -36,4 +36,6 @@ public interface StoUserOrderDetailMapper {
      * @return
      */
     Page<StoUserOrderDetail> findByPage(StoUserOrderDetail record);
+
+    List<StoUserOrderDetail> selectByOrderId(Integer orderId);
 }

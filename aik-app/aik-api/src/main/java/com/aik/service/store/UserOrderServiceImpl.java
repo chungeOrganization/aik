@@ -5,6 +5,7 @@ import com.aik.dao.*;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
+import com.aik.dto.request.user.ReturnOrderReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.enums.DelFlagEnum;
 import com.aik.enums.UserFileTypeEnum;
@@ -156,7 +157,7 @@ public class UserOrderServiceImpl implements UserOrderService {
 
         stoUserOrderMapper.insertSelective(userOrder);
 
-        for(StoUserOrderDetail userOrderDetail : orderDetails) {
+        for (StoUserOrderDetail userOrderDetail : orderDetails) {
             userOrderDetail.setOrderId(userOrder.getId());
 
             stoUserOrderDetailMapper.insertSelective(userOrderDetail);
@@ -336,12 +337,12 @@ public class UserOrderServiceImpl implements UserOrderService {
     }
 
     @Override
-    public void returnOrder(Integer orderId) throws ApiServiceException {
-        if (null == orderId) {
+    public void returnOrder(ReturnOrderReqDTO reqDTO) throws ApiServiceException {
+        if (null == reqDTO || null == reqDTO.getOrderId()) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
-        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(orderId);
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(reqDTO.getOrderId());
         if (null == userOrder) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
         }
@@ -360,8 +361,41 @@ public class UserOrderServiceImpl implements UserOrderService {
     }
 
     @Override
-    public void againOrder(Integer orderId) throws ApiServiceException {
-        // TODO:再来一单
+    @Transactional(rollbackFor = Exception.class)
+    public Integer againOrder(Integer orderId) throws ApiServiceException {
+        if (null == orderId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        StoUserOrder userOrder = stoUserOrderMapper.selectByPrimaryKey(orderId);
+        if (null == userOrder) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1005001);
+        }
+
+        // 生成订单
+        StoUserOrder againOrder = new StoUserOrder();
+        againOrder.setOrderNum(System.currentTimeMillis() + "");
+        againOrder.setUserId(userOrder.getUserId());
+        againOrder.setAcceptAddressId(userOrder.getAcceptAddressId());
+        againOrder.setStatus(UserOrderStatusEnum.WAITING_PAY.getStatus());
+        againOrder.setAmount(userOrder.getAmount());
+        againOrder.setCreateDate(new Date());
+        stoUserOrderMapper.insertSelective(againOrder);
+
+        List<StoUserOrderDetail> orderDetails = stoUserOrderDetailMapper.selectByOrderId(userOrder.getId());
+        for (StoUserOrderDetail userOrderDetail : orderDetails) {
+            StoUserOrderDetail againOrderDetail = new StoUserOrderDetail();
+            againOrderDetail.setUserId(userOrderDetail.getUserId());
+            againOrderDetail.setOrderId(againOrder.getId());
+            againOrderDetail.setGoodsId(userOrderDetail.getGoodsId());
+            againOrderDetail.setNumber(userOrderDetail.getNumber());
+            againOrderDetail.setAmount(userOrderDetail.getAmount());
+            againOrderDetail.setCreateDate(new Date());
+
+            stoUserOrderDetailMapper.insertSelective(againOrderDetail);
+        }
+
+        return againOrder.getId();
     }
 
     @Override

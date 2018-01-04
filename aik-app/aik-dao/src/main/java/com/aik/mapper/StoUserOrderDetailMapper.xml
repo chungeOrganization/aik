@@ -190,5 +190,11 @@
       and orderId = #{orderId}
     </if>
   	</select>
-  
+
+  <select id="selectByOrderId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sto_userOrderDetail
+    where orderId = #{orderId}
+  </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.aik.dto.response.user;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Description:
@@ -15,7 +16,7 @@ public class GoodsDetailRespDTO {
 
     private String goodsName;
 
-    private String goodsImg;
+    private List<String> goodsImgs;
 
     private BigDecimal goodsPrice;
 
@@ -26,4 +27,6 @@ public class GoodsDetailRespDTO {
     private Integer cartGoodsCount;
 
     private MerchantInfoRespDTO merchantInfo;
+
+    private String serviceTel;
 }

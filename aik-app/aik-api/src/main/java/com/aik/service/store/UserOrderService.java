@@ -3,6 +3,7 @@ package com.aik.service.store;
 import com.aik.dto.PayStoOrderDTO;
 import com.aik.dto.request.user.AppraiseOrderReqDTO;
 import com.aik.dto.request.user.AtOncePurchaseGoodsReqDTO;
+import com.aik.dto.request.user.ReturnOrderReqDTO;
 import com.aik.dto.response.user.OrderLogisticsInfoRespDTO;
 import com.aik.exception.ApiServiceException;
 
@@ -80,10 +81,10 @@ public interface UserOrderService {
     /**
      * 订单退货
      *
-     * @param orderId 订单id
+     * @param reqDTO
      * @throws ApiServiceException
      */
-    void returnOrder(Integer orderId) throws ApiServiceException;
+    void returnOrder(ReturnOrderReqDTO reqDTO) throws ApiServiceException;
 
     /**
      * 再来一单
@@ -91,7 +92,7 @@ public interface UserOrderService {
      * @param orderId 订单id
      * @throws ApiServiceException
      */
-    void againOrder(Integer orderId) throws ApiServiceException;
+    Integer againOrder(Integer orderId) throws ApiServiceException;
 
     /**
      * 评价订单

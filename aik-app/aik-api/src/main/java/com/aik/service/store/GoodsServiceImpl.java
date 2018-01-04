@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,8 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsDetailRespDTO goodsDetail = new GoodsDetailRespDTO();
         goodsDetail.setGoodsId(goods.getId());
         goodsDetail.setGoodsName(goods.getName());
-        goodsDetail.setGoodsImg(systemResource.getApiFileUri() + goods.getImage());
+        String[] imgs = {systemResource.getApiFileUri() + goods.getImage()};
+        goodsDetail.setGoodsImgs(Arrays.asList(imgs));
         goodsDetail.setGoodsPrice(goods.getPrice());
         goodsDetail.setGoodsStock(goods.getStock());
 
@@ -105,6 +107,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDetail.setCartGoodsCount(cartGoodsCount);
 
         goodsDetail.setMerchantInfo(getMerchantInfo(goodsId));
+        goodsDetail.setServiceTel("0755-22222222");
 
         return goodsDetail;
     }
