@@ -62,31 +62,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
         }
 
-        // 获取multipart/form-data 请求正文
-        if (contentType.contains("multipart/form-data")) {
-            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-            MultipartHttpServletRequest multiRequest = multipartResolver.resolveMultipart(request);
-            multipartResolver.cleanupMultipart(multiRequest);
-            Enumeration<String> paramNames = multiRequest.getParameterNames();
-            while (paramNames.hasMoreElements()) {
-                String name = paramNames.nextElement();
-                logger.debug("request param: " + name + "[" + multiRequest.getParameter(name) + "]" );
-            }
-
-            MultiValueMap<String, MultipartFile> fileMap = multiRequest.getMultiFileMap();
-            Set<String> set = fileMap.keySet();
-            Iterator<String> it = set.iterator();
-            while(it.hasNext()) {
-                String name = it.next();
-                List<MultipartFile> files = fileMap.get(name);
-                logger.debug("request file name: " + name);
-                for (MultipartFile multipartFile : files) {
-                    logger.debug("request file: size[" + multipartFile.getSize() + "] name[" + multipartFile.getName() +
-                            multipartFile.getOriginalFilename() + "]");
-                }
-            }
-        }
-
         logger.debug("checking authentication authHeader: " + authHeader);
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             final String authToken = authHeader.substring(tokenHead.length()); // The part after "Bearer "

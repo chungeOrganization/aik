@@ -573,7 +573,7 @@ public class UserApi {
 
         try {
             Integer orderId = Integer.valueOf(params.get("orderId").toString());
-            List<Map<String, Object>> orderAnswers =  userQuestionOrderService.getOpenOrderAnswers(orderId);
+            List<Map<String, Object>> orderAnswers = userQuestionOrderService.getOpenOrderAnswers(orderId);
             result.withDataKV("orderAnswers", orderAnswers);
         } catch (ApiServiceException e) {
             logger.error("get open order answers error:", e);
@@ -718,7 +718,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<Map<String, Object>> expertsAnswers= expertsAnswerService.getExpertsAnswerCollect(reqDTO,
+            List<Map<String, Object>> expertsAnswers = expertsAnswerService.getExpertsAnswerCollect(reqDTO,
                     AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("expertsAnswers", expertsAnswers);
         } catch (ApiServiceException e) {
@@ -738,7 +738,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
 
         try {
-            List<Map<String, Object>> nutritionLessons= nutritionLessonService.getNutritionLessonCollect(reqDTO,
+            List<Map<String, Object>> nutritionLessons = nutritionLessonService.getNutritionLessonCollect(reqDTO,
                     AuthUserDetailsThreadLocal.getCurrentUserId());
             result.withDataKV("nutritionLessons", nutritionLessons);
         } catch (ApiServiceException e) {
