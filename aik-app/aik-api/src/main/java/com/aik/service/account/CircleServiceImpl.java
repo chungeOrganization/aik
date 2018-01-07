@@ -132,7 +132,6 @@ public class CircleServiceImpl implements CircleService {
             circlesUserIds.add(userAttention.getAttentionId());
         }
 
-        params.put("isChoiceness", MutualCircleEnum.CHOICENESS.getCode());
         params.put("userIdList", circlesUserIds);
         List<Map<String, Object>> circles = accMutualCircleMapper.selectByParams(params);
         fillCircleDetail(circles, userId);
