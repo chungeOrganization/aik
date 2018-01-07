@@ -108,6 +108,8 @@ public class GoodsServiceImpl implements GoodsService {
 
         goodsDetail.setMerchantInfo(getMerchantInfo(goodsId));
         goodsDetail.setServiceTel("0755-22222222");
+        goodsDetail.setDetailImg(systemResource.getApiFileUri() + goods.getImage());
+        goodsDetail.setDetailDesc(goods.getDescription());
 
         return goodsDetail;
     }

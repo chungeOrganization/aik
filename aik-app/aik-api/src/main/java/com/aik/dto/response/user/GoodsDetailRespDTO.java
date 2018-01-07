@@ -29,4 +29,8 @@ public class GoodsDetailRespDTO {
     private MerchantInfoRespDTO merchantInfo;
 
     private String serviceTel;
+
+    private String detailImg;
+
+    private String detailDesc;
 }
