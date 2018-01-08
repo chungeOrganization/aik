@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--测试环境  -->
+    <springProfile name="test">
+        <!-- 将日志记录到文件中 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE}.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+                <MaxFileSize>200MB</MaxFileSize>
+            </rollingPolicy>
+            <encoder>
+                <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!--开发环境  -->
+    <springProfile name="dev">
+        <!-- 将日志记录到文件中 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE}.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+                <MaxFileSize>200MB</MaxFileSize>
+            </rollingPolicy>
+            <encoder>
+                <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!--&lt;!&ndash; 将日志打印到控制台 &ndash;&gt;-->
+    <appender name="LOG_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOG_CONSOLE"/>
+        <appender-ref ref="LOG_FILE"/>
+    </root>
+</configuration>

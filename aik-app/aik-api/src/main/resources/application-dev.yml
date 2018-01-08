@@ -70,7 +70,8 @@ system:
 # logger
 logging:
   level:
-    com.aik: DEBUG
+    com.aik: debug
+  file: "C:/Program Files/apache-tomcat-8.5.16/logs/aik-api"
 
 # sms
 juhe:

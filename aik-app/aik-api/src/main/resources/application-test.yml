@@ -70,8 +70,8 @@ system:
 # logger
 logging:
   level:
-    com.aik: DEBUG
-
+    com.aik: debug
+  file: "/usr/java/apache-tomcat-7.0.82/logs/api-log"
 # sms
 juhe:
   sms:

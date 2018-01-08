@@ -51,15 +51,18 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeader);
+        logger.debug("request uri: " + request.getRequestURL());
         // 打印header
-        String contentType = "";
         Enumeration<String> headerNames = request.getHeaderNames();
         while(headerNames.hasMoreElements()) {
             String name = headerNames.nextElement();
             logger.debug("request header: " + name + "[" + request.getHeader(name) + "]" );
-            if (name.equals("content-type")) {
-                contentType = request.getHeader(name);
-            }
+        }
+
+        Enumeration<String> paramNames = request.getParameterNames();
+        while(paramNames.hasMoreElements()) {
+            String name = paramNames.nextElement();
+            logger.debug("request param: " + name + "[" + request.getParameter(name) + "]" );
         }
 
         logger.debug("checking authentication authHeader: " + authHeader);
