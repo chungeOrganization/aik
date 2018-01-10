@@ -119,6 +119,13 @@
                 <build.profile.id>test</build.profile.id>
             </properties>
         </profile>
+
+        <profile>
+            <id>master</id>
+            <properties>
+                <build.profile.id>master</build.profile.id>
+            </properties>
+        </profile>
     </profiles>
 
 </project>
