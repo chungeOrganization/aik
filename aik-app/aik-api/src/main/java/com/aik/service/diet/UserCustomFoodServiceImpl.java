@@ -5,6 +5,7 @@ import com.aik.dao.DietUserCustomFoodMapper;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietUserCustomFood;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  * Desc:
  * Create by as on 2018/1/11
  */
+@Service
 public class UserCustomFoodServiceImpl implements UserCustomFoodService {
 
     @Autowired
