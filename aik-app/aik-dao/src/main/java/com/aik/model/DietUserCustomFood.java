@@ -3,7 +3,7 @@ package com.aik.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DietCustomFood {
+public class DietUserCustomFood {
     private Integer id;
 
     private Integer userId;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aik.dao.DietCustomFoodMapper">
-  <resultMap id="BaseResultMap" type="com.aik.model.DietCustomFood">
+<mapper namespace="com.aik.dao.DietUserCustomFoodMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietUserCustomFood">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="userId" jdbcType="INTEGER" property="userId" />
     <result column="foodName" jdbcType="VARCHAR" property="foodName" />
@@ -28,7 +28,7 @@
     delete from diet_usercustomfood
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.aik.model.DietCustomFood">
+  <insert id="insert" parameterType="com.aik.model.DietUserCustomFood">
     insert into diet_usercustomfood (id, userId, foodName, 
       netContent, heat, image, 
       protein, fat, category, 
@@ -38,7 +38,7 @@
       #{protein,jdbcType=DECIMAL}, #{fat,jdbcType=DECIMAL}, #{category,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aik.model.DietCustomFood">
+  <insert id="insertSelective" parameterType="com.aik.model.DietUserCustomFood">
     insert into diet_usercustomfood
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietCustomFood">
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietUserCustomFood">
     update diet_usercustomfood
     <set>
       <if test="userId != null">
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietCustomFood">
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietUserCustomFood">
     update diet_usercustomfood
     set userId = #{userId,jdbcType=INTEGER},
       foodName = #{foodName,jdbcType=VARCHAR},
