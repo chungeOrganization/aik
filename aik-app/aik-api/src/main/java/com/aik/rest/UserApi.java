@@ -3,6 +3,7 @@ package com.aik.rest;
 import com.aik.assist.ApiResult;
 import com.aik.assist.ErrorCodeEnum;
 import com.aik.dto.*;
+import com.aik.dto.request.DoctorIdReqDTO;
 import com.aik.dto.request.FeedbackReqDTO;
 import com.aik.dto.request.PageReqDTO;
 import com.aik.dto.request.user.CollectExpertsAnswerReqDTO;
@@ -787,6 +788,22 @@ public class UserApi {
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
+        return result;
+    }
+
+    @POST
+    @Path("/setAttendingDoctor")
+    public ApiResult setAttendingDoctor(DoctorIdReqDTO reqDTO) {
+        ApiResult result = new ApiResult();
+        try {
+            userAccountService.setAttendingDoctor(AuthUserDetailsThreadLocal.getCurrentUserId(), reqDTO.getDoctorId());
+        } catch (ApiServiceException e) {
+            logger.error("set attending doctor error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("set attending doctor error: ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
         return result;
     }
 }

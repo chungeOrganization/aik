@@ -60,4 +60,12 @@ public interface UserAccountService {
      * @throws ApiServiceException
      */
     void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException;
+
+    /**
+     * 设置主治医师
+     *
+     * @param userId   用户id
+     * @param doctorId 医生id
+     */
+    void setAttendingDoctor(Integer userId, Integer doctorId);
 }

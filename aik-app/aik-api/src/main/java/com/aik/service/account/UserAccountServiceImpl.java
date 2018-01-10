@@ -135,6 +135,19 @@ public class UserAccountServiceImpl implements UserAccountService {
         accUserAccountMapper.updateByPrimaryKeySelective(updateUserAccount);
     }
 
+    @Override
+    public void setAttendingDoctor(Integer userId, Integer doctorId) {
+        if (null == userId || null == doctorId) {
+            throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
+        }
+
+        AccUserAccount updateEntity = new AccUserAccount();
+        updateEntity.setId(userId);
+        updateEntity.setAttendingDoctor(doctorId);
+        updateEntity.setUpdateDate(new Date());
+        accUserAccountMapper.updateByPrimaryKeySelective(updateEntity);
+    }
+
     private boolean validUserInfoDTO(UserInfoDTO userInfoDTO) {
         if (null == userInfoDTO) {
             return false;
