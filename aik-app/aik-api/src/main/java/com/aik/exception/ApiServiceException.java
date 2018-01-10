@@ -7,7 +7,7 @@ import com.aik.assist.ErrorCodeEnum;
  * Description:
  * Created by as on 2017/8/5.
  */
-public class ApiServiceException extends Exception {
+public class ApiServiceException extends RuntimeException {
 
     private ErrorCodeEnum errorCodeEnum;
 

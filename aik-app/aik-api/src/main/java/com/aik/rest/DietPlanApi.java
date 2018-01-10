@@ -8,12 +8,10 @@ import com.aik.dto.response.user.BygoneDietRecordAnalyzeRespDTO;
 import com.aik.exception.ApiServiceException;
 import com.aik.model.DietDailyDietPlan;
 import com.aik.model.DietDailyDietRecord;
+import com.aik.model.DietUserCustomFood;
 import com.aik.resource.SystemResource;
 import com.aik.security.AuthUserDetailsThreadLocal;
-import com.aik.service.diet.DietPlanService;
-import com.aik.service.diet.DietRecordService;
-import com.aik.service.diet.FoodService;
-import com.aik.service.diet.UserCollectService;
+import com.aik.service.diet.*;
 import com.aik.util.BeansUtils;
 import com.aik.util.DateUtils;
 import com.aik.vo.FoodBasicInfoVO;
@@ -48,6 +46,8 @@ public class DietPlanApi {
 
     private SystemResource systemResource;
 
+    private UserCustomFoodService userCustomFoodService;
+
     @Inject
     public void setUserCollectService(UserCollectService userCollectService) {
         this.userCollectService = userCollectService;
@@ -71,6 +71,11 @@ public class DietPlanApi {
     @Inject
     public void setSystemResource(SystemResource systemResource) {
         this.systemResource = systemResource;
+    }
+
+    @Inject
+    public void setUserCustomFoodService(UserCustomFoodService userCustomFoodService) {
+        this.userCustomFoodService = userCustomFoodService;
     }
 
     @POST
@@ -509,8 +514,8 @@ public class DietPlanApi {
                     foods = BeansUtils.transListMap2ListBean(foodList, FoodBasicInfoVO.class);
                 }
                 // 收藏
-                else if ((reqDTO.getFindType() == 2)){
-                    List<Map<String, Object>> foodList =  userCollectService.getUserCollectFoodsPage(
+                else if ((reqDTO.getFindType() == 2)) {
+                    List<Map<String, Object>> foodList = userCollectService.getUserCollectFoodsPage(
                             AuthUserDetailsThreadLocal.getCurrentUserId(), reqDTO);
                     foods = BeansUtils.transListMap2ListBean(foodList, FoodBasicInfoVO.class);
                 } else {
@@ -547,6 +552,25 @@ public class DietPlanApi {
             result.withFailResult(e.getErrorCodeEnum());
         } catch (Exception e) {
             logger.error("get diet record date error ", e);
+            result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
+        }
+
+        return result;
+    }
+
+    @POST
+    @Path("/userAddCustomFood")
+    public ApiResult userAddCustomFood(DietUserCustomFood reqVO) {
+        ApiResult result = new ApiResult();
+
+        try {
+            reqVO.setUserId(AuthUserDetailsThreadLocal.getCurrentUserId());
+            userCustomFoodService.add(reqVO);
+        } catch (ApiServiceException e) {
+            logger.error("add user custom food error: ", e);
+            result.withFailResult(e.getErrorCodeEnum());
+        } catch (Exception e) {
+            logger.error("add user custom food error: ", e);
             result.withFailResult(ErrorCodeEnum.ERROR_CODE_1000001);
         }
 
