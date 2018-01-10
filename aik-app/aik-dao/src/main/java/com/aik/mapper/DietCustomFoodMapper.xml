@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aik.dao.DietCustomFoodMapper">
+  <resultMap id="BaseResultMap" type="com.aik.model.DietCustomFood">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="foodName" jdbcType="VARCHAR" property="foodName" />
+    <result column="netContent" jdbcType="DECIMAL" property="netContent" />
+    <result column="heat" jdbcType="DECIMAL" property="heat" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="protein" jdbcType="DECIMAL" property="protein" />
+    <result column="fat" jdbcType="DECIMAL" property="fat" />
+    <result column="category" jdbcType="DECIMAL" property="category" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, foodName, netContent, heat, image, protein, fat, category, createTime, 
+    updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diet_usercustomfood
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diet_usercustomfood
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aik.model.DietCustomFood">
+    insert into diet_usercustomfood (id, userId, foodName, 
+      netContent, heat, image, 
+      protein, fat, category, 
+      createTime, updateTime)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{foodName,jdbcType=VARCHAR}, 
+      #{netContent,jdbcType=DECIMAL}, #{heat,jdbcType=DECIMAL}, #{image,jdbcType=VARCHAR}, 
+      #{protein,jdbcType=DECIMAL}, #{fat,jdbcType=DECIMAL}, #{category,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aik.model.DietCustomFood">
+    insert into diet_usercustomfood
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="foodName != null">
+        foodName,
+      </if>
+      <if test="netContent != null">
+        netContent,
+      </if>
+      <if test="heat != null">
+        heat,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="protein != null">
+        protein,
+      </if>
+      <if test="fat != null">
+        fat,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="foodName != null">
+        #{foodName,jdbcType=VARCHAR},
+      </if>
+      <if test="netContent != null">
+        #{netContent,jdbcType=DECIMAL},
+      </if>
+      <if test="heat != null">
+        #{heat,jdbcType=DECIMAL},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="protein != null">
+        #{protein,jdbcType=DECIMAL},
+      </if>
+      <if test="fat != null">
+        #{fat,jdbcType=DECIMAL},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aik.model.DietCustomFood">
+    update diet_usercustomfood
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="foodName != null">
+        foodName = #{foodName,jdbcType=VARCHAR},
+      </if>
+      <if test="netContent != null">
+        netContent = #{netContent,jdbcType=DECIMAL},
+      </if>
+      <if test="heat != null">
+        heat = #{heat,jdbcType=DECIMAL},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="protein != null">
+        protein = #{protein,jdbcType=DECIMAL},
+      </if>
+      <if test="fat != null">
+        fat = #{fat,jdbcType=DECIMAL},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aik.model.DietCustomFood">
+    update diet_usercustomfood
+    set userId = #{userId,jdbcType=INTEGER},
+      foodName = #{foodName,jdbcType=VARCHAR},
+      netContent = #{netContent,jdbcType=DECIMAL},
+      heat = #{heat,jdbcType=DECIMAL},
+      image = #{image,jdbcType=VARCHAR},
+      protein = #{protein,jdbcType=DECIMAL},
+      fat = #{fat,jdbcType=DECIMAL},
+      category = #{category,jdbcType=DECIMAL},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
