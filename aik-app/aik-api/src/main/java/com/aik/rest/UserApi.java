@@ -797,6 +797,7 @@ public class UserApi {
         ApiResult result = new ApiResult();
         try {
             userAccountService.setAttendingDoctor(AuthUserDetailsThreadLocal.getCurrentUserId(), reqDTO.getDoctorId());
+            userAttentionService.attentionDoctor(reqDTO.getDoctorId(), AuthUserDetailsThreadLocal.getCurrentUserId());
         } catch (ApiServiceException e) {
             logger.error("set attending doctor error: ", e);
             result.withFailResult(e.getErrorCodeEnum());
