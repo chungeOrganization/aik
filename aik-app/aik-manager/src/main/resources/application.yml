@@ -1,5 +1,5 @@
 spring:
   application:
-    name: "aik-api"
+    name: "aik-manager"
   profiles:
     active: @build.profile.id@

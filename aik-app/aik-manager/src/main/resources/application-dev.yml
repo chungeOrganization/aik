@@ -62,6 +62,7 @@ file:
   mapping-root-uri: "/file"
 # system
 system:
+  api-uri: "http://localhost/aik"
   manager-uri: "http://localhost/aik-manager"
 # logger
 logging:
