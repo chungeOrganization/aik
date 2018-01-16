@@ -38,6 +38,8 @@ public class AccDoctorAccount {
 
     private String headImg;
 
+    private String qrCode;
+
     private Byte position;
 
     private BigDecimal price;
@@ -194,6 +196,14 @@ public class AccDoctorAccount {
 
     public void setHeadImg(String headImg) {
         this.headImg = headImg == null ? null : headImg.trim();
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode == null ? null : qrCode.trim();
     }
 
     public Byte getPosition() {

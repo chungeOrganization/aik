@@ -19,6 +19,7 @@
     <result column="departmentPhone" jdbcType="VARCHAR" property="departmentPhone" />
     <result column="devType" jdbcType="VARCHAR" property="devType" />
     <result column="headImg" jdbcType="VARCHAR" property="headImg" />
+    <result column="qrCode" jdbcType="VARCHAR" property="qrCode" />
     <result column="position" jdbcType="TINYINT" property="position" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="starLevel" jdbcType="DECIMAL" property="starLevel" />
@@ -34,8 +35,8 @@
   <sql id="Base_Column_List">
     id, mobileNo, userName, password, realName, sex, areaProvince, areaCity, birthday, 
     identityCard, email, hosName, hosDepartment, skill, departmentPhone, devType, headImg, 
-    position, price, starLevel, createDate, updateDate, deleteStatus, auditStatus, auditManager, 
-    auditTDate, isCompleteInfo, lastLoginTime
+    qrCode, position, price, starLevel, createDate, updateDate, deleteStatus, auditStatus, 
+    auditManager, auditTDate, isCompleteInfo, lastLoginTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -48,26 +49,26 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.aik.model.AccDoctorAccount">
-    insert into acc_doctorAccount (id, mobileNo, userName, 
-      password, realName, sex, 
-      areaProvince, areaCity, birthday, 
-      identityCard, email, hosName, 
-      hosDepartment, skill, departmentPhone, 
-      devType, headImg, position, 
-      price, starLevel, createDate, 
-      updateDate, deleteStatus, auditStatus, 
-      auditManager, auditTDate, isCompleteInfo, 
-      lastLoginTime)
-    values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, 
-      #{areaProvince,jdbcType=VARCHAR}, #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
-      #{identityCard,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hosName,jdbcType=VARCHAR}, 
-      #{hosDepartment,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, #{departmentPhone,jdbcType=VARCHAR}, 
-      #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{position,jdbcType=TINYINT}, 
-      #{price,jdbcType=DECIMAL}, #{starLevel,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT}, #{auditStatus,jdbcType=TINYINT}, 
-      #{auditManager,jdbcType=INTEGER}, #{auditTDate,jdbcType=TIMESTAMP}, #{isCompleteInfo,jdbcType=TINYINT}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP})
+    insert into acc_doctorAccount (id, mobileNo, userName,
+      password, realName, sex,
+      areaProvince, areaCity, birthday,
+      identityCard, email, hosName,
+      hosDepartment, skill, departmentPhone,
+      devType, headImg, qrCode,
+      position, price, starLevel,
+      createDate, updateDate, deleteStatus,
+      auditStatus, auditManager, auditTDate,
+      isCompleteInfo, lastLoginTime)
+    values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
+      #{areaProvince,jdbcType=VARCHAR}, #{areaCity,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
+      #{identityCard,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hosName,jdbcType=VARCHAR},
+      #{hosDepartment,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, #{departmentPhone,jdbcType=VARCHAR},
+      #{devType,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{qrCode,jdbcType=VARCHAR},
+      #{position,jdbcType=TINYINT}, #{price,jdbcType=DECIMAL}, #{starLevel,jdbcType=DECIMAL},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=TINYINT},
+      #{auditStatus,jdbcType=TINYINT}, #{auditManager,jdbcType=INTEGER}, #{auditTDate,jdbcType=TIMESTAMP},
+      #{isCompleteInfo,jdbcType=TINYINT}, #{lastLoginTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aik.model.AccDoctorAccount" useGeneratedKeys="true" keyProperty="id">
     insert into acc_doctorAccount
@@ -122,6 +123,9 @@
       </if>
       <if test="headImg != null">
         headImg,
+      </if>
+      <if test="qrCode != null">
+        qrCode,
       </if>
       <if test="position != null">
         position,
@@ -209,6 +213,9 @@
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
       </if>
+      <if test="qrCode != null">
+        #{qrCode,jdbcType=VARCHAR},
+      </if>
       <if test="position != null">
         #{position,jdbcType=TINYINT},
       </if>
@@ -295,6 +302,9 @@
       <if test="headImg != null">
         headImg = #{headImg,jdbcType=VARCHAR},
       </if>
+      <if test="qrCode != null">
+        qrCode = #{qrCode,jdbcType=VARCHAR},
+      </if>
       <if test="position != null">
         position = #{position,jdbcType=TINYINT},
       </if>
@@ -349,6 +359,7 @@
       departmentPhone = #{departmentPhone,jdbcType=VARCHAR},
       devType = #{devType,jdbcType=VARCHAR},
       headImg = #{headImg,jdbcType=VARCHAR},
+      qrCode = #{qrCode,jdbcType=VARCHAR},
       position = #{position,jdbcType=TINYINT},
       price = #{price,jdbcType=DECIMAL},
       starLevel = #{starLevel,jdbcType=DECIMAL},

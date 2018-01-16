@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -98,7 +100,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public Boolean validMobileNoIsUsed(String mobileNo) throws ApiServiceException {
+    public Boolean validMobileNoIsUsed(String mobileNo) {
         if (StringUtils.isBlank(mobileNo)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -112,7 +114,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public Boolean validUserNameIsUsed(String userName) throws ApiServiceException {
+    public Boolean validUserNameIsUsed(String userName) {
         if (StringUtils.isBlank(userName)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -126,7 +128,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void fillDoctorInfo(DoctorInfoDTO doctorInfoDTO) throws ApiServiceException {
+    public void fillDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
         if (null == doctorInfoDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -157,7 +159,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public DoctorInfoDTO getDoctorInfo(Integer accountId) throws ApiServiceException {
+    public DoctorInfoDTO getDoctorInfo(Integer accountId) {
         if (null == accountId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -189,7 +191,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void editDoctorInfo(DoctorInfoDTO doctorInfoDTO) throws ApiServiceException {
+    public void editDoctorInfo(DoctorInfoDTO doctorInfoDTO) {
         AccDoctorAccount doctorAccount = new AccDoctorAccount();
 
         doctorAccount.setId(AuthUserDetailsThreadLocal.getCurrentUserId());
@@ -210,7 +212,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public AccDoctorFile uploadDoctorFile(Integer accountId, String fileUrl) throws ApiServiceException {
+    public void uploadDoctorFile(Integer accountId, String fileUrl) {
         if (null == accountId || null == fileUrl) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -226,12 +228,10 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         accDoctorFile.setCreateDate(new Date());
 
         accDoctorFileMapper.insertSelective(accDoctorFile);
-
-        return accDoctorFile;
     }
 
     @Override
-    public BigDecimal getWallet(Integer doctorId) throws ApiServiceException {
+    public BigDecimal getWallet(Integer doctorId) {
         AccDoctorWallet accDoctorWallet = accDoctorWalletMapper.selectByPrimaryKey(doctorId);
         if (null == accDoctorWallet) {
             return BigDecimal.ZERO;
@@ -241,7 +241,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public List<Map<String, Object>> getBankCards(Integer doctorId) throws ApiServiceException {
+    public List<Map<String, Object>> getBankCards(Integer doctorId) {
         List<Map<String, Object>> bankCards = accDoctorBankCardMapper.selectDoctorBankCards(doctorId);
 
         for (Map<String, Object> map : bankCards) {
@@ -259,7 +259,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void addBankCard(AccDoctorBankCard bankCard) throws ApiServiceException {
+    public void addBankCard(AccDoctorBankCard bankCard) {
         if (!validBankCard(bankCard)) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000003);
         }
@@ -269,7 +269,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public AccDoctorAccount getDoctorAccount(Integer doctorId) throws ApiServiceException {
+    public AccDoctorAccount getDoctorAccount(Integer doctorId) {
         if (null == doctorId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -283,7 +283,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public Map<String, Object> getQRCode(Integer doctorId) throws ApiServiceException {
+    public Map<String, Object> getQRCode(Integer doctorId) {
         AccDoctorAccount doctorAccount = getDoctorAccount(doctorId);
 
         Map<String, Object> rsMap = new HashMap<>();
@@ -299,7 +299,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void updatePassword(UpdatePwdReqDTO updatePwdDTO) throws ApiServiceException {
+    public void updatePassword(UpdatePwdReqDTO updatePwdDTO) {
         if (null == updatePwdDTO || StringUtils.isBlank(updatePwdDTO.getOldPassword()) ||
                 StringUtils.isBlank(updatePwdDTO.getNewPassword())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -323,7 +323,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) throws ApiServiceException {
+    public void rebindingMobileNo(RebindingMobileReqDTO rebindingMobileReqDTO) {
         if (null == rebindingMobileReqDTO || null == rebindingMobileReqDTO.getAccountId() ||
                 StringUtils.isBlank(rebindingMobileReqDTO.getMobileNo())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
@@ -342,7 +342,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void setPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException {
+    public void setPayPassword(PayPasswordReqDTO reqDTO) {
         if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -358,7 +358,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public Boolean validPayPassword(PayPasswordReqDTO reqDTO) throws ApiServiceException {
+    public Boolean validPayPassword(PayPasswordReqDTO reqDTO) {
         if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -369,7 +369,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void resetPayPassword(ResetPayPasswordReqDTO reqDTO) throws ApiServiceException {
+    public void resetPayPassword(ResetPayPasswordReqDTO reqDTO) {
         if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -385,7 +385,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public void resetPassword(ResetPwdReqDTO reqDTO) throws ApiServiceException {
+    public void resetPassword(ResetPwdReqDTO reqDTO) {
         if (null == reqDTO || StringUtils.isBlank(reqDTO.getMobileNo()) || StringUtils.isBlank(reqDTO.getPassword())) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -408,7 +408,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ApplyWithdrawRespDTO applyWithdraw(ApplyWithdrawReqDTO reqDTO) throws ApiServiceException {
+    public ApplyWithdrawRespDTO applyWithdraw(ApplyWithdrawReqDTO reqDTO) {
         if (null == reqDTO) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -441,7 +441,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
             SysBank bank = sysBankMapper.selectByPrimaryKey(doctorBank.getBankId());
             charge = bank.getChargeFee().multiply(reqDTO.getAmount()).
-                    divide(new BigDecimal("100"),2, BigDecimal.ROUND_HALF_DOWN);
+                    divide(new BigDecimal("100"), 2, BigDecimal.ROUND_HALF_DOWN);
         }
 
         // 校验提现账户
@@ -492,7 +492,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
     }
 
     @Override
-    public ShowBankWithdrawRespDTO showBankWithdraw(Integer doctorId) throws ApiServiceException {
+    public ShowBankWithdrawRespDTO showBankWithdraw(Integer doctorId) {
         ShowBankWithdrawRespDTO respDTO = new ShowBankWithdrawRespDTO();
 
         AccDoctorWithdraw doctorWithdraw = accDoctorWithdrawMapper.selectLastBankWithdraw(doctorId);
@@ -512,7 +512,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void payDoctorOrderAmount(Integer orderId) throws ApiServiceException {
+    public void payDoctorOrderAmount(Integer orderId) {
         if (null == orderId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
@@ -556,6 +556,11 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         accDoctorWalletMapper.updateByPrimaryKeySelective(doctorWallet);
     }
 
+    @Override
+    public void generateQrCode(@Valid @NotNull Integer doctorId) {
+        System.out.println("????");
+    }
+
     /**
      * 校验医生注册信息DTO
      *
@@ -577,7 +582,7 @@ public class DoctorAccountServiceImpl implements DoctorAccountService {
         return true;
     }
 
-    private AccDoctorAccount validAuthUserDetailWithResult() throws ApiServiceException {
+    private AccDoctorAccount validAuthUserDetailWithResult() {
         UserDetails userDetails = AuthUserDetailsThreadLocal.getCurrentUser();
 
         AccDoctorAccount doctorAccount = accDoctorAccountMapper.selectByUserName(userDetails.getUsername());
