@@ -68,5 +68,5 @@ system:
 logging:
   level:
     com.aik: debug
-  file: "/usr/soft/apache-tomcat-7.0.79/logs/api-log"
+  file: "/usr/soft/apache-tomcat-7.0.79/logs/manager-log"
 

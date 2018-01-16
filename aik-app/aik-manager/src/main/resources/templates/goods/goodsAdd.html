@@ -1,0 +1,234 @@
+
+<div class="portlet box blue">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-reorder"></i>商品添加
+		</div>
+		<div class="tools">
+			<a href="javascript:;" class="collapse">
+			</a>
+			<a href="javascript:;" class="reload">
+			</a>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<form class="form-inline"  method ="post" action="" id="goodsAdd" enctype="multipart/form-data">
+			<table class="table  table-bordered ">
+				<tr>
+					<td>商品名称</td>
+					<td>
+						<input type="text" class="form-control r" data-required="true"  data-description="name"  data-describedby="namespan" id="name" name="name"  />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="namespan" style="color: #000000"></span>
+					</td>
+					<td>商品价格</td>
+					<td>
+						<input type="text" class="form-control r" data-required="true"  data-description="price"  data-describedby="pricespan" id="price" name="price"  />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="pricespan" style="color: #000000"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>商品类型</td>
+					<td>
+						<select class="form-control" name="type">
+							<option value="0" selected="selected">特医食品</option>
+							<option value="1">保健食品</option>
+							<option value="2">智能硬件</option>
+							<option value="3">产品套餐</option>
+						</select>
+					</td>
+					<td>商品描述</td>
+					<td><input type="text" class="form-control" name="description" value="" /></td>
+				</tr>
+				
+				<tr>
+					<td>是否推荐</td>
+					<td>
+						<select class="form-control" name="isRecommend">
+							<option value="0" selected="selected">未推荐</option>
+							<option value="1">推荐</option>
+						</select>
+					</td>
+					<td>是否上架</td>
+					<td>
+						<select class="form-control" name="status">
+							<option value="0" selected="selected">未下架（上架中）</option>
+							<option value="1">已下架</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>库存</td>
+					<td><input type="text" class="form-control" name="stock" value="" /></td>
+					<td></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td> 商品图片</td>
+					<td  colspan="3">
+						<div class="fileinput fileinput-new"
+							data-provides="fileinput">
+							<div class="fileinput-new thumbnail"
+								style="width: 150px; height: 150px;">
+								<img th:src="@{/static/assets/img/no_image.gif}"  name="userPhoto" alt="" />
+								
+							</div>
+							<div class="fileinput-preview fileinput-exists thumbnail"
+								style="max-width: 150px; max-height: 150px;">
+							</div>
+							<div>
+								<span class="default btn-file"> <span
+									class="fileinput-new"> Select image </span> <span
+									class="fileinput-exists"> Change </span> 
+									<input type="file" name="file" /> </span>
+								<a href="components_form_tools.html#"
+									class="btn default fileinput-exists"
+									data-dismiss="fileinput"> Remove </a>
+							</div>
+						</div>
+						<div class="clearfix margin-top-10">
+							<span class="label label-danger"> NOTE! </span> 最佳尺寸:150px * 150px
+						</div>
+					</td>
+				</tr>
+				
+			</table>
+			
+			<div class="form-actions fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-offset-5 col-md-3">
+							<button type ="submit" id="user_vsave" class="btn blue" >保 存</button>
+							<button type="button" id="goback_ar" class="btn default">返 回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+</div>
+
+<script>
+	window.goodsAdd = null;
+    var goodsAdd = {
+    		fm : jQuery("#goodsAdd"),
+    		
+    		basePath : jQuery("#basePath").val(),
+    		//初始化
+    		init : function(){
+    			this.bindEvent();
+    			this.initValidate();
+    		},
+    		//事件绑定
+    		 bindEvent : function(){
+				var _this = this;
+    			//绑定添加单击事件
+    			jQuery("#user_vsave").bind("click", function(){
+    				Dialog.confirm({
+	    				content:'确定保存?',
+						onSubmitted:function(){
+	   						if(UiUtils.check("goodsAdd")){
+	   							//addUser();
+	   							_this.ajaxSubmit();
+	   						}
+	   					}
+   					});
+        			return false;
+        		});	
+        		jQuery("#goback_ar").bind("click",function(){
+					_this.closedTab(); 				
+    			});	
+    		},
+    		closedTab : function(){
+    			jQuery('#tabli_11').trigger('click'),
+				jQuery('#tabli_2').remove(),
+				jQuery('#tab_2').remove(),
+				goodsPage.load(1);
+    		},
+    		//提交数据
+    		onSubmit: function(){
+    			var _this = this;
+    			Ajax.request({
+    				url:"",
+    				type:"post",
+    				data: {partner:JSON.stringify(_this.getFormData())},
+    				success: function(data){
+    					if(!data) return;
+    					Dialog.notice({
+    						content: data.info,
+    						onSubmitted: function(){
+    							_this.closedTab();
+    						},
+    						onClosed: function(){
+    							_this.closedTab();
+    						}
+    					});
+    				}
+    			});
+    		},
+    		//有图片的页面提交
+    		ajaxSubmit: function(){
+    			
+    			var _this = this;
+    			Ajax.requestSubmit({
+    				fm: _this.fm,
+    				url: _this.basePath + '/goods/save',
+    				type: "post",
+    				success: function(data){
+    					if(!data) return;
+    					Dialog.notice({
+    						content: data.info,
+    						onSubmitted: function(){
+    							_this.closedTab();
+    						},
+    						onClosed: function(){
+    							_this.closedTab();
+    						}
+    					});
+    				}
+    			});
+    		},
+    		//基本信息表单域取值
+    		getFormData: function(){
+    			var data = {},
+					_field,
+					_fieldName;
+				this.fm.find("input, select").each(function(i, n){
+					_field = jQuery(n), 
+					_fieldName = _field.attr("name");
+					if(_fieldName){
+						data[_fieldName] = _field.val();
+					}
+				});
+				return data;
+    		},    		
+			initValidate : function(){
+				jQuery("#goodsAdd").validate({
+					onKeyup : true,
+					sendForm : false,
+					eachValidField : function() {
+						jQuery(this).removeClass('error');
+					},
+					eachInvalidField : function() {
+						jQuery(this).addClass('error');
+					},
+					description : {
+						name : {
+							required : '请输入真实姓名'
+						}
+					}
+					
+				});
+			}
+    }
+    
+ </script> 
+<script>
+jQuery(document).ready(function(){    
+	goodsAdd.init();
+});
+</script>

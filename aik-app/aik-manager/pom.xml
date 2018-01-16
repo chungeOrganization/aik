@@ -9,6 +9,7 @@
     </parent>
     <packaging>war</packaging>
     <modelVersion>4.0.0</modelVersion>
+    <name>aik-manager</name>
 
     <artifactId>aik-manager</artifactId>
 
@@ -79,7 +80,7 @@
                 <!--</excludes>-->
             <!--</resource>-->
         <!--</resources>-->
-        <!--<finalName>aik-manager</finalName>-->
+        <finalName>aik-manager</finalName>
         <!--<plugins>-->
             <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->

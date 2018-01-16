@@ -1,0 +1,261 @@
+<div class="portlet box blue">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-reorder"></i>内容
+		</div>
+		<div class="tools">
+			<a href="javascript:;" class="collapse">
+			</a>
+			<a href="javascript:;" class="reload">
+			</a>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<form action="" method="post" class="form-inline" id="mutualCircle_vfm">
+			<input type ="hidden" id="id" name="id" value="" th:value="${mutualCircle.id}" />
+			<input type ="hidden" id="opt" name="opt" value="" th:value="${opt}" />
+			
+			<table class="table  table-bordered ">
+				<tr>
+					<td>用户Id</td>
+					<td>
+						<input type="text" class="form-control r" data-required="true"  data-description="userId"  data-describedby="userIdspan" id="userId" name="userId" th:value="${mutualCircle.userId}" />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="userIdspan" style="color: #000000"></span>
+					</td>
+					<td>用户名</td>
+					<td>
+						<input type="text" class="form-control r" data-required="true"  data-description="userName"  data-describedby="userNamespan" id="userName" name="userName"  th:value="${mutualCircle.userName}" />
+						<span class="required">*</span>
+						<span class="help-inline prompt" id="userNamespan" style="color: #000000"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>内容</td>
+					<td><input type="text" class="form-control" name="content" value="" th:value="${mutualCircle.content}" /></td>
+					<td>是否精选（0：不是 1：是）</td>
+					<td><input type="text" class="form-control" name="isChoiceness" value="" th:value="${mutualCircle.isChoiceness}" /></td>
+				</tr>
+				
+			</table>
+			
+			
+		  <div class="form-body">
+				<div class="form-group">
+					<div class="note note-success">
+						<h4 class="block">点赞</h4>
+							<p></p>
+						</div>
+				</div>
+				
+				 <table class="table table-striped table-bordered table-hover" id="sample_1">
+					<thead>
+					<tr>
+						<th>用户</th>
+						<th>点赞时间</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr class="odd gradeX"  th:each="accCircleLike,iterStat : ${accCircleLikes}"  >
+						<td th:text="${accCircleLike.likerName}"></td>
+						<td>
+							<span th:if="${accCircleLike.createDate ne null}">
+								<span th:text="${#dates.format(accCircleLike.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
+							</span>
+						</td>
+						<td></td>
+					</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+			<div class="form-body">
+				<div class="form-group">
+					<div class="note note-success">
+						<h4 class="block">评论</h4>
+							<p></p>
+						</div>
+				</div>
+				
+			 <table class="table table-striped table-bordered table-hover" id="sample_1">
+					<thead>
+					<tr>
+						<th>评论人</th>
+						<th>评论内容</th>
+						<th>记录时间</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr class="odd gradeX"  th:each="accCircleComment,iterStat : ${accCircleComments}"  >
+						<td th:text="${accCircleComment.commenterName}"></td>
+						<td th:text="${accCircleComment.content}"></td>
+						<td>
+						<span th:if="${accCircleComment.createDate ne null}">
+							<span th:text="${#dates.format(accCircleComment.createDate, 'yyyy-MM-dd HH:mm:ss')}"> </span>
+						</span>
+						
+						</td>
+						<td></td>
+					</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+			
+			<div class="form-actions fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-offset-5 col-md-3">
+							<button type ="submit" id="save_ar" class="btn blue" >保 存</button>
+							<button type="button" id="goback_ar" class="btn default">返 回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+window.mutualCircleView = null;
+var mutualCircleView  = {
+		fm : jQuery("#mutualCircle_vfm"),
+		
+		basePath : jQuery("#basePath").val(),
+		//初始化
+		init : function(){
+			if(jQuery("#opt").val() == "view"){
+				mutualCircleView.readOnlyPallet();
+			}
+			this.bindEvent();
+			this.initValidate();
+		},
+		
+		//事件绑定
+		bindEvent : function(){
+			var _this = this;
+
+			//绑定保存单击事件
+			jQuery("#save_ar").bind("click", function(){
+				Dialog.confirm({
+					content:'确定保存?',
+					onSubmitted:function(){
+   						if(UiUtils.check("mutualCircle_vfm")){
+   							//updateAdmin();
+   							var url = _this.basePath + "/mutualCircle/update";
+							_this.ajaxSubmit(url);
+   						}
+   					}
+    			});
+			});
+			
+			
+			jQuery("#goback_ar").bind("click",function(){
+				_this.closedTab();				
+    		});
+			
+		},
+   		closedTab : function(){
+    			jQuery('#tabli_11').trigger('click'),
+				jQuery('#tabli_2').remove(),
+				jQuery('#tab_2').remove(),
+				mutualCirclePage.load(1);
+    	},
+		//禁止输入
+   		readOnlyPallet: function(){
+   			this.fm.find("input, textarea").attr("readOnly", true);
+   			this.fm.find("input[type='riadio']").attr("disable",true);
+			this.fm.find("select").attr("disabled", true);
+			jQuery("#save_ar").remove();
+		},
+		//提交数据
+   		/* onSubmit: function(){
+   			var _this = this;
+   			Ajax.request({
+   				url:"/partnerUpdate.htm",
+   				type:"post",
+   				data: {partner:JSON.stringify(_this.getFormData())},
+   				success: function(data){
+   					if(!data) return;
+   					Dialog.notice({
+   						content: data.info,
+   						onSubmitted: function(){
+   							_this.closedTab();
+   						},
+   						onClosed: function(){
+   							_this.closedTab();
+   						}
+   					});
+   				}
+   			});
+   		}, */
+   		//有图片的页面提交
+   		ajaxSubmit: function(url){
+   			var _this = this;
+   			Ajax.requestSubmit({
+				fm: _this.fm,
+				url: url,
+				type: "post",
+				success: function(data){
+					if(!data) return;
+					Dialog.notice({
+						content: data.info,
+						onSubmitted: function(){
+							_this.closedTab();
+						},
+						onClosed: function(){
+							_this.closedTab();
+						}
+					});
+				}
+   			});
+   		},
+   		//基本信息表单域取值
+   		getFormData: function(){
+   			var data = {},
+				_field,
+				_fieldName;
+			this.fm.find("input, select").each(function(i, n){
+				_field = jQuery(n), 
+				_fieldName = _field.attr("name");
+				if(_fieldName){
+					data[_fieldName] = _field.val();
+				}
+			});
+			return data;
+   		},
+   		
+   		initValidate : function(){
+   		
+    		jQuery('#mutualCircle_vfm').validate({
+				onKeyup : true,
+				sendForm : false,
+				eachValidField : function() {
+					jQuery(this).removeClass('error');
+				},
+				eachInvalidField : function() {
+					jQuery(this).addClass('error');
+				},
+				
+				description : {
+				
+					name : {
+						required : '请输入商品名称'
+					}
+				}
+				
+			});
+   		
+   		}
+}
+
+ </script> 
+<script>
+jQuery(document).ready(function(){    
+	mutualCircleView.init();
+});
+</script>

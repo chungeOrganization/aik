@@ -1,0 +1,325 @@
+<ul class="page-sidebar-menu" id="admin-menu">
+	<li>
+		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+		<div class="sidebar-toggler hidden-phone"></div>
+		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+	</li>
+	<li>
+		<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+		<!-- <form class="sidebar-search" action="extra_search.html" method="POST">
+			<div class="form-container">
+				<div class="input-box">
+					<a href="javascript:;" class="remove"></a>
+					<input type="text" placeholder="Search..."/>
+					<input type="button" class="submit" value=" "/>
+				</div>
+			</div>
+		</form> -->
+		<!-- END RESPONSIVE QUICK SEARCH FORM -->
+	</li>	 
+	<li class="start active user-menu">
+		<a href="javascript:;" class="startHref">
+		<i class="fa fa-home"></i> 
+		<span class="title">常用操作</span>
+		</a>
+		<ul class="sub-menu">
+		#if($!user.userRole == 'ADMIN')
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preUserManage.htm">
+				会员管理</a>
+			</li>
+		#end
+		#if($!user.userRole == 'ADMIN' || $!user.userRole == 'CAMPING' || $!user.userRole == 'AGENT')
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/preOrderSet.htm">
+				订单管理</a>
+			</li>
+		#end
+		#if($!user.userRole == 'ADMIN' || $!user.userRole == 'CAMPING' )	
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/campingBookMg.htm">
+				预定管理</a>
+			</li>
+		#end
+		#if($!user.userRole == 'VERIFIER')
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/ticketManage.htm">
+				门票验证</a>
+			</li>
+		#end
+		</ul>
+	</li>
+	#if($!user.userRole == 'ADMIN')
+	<li class="user-menu">
+		<a href="javascript:;">
+		<i class="fa fa-cogs"></i> 
+		<span class="title">官网设置</span>
+		<span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			<li >
+				<a href="javascript:;" data-pre="a-menu" id="SiteSet" data-url="/admin/officesite/preSiteSet.htm?_t="+new Date().getTime())>站点设置</a>
+			</li>
+			<!-- <li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preImgUploadSet.htm">上传设置</a>
+			</li> -->
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preSeoSet.htm" >SEO设置</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/PreCarouselSet.htm" >轮播设置</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/menuManage.htm" >菜单管理</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/navigationManage.htm">页面导航</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/articleTypeManage.htm"> 文章分类</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/articleManage.htm">文章管理</a>
+			</li>
+			<!-- <li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/articleManage.htm?articleType=sys">系统文章</a>
+			</li> -->
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/partnerManage.htm">合作伙伴</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="officesite/friendshipLinkManage.htm">友情链接</a>
+			</li>
+		</ul>
+	</li>
+	<li class="user-menu">
+		<a href="javascript:;">
+			<i class="fa fa-gift"></i>
+			<span class="title">
+				基地管理
+			</span>
+			<span class="arrow">
+			</span>
+		</a>
+		<ul class="sub-menu">
+			<li class="tooltips" data-container="body" data-placement="right" data-html="true"  >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/campingAreaSet/preCampingSet.htm">
+					基地管理
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="camping/campingProductManage.htm">
+					产品管理
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="camping/campingTypeManage.htm">
+					基地类型管理
+				</a>
+			</li>
+			<li class="tooltips" data-container="body" data-placement="right" data-html="true"  >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/campingAreaSet/preAreaSet.htm">
+					地区设置
+				</a>
+			</li>
+		</ul>
+	</li>
+	<li class="user-menu">
+		<a href="javascript:;">
+		<i class="fa fa-bookmark-o"></i> 
+		<span class="title">支付管理</span>
+		<span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/payment/prePaymentSet.htm">
+					支付方式
+				</a>
+			</li>
+		</ul>
+	</li>
+	#end
+	#if($!user.userRole == 'ADMIN' || $!user.userRole == 'CAMPING' || $!user.userRole == "AGENT")
+	<li class="user-menu">
+		<a href="javascript:;">
+		<i class="fa fa-sitemap"></i> 
+			<span class="title">
+				订单管理
+			</span>
+			<!-- <span class="badge badge-roundless badge-success">
+				new
+			</span> -->
+			<span class="arrow ">
+			</span>
+		</a>
+		<ul class="sub-menu">
+			#if($!user.userRole == 'ADMIN')
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/preReturnMoney.htm">
+				<i class="fa fa-briefcase"></i>
+				退款管理</a>
+			</li>
+			#end
+			<li>
+				<a href="javascript:;" id="orderMg" data-pre="a-menu" data-url="/admin/order/preOrderSet.htm">
+				<i class="fa fa-briefcase"></i>
+				订单管理</a>
+			</li>
+			#if($!user.userRole == 'ADMIN' || $!user.userRole == 'CAMPING')
+			<li >
+				<a href="javascript:;" id="bookMg" data-pre="a-menu" data-url="/admin/order/campingBookMg.htm">
+				<i class="fa fa-briefcase"></i>
+				预定管理</a>
+			</li>
+			#end
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/order/homeMg.htm">
+				<i class="fa fa-briefcase"></i>
+				房间管理</a>
+			</li>
+		</ul>
+	</li>
+	#end
+	#if($!user.userRole == 'ADMIN')
+	<li class="user-menu">
+		<a href="javascript:;">
+		<i class="fa fa-table"></i> 
+		<span class="title">平台管理</span>
+		<span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preAdminManage.htm" >管理员列表</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preUserManage.htm">会员管理</a>
+			</li>
+			<!-- <li class="user-menu">
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/platformMenuManage.htm">平台菜单管理</a>
+			</li> -->
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preMessageSet.htm" >短信平台</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/officesite/preEmailSet.htm" >Email设置</a>
+			</li>
+			<li >
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/platform/preTemplateManage.htm" >模板设置</a>
+			</li>
+		</ul>
+	</li>
+	#end
+	<!-- <li class="user-menu">
+		<a href="javascript:;">
+		<i class="fa fa-table"></i> 
+		<span class="title">会员管理</span>
+		<span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			
+		</ul>
+	</li> -->
+	
+	<!-- <li class="user-menu">
+		<a href="javascript:;">
+			<i class="fa fa-envelope-o"></i>
+			<span class="title">
+				运营管理
+			</span>
+			<span class="arrow ">
+			</span>
+		</a>
+		<ul class="sub-menu">
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/metro/inbox_inbox.html">
+					基本设置
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/metro/inbox_inbox.html" >
+					活动管理
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					天天特价
+				</a>
+			</li>
+		</ul>
+	</li>
+	<li class="user-menu">
+		<a href="javascript:;">
+			<i class="fa fa-sitemap"></i>
+			<span class="title">
+				工具
+			</span>
+			<span class="arrow ">
+			</span>
+		</a>
+		<ul class="sub-menu">
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/metro/inbox_inbox.html">
+					<i class="fa fa-briefcase"></i>
+					<span class="badge badge-warning badge-roundless">
+						new
+					</span>
+					缓存管理
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/metro/inbox_inbox.html">
+					<i class="fa fa-clock-o"></i>数据库管理
+				</a>
+			</li>
+		</ul>
+	</li> -->
+	#if($!user.userRole == 'ADMIN' ||  $!user.userRole == 'REPORT' || $!user.userRole == 'AGENT')
+	<li class="user-menu">
+		<a href="javascript:;">
+			<i class="fa fa-sitemap"></i>
+			<span class="title">
+				统计报表
+			</span>
+			<span class="arrow ">
+			</span>
+		</a>
+		<ul class="sub-menu">
+			<!-- <li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/bookStatistic.htm">
+					<i class="fa fa-briefcase"></i>预订房间数量统计
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/orderStatistic.htm">
+					<i class="fa fa-clock-o"></i>预订收入统计
+				</a>
+			</li> -->
+			#if($!user.userRole == 'ADMIN' ||  $!user.userRole == 'REPORT')
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/homeTypeStatistic.htm">
+					<i class="fa fa-clock-o"></i>房间类型收入统计
+				</a>
+			</li>
+			
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/payTypeStatistic.htm">
+					<i class="fa fa-clock-o"></i>支付类型收入统计
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/userTypeStatistic.htm">
+					<i class="fa fa-clock-o"></i>用户类型收入统计
+				</a>
+			</li>
+			#end
+			#if($!user.userRole == 'ADMIN' ||  $!user.userRole == 'AGENT')
+			<li>
+				<a href="javascript:;" data-pre="a-menu" data-url="/admin/statistic/agentStatistic.htm">
+					<i class="fa fa-clock-o"></i>代理商收入统计
+				</a>
+			</li>
+			#end
+		</ul>
+	</li>
+	#end
+</ul>

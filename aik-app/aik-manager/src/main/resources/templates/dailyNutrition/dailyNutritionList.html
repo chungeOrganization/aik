@@ -1,0 +1,78 @@
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+<thead>
+<tr>
+	<th>编号</th>
+	<th>用户名称</th>
+	<th>记录日期</th>
+	<th>蛋白质</th>
+	<th>脂类</th>
+	<th>碳水化合物</th>
+	<th>维他命</th>
+	<th>矿物质</th>
+	<th>水</th>	
+	<th>膳食纤维</th>	
+	<th>操作</th>
+</tr>
+</thead>
+<tbody>
+
+
+
+
+<tr class="odd gradeX"  th:each="dailyNutrition,iterStat : ${result}"  >
+	<td th:id="${dailyNutrition.id}" th:text="${dailyNutrition.id}"></td>
+	<td th:text="${dailyNutrition.userName}"></td>
+	<td class="center" th:text="${#dates.format(dailyNutrition.recordDate, 'yyyy-MM-dd HH:mm:ss')}">
+	<td th:text="${dailyNutrition.protein}"></td>
+	<td class="center" th:text="${dailyNutrition.lipid}"></td>
+	<td th:text="${dailyNutrition.carbs}"></td>
+	<td th:text="${dailyNutrition.vitamin}"></td>
+	<td th:text="${dailyNutrition.minerals}"></td>
+	<td th:text="${dailyNutrition.water}"></td>
+	<td th:text="${dailyNutrition.dietaryFiber}"></td>
+	<td>
+	</td>
+</tr>			
+
+</tbody>
+</table>
+
+
+	<div class="row">
+		<div class="col-md-5 col-sm-12">
+			<div class="dataTables_info" id="sample_1_info">
+				总数<span th:text="${pageInfo.total}"></span>条,每页显示<span
+					th:text="${pageInfo.pageSize}"></span>条
+			</div>
+		</div>
+		<div class="col-md-7 col-sm-12">
+			<div class="dataTables_paginate paging_bootstrap">
+				<ul id="page_id" class="pagination" style="visibility: visible;">
+					<li data-pre="pageNum"
+						th:class="${pageInfo.hasPreviousPage}? 'prev' : 'prev disabled' ">
+						<a th:attr="value=${pageInfo.prePage}" title="上一页"
+						href="javascript:void(0);"> <i class="fa fa-angle-left"></i>
+					</a>
+					</li>
+					<li data-pre="pageNum"
+						th:each="navNum,iterStat : ${pageInfo.navigatepageNums}"
+						th:class="${navNum == pageInfo.pageNum}? 'active' : ''"><a
+						th:attr="value=${navNum == pageInfo.pageNum} ? 0 : ${navNum}"
+						href="javascript:void(0);"> <span th:text="${navNum}"></span>
+					</a></li>
+					<li data-pre="pageNum"
+						th:class="${pageInfo.hasNextPage}? 'next' : 'next disabled'">
+						<a th:attr="value=${pageInfo.nextPage}" title="下一页"
+						href="javascript:void(0);"> <i class="fa fa-angle-right"></i>
+					</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+
+</div>

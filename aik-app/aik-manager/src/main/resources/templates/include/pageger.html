@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-md-5 col-sm-12">
+		<div class="dataTables_info" id="sample_1_info">总数 $!total 条</div>
+	</div>
+	<div class="col-md-7 col-sm-12">
+	#if($!total > $!pageSize)
+		#set($pgdid=$!{pageNo}/$!{pageSize})
+		#set($pghead=$!{pgdid} * $!{pageSize} + 1)
+		#set($pgtotal=$!{total} / $!{pageSize})
+		#set($pgtotaly=$!{total} % $!{pageSize})
+		#if($!pgtotaly > 0)
+			#set($pgtotal=$!{pgtotal} +1)
+		#end
+		#set($length=4)
+		#set($len=$!{pgtotal}-$!{pgdid}*$!{pageSize})
+		#if($!len < 5)
+			#set($length=$!{len} - 1)
+		#end
+		#set($prev=$!{pageNo} - 1)
+		#set($next=$!{pageNo} + 1)
+		<div class="dataTables_paginate paging_bootstrap">
+			<ul id="page_id" class="pagination" style="visibility: visible;">
+				#if($!pageNo == 1)
+					<li class="prev  disabled"><a title="上一页" href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+				#else
+					<li data-pre="gar" class="prev"><a title="上一页" href="javascript:;" data-pre="$!prev"><i class="fa fa-angle-left"></i></a></li>
+				#end
+				#foreach ($i in [0..$!length])
+					#set($pgid=$!{i} + $!{pghead})
+					#if($!pgid == $!pageNo)
+						<li data-pre="gar" class="active"><a href="javascript:;" data-pre="$!pgid">$!pgid</a></li>
+					#else
+						<li data-pre="gar"><a href="javascript:;" data-pre="$!pgid">$!pgid</a></li>
+					#end
+				#end
+				#if($!pageNo == $!pgtotal)
+					<li data-pre="gar" class="next disabled"><a title="下一页" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+				#else
+					<li data-pre="gar" class="next"><a data-pre="$!next" title="下一页" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+				#end
+			</ul>
+		</div>
+	#end
+	</div>
+</div>
