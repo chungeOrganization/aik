@@ -9,7 +9,6 @@ import com.aik.exception.ApiServiceException;
 import com.aik.security.AuthUserDetailsThreadLocal;
 import com.aik.service.account.DoctorTipsService;
 import com.aik.service.question.DoctorQuestionOrderService;
-import com.aik.service.question.QuestionService;
 import com.aik.service.relation.DoctorRelationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,12 +157,12 @@ public class DoctorTipsApi {
     }
 
     @POST
-    @Path("/attentionUser/{userId}")
-    public ApiResult attentionUser(@PathParam("userId") Integer userId) {
+    @Path("/attentionUser/{userId}/{status}")
+    public ApiResult attentionUser(@PathParam("userId") Integer userId, @PathParam("status") Byte status) {
         ApiResult result = new ApiResult();
 
         try {
-            doctorRelationService.attentionUser(userId,
+            doctorRelationService.attentionUser(userId, status,
                     AuthUserDetailsThreadLocal.getCurrentUserId());
         } catch (ApiServiceException e) {
             logger.error("attention user error: ", e);

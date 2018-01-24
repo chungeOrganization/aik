@@ -110,10 +110,11 @@ public interface DoctorRelationService {
      * 关注|取消关注用户
      *
      * @param userId
+     * @param status
      * @param doctorId
      * @throws ApiServiceException
      */
-    void attentionUser(Integer userId, Integer doctorId) throws ApiServiceException;
+    void attentionUser(Integer userId, Byte status, Integer doctorId) throws ApiServiceException;
 
     /**
      * 取消关注用户

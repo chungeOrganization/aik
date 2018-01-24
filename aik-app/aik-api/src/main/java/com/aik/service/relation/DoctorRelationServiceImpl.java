@@ -279,19 +279,19 @@ public class DoctorRelationServiceImpl implements DoctorRelationService {
     }
 
     @Override
-    public void attentionUser(Integer userId, Integer doctorId) throws ApiServiceException {
-        if (null == userId || null == doctorId) {
+    public void attentionUser(Integer userId, Byte status, Integer doctorId) throws ApiServiceException {
+        if (null == userId || null == status || null == doctorId) {
             throw new ApiServiceException(ErrorCodeEnum.ERROR_CODE_1000002);
         }
 
         AccDoctorAttention doctorAttention = accDoctorAttentionMapper.selectByDoctorIdAndUserId(doctorId, userId);
-        if (null == doctorAttention) {
+        if (null == doctorAttention && status == (byte) 1) {
             doctorAttention = new AccDoctorAttention();
             doctorAttention.setUserId(userId);
             doctorAttention.setDoctorId(doctorId);
             doctorAttention.setCreateDate(new Date());
             accDoctorAttentionMapper.insertSelective(doctorAttention);
-        } else {
+        } else if (null != doctorAttention && status == (byte) 0) {
             accDoctorAttentionMapper.deleteByPrimaryKey(doctorAttention.getId());
         }
     }
