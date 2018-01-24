@@ -1,9 +1,0 @@
-.idea/
-*.iml
-.classpath
-**/generated/
-target/
-.settings/
-.project
-/.metadata/
-pom.xml.versionsBackup
