@@ -98,5 +98,10 @@ weather:
   api: "http://jisutqybmf.market.alicloudapi.com/weather/query"
   appCode: "baa9bd7b24084523a73d276164c4ec11"
   authSign: "APPCODE "
+bankcard:
+  ocr:
+    api: "http://yhk.market.alicloudapi.com/rest/160601/ocr/ocr_bank_card.json"
+    appCode: "baa9bd7b24084523a73d276164c4ec11"
+    authSign: "APPCODE "
 
 
